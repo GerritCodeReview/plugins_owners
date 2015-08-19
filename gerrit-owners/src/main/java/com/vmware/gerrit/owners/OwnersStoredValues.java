@@ -3,52 +3,90 @@
  */
 package com.vmware.gerrit.owners;
 
-import com.vmware.gerrit.owners.common.PathOwners;
-
+import com.google.gerrit.reviewdb.client.AccountDiffPreference.Whitespace;
+import com.google.gerrit.reviewdb.client.Change;
+import com.google.gerrit.reviewdb.client.PatchSetInfo;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.rules.PrologEnvironment;
 import com.google.gerrit.rules.StoredValue;
 import com.google.gerrit.rules.StoredValues;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.patch.PatchListCache;
+import com.google.gerrit.server.patch.PatchListKey;
+import com.google.gerrit.server.patch.PatchListNotAvailableException;
+import com.google.gerrit.server.query.change.ChangeData;
 import com.google.gwtorm.server.OrmException;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlecode.prolog_cafe.lang.SystemException;
+import com.vmware.gerrit.owners.common.PathOwners;
+import java.util.List;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-/**
- * StoredValues for the Gerrit OWNERS plugin.
- */
+/** StoredValues for the Gerrit OWNERS plugin. */
 public class OwnersStoredValues {
   private static final Logger log = LoggerFactory.getLogger(OwnersStoredValues.class);
 
   public static StoredValue<PathOwners> PATH_OWNERS;
 
-  synchronized
-  public static void initialize(final AccountResolver resolver) {
+  private static PatchList getFirstParent(Prolog engine, PrologEnvironment env) {
+    PatchSetInfo psInfo = StoredValues.PATCH_SET_INFO.get(engine);
+    PatchListCache plCache = env.getArgs().getPatchListCache();
+    List<PatchSetInfo.ParentInfo> parents = psInfo.getParents();
+    ChangeData cd = StoredValues.CHANGE_DATA.get(engine);
+    Change change;
+    try {
+      change = cd.change();
+    } catch (OrmException e) {
+      throw new SystemException(
+          "Cannot load change " + cd.getId() + " ORMException: " + e.getMessage());
+    }
+    Project.NameKey projectKey = change.getProject();
+    ObjectId a;
+    if (parents.isEmpty()) {
+      a = null;
+    } else {
+      a = ObjectId.fromString(parents.get(0).id.get());
+    }
+    ObjectId b = ObjectId.fromString(psInfo.getRevId());
+    Whitespace ws = Whitespace.IGNORE_NONE;
+    PatchListKey plKey = new PatchListKey(projectKey, a, b, ws);
+    PatchList patchList;
+    try {
+      patchList = plCache.get(plKey);
+    } catch (PatchListNotAvailableException e) {
+      throw new SystemException(
+          "Cannot create " + plKey + " PatchListNotAvailableException: " + e.getMessage());
+    }
+    return patchList;
+  }
+
+  public static synchronized void initialize(final AccountResolver resolver) {
     if (PATH_OWNERS != null) {
       return;
     }
     log.info("Initializing OwnerStoredValues");
-    PATH_OWNERS = new StoredValue<PathOwners>() {
-      @Override
-      protected PathOwners createValue(Prolog engine) {
-        PatchList patchList = StoredValues.PATCH_LIST.get(engine);
-        Repository repository = StoredValues.REPOSITORY.get(engine);
+    PATH_OWNERS =
+        new StoredValue<PathOwners>() {
+          @Override
+          protected PathOwners createValue(Prolog engine) {
+            Repository repository = StoredValues.REPOSITORY.get(engine);
 
-        PrologEnvironment env = (PrologEnvironment) engine.control;
+            PrologEnvironment env = (PrologEnvironment) engine.control;
 
-        try {
-          return new PathOwners(resolver, repository, patchList);
-        } catch (OrmException e) {
-          throw new SystemException(e.getMessage());
-        }
-      }
-    };
+            PatchList patchList = getFirstParent(engine, env);
+
+            try {
+              return new PathOwners(resolver, repository, patchList);
+            } catch (OrmException e) {
+              throw new SystemException(e.getMessage());
+            }
+          }
+        };
   }
 
-  private OwnersStoredValues() {
-  }
+  private OwnersStoredValues() {}
 }
