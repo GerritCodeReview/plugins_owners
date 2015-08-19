@@ -146,7 +146,7 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    */
   private OwnersConfig getOwners(String ownersPath) {
-    String owners = BlobUtils.getContent(repository, "master", ownersPath);
+    String owners = BlobUtils.getContent(repository, "reviewed/master", ownersPath);
 
     if (owners != null) {
       ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
