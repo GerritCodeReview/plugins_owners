@@ -3,8 +3,6 @@
  */
 package com.vmware.gerrit.owners.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -14,8 +12,11 @@ import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import com.google.gwtorm.server.OrmException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import org.eclipse.jgit.lib.Repository;
-import org.gitective.core.BlobUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
