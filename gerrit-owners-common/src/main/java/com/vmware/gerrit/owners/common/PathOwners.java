@@ -14,8 +14,8 @@ import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import com.google.gwtorm.server.OrmException;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
-import org.gitective.core.BlobUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,18 +146,24 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    */
   private OwnersConfig getOwners(String ownersPath) {
-    String owners = BlobUtils.getContent(repository, "master", ownersPath);
-
-    if (owners != null) {
-      ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-      try {
-        return mapper.readValue(owners, OwnersConfig.class);
-      } catch (IOException e) {
-        log.warn("Invalid OWNERS file: {}", ownersPath, e);
-        return null;
+    try {
+      ObjectId blobId = repository.resolve("master:" + ownersPath);
+      if (blobId != null) {
+        try {
+          String owners = new String(repository.open(blobId).getBytes());
+          ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+          try {
+            return mapper.readValue(owners, OwnersConfig.class);
+          } catch (IOException e) {
+            log.warn("Invalid OWNERS file: {}", ownersPath, e);
+          }
+        } catch (Exception e) {
+          log.warn("Error opening OWNERS file:", e);
+        }
       }
+    } catch (IOException e) {
+      log.warn("Unable to find OWNERS file on master branch: ", e);
     }
-
     return null;
   }
 
