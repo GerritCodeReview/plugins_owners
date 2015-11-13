@@ -27,12 +27,6 @@ maven_jar(
   license = 'Apache2.0',
 )
 
-maven_jar(
-  name = 'gitective-core',
-  id = 'org.gitective:gitective-core:0.9.9',
-  license = 'Apache2.0',
-)
-
 # see common.defs on why this is a java_library2 rather than java_library
 java_library(
   name = 'common',
