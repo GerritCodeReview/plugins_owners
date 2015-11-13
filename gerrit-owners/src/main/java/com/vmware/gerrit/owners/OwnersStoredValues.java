@@ -31,7 +31,7 @@ public class OwnersStoredValues {
     if (PATH_OWNERS != null) {
       return;
     }
-    log.error("Initializing OwnerStoredValues");
+    log.info("Initializing OwnerStoredValues");
     PATH_OWNERS = new StoredValue<PathOwners>() {
       @Override
       protected PathOwners createValue(Prolog engine) {
