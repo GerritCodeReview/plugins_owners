@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbbb9b9e_aab82fe9",
+        "filename": "BUCK",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-11-20T04:29:45Z",
+      "side": 1,
+      "message": "Why is all this necessary?",
+      "revId": "e5f2a4205cb6a50180d9143849423723887dda7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bbd507d1_318110b4",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/BlobUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-11-20T04:29:45Z",
+      "side": 1,
+      "message": "Is this copy-pasted from gitective?\n\nIf so, we will need to include the relevant licence and copyright header.",
+      "revId": "e5f2a4205cb6a50180d9143849423723887dda7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
