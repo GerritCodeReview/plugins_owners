@@ -1,4 +1,4 @@
-include_defs('//plugins/gerrit-owners/common.defs')
+include_defs('//plugins/owners/common.defs')
 include_defs('//lib/maven.defs')
 include_defs('//lib/prolog/prolog.defs')
 
