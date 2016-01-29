@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
-import static com.google.gerrit.reviewdb.client.AccountDiffPreference.Whitespace.IGNORE_NONE;
+import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
 
 @Listen
 public class GitRefListener implements GitReferenceUpdatedListener {
@@ -96,9 +96,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       newId = ObjectId.fromString(event.getNewObjectId());
     }
 
-    PatchListKey plKey = new PatchListKey(change.getProject(), null, newId, IGNORE_NONE);
+    PatchListKey plKey = new PatchListKey(null, newId, IGNORE_NONE);
     try {
-      return patchListCache.get(plKey);
+      return patchListCache.get(plKey,change.getProject());
     } catch (PatchListNotAvailableException e) {
       logger.warn("Could not load patch list: {}", plKey, e);
     }
