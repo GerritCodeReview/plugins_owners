@@ -1,3 +1,4 @@
+include_defs('//bucklets/gerrit_plugin.bucklet')
 include_defs('//plugins/gerrit-owners/common.defs')
 include_defs('//lib/maven.defs')
 include_defs('//lib/prolog/prolog.defs')
@@ -39,6 +40,6 @@ java_library(
   srcs = glob([
     'src/main/java/**/*.java',
   ]),
-  deps = COMPILE_DEPS + EXTERNAL_DEPS,
+  deps = GERRIT_PLUGIN_API + EXTERNAL_DEPS,
   visibility = ['PUBLIC'],
 )
