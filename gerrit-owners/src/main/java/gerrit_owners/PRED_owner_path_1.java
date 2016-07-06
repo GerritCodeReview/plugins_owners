@@ -6,11 +6,11 @@ package gerrit_owners;
 import com.vmware.gerrit.owners.OwnersStoredValues;
 import com.vmware.gerrit.owners.common.PathOwners;
 
+import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.JavaObjectTerm;
 import com.googlecode.prolog_cafe.lang.Operation;
 import com.googlecode.prolog_cafe.lang.Predicate;
 import com.googlecode.prolog_cafe.lang.Prolog;
-import com.googlecode.prolog_cafe.lang.PrologException;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
 
@@ -36,8 +36,8 @@ public class PRED_owner_path_1 extends Predicate.P1 {
     engine.setB0();
 
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
-    engine.areg1 = arg1;
-    engine.areg2 = new JavaObjectTerm(owners.get().keys().iterator());
+    engine.r1 = arg1;
+    engine.r2 = new JavaObjectTerm(owners.get().keys().iterator());
     return engine.jtry2(OWNER_PATH_CHECK, OWNER_PATH_NEXT);
   }
 
@@ -45,8 +45,8 @@ public class PRED_owner_path_1 extends Predicate.P1 {
 
     @Override
     public Operation exec(Prolog engine) throws PrologException {
-      Term a1 = engine.areg1;
-      Term a2 = engine.areg2;
+      Term a1 = engine.r1;
+      Term a2 = engine.r2;
 
       @SuppressWarnings("unchecked")
       Iterator<String> iter = (Iterator<String>) ((JavaObjectTerm) a2).object();
@@ -76,7 +76,7 @@ public class PRED_owner_path_1 extends Predicate.P1 {
 
     @Override
     public Operation exec(Prolog engine) throws PrologException {
-      Term a2 = engine.areg2;
+      Term a2 = engine.r2;
 
       @SuppressWarnings("unchecked")
       Iterator<String> iter = (Iterator<String>) ((JavaObjectTerm) a2).object();

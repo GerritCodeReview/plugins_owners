@@ -7,12 +7,12 @@ import com.vmware.gerrit.owners.OwnersStoredValues;
 import com.vmware.gerrit.owners.common.PathOwners;
 
 import com.google.gerrit.reviewdb.client.Account;
+import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.IntegerTerm;
 import com.googlecode.prolog_cafe.lang.JavaObjectTerm;
 import com.googlecode.prolog_cafe.lang.Operation;
 import com.googlecode.prolog_cafe.lang.Predicate;
 import com.googlecode.prolog_cafe.lang.Prolog;
-import com.googlecode.prolog_cafe.lang.PrologException;
 import com.googlecode.prolog_cafe.lang.StructureTerm;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
@@ -41,9 +41,9 @@ public class PRED_owner_2 extends Predicate.P2 {
     engine.setB0();
 
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
-    engine.areg1 = arg1;
-    engine.areg2 = arg2;
-    engine.areg3 = new JavaObjectTerm(owners.get().entries().iterator());
+    engine.r1 = arg1;
+    engine.r2 = arg2;
+    engine.r3 = new JavaObjectTerm(owners.get().entries().iterator());
     return engine.jtry3(OWNER_CHECK, OWNER_NEXT);
   }
 
@@ -51,9 +51,9 @@ public class PRED_owner_2 extends Predicate.P2 {
 
     @Override
     public Operation exec(Prolog engine) throws PrologException {
-      Term a1 = engine.areg1;
-      Term a2 = engine.areg2;
-      Term a3 = engine.areg3;
+      Term a1 = engine.r1;
+      Term a2 = engine.r2;
+      Term a3 = engine.r3;
 
       @SuppressWarnings("unchecked")
       Iterator<Map.Entry<String, Account.Id>> iter =
@@ -89,7 +89,7 @@ public class PRED_owner_2 extends Predicate.P2 {
 
     @Override
     public Operation exec(Prolog engine) throws PrologException {
-      Term a3 = engine.areg3;
+      Term a3 = engine.r3;
 
       @SuppressWarnings("unchecked")
       Iterator<Map.Entry<String, Account.Id>> iter =

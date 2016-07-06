@@ -61,8 +61,6 @@ public class ReviewerManager {
       throw new ReviewerManagerException(e);
     } catch (NoSuchChangeException e) {
       throw new ReviewerManagerException(e);
-    } catch (EmailException e) {
-      throw new ReviewerManagerException(e);
     } catch (OrmException e) {
       throw new ReviewerManagerException(e);
     } catch (IOException e) {
