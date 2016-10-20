@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1cc9dbea_8573425b",
+        "filename": "gerrit-owners-common/BUCK",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T22:41:31Z",
+      "side": 1,
+      "message": "Those definitions should already be defined in the gerrit_plugin bucklet, but as you removed them ... then you need to add them again :-(",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 21
+      },
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc7d2f55_a26e5e71",
+        "filename": "gerrit-owners/BUCK",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T22:41:31Z",
+      "side": 1,
+      "message": "Why not keeping the same line position for this?",
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1cc9dbea_e5783639",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T22:41:31Z",
+      "side": 1,
+      "message": "Just changed line position?",
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1cc9dbea_c57d3a27",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T22:41:31Z",
+      "side": 1,
+      "message": "I would even do just debug :-)",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 12
+      },
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc7d2f55_c273625a",
+        "filename": "gerrit-owners/src/main/java/gerrit_owners/PRED_owner_2.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T22:41:31Z",
+      "side": 1,
+      "message": "Why changing line position?",
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1cc9dbea_25836eec",
+        "filename": "gerrit-owners/src/main/java/gerrit_owners/PRED_owner_path_1.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T22:41:31Z",
+      "side": 1,
+      "message": "Why changing line position?",
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
