@@ -14,6 +14,8 @@ import com.google.gwtorm.server.OrmException;
 import com.googlecode.prolog_cafe.exceptions.SystemException;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import org.eclipse.jgit.lib.Repository;
+import com.google.gerrit.reviewdb.server.ReviewDb;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,11 +29,11 @@ public class OwnersStoredValues {
   public static StoredValue<PathOwners> PATH_OWNERS;
 
   synchronized
-  public static void initialize(final AccountResolver resolver) {
+  public static void initialize(final ReviewDb db, final AccountResolver resolver) {
     if (PATH_OWNERS != null) {
       return;
     }
-    log.error("Initializing OwnerStoredValues");
+    log.info("Initializing OwnerStoredValues");
     PATH_OWNERS = new StoredValue<PathOwners>() {
       @Override
       protected PathOwners createValue(Prolog engine) {
@@ -41,7 +43,7 @@ public class OwnersStoredValues {
         PrologEnvironment env = (PrologEnvironment) engine.control;
 
         try {
-          return new PathOwners(resolver, repository, patchList);
+          return new PathOwners(resolver, db, repository, patchList);
         } catch (OrmException e) {
           throw new SystemException(e.getMessage());
         }
