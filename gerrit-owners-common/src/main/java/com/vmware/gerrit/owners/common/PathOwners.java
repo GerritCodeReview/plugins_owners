@@ -10,6 +10,7 @@ import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Patch;
+import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
@@ -41,10 +42,13 @@ public class PathOwners {
 
   private final PatchList patchList;
 
-  public PathOwners(AccountResolver resolver, Repository repository, PatchList patchList) throws OrmException {
+  private final ReviewDb db;
+
+  public PathOwners(AccountResolver resolver, ReviewDb db, Repository repository, PatchList patchList) throws OrmException {
     this.repository = repository;
     this.resolver = resolver;
     this.patchList = patchList;
+    this.db = db;
 
     owners = Multimaps.unmodifiableSetMultimap(fetchOwners());
   }
@@ -169,7 +173,7 @@ public class PathOwners {
   private Set<Account.Id> getOwnersFromEmails(Set<String> emails) throws OrmException {
     Set<Account.Id> result = new HashSet<Account.Id>();
     for (String email : emails) {
-      Set<Account.Id> ids = resolver.findAll(email);
+      Set<Account.Id> ids = resolver.findAll(db, email);
       result.addAll(ids);
     }
     return result;
