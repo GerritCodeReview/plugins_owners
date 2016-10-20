@@ -2,7 +2,7 @@ include_defs('//lib/maven.defs')
 include_defs('//lib/prolog/prolog.defs')
 
 EXTERNAL_DEPS = [
-  '//plugins/gerrit-owners/gerrit-owners-common' + i for i in [
+  '//plugins/owners/gerrit-owners-common' + i for i in [
     ':gitective-core',
     ':jackson-core',
     ':jackson-databind',
