@@ -12,6 +12,7 @@ import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.change.ChangeResource;
 import com.google.gerrit.server.change.ChangesCollection;
 import com.google.gerrit.server.change.PostReviewers;
+import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.project.ChangeControl;
 import com.google.gerrit.server.project.NoSuchChangeException;
 import com.google.gwtorm.server.OrmException;
@@ -31,22 +32,28 @@ public class ReviewerManager {
 
   private final ChangeControl.GenericFactory changeControlFactory;
 
+  private final ChangeNotes.Factory notesFactory;
+
   private final ChangesCollection changesCollection;
 
   @Inject
   public ReviewerManager(Provider<CurrentUser> currentUserProvider,
                          Provider<PostReviewers> postReviewersProvider,
                          ChangeControl.GenericFactory changeControlFactory,
+                         ChangeNotes.Factory notesFactory,
                          ChangesCollection changesCollection) {
     this.currentUserProvider = currentUserProvider;
     this.postReviewersProvider = postReviewersProvider;
     this.changeControlFactory = changeControlFactory;
+    ChangeNotes.Factory notesFactory,
     this.changesCollection = changesCollection;
   }
 
   public void addReviewers(Change change, Collection<Account.Id> reviewers) throws ReviewerManagerException {
     try {
       PostReviewers postReviewers = postReviewersProvider.get();
+      ChangeNotes notes = notesFactory.createFromIndexedChange(change);
+      ChangeControl changeControl = changeControlFactory.controlFor(notes, currentUserProvider.get());
       ChangeControl changeControl = changeControlFactory.controlFor(change, currentUserProvider.get());
       ChangeResource changeResource = changesCollection.parse(changeControl);
 
@@ -61,11 +68,11 @@ public class ReviewerManager {
       throw new ReviewerManagerException(e);
     } catch (NoSuchChangeException e) {
       throw new ReviewerManagerException(e);
-    } catch (EmailException e) {
-      throw new ReviewerManagerException(e);
     } catch (OrmException e) {
       throw new ReviewerManagerException(e);
     } catch (IOException e) {
+      throw new ReviewerManagerException(e);
+    } catch (Exception e) {
       throw new ReviewerManagerException(e);
     }
   }
