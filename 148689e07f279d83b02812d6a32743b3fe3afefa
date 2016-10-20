@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1cc9dbea_a56e3e71",
+        "filename": "gerrit-owners-common/BUCK",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T22:41:31Z",
+      "side": 0,
+      "message": "Why removing the gerrit_plugin bucket?",
+      "revId": "148689e07f279d83b02812d6a32743b3fe3afefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
