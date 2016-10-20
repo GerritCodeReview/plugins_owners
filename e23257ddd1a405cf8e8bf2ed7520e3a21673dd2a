@@ -42,6 +42,29 @@
     },
     {
       "key": {
+        "uuid": "bc7d2f55_027e2a22",
+        "filename": "gerrit-owners/BUCK",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-20T23:10:35Z",
+      "side": 1,
+      "message": "This isn\u0027t really the problem, DavidO\u0027s change was correct.\nYou simply have to add:\n\u0027//lib/prolog:runtime\u0027 to the list of deps.",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 18
+      },
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1cc9dbea_e5783639",
         "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
         "patchSetId": 1
