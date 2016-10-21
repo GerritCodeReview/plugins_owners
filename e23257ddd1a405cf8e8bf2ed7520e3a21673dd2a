@@ -291,6 +291,30 @@
     },
     {
       "key": {
+        "uuid": "1cc9dbea_0503d272",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-21T13:08:18Z",
+      "side": 1,
+      "message": "Opps, my mistake. Final is needed here, obviously.",
+      "parentUuid": "1cc9dbea_25aa4e5c",
+      "range": {
+        "startLine": 32,
+        "startChar": 32,
+        "endLine": 32,
+        "endChar": 37
+      },
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1cc9dbea_c57d3a27",
         "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
         "patchSetId": 1
