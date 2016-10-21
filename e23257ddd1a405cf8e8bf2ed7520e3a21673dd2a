@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "1cc9dbea_2506ce82",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-21T13:05:09Z",
+      "side": 1,
+      "message": "Yes, you are right: we never merge stuff that doesn\u0027t work. So that all fixes should be done in one single change.",
+      "parentUuid": "bc7d2f55_22b16ec8",
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bc7d2f55_a2957e1d",
         "filename": "common.defs",
         "patchSetId": 1
