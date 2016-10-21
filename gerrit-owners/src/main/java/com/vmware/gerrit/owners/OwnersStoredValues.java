@@ -5,6 +5,7 @@ package com.vmware.gerrit.owners;
 
 import com.vmware.gerrit.owners.common.PathOwners;
 
+import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.rules.PrologEnvironment;
 import com.google.gerrit.rules.StoredValue;
 import com.google.gerrit.rules.StoredValues;
@@ -27,7 +28,7 @@ public class OwnersStoredValues {
   public static StoredValue<PathOwners> PATH_OWNERS;
 
   synchronized
-  public static void initialize(final AccountResolver resolver) {
+    public static void initialize(ReviewDb db, AccountResolver resolver) {
     if (PATH_OWNERS != null) {
       return;
     }
@@ -41,7 +42,7 @@ public class OwnersStoredValues {
         PrologEnvironment env = (PrologEnvironment) engine.control;
 
         try {
-          return new PathOwners(resolver, repository, patchList);
+	  return new PathOwners(resolver, db, repository, patchList);
         } catch (OrmException e) {
           throw new SystemException(e.getMessage());
         }

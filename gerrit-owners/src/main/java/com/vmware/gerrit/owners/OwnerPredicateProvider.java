@@ -7,6 +7,7 @@ package com.vmware.gerrit.owners;
 import com.google.inject.Inject;
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.Listen;
+import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.rules.PredicateProvider;
 import com.google.gerrit.server.account.AccountResolver;
 
@@ -16,8 +17,8 @@ import com.google.gerrit.server.account.AccountResolver;
 @Listen
 public class OwnerPredicateProvider implements PredicateProvider {
   @Inject
-  public OwnerPredicateProvider(AccountResolver resolver) {
-    OwnersStoredValues.initialize(resolver);
+  public OwnerPredicateProvider(ReviewDb db, AccountResolver resolver) {
+    OwnersStoredValues.initialize(db, resolver);
   }
 
   @Override
