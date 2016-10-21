@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc7d2f55_029b8aff",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-21T20:22:17Z",
+      "side": 1,
+      "message": "Well, that\u0027s messy. We stop using REST endpoints directly years ago and replaced the approach with the Plugin API. Instead of trying to inject all the stuff needed to call PostReviewers endpoint on your own, you supposed to just use the Plugin API, something like (untested):\n\n  private final GerritApi gApi;\n  @Inject\n  public ReviewerManager(GerritApi gApi) {\n    this.gApi \u003d gApi;\n  }\n  public void addReviewers(Change change, Collection\u003cAccount.Id\u003e reviewers) {\n    try {\n      ChangeApi cApi \u003d gApi.changes().id(change.getId().get());\n      for (Account.Id account : reviewers) {\n        cApi.addReviewer(account.toString());\n      }\n    } catch (RestApiException e) {\n      log.error(\"Couldn\u0027t add reviewers to the change\", e);\n      throw new ReviewerManagerException(e);\n    }\n  }\n\nDone. Something similar is done in my reviewers plugin: [1].\n\n* [1] https://github.com/davido/gerrit-reviewers-plugin/blob/master/src/main/java/com/googlesource/gerrit/plugins/reviewers/DefaultReviewers.java#L57-L72",
+      "revId": "8881ac5c19c35c9e4bf468683aff49a55f42e3bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc7d2f55_22908ed7",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnerPredicateProvider.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-21T20:22:17Z",
+      "side": 1,
+      "message": "Unsure, but shouldn\u0027t this rather be a Provider\u003cReviewDb\u003e? See this change where Provider\u003cReviewDb\u003e was removed form AccountResolver: [1].\n\n* [1] https://gerrit-review.googlesource.com/82851",
+      "range": {
+        "startLine": 21,
+        "startChar": 32,
+        "endLine": 21,
+        "endChar": 40
+      },
+      "revId": "8881ac5c19c35c9e4bf468683aff49a55f42e3bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
