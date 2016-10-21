@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc7d2f55_62dc56cb",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2016-10-21T15:48:11Z",
+      "side": 1,
+      "message": "I\u0027m unsure if this is the right transposition for this to correctly work.",
+      "range": {
+        "startLine": 55,
+        "startChar": 6,
+        "endLine": 56,
+        "endChar": 102
+      },
+      "revId": "b6267a4463594c2e7501c4d57eb03bda46618565",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc7d2f55_82d95adc",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2016-10-21T15:48:11Z",
+      "side": 1,
+      "message": "It actually needed to have a git.UpdateException, but this would have needed an extra dependency from \n//gerrit-plugin-api:lib",
+      "range": {
+        "startLine": 75,
+        "startChar": 6,
+        "endLine": 76,
+        "endChar": 43
+      },
+      "revId": "b6267a4463594c2e7501c4d57eb03bda46618565",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
