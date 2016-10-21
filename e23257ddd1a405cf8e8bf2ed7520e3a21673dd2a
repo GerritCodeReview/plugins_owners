@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "bc7d2f55_22b16ec8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-21T08:12:35Z",
+      "side": 1,
+      "message": "In theory it would make sense to have them as separate, in practice a simple upgrade of JGit wouldn\u0027t build either because of the version incompatibilities.\n\nWe do not merge stuff that doesn\u0027t work, isn\u0027t it?",
+      "parentUuid": "1cc9dbea_45a14a7a",
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bc7d2f55_a2957e1d",
         "filename": "common.defs",
         "patchSetId": 1
@@ -65,6 +83,30 @@
       "writtenOn": "2016-10-21T02:46:24Z",
       "side": 1,
       "message": "Why is prolog runtime is needed for the plugin? I exposed extra for this plugin prolog compiler in the Plugin API in this change: [1]. When it\u0027s justified, we could expose prolog runtime in the API as well, or add only this one single dependency.\n\n* [1] https://gerrit-review.googlesource.com/#/c/79210/1/gerrit-plugin-api/BUCK",
+      "range": {
+        "startLine": 29,
+        "startChar": 2,
+        "endLine": 29,
+        "endChar": 25
+      },
+      "revId": "e23257ddd1a405cf8e8bf2ed7520e3a21673dd2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1cc9dbea_e5ddd6fb",
+        "filename": "common.defs",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-21T08:12:35Z",
+      "side": 1,
+      "message": "@David thanks for fixing it Gerrit stable-2.13 :-)",
+      "parentUuid": "bc7d2f55_c29a824c",
       "range": {
         "startLine": 29,
         "startChar": 2,
