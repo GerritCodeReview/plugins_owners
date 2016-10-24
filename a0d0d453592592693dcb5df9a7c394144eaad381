@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c112fc46_9ad92ddb",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnerPredicateProvider.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-24T08:24:29Z",
+      "side": 1,
+      "message": "That looks hacky still: why can\u0027t we use a @Singleton on OwnersStoredValues and then inject the Provider\u003cReviewDb\u003e there?",
+      "revId": "a0d0d453592592693dcb5df9a7c394144eaad381",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
