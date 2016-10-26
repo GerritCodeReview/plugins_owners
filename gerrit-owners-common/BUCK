@@ -30,7 +30,7 @@ maven_jar(
 
 maven_jar(
   name = 'gitective-core',
-  id = 'io.fabric8:gitective-core:0.9.10',
+  id = 'io.fabric8:gitective-core:0.9.17',
   license = 'Apache2.0',
 )
 
