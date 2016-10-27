@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "01fb34f7_bcce6114",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-27T08:54:36Z",
+      "side": 1,
+      "message": "Well, the GerritApi seem to assume to be only executed by interactive users :-( which is kind of unexpected.\n\nSee the blast below when using it during a Git event:\n\njava.lang.UnsupportedOperationException: AnonymousUser is not an IdentifiedUser\n        at com.google.gerrit.server.CurrentUser.asIdentifiedUser(CurrentUser.java:107)\n        at com.google.gerrit.server.change.ChangeResource.getUser(ChangeResource.java:72)\n        at com.google.gerrit.server.change.PostReviewers.apply(PostReviewers.java:152)\n        at com.google.gerrit.server.api.changes.ChangeApiImpl.addReviewer(ChangeApiImpl.java:315)\n        at com.google.gerrit.server.api.changes.ChangeApiImpl.addReviewer(ChangeApiImpl.java:309)\n        at com.vmware.gerrit.owners.common.ReviewerManager.addReviewers(ReviewerManager.java:33)\n        at com.vmware.gerrit.owners.common.GitRefListener.processEvent(GitRefListener.java:86)\n        at com.vmware.gerrit.owners.common.GitRefListener.onGitReferenceUpdated(GitRefListener.java:66)\n        at com.google.gerrit.server.extensions.events.GitReferenceUpdated.fire(GitReferenceUpdated.java:145)\n        at com.google.gerrit.server.extensions.events.GitReferenceUpdated.fire(GitReferenceUpdated.java:131)\n        at com.google.gerrit.server.extensions.events.GitReferenceUpdated.fire(GitReferenceUpdated.java:124)\n        at com.google.gerrit.server.git.BatchUpdate.execute(BatchUpdate.java:442)\n        at com.google.gerrit.server.git.BatchUpdate.execute(BatchUpdate.java:647)\n        at com.google.gerrit.server.git.BatchUpdate.execute(BatchUpdate.java:642)\n        at com.google.gerrit.server.git.ReceiveCommits.insertChangesAndPatchSets(ReceiveCommits.java:859)\n        at com.google.gerrit.server.git.ReceiveCommits.processCommands(ReceiveCommits.java:602)\n        at com.google.gerrit.server.git.AsyncReceiveCommits$Worker.run(AsyncReceiveCommits.java:89)\n        at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:471)",
+      "parentUuid": "bc7d2f55_029b8aff",
+      "revId": "8881ac5c19c35c9e4bf468683aff49a55f42e3bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bc7d2f55_22908ed7",
         "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnerPredicateProvider.java",
         "patchSetId": 5
