@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01fb34f7_1c8e75b9",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/AutoassignModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-27T12:46:33Z",
+      "side": 1,
+      "message": "Nit: wrong indentation: 4 spaces on line continuation.",
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "01fb34f7_7c8b39a9",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-27T12:46:33Z",
+      "side": 1,
+      "message": "Eine extended version of OneOffRequestContext should do the job.",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 35,
+        "endChar": 39
+      },
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26fa0e32_9dbfe360",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-27T12:46:33Z",
+      "side": 1,
+      "message": "Could be simplified by re-using OneOffRequestContext and ManualRequestContext from Gerrit core that implements AutoCloseable and clean ups stuff in close() method, see my comment in RunAsContext.java, something like (untested):\n\n  try (ManualRequestContext ctx \u003d oneOffRequestContext.openForUser(userId)) {\n    ChangeApi cApi \u003d gApi.changes().id(change.getId().get());\n    for (Account.Id account : reviewers) {\n       cApi.addReviewer(account.toString());\n    }\n  } catch (RestApiException e) {\n     log.error(\"Couldn\u0027t add reviewers to the change\", e);\n     throw new ReviewerManagerException(e);\n  }",
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26fa0e32_bdc29fec",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/RunAsContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-27T12:46:33Z",
+      "side": 1,
+      "message": "Actually something like that should be provided by Gerrit core. In fact we have something very similar:  OneOffRequestContext that makes use of ManualRequestContext, but only InternalUser is used. So the idea is to either duplicate the OneOffRequestContext to OneOffRequestContextForUser, or instead, add another method to OneOffRequestContext, in addition to:\n\n  public ManualRequestContext open() throws OrmException {\n    return new ManualRequestContext(userFactory.create(),\n        schemaFactory, requestContext);\n  }\n\nsomething like:\n\n  public ManualRequestContext open(Account.Id id) throws OrmException {\n    return new ManualRequestContext(identifiedUserFactory.create(id),\n        schemaFactory, requestContext);\n  }",
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
