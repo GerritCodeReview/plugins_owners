@@ -8,8 +8,12 @@ import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
+import com.google.gerrit.server.util.RequestContext;
+import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import com.vmware.gerrit.owners.common.RunAsContext.Factory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +26,38 @@ public class ReviewerManager {
       .getLogger(ReviewerManager.class);
 
   private final GerritApi gApi;
+  private final ThreadLocalRequestContext tl;
+  private final Factory runAsFactory;
+
   @Inject
-  public ReviewerManager(GerritApi gApi) {
+  public ReviewerManager(GerritApi gApi,
+      ThreadLocalRequestContext tl,
+      RunAsContext.Factory runAsFactory) {
     this.gApi = gApi;
-  }
-  public void addReviewers(Change change, Collection<Account.Id> reviewers) throws ReviewerManagerException {
-    try {
-      ChangeApi cApi = gApi.changes().id(change.getId().get());
-      for (Account.Id account : reviewers) {
-        cApi.addReviewer(account.toString());
-      }
-    } catch (RestApiException e) {
-      log.error("Couldn't add reviewers to the change", e);
-      throw new ReviewerManagerException(e);
-    }
+    this.tl = tl;
+    this.runAsFactory = runAsFactory;
   }
 
+  public void addReviewers(Change change, Collection<Account.Id> reviewers)
+      throws ReviewerManagerException {
+    addReviewersAs(change, reviewers, change.getOwner());
+  }
+
+  private void addReviewersAs(Change change, Collection<Account.Id> reviewers,
+      Account.Id userId) throws ReviewerManagerException {
+    RunAsContext runAs = runAsFactory.create(userId);
+    RequestContext old = tl.setContext(runAs);
+      try {
+        ChangeApi cApi = gApi.changes().id(change.getId().get());
+        for (Account.Id account : reviewers) {
+          cApi.addReviewer(account.toString());
+        }
+      } catch (RestApiException e) {
+        log.error("Couldn't add reviewers to the change", e);
+        throw new ReviewerManagerException(e);
+      } finally {
+      tl.setContext(old);
+      runAs.close();
+    }
+  }
 }
