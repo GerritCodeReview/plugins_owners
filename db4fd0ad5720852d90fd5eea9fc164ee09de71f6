@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "26fa0e32_bdd97fda",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-27T13:22:36Z",
+      "side": 1,
+      "message": "Not really, as OneOffRequestContext will run on behalf of InternalUser which isn\u0027t an IdentifiedUser.\n\nThe GerritApi would then fail again, sadly :-(",
+      "parentUuid": "01fb34f7_7c8b39a9",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 35,
+        "endChar": 39
+      },
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "26fa0e32_9dbfe360",
         "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 1
@@ -53,6 +77,24 @@
       "writtenOn": "2016-10-27T12:46:33Z",
       "side": 1,
       "message": "Could be simplified by re-using OneOffRequestContext and ManualRequestContext from Gerrit core that implements AutoCloseable and clean ups stuff in close() method, see my comment in RunAsContext.java, something like (untested):\n\n  try (ManualRequestContext ctx \u003d oneOffRequestContext.openForUser(userId)) {\n    ChangeApi cApi \u003d gApi.changes().id(change.getId().get());\n    for (Account.Id account : reviewers) {\n       cApi.addReviewer(account.toString());\n    }\n  } catch (RestApiException e) {\n     log.error(\"Couldn\u0027t add reviewers to the change\", e);\n     throw new ReviewerManagerException(e);\n  }",
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "01fb34f7_fc4bc99a",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-27T13:22:36Z",
+      "side": 1,
+      "message": "Where did you see the openForUser() method? On Gerrit master the OneOffRequestContext() has only a single method open() which uses an InternalUser, which wouldn\u0027t work for me :-(",
+      "parentUuid": "26fa0e32_9dbfe360",
       "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -88,6 +130,42 @@
       "side": 1,
       "message": "Opps, wanted to say that the second method should be named differently:\n\n  public ManualRequestContext openForUser(Account.Id id) throws OrmException {",
       "parentUuid": "26fa0e32_bdc29fec",
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "01fb34f7_3c56d145",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/RunAsContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-27T13:22:36Z",
+      "side": 1,
+      "message": "Ah, I see what you mean :-) \nYes it would make sense indeed. Let me post that change on Gerrit master :-)",
+      "parentUuid": "26fa0e32_bdc29fec",
+      "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26fa0e32_5d7cbbd9",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/RunAsContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-27T13:22:36Z",
+      "side": 1,
+      "message": "Yep",
+      "parentUuid": "26fa0e32_3dc68fff",
       "revId": "db4fd0ad5720852d90fd5eea9fc164ee09de71f6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
