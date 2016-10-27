@@ -45,6 +45,54 @@
       "revId": "deb94ce7e574bbd90eb18fb6117b5e7928cc0756",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26fa0e32_9d5b6368",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-27T15:30:39Z",
+      "side": 1,
+      "message": "Exactly, let\u0027s make it work with master first.",
+      "parentUuid": "01fb34f7_1c3cb5f5",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 35
+      },
+      "revId": "deb94ce7e574bbd90eb18fb6117b5e7928cc0756",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26fa0e32_7d2897b8",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-27T15:30:39Z",
+      "side": 1,
+      "message": "\u003e [Optional] Name it just requestContext to fit on one line.",
+      "parentUuid": "26fa0e32_1d9d13f0",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 28
+      },
+      "revId": "deb94ce7e574bbd90eb18fb6117b5e7928cc0756",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
