@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a6c19e1f_49e661d6",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/OneOffRequestContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-28T08:31:15Z",
+      "side": 1,
+      "message": "Optional: non used method and needed factory for this method could be removed.",
+      "revId": "bb24e98106bb839731f3fbac321d8018e7947402",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
