@@ -16,6 +16,24 @@
       "revId": "bb24e98106bb839731f3fbac321d8018e7947402",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6bcd299_2ace7f4f",
+        "filename": "gerrit-owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/OneOffRequestContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-10-28T08:40:27Z",
+      "side": 1,
+      "message": "Just left there to make explicit where this class is coming from :-)",
+      "parentUuid": "a6c19e1f_49e661d6",
+      "revId": "bb24e98106bb839731f3fbac321d8018e7947402",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
