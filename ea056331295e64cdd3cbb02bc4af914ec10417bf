@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b82abce_3694981b",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-11-04T08:09:16Z",
+      "side": 1,
+      "message": "Can we move the configuration part into the configuration.md?",
+      "revId": "ea056331295e64cdd3cbb02bc4af914ec10417bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
