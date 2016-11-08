@@ -16,6 +16,24 @@
       "revId": "ea056331295e64cdd3cbb02bc4af914ec10417bf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb9bfb7a_92691c1a",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2016-11-08T20:24:14Z",
+      "side": 1,
+      "message": "config.md is the right name for this? I just checked another plugin and had config.md (hook plugin)",
+      "parentUuid": "4b82abce_3694981b",
+      "revId": "ea056331295e64cdd3cbb02bc4af914ec10417bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
