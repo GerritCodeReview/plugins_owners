@@ -3,6 +3,11 @@
  */
 package com.vmware.gerrit.owners.common;
 
+import static org.eclipse.jgit.lib.Constants.CHARACTER_ENCODING;
+import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
+import static org.eclipse.jgit.lib.FileMode.TYPE_FILE;
+import static org.eclipse.jgit.lib.FileMode.TYPE_MASK;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.HashMultimap;
@@ -15,16 +20,22 @@ import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import com.google.gwtorm.server.OrmException;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
-import org.gitective.core.BlobUtils;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Calculates the owners of a patch list.
@@ -143,6 +154,53 @@ public class PathOwners {
     return paths;
   }
 
+  @FunctionalInterface
+  public interface FunctionThrowingIOException<T, R, E extends IOException> {
+    R apply(T t) throws E;
+  }
+
+  public static <T, R, E extends IOException> Function<T, R> uncheckIOException(FunctionThrowingIOException<T, R, E> f) {
+    return t -> {
+      try {
+        return f.apply(t);
+      }
+      catch (IOException e) {
+        throw new UncheckedIOException(e);
+      }
+    };
+  }
+
+  private static RevCommit parseCommit(final Repository repository, final ObjectId commit) throws IOException {
+    try (final RevWalk walk = new RevWalk(repository)) {
+      walk.setRetainBody(true);
+      return walk.parseCommit(commit);
+    }
+  }
+
+  private static Optional<ObjectId> lookupObjectId(final Repository repository, String revision, final String path) throws IOException {
+    try (final TreeWalk w = TreeWalk.forPath(repository, path, parseCommit(repository, repository.resolve(revision)).getTree())) {
+      return Optional.ofNullable(w)
+        .map(walk -> (walk.getRawMode(0) & TYPE_MASK) == TYPE_FILE ? walk.getObjectId(0) : null);
+    }
+  }
+
+  private static Optional<byte[]> getBytes(final Repository repository, final String revision, final String path) throws IOException {
+    try {
+      return lookupObjectId(repository, revision, path)
+        .map(uncheckIOException(id -> repository.open(id, OBJ_BLOB).getCachedBytes(Integer.MAX_VALUE)));
+    } catch (UncheckedIOException e) {
+      throw e.getCause();
+    }
+  }
+
+  private static Optional<String> getContent(final Repository repository, final String revision, final String path) {
+    try {
+      return getBytes(repository, revision, path).map(uncheckIOException(raw -> new String(raw, CHARACTER_ENCODING)));
+    } catch (Exception e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+
   /**
    * Returns the parsed OwnersConfig file for the given path if it exists.
    *
@@ -150,19 +208,15 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    */
   private OwnersConfig getOwners(String ownersPath) {
-    String owners = BlobUtils.getContent(repository, "master", ownersPath);
-
-    if (owners != null) {
-      ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-      try {
-        return mapper.readValue(owners, OwnersConfig.class);
-      } catch (IOException e) {
-        log.warn("Invalid OWNERS file: {}", ownersPath, e);
-        return null;
-      }
-    }
-
-    return null;
+    return getContent(repository, "master", ownersPath).map(owners -> {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        try {
+          return mapper.readValue(owners, OwnersConfig.class);
+        } catch (IOException e) {
+          log.warn("Invalid OWNERS file: {}", ownersPath, e);
+          return null;
+        }
+      }).orElse(null);
   }
 
   /**
