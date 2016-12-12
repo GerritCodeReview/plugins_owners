@@ -3,6 +3,11 @@
  */
 package com.vmware.gerrit.owners.common;
 
+import static org.eclipse.jgit.lib.Constants.CHARACTER_ENCODING;
+import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
+import static org.eclipse.jgit.lib.FileMode.TYPE_FILE;
+import static org.eclipse.jgit.lib.FileMode.TYPE_MASK;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.HashMultimap;
@@ -15,8 +20,11 @@ import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import com.google.gwtorm.server.OrmException;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
-import org.gitective.core.BlobUtils;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,6 +151,39 @@ public class PathOwners {
     return paths;
   }
 
+  private static RevCommit parseCommit(final Repository repository, final ObjectId commit) throws IOException {
+    try (final RevWalk walk = new RevWalk(repository)) {
+      walk.setRetainBody(true);
+      return walk.parseCommit(commit);
+    }
+  }
+
+  private static ObjectId lookupObjectId(final Repository repository, String revision, final String path) throws IOException {
+    final RevCommit commit = parseCommit(repository, repository.resolve(revision));
+    if (commit != null) {
+      try (final TreeWalk walk = TreeWalk.forPath(repository, path, commit.getTree())) {
+        if (walk != null && (walk.getRawMode(0) & TYPE_MASK) == TYPE_FILE) {
+          return walk.getObjectId(0);
+        }
+      }
+    }
+    return null;
+  }
+
+  private static byte[] getBytes(final Repository repository, final String revision, final String path) throws IOException {
+    final ObjectId id = lookupObjectId(repository, revision, path);
+    return id == null ? null : repository.open(id, OBJ_BLOB).getCachedBytes(Integer.MAX_VALUE);
+  }
+
+  private static String getContent(final Repository repository, final String revision, final String path) {
+    try {
+      final byte[] raw = getBytes(repository, revision, path);
+      return raw == null ? null : new String(raw, CHARACTER_ENCODING);
+    } catch (Exception e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+
   /**
    * Returns the parsed OwnersConfig file for the given path if it exists.
    *
@@ -150,7 +191,7 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    */
   private OwnersConfig getOwners(String ownersPath) {
-    String owners = BlobUtils.getContent(repository, "master", ownersPath);
+    String owners = getContent(repository, "master", ownersPath);
 
     if (owners != null) {
       ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
