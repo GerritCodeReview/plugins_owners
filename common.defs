@@ -1,6 +1,5 @@
 EXTERNAL_DEPS = [
   '//plugins/owners/gerrit-owners-common' + i for i in [
-    ':gitective-core',
     ':jackson-core',
     ':jackson-databind',
     ':jackson-annotations',

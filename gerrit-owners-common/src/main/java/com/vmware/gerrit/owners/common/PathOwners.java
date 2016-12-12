@@ -3,8 +3,13 @@
  */
 package com.vmware.gerrit.owners.common;
 
+import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
+import static org.eclipse.jgit.lib.FileMode.TYPE_FILE;
+import static org.eclipse.jgit.lib.FileMode.TYPE_MASK;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -15,8 +20,12 @@ import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import com.google.gwtorm.server.OrmException;
+
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
-import org.gitective.core.BlobUtils;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 
 /**
  * Calculates the owners of a patch list.
@@ -143,6 +153,26 @@ public class PathOwners {
     return paths;
   }
 
+  private static RevCommit parseCommit(final Repository repository, final ObjectId commit) throws IOException {
+    try (final RevWalk walk = new RevWalk(repository)) {
+      walk.setRetainBody(true);
+      return walk.parseCommit(commit);
+    }
+  }
+
+  private static Optional<byte[]> getBlobAsBytes(final Repository repository,
+      final String revision, final String path) throws IOException {
+    try (final TreeWalk w =
+        TreeWalk.forPath(repository, path,
+            parseCommit(repository, repository.resolve(revision)).getTree())) {
+
+      return Optional.ofNullable(w)
+          .filter(walk -> (walk.getRawMode(0) & TYPE_MASK) == TYPE_FILE)
+          .map(walk -> walk.getObjectId(0))
+          .flatMap(id -> readBlob(repository, id));
+    }
+  }
+
   /**
    * Returns the parsed OwnersConfig file for the given path if it exists.
    *
@@ -150,20 +180,36 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    */
   private OwnersConfig getOwners(String ownersPath) {
-    String owners = BlobUtils.getContent(repository, "master", ownersPath);
 
-    if (owners != null) {
-      ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    try {
+      return getBlobAsBytes(repository, "master", ownersPath)
+          .flatMap(this::parseYaml)
+          .orElse(null);
+    } catch (Exception e) {
+      log.warn("Invalid OWNERS file: {}", ownersPath, e);
+      return null;
+    }
+  }
+
+  private Optional<OwnersConfig> parseYaml(byte[] yamlBytes) {
+    try {
+      return Optional.of(new ObjectMapper(new YAMLFactory()).readValue(yamlBytes, OwnersConfig.class));
+    } catch (IOException e) {
+      log.warn("Unable to parse YAML Owners file", e);
+      return Optional.empty();
+    }
+  }
+
+  private static Optional<byte[]> readBlob(Repository repository, ObjectId id) {
       try {
-        return mapper.readValue(owners, OwnersConfig.class);
-      } catch (IOException e) {
-        log.warn("Invalid OWNERS file: {}", ownersPath, e);
-        return null;
+        return Optional.of(repository.open(id, OBJ_BLOB)
+            .getCachedBytes(Integer.MAX_VALUE));
+      } catch (Exception e) {
+        log.error(
+            "Unexpected error while reading Git Object " + id, e);
+        return Optional.empty();
       }
     }
-
-    return null;
-  }
 
   /**
    * Translates emails to Account.Ids.
