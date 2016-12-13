@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a04f34e_31bb30a9",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-12-13T08:30:18Z",
+      "side": 1,
+      "message": "Isn\u0027t it better to return an Optional\u003c\u003e and work with transforms instead of relying on all these null checks boilerplate?",
+      "range": {
+        "startLine": 163,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 22
+      },
+      "revId": "6c490f438c00ccdb2b48641517d236d39e347b3d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a04f34e_11c0ac1d",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-12-13T08:30:18Z",
+      "side": 1,
+      "message": "Optional?",
+      "range": {
+        "startLine": 165,
+        "startChar": 12,
+        "endLine": 165,
+        "endChar": 24
+      },
+      "revId": "6c490f438c00ccdb2b48641517d236d39e347b3d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a04f34e_71c5b82d",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-12-13T08:30:18Z",
+      "side": 1,
+      "message": "Optional?",
+      "range": {
+        "startLine": 170,
+        "startChar": 4,
+        "endLine": 170,
+        "endChar": 15
+      },
+      "revId": "6c490f438c00ccdb2b48641517d236d39e347b3d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a057f49_30bb28a9",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-12-13T08:30:18Z",
+      "side": 1,
+      "message": "Using Optional\u003c\u003e all becomes cleaner.",
+      "range": {
+        "startLine": 181,
+        "startChar": 13,
+        "endLine": 181,
+        "endChar": 31
+      },
+      "revId": "6c490f438c00ccdb2b48641517d236d39e347b3d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a057f49_10c0a41d",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-12-13T08:30:18Z",
+      "side": 1,
+      "message": "With Optional, becomes a cleaner check.",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 196,
+        "endChar": 22
+      },
+      "revId": "6c490f438c00ccdb2b48641517d236d39e347b3d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
