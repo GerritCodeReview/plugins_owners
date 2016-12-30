@@ -5,6 +5,7 @@ package gerrit_owners;
 
 import com.vmware.gerrit.owners.OwnersStoredValues;
 import com.vmware.gerrit.owners.common.PathOwners;
+import com.vmware.gerrit.owners.common.Matcher;
 import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.JavaObjectTerm;
 import com.googlecode.prolog_cafe.lang.Operation;
@@ -18,13 +19,13 @@ import java.util.Iterator;
 /**
  * 'owner_path'(-Path)
  */
-public class PRED_owner_path_1 extends Predicate.P1 {
+public class PRED_matcher_path_1 extends Predicate.P1 {
 
   private static final PRED_owner_path_check OWNER_PATH_CHECK = new PRED_owner_path_check();
   private static final PRED_owner_path_empty OWNER_PATH_EMPTY = new PRED_owner_path_empty();
   private static final PRED_owner_path_next OWNER_PATH_NEXT = new PRED_owner_path_next();
 
-  public PRED_owner_path_1(Term a1, Operation n) {
+  public PRED_matcher_path_1(Term a1, Operation n) {
     this.arg1 = a1;
     this.cont = n;
   }
@@ -36,7 +37,9 @@ public class PRED_owner_path_1 extends Predicate.P1 {
 
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
     engine.r1 = arg1;
-    engine.r2 = new JavaObjectTerm(owners.get().keys().iterator());
+    // must only iterate over the paths for which there are actual files
+    // this is already being done when collecting OWNERS files
+    engine.r2 = new JavaObjectTerm(owners.getMatches().values().iterator());
     return engine.jtry2(OWNER_PATH_CHECK, OWNER_PATH_NEXT);
   }
 
@@ -48,11 +51,11 @@ public class PRED_owner_path_1 extends Predicate.P1 {
       Term a2 = engine.r2;
 
       @SuppressWarnings("unchecked")
-      Iterator<String> iter = (Iterator<String>) ((JavaObjectTerm) a2).object();
+      Iterator<Matcher> iter = (Iterator<Matcher>) ((JavaObjectTerm) a2).object();
       while (iter.hasNext()) {
-        String path = iter.next();
+        Matcher matcher = iter.next();
 
-        SymbolTerm pathTerm = SymbolTerm.create(path);
+        SymbolTerm pathTerm = SymbolTerm.create(matcher.getPath());
         if (!a1.unify(pathTerm, engine.trail)) {
           continue;
         }
