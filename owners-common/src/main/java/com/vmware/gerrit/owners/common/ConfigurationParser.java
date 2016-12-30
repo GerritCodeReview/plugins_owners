@@ -1,9 +1,13 @@
 package com.vmware.gerrit.owners.common;
 
-import com.google.common.base.Charsets;
+import com.google.common.collect.Sets;
+import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.account.AccountResolver;
+import com.google.gwtorm.server.OrmException;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
@@ -11,21 +15,127 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConfigurationParser {
 
   private static final Logger log =
-      LoggerFactory.getLogger(ConfigurationParser.class);
+      LoggerFactory.getLogger(OwnersConfig.class);
+  private ReviewDb db;
+  private AccountResolver resolver;
 
-  Optional<OwnersConfig> getOwnersConfig(byte[] yamlBytes) {
+  public ConfigurationParser(AccountResolver resolver, ReviewDb db) {
+    this.resolver = resolver;
+    this.db = db;
+  }
+
+  public Optional<OwnersConfig> getOwnersConfig(byte[] yamlBytes) {
     try {
-      return Optional.of(new ObjectMapper(new YAMLFactory())
-          .readValue(yamlBytes, OwnersConfig.class));
+      final OwnersConfig ret = new OwnersConfig();
+      JsonNode jsonNode = new ObjectMapper(new YAMLFactory())
+          .readValue(yamlBytes, JsonNode.class);
+      Boolean inherited = Optional.ofNullable(jsonNode.get("inherited"))
+          .map(JsonNode::asBoolean).orElse(false);
+      ret.setInherited(inherited);
+      addClassicMatcher(jsonNode, ret);
+      addMatchers(jsonNode, ret);
+      return Optional.of(ret);
     } catch (IOException e) {
-      log.warn("Unable to parse YAML Owners file", e);
+      log.warn("Unable to read YAML Owners file", e);
       return Optional.empty();
     }
   }
 
+  private void addClassicMatcher(JsonNode jsonNode, OwnersConfig ret) {
+    Optional<JsonNode> ownersNode =
+        Optional.ofNullable(jsonNode.get("owners"));
+    ret.setOwners(extractOwners(ownersNode));
+
+  }
+
+  private void addMatchers(JsonNode jsonNode, OwnersConfig ret) {
+    Optional<JsonNode> matchesNode =
+        Optional.ofNullable(jsonNode.get("matches"));
+
+    StreamUtils.optionalToStream(matchesNode).forEach(node -> {
+      StreamUtils.asStream(node.iterator())
+          .flatMap(matcher -> toMatcherStream(matcher))
+          .forEach(ret::addMatcher);
+    });
+  }
+
+  private static Set<String> extractOwners(
+      Optional<JsonNode> ownersNode) {
+
+    return ownersNode
+        .map(node -> StreamUtils.asStream(node.iterator())
+            .map(JsonNode::asText).collect(Collectors.toSet()))
+        .orElse(Sets.newHashSet());
+  }
+
+  /**
+   * Translates emails to Account.Ids.
+   *
+   * @param emails emails to translate
+   * @return set of account ids
+   */
+  Set<Account.Id> getOwnersFromEmails(Set<String> emails) {
+    return emails.stream().flatMap(mail -> resolveEmail(mail).stream())
+        .collect(Collectors.toSet());
+  }
+
+  private Set<Account.Id> resolveEmail(String email) {
+    try {
+      return resolver.findAll(db, email);
+    } catch (OrmException e) {
+      log.error("cannot resolve email " + email, e);
+      return Collections.emptySet();
+    }
+  }
+
+  private Stream<Matcher> toMatcherStream(JsonNode element) {
+    return StreamUtils.optionalToStream(toMatcher(element));
+  }
+
+  private Optional<Matcher> toMatcher(JsonNode element) {
+
+    Optional<JsonNode> ownersNode =
+        Optional.ofNullable(element.get("owners"));
+    if (!ownersNode.isPresent()) {
+      log.warn("Matches must contain a list of owners");
+      return Optional.empty();
+    }
+    Set<String> ownersEmails = extractOwners(ownersNode);
+
+    Set<Account.Id> ownersIds = Sets.newHashSet();
+    ownersIds = getOwnersFromEmails(ownersEmails);
+
+
+    Optional<JsonNode> suffixValue =
+        Optional.ofNullable(element.get("suffix"));
+    if (suffixValue.isPresent()) {
+      return Optional
+          .of(new SuffixMatcher(suffixValue.get().asText(), ownersIds));
+    }
+    Optional<JsonNode> regexValue =
+        Optional.ofNullable(element.get("regex"));
+    if (regexValue.isPresent()) {
+      return Optional
+          .of(new RegExMatcher(regexValue.get().asText(), ownersIds));
+    }
+    Optional<JsonNode> exactValue =
+        Optional.ofNullable(element.get("exact"));
+    if (exactValue.isPresent()) {
+      return Optional
+          .of(new ExactMatcher(exactValue.get().asText(), ownersIds));
+    }
+    log.warn("Ignoring invalid element " + element.toString());
+    return Optional.empty();
+
+  }
 }

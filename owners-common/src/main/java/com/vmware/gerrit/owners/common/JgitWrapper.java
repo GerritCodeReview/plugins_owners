@@ -8,7 +8,8 @@
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+// implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
@@ -30,13 +31,14 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class JgitWrapper {
-  private static final Logger log = LoggerFactory.getLogger(JgitWrapper.class);
+  private static final Logger log =
+      LoggerFactory.getLogger(JgitWrapper.class);
 
   public static Optional<byte[]> getBlobAsBytes(Repository repository,
       String revision, String path) throws IOException {
-    try (final TreeWalk w =
-        TreeWalk.forPath(repository, path,
-            parseCommit(repository, repository.resolve(revision)).getTree())) {
+    try (final TreeWalk w = TreeWalk.forPath(repository, path,
+        parseCommit(repository, repository.resolve(revision))
+            .getTree())) {
 
       return Optional.ofNullable(w)
           .filter(walk -> (walk.getRawMode(0) & TYPE_MASK) == TYPE_FILE)
@@ -45,22 +47,22 @@ public class JgitWrapper {
     }
   }
 
-  private static RevCommit parseCommit(Repository repository, ObjectId commit)
-      throws IOException {
+  private static RevCommit parseCommit(Repository repository,
+      ObjectId commit) throws IOException {
     try (final RevWalk walk = new RevWalk(repository)) {
       walk.setRetainBody(true);
       return walk.parseCommit(commit);
     }
   }
 
-  private static Optional<byte[]> readBlob(Repository repository, ObjectId id) {
+  private static Optional<byte[]> readBlob(Repository repository,
+      ObjectId id) {
     try {
       return Optional.of(repository.open(id, OBJ_BLOB)
           .getCachedBytes(Integer.MAX_VALUE));
     } catch (Exception e) {
       // TODO: are we sure we want to swallow this exception?
-      log.error(
-          "Unexpected error while reading Git Object " + id, e);
+      log.error("Unexpected error while reading Git Object " + id, e);
       return Optional.empty();
     }
   }

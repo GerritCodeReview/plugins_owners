@@ -3,19 +3,19 @@
  */
 package com.vmware.gerrit.owners;
 
-import com.vmware.gerrit.owners.common.PathOwners;
-
+import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.rules.PrologEnvironment;
 import com.google.gerrit.rules.StoredValue;
 import com.google.gerrit.rules.StoredValues;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gwtorm.server.OrmException;
+
 import com.googlecode.prolog_cafe.exceptions.SystemException;
 import com.googlecode.prolog_cafe.lang.Prolog;
-import org.eclipse.jgit.lib.Repository;
-import com.google.gerrit.reviewdb.server.ReviewDb;
+import com.vmware.gerrit.owners.common.PathOwners;
 
+import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
