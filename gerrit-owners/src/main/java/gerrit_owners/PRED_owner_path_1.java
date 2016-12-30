@@ -5,7 +5,6 @@ package gerrit_owners;
 
 import com.vmware.gerrit.owners.OwnersStoredValues;
 import com.vmware.gerrit.owners.common.PathOwners;
-
 import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.JavaObjectTerm;
 import com.googlecode.prolog_cafe.lang.Operation;
