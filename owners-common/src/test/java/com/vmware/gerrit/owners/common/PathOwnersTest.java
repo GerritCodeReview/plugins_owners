@@ -16,8 +16,8 @@ package com.vmware.gerrit.owners.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.powermock.api.easymock.PowerMock.replayAll;
 
-import com.google.common.base.Charsets;
 import com.google.gerrit.reviewdb.client.Account;
 
 import org.junit.Before;
@@ -26,46 +26,56 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JgitWrapper.class)
-public class PathOwnersTest  {
-  ClassicConfig helper = new ClassicConfig();
+public class PathOwnersTest extends ClassicConfig {
 
+  @Override
   @Before
   public void setup() throws Exception {
-    helper.setup();
+    super.setup();
   }
 
   @Test
   public void testClassic() throws Exception {
-    helper.configurationClassic(false);
-    PathOwners owners = new PathOwners(helper.resolver, helper.db, helper.repository, helper.patchList);
-    Set<Account.Id> ownersSet = owners.get().get("/classic/OWNERS");
+    configurationClassic();
+    creatingPatchList(Arrays.asList("classic/file.txt"));
+    replayAll();
+
+    PathOwners owners = new PathOwners(resolver, db, repository, patchList);
+    Set<Account.Id> ownersSet = owners.get().get("classic/OWNERS");
     assertEquals(2, ownersSet.size());
-    assertTrue(ownersSet.contains(helper.accounts.get("user-a@email.com")));
-    assertTrue(ownersSet.contains(helper.accounts.get("user-b@email.com")));
+    assertTrue(ownersSet.contains(accounts.get("user-a@email.com")));
+    assertTrue(ownersSet.contains(accounts.get("user-b@email.com")));
   }
 
   @Test
   public void testClassicWithInheritance() throws Exception {
-    helper.configurationClassic(true);
-    PathOwners owners2 = new PathOwners(helper.resolver, helper.db, helper.repository, helper.patchList);
-    Set<Account.Id> ownersSet2 = owners2.get().get("/classic/OWNERS");
+    configurationClassicInherited();
+    creatingPatchList(Arrays.asList("classic/file.txt"));
+    replayAll();
+
+    PathOwners owners2 = new PathOwners(resolver, db, repository, patchList);
+    Set<Account.Id> ownersSet2 = owners2.get().get("classic/OWNERS");
 
     // in this case we are inheriting the acct3 from /OWNERS
     assertEquals(3, ownersSet2.size());
-    assertTrue(ownersSet2.contains(helper.accounts.get("user-a@email.com")));
-    assertTrue(ownersSet2.contains(helper.accounts.get("user-b@email.com")));
-    assertTrue(ownersSet2.contains(helper.accounts.get("user-c@email.com")));
+    assertTrue(ownersSet2.contains(accounts.get("user-a@email.com")));
+    assertTrue(ownersSet2.contains(accounts.get("user-b@email.com")));
+    assertTrue(ownersSet2.contains(accounts.get("user-c@email.com")));
   }
 
   @Test
   public void testClassicBis() throws Exception {
-    helper.configurationClassicBis();
-    PathOwners owners = new PathOwners(helper.resolver, helper.db, helper.repository, helper.patchList);
+    configurationClassicBis();
+    creatingPatchList(Arrays.asList("sql/file1", "project/fileA.txt"));
+    replayAll();
+
+    PathOwners owners = new PathOwners(resolver, db, repository, patchList);
     System.out.println(owners);
   }
 
@@ -81,7 +91,4 @@ public class PathOwnersTest  {
     assertTrue(config.get().getOwners().contains("user-c@example.com"));
   }
 
-  Optional<OwnersConfig> getOwnersConfig(String string) {
-    return new ConfigurationParser().getOwnersConfig(string.getBytes(Charsets.UTF_8));
-  }
 }
