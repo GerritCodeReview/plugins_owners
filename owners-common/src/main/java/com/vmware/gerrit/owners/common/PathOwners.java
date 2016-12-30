@@ -6,8 +6,10 @@ package com.vmware.gerrit.owners.common;
 import static com.vmware.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Sets;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Patch;
 import com.google.gerrit.reviewdb.server.ReviewDb;
@@ -23,11 +25,12 @@ import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Set;
 
 /**
@@ -40,24 +43,24 @@ public class PathOwners {
 
   private final SetMultimap<String, Account.Id> owners;
 
-  private final AccountResolver resolver;
 
   private final Repository repository;
 
-  private final ConfigurationParser parser;
-
   private final PatchList patchList;
 
-  private final ReviewDb db;
+  private final ConfigurationParser parser;
 
-  public PathOwners(AccountResolver resolver, ReviewDb db, Repository repository, PatchList patchList) throws OrmException {
+  private Map<String, Matcher> matches;
+
+  public PathOwners(AccountResolver resolver, ReviewDb db, Repository repository,
+      PatchList patchList) throws OrmException {
     this.repository = repository;
-    this.resolver = resolver;
     this.patchList = patchList;
-    this.parser = new ConfigurationParser();
-    this.db = db;
+    this.parser = new ConfigurationParser(resolver, db);
 
-    owners = Multimaps.unmodifiableSetMultimap(fetchOwners());
+    OwnersMap map = fetchOwners();
+    owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
+    matches = map.getMatchers();
   }
 
   /**
@@ -69,20 +72,26 @@ public class PathOwners {
     return owners;
   }
 
+  public Map<String,Matcher> getMatches() {
+    return matches;
+  }
+
   /**
    * Fetched the owners for the associated patch list.
    *
-   * @return multimap of paths to owners
+   * @return A structure containing matchers paths to owners
    */
-  private SetMultimap<String, Account.Id> fetchOwners() throws OrmException {
-    SetMultimap<String, Account.Id> result = HashMultimap.create();
-    Map<String, PathOwnersEntry> entries = new HashMap<String, PathOwnersEntry>();
+  private OwnersMap fetchOwners() throws OrmException {
+    OwnersMap retMap = new OwnersMap();
+
+    Map<String, PathOwnersEntry> entries = Maps.newHashMap();
 
     PathOwnersEntry rootEntry = new PathOwnersEntry();
-    OwnersConfig rootConfig = getOwners("OWNERS");
+    OwnersConfig rootConfig = getOwnersConfig("","OWNERS");
     if (rootConfig != null) {
       rootEntry.setOwnersPath("OWNERS");
-      rootEntry.addOwners(getOwnersFromEmails(rootConfig.getOwners()));
+      rootEntry.setOwners(parser.getOwnersFromEmails(rootConfig.getOwners()));
+      rootEntry.setMatchers(rootConfig.getMatchers());
     }
 
     Set<String> paths = getModifiedPaths();
@@ -98,17 +107,21 @@ public class PathOwners {
         builder.append(part).append("/");
         String partial = builder.toString();
 
+        log.info("checking partial "+partial);
         // Skip if we already parsed this path
         if (!entries.containsKey(partial)) {
           String ownersPath = partial + "OWNERS";
-          OwnersConfig config = getOwners(ownersPath);
+          OwnersConfig config = getOwnersConfig(partial, ownersPath);
           if (config != null) {
+            log.info("Config read is "+config.toString());
             PathOwnersEntry entry = new PathOwnersEntry();
             entry.setOwnersPath(ownersPath);
-            entry.addOwners(getOwnersFromEmails(config.getOwners()));
+            entry.setOwners(parser.getOwnersFromEmails(config.getOwners()));
+            entry.setMatchers(config.getMatchers());
+            log.info("entry is "+entry.toString());
 
             if (config.isInherited()) {
-              entry.addOwners(currentEntry.getOwners());
+              entry.getOwners().addAll(currentEntry.getOwners());
             }
 
             currentEntry = entry;
@@ -122,11 +135,36 @@ public class PathOwners {
 
       // Only add the path to the OWNERS file to reduce the number of entries in the result
       if (currentEntry.getOwnersPath() != null) {
-        result.putAll(currentEntry.getOwnersPath(), currentEntry.getOwners());
+        retMap.addPathOwners(currentEntry.getOwnersPath(), currentEntry.getOwners());
+      }
+      log.info("currentEntry "+currentEntry.toString());
+      retMap.addMatchers(currentEntry.getMatchers());
+    }
+    // if any matchers we need to remove matchers not matching any files
+    Map<String, Matcher> fullMatchers = retMap.getMatchers();
+    if(fullMatchers.size()>0) {
+      HashMap<String, Matcher> newMatchers = Maps.newHashMap();
+      // extra loop
+      for (String path : paths) {
+        Iterator<Matcher> it = fullMatchers.values().iterator();
+        while(it.hasNext()){
+          Matcher matcher = it.next();
+          if(matcher.matches(path)){
+            newMatchers.put(matcher.getPath(), matcher);
+          }
+
+        }
+
+      }
+      if(fullMatchers.size() != newMatchers.size()) {
+        retMap.setMatchers(newMatchers);
       }
     }
 
-    return result;
+    log.info("retMap has matchers count: "+retMap.getMatchers().size());
+    log.info("retMap has owners count: "+retMap.getPathOwners().size());
+
+    return retMap;
   }
 
   /**
@@ -135,7 +173,7 @@ public class PathOwners {
    * @return set of modified paths.
    */
   private Set<String> getModifiedPaths() {
-    Set<String> paths = new HashSet<String>();
+    Set<String> paths = Sets.newHashSet();
     for (PatchListEntry patch : patchList.getPatches()) {
       // Ignore commit message
       if (!patch.getNewName().equals("/COMMIT_MSG")) {
@@ -151,16 +189,17 @@ public class PathOwners {
   }
 
   /**
-   * Returns the parsed OwnersConfig file for the given path if it exists.
+   * Returns the parsed FileOwnersConfig file for the given path if it exists.
    *
+   * @param partial parent path to be able to do fast indexing
    * @param ownersPath path to OWNERS file in the git repo
    * @return config or null if it doesn't exist
    */
-  private OwnersConfig getOwners(String ownersPath) {
+  private OwnersConfig getOwnersConfig(String partial, String ownersPath) {
 
     try {
       return getBlobAsBytes(repository, "master", ownersPath)
-          .flatMap(parser::getOwnersConfig)
+          .flatMap(bytes -> parser.parseYaml(partial, bytes))
           .orElse(null);
     } catch (Exception e) {
       log.warn("Invalid OWNERS file: {}", ownersPath, e);
@@ -168,7 +207,14 @@ public class PathOwners {
     }
   }
 
-
+  private Optional<OwnersConfig> parseYaml(byte[] yamlBytes) {
+    try {
+      return Optional.of(new ObjectMapper(new YAMLFactory()).readValue(yamlBytes, OwnersConfig.class));
+    } catch (IOException e) {
+      log.warn("Unable to parse YAML Owners file", e);
+      return Optional.empty();
+    }
+  }
 
   /**
    * Translates emails to Account.Ids.

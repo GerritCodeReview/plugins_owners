@@ -2,7 +2,6 @@ package com.vmware.gerrit.owners.common;
 
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
-import com.google.common.base.Charsets;
 import com.google.gwtorm.server.OrmException;
 
 import java.nio.charset.Charset;
@@ -64,8 +63,6 @@ public class ClassicConfig extends Config {
     resolveEmail("user-c@email.com",USERC);
 
   }
-
-
 
 
 }
