@@ -37,3 +37,24 @@ java_library(
   deps = GERRIT_PLUGIN_API + EXTERNAL_DEPS,
   visibility = ['PUBLIC'],
 )
+
+TESTUTIL_DEPS = [
+':common',
+'//lib:junit',
+'//lib/log:api',
+'//lib/log:impl_log4j',
+'//lib/log:log4j',
+'//lib/easymock:easymock',
+'//lib/powermock:powermock-api-easymock',
+'//lib/powermock:powermock-api-support',
+'//lib/powermock:powermock-core',
+'//lib/powermock:powermock-module-junit4',
+'//lib/powermock:powermock-module-junit4-common',
+]
+
+
+java_test(
+  name = 'test',
+  srcs = glob(['src/test/java/**/*.java']),
+  deps = GERRIT_PLUGIN_API + EXTERNAL_DEPS + TESTUTIL_DEPS,
+)
