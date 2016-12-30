@@ -8,6 +8,7 @@ import com.vmware.gerrit.owners.common.PathOwners;
 import com.google.gerrit.rules.PrologEnvironment;
 import com.google.gerrit.rules.StoredValue;
 import com.google.gerrit.rules.StoredValues;
+import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gwtorm.server.OrmException;
