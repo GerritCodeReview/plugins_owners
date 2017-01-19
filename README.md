@@ -64,3 +64,4 @@ Example:
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
 and does not need to be built separately being a direct dependency of the build
 process. Its resulting .jar must not be installed in gerrit plugins directory.
+
