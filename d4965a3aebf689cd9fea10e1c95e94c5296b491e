@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "031b415c_83ff9ef0",
+        "filename": "owners-common/src/test/java/com/vmware/gerrit/owners/common/Config.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1012623
+      },
+      "writtenOn": "2017-01-19T19:28:21Z",
+      "side": 1,
+      "message": "Cannot be resolved to a type.",
+      "range": {
+        "startLine": 37,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "d4965a3aebf689cd9fea10e1c95e94c5296b491e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "031b415c_a3049a35",
+        "filename": "owners-common/src/test/java/com/vmware/gerrit/owners/common/Config.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1012623
+      },
+      "writtenOn": "2017-01-19T19:28:21Z",
+      "side": 1,
+      "message": "Cannot be resolved to a type",
+      "range": {
+        "startLine": 40,
+        "startChar": 25,
+        "endLine": 40,
+        "endChar": 36
+      },
+      "revId": "d4965a3aebf689cd9fea10e1c95e94c5296b491e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "031b415c_436926fc",
+        "filename": "owners-common/src/test/java/com/vmware/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1012623
+      },
+      "writtenOn": "2017-01-19T19:28:21Z",
+      "side": 1,
+      "message": "unused import?",
+      "revId": "d4965a3aebf689cd9fea10e1c95e94c5296b491e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8e9aa6a_429f32f3",
+        "filename": "owners-common/src/test/java/com/vmware/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1012623
+      },
+      "writtenOn": "2017-01-19T19:28:21Z",
+      "side": 1,
+      "message": "Cannot be resolved to a type",
+      "range": {
+        "startLine": 43,
+        "startChar": 2,
+        "endLine": 43,
+        "endChar": 15
+      },
+      "revId": "d4965a3aebf689cd9fea10e1c95e94c5296b491e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
