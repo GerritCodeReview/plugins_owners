@@ -44,6 +44,8 @@ public class PathOwners {
 
   private final Repository repository;
 
+  private final ConfigurationParser parser;
+
   private final PatchList patchList;
 
   private final ReviewDb db;
@@ -52,6 +54,7 @@ public class PathOwners {
     this.repository = repository;
     this.resolver = resolver;
     this.patchList = patchList;
+    this.parser = new ConfigurationParser();
     this.db = db;
 
     owners = Multimaps.unmodifiableSetMultimap(fetchOwners());
@@ -157,7 +160,7 @@ public class PathOwners {
 
     try {
       return getBlobAsBytes(repository, "master", ownersPath)
-          .flatMap(this::parseYaml)
+          .flatMap(parser::getOwnersConfig)
           .orElse(null);
     } catch (Exception e) {
       log.warn("Invalid OWNERS file: {}", ownersPath, e);
@@ -165,14 +168,7 @@ public class PathOwners {
     }
   }
 
-  private Optional<OwnersConfig> parseYaml(byte[] yamlBytes) {
-    try {
-      return Optional.of(new ObjectMapper(new YAMLFactory()).readValue(yamlBytes, OwnersConfig.class));
-    } catch (IOException e) {
-      log.warn("Unable to parse YAML Owners file", e);
-      return Optional.empty();
-    }
-  }
+
 
   /**
    * Translates emails to Account.Ids.
