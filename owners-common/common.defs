@@ -1,5 +1,5 @@
 EXTERNAL_DEPS = [
-  '//plugins/owners/gerrit-owners-common' + i for i in [
+  '//plugins/owners-common' + i for i in [
     ':jackson-core',
     ':jackson-databind',
     ':jackson-annotations',
