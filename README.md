@@ -31,10 +31,36 @@ hardcoded policy.
 Since add_owner_approval/3 is not using hard coded policies, it can be suitable
 for complex customizations.
 
-
-
 ## Auto assigner
 
 There is a second plugin, gerrit-owners-autoassign which depends on
 gerrit-owners. It will automatically assign all of the owners to review a
 change when it's created or updated.
+
+## How to build
+
+Create three symbolic links of the owners-owners, owners-common and owners-autoassign
+from the Gerrit source code /plugins directory to the subdirectories of this project.
+
+Overwrite the Gerrit /plugins/external_plugin_deps.bzl with the one contained
+in the owners-common directory.
+
+Then build the owners and owners-autoassign plugins with the usual Gerrit
+plugin compile command.
+
+Example:
+
+```
+   $ git clone https://gerrit.googlesource.com/plugins/owners
+   $ git clone https://gerrit.googlesource.com/gerrit
+   $ cd gerrit/plugins
+   $ ln -s ../../owners/owners* .
+   $ cp -f owners-common/external_plugin_deps.bzl .
+   $ cd ..
+   $ bazel build plugins/owners
+   $ bazel build plugins/owners-autoassign
+```
+
+NOTE: the owners-common folder is producing shared artifacts for the two plugins
+and does not need to be built separately being a direct dependency of the build
+process. Its resulting .jar must not be installed in gerrit plugins directory.
