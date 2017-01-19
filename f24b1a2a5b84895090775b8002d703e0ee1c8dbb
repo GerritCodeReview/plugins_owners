@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "486b96ff_b579e031",
+        "filename": "BUCK",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-01-19T08:48:48Z",
+      "side": 0,
+      "message": "Was this harmful for your change?\nIs this related?",
+      "revId": "f24b1a2a5b84895090775b8002d703e0ee1c8dbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
