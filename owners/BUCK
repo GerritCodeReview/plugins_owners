@@ -1,6 +1,6 @@
 include_defs('//bucklets/gerrit_plugin.bucklet')
 include_defs('//lib/prolog/prolog.defs')
-include_defs('//plugins/owners/common.defs')
+include_defs('//plugins/owners-common/common.defs')
 
 # buck is unhappy to build a gerrit_plugin with no source files.
 # On the other side, gerrit-owners-prolog-rules needs to be built after all the java files have been
@@ -13,7 +13,7 @@ java_library(
     'src/main/java/**/*.java',
   ], excludes=COMPILE_STUB),
   deps = [
-    '//plugins/owners/gerrit-owners-common:common',
+    '//plugins/owners-common:owners-common',
   ] + GERRIT_PLUGIN_API + EXTERNAL_DEPS,
 )
 
