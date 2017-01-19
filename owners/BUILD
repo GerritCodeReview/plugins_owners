@@ -1,20 +1,19 @@
-include_defs('//bucklets/gerrit_plugin.bucklet')
-include_defs('//lib/prolog/prolog.defs')
-include_defs('//plugins/owners/common.defs')
+load("//tools/bzl:junit.bzl", "junit_tests")
+load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS")
+load("//lib/prolog:prolog.bzl","prolog_cafe_library")
+load("//plugins/owners-common:common.bzl","EXTERNAL_DEPS")
 
-# buck is unhappy to build a gerrit_plugin with no source files.
-# On the other side, gerrit-owners-prolog-rules needs to be built after all the java files have been
-# compiled. For this reason we have a stub class that has no content and just makes buck happy.
 COMPILE_STUB = ['src/main/java/com/vmware/gerrit/owners/CompileStub.java']
 
 java_library(
   name = 'gerrit-owners-lib',
   srcs = glob([
     'src/main/java/**/*.java',
-  ], excludes=COMPILE_STUB),
+  ]),
   deps = [
-    '//plugins/owners/gerrit-owners-common:common',
-  ] + GERRIT_PLUGIN_API + EXTERNAL_DEPS,
+    '@prolog_runtime//jar',
+    '//plugins/owners-common:owners-common',
+  ] + PLUGIN_DEPS + EXTERNAL_DEPS,
 )
 
 prolog_cafe_library(
@@ -34,6 +33,7 @@ gerrit_plugin(
     'Implementation-URL: https://gerrit.googlesource.com/plugins/owners',
     'Gerrit-PluginName: owners',
     'Gerrit-Module: com.vmware.gerrit.owners.OwnersModule',
+    'Gerrit-ApiVersion: 2.14-SNAPSHOT',
   ],
   deps = [
     ':gerrit-owners-lib',
