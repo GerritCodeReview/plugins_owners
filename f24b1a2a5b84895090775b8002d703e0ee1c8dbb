@@ -16,6 +16,23 @@
       "revId": "f24b1a2a5b84895090775b8002d703e0ee1c8dbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_f5e4f88e",
+        "filename": "BUCK",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 0,
+      "message": "This BUCK file was harmful for tools/eclipse/project.py aborting it and having eclipse unusable even for other subprojects. The change we did now 94812 fixes this very bad buck file.\n\nIt also depends on the exact way we are checking out the owners plugin under plugins and which symbolic links are done. Anyway now it is a bit better and it should not stay in the way (but I still have a lot of pain in editing sources, and checking with git repository).",
+      "revId": "f24b1a2a5b84895090775b8002d703e0ee1c8dbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

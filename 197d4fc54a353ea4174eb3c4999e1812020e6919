@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_d43f3c80",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "I renamed it as \"GetOwnersConfig\" since this is the external semantics.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_15941427",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 5
@@ -36,6 +59,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Is this used externally?",
+      "range": {
+        "startLine": 44,
+        "startChar": 2,
+        "endLine": 44,
+        "endChar": 8
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_34faf098",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "It was actually used by test programs, but due to this comment I removed this from this program and set it in the test env.",
       "range": {
         "startLine": 44,
         "startChar": 2,
@@ -71,6 +117,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_14fff488",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 112
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_7589080b",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 5
@@ -82,6 +151,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Should be \"read\" rather than parse? Does Jackson return IOException for parsing errors?",
+      "range": {
+        "startLine": 54,
+        "startChar": 26,
+        "endLine": 54,
+        "endChar": 31
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_740468cd",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "the ioexception is returned by ObjectMapper().readValue. changed to read as requested.",
       "range": {
         "startLine": 54,
         "startChar": 26,
@@ -117,6 +209,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_54096ce1",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 87
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_7489080b",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 5
@@ -128,6 +243,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "define a local Optional\u003cJsonNode\u003e getJsonNode(key: String) so that you can then avoid all the if(x \u003d\u003d null) { } checks all over the place and avoid as well the filter(Objects::nonNull) later on.",
+      "range": {
+        "startLine": 68,
+        "startChar": 27,
+        "endLine": 68,
+        "endChar": 39
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_9545c408",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "done as far as I can do. Resulting syntax in some cases does not result much more elegant, probably will need to refactor from a wider angle..",
       "range": {
         "startLine": 68,
         "startChar": 27,
@@ -163,6 +301,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_b40d60f0",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "flatMap alone is not enough, due to some inconsistencies in Java8 preventing java.util.Optional to be used directly as stream we need an additional short StreamUtils to handle this.\nSee for instance this web page http://stackoverflow.com/questions/39920542/java-8-collect-only-ispresent-optional-values\nUnless obviously there is some better solution (Guava?) which I don\u0027t know yet.",
+      "range": {
+        "startLine": 72,
+        "startChar": 10,
+        "endLine": 73,
+        "endChar": 35
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_558e8c14",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 5
@@ -174,6 +335,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "t? Can you be more expressive on what this represents?",
+      "range": {
+        "startLine": 74,
+        "startChar": 19,
+        "endLine": 74,
+        "endChar": 20
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_940ae4d3",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "during the refactory calle this as match, also simplified the addMatcher signature to avoid complex parameters which are not now needed.",
       "range": {
         "startLine": 74,
         "startChar": 19,
@@ -226,6 +410,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_f417d8fd",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done, but sometimes the java8 expression is not that clear and elegant, the unwrapped version is a bit longer, still java correct, but really much more expressive even if apparently repetitive... It was you who did not appreciate Scala for excessive conciseness leading to unreadability  :)",
+      "range": {
+        "startLine": 83,
+        "startChar": 13,
+        "endLine": 83,
+        "endChar": 34
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_959f843f",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 5
@@ -237,6 +444,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Why aren\u0027t use using Streams consistently?\n\nThis should be:\n\n  return emails.stream()\n      .flatMap(email -\u003e resolver.findAll(db, email))\n      .collect(Collectors.toSet());",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 18
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_f54238fc",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done. A bit more complex that what you wrote, since we have to accumulate all the values from findAll, unless  you have more elegant suggestion for this case.",
       "range": {
         "startLine": 93,
         "startChar": 0,
@@ -289,6 +519,29 @@
     },
     {
       "key": {
+        "uuid": "486b96ff_d53f3c80",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "done but maybe not exactly in the way you meant, so maybe you can check it again in latest patchset and tell me how we can manage it better.",
+      "range": {
+        "startLine": 103,
+        "startChar": 26,
+        "endLine": 103,
+        "endChar": 37
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_b4a28089",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 5
@@ -300,6 +553,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Not needed if you use Optional\u003cJsonNode\u003e",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 5
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_35faf098",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Don\u0027t see exactly how this can be bettered with Optional, can you check the latest patchset and tell me any suggestions?",
       "range": {
         "startLine": 104,
         "startChar": 4,
@@ -392,6 +668,69 @@
     },
     {
       "key": {
+        "uuid": "486b96ff_15fff488",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/JgitWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Probably yes, don\u0027t understand how we can fix this for your observation.\nShould just check it if it is null and return to caller doing nothing?\nLogging error or warning ?\nWhich is the standard methods in Gerrit?",
+      "range": {
+        "startLine": 34,
+        "startChar": 83,
+        "endLine": 34,
+        "endChar": 89
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_750468cd",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/JgitWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "range": {
+        "startLine": 34,
+        "startChar": 39,
+        "endLine": 34,
+        "endChar": 44
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_55096ce1",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/JgitWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_f49cf84b",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/JgitWrapper.java",
         "patchSetId": 5
@@ -415,6 +754,29 @@
     },
     {
       "key": {
+        "uuid": "486b96ff_b50d60f0",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/JgitWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "mmm no. Just put this observation as a TODO\nany suggestion on how to NOT swallow it? is there any runtime exception we can rethrow?",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 48,
+        "endChar": 30
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_d499fc59",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/OwnersMap.java",
         "patchSetId": 5
@@ -426,6 +788,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Variables at the top of the file, then one empty line and then all the methods (public and then private)",
+      "range": {
+        "startLine": 18,
+        "startChar": 2,
+        "endLine": 19,
+        "endChar": 59
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_d4145cfc",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "mmm will try to follow this closely from now on. Try to fix these sources.",
       "range": {
         "startLine": 18,
         "startChar": 2,
@@ -484,6 +869,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_34e310ed",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "The initial partial path (parent path) is actually not needed so I got rid of it and so not problem now.",
+      "range": {
+        "startLine": 86,
+        "startChar": 46,
+        "endLine": 86,
+        "endChar": 48
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_14b9b4ba",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
         "patchSetId": 5
@@ -495,6 +903,23 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_950ae4d3",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
       "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -518,6 +943,23 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_14e894c3",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_74be28a4",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
         "patchSetId": 5
@@ -529,6 +971,23 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "debug? Additionally it should be:\n\nlog.debug(\"checking partial {}\", partial)",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_f517d8fd",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "that was forgotten in the code coming from a very initial stage where I wasn\u0027t even able to test it propertly. Now removed all these log.info.",
       "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -552,6 +1011,23 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_74dd8821",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_94a4a48f",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
         "patchSetId": 5
@@ -563,6 +1039,23 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "same as before: debug.",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_54e20ce5",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
       "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -586,6 +1079,23 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_b4f600a8",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_35ddd0f4",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
         "patchSetId": 5
@@ -597,6 +1107,23 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Same as before: debug.",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_d5145cfc",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
       "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -626,6 +1153,29 @@
     },
     {
       "key": {
+        "uuid": "486b96ff_35e310ed",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "I rephrased it as follows:\n// We need to only keep matchers that match files in the patchset\nThis is because we need to only consider owners for files in the patchset so to properly display in the User Interface of the submit rules.",
+      "range": {
+        "startLine": 140,
+        "startChar": 7,
+        "endLine": 140,
+        "endChar": 72
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_75d748d4",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
         "patchSetId": 5
@@ -637,6 +1187,23 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "empty line.",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_94f304b8",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
       "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -660,6 +1227,23 @@
     },
     {
       "key": {
+        "uuid": "486b96ff_15e894c3",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_95cdc43f",
         "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
         "patchSetId": 5
@@ -671,6 +1255,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "same as before: debug.",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 162,
+        "endChar": 72
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_f4f078ac",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
       "range": {
         "startLine": 161,
         "startChar": 4,
@@ -711,6 +1318,23 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "De we really need a StreamUtils?\nJust do:\n\n   Stream.generate(iterator::next)",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_75dd8821",
+        "filename": "gerrit-owners-common/src/main/java/com/vmware/gerrit/owners/common/StreamUtils.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "I tried to use Stream.generate but it is *definitely* not enough for such situations we are coping now in these sources.\n\nStreamUtils comes from the following problem and solution proposed:\nhttp://stackoverflow.com/questions/24511052/how-to-convert-an-iterator-to-a-stream\n\nunless, obviously you have a better solution (but I lost really a great deal of time in trying various alternatives, including your proposal.",
       "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -944,6 +1568,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_d4ed7cd0",
+        "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 35,
+        "endChar": 46
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_3402f083",
         "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexConfig.java",
         "patchSetId": 5
@@ -955,6 +1602,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Same as above.",
+      "range": {
+        "startLine": 47,
+        "startChar": 2,
+        "endLine": 48,
+        "endChar": 46
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_34c83059",
+        "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
       "range": {
         "startLine": 47,
         "startChar": 2,
@@ -990,6 +1660,29 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_14cd3469",
+        "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "range": {
+        "startLine": 60,
+        "startChar": 2,
+        "endLine": 61,
+        "endChar": 47
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_f51fd8d4",
         "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexTest.java",
         "patchSetId": 5
@@ -1007,6 +1700,23 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_74d2a80c",
+        "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_d51c5ce3",
         "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexTest.java",
         "patchSetId": 5
@@ -1018,6 +1728,29 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Remove empty lines.",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 0
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2864a22d_54d7acfa",
+        "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
       "range": {
         "startLine": 69,
         "startChar": 0,
@@ -1053,6 +1786,29 @@
     },
     {
       "key": {
+        "uuid": "486b96ff_55e20ce5",
+        "filename": "gerrit-owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 0
+      },
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2864a22d_740c68b4",
         "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
         "patchSetId": 5
@@ -1070,6 +1826,23 @@
     },
     {
       "key": {
+        "uuid": "2864a22d_b4bba0cf",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "probably false autocompletion. fixed now",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "486b96ff_15f0946e",
         "filename": "gerrit-owners/src/main/java/gerrit_owners/PRED_matcher_path_1.java",
         "patchSetId": 5
@@ -1081,6 +1854,23 @@
       "writtenOn": "2017-01-19T08:48:48Z",
       "side": 1,
       "message": "Wrap into two lines comment.",
+      "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486b96ff_b5f600a8",
+        "filename": "gerrit-owners/src/main/java/gerrit_owners/PRED_matcher_path_1.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-01-22T00:09:12Z",
+      "side": 1,
+      "message": "done.. actually it was more a note but it can be useful with the following small modification\n\n// must only iterate over the paths for which there are actual files\n// this is already being done when collecting OWNERS files",
       "revId": "197d4fc54a353ea4174eb3c4999e1812020e6919",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
