@@ -3,8 +3,12 @@
  */
 package com.vmware.gerrit.owners.common;
 
+import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
+
+import com.google.common.collect.Sets;
 import com.google.gerrit.extensions.annotations.Listen;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
+import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
@@ -16,20 +20,21 @@ import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Provider;
+
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
-import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
+import javax.inject.Inject;
 
 @Listen
 public class GitRefListener implements GitReferenceUpdatedListener {
-  private static final Logger logger = LoggerFactory.getLogger(GitRefListener.class);
+  private static final Logger logger =
+      LoggerFactory.getLogger(GitRefListener.class);
 
   private static final String CHANGES_REF = "refs/changes/";
 
@@ -45,10 +50,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   @Inject
   public GitRefListener(Provider<ReviewDb> db,
-                        PatchListCache patchListCache,
-                        GitRepositoryManager repositoryManager,
-                        AccountResolver accountResolver,
-                        ReviewerManager reviewerManager) {
+      PatchListCache patchListCache,
+      GitRepositoryManager repositoryManager,
+      AccountResolver accountResolver,
+      ReviewerManager reviewerManager) {
     this.db = db;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -61,7 +66,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     String projectName = event.getProjectName();
     Repository repository;
     try {
-      repository = repositoryManager.openRepository(Project.NameKey.parse(projectName));
+      repository = repositoryManager
+          .openRepository(Project.NameKey.parse(projectName));
       try {
         processEvent(repository, event);
       } finally {
@@ -80,10 +86,15 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         Change change = reviewDb.changes().get(id);
         PatchList patchList = getPatchList(event, change);
         if (patchList != null) {
-           PathOwners owners = new PathOwners(accountResolver, reviewDb, repository,
-              patchList);
-
-          reviewerManager.addReviewers(change, owners.get().values());
+          PathOwners owners = new PathOwners(accountResolver, reviewDb,
+              repository, patchList);
+          Set<Account.Id> allReviewers = Sets.newHashSet();
+          allReviewers.addAll(owners.get().values());
+          for(Matcher matcher: owners.getMatches().values()) {
+            allReviewers.addAll( matcher.getOwners());
+          }
+          logger.debug("Autoassigned reviewers are: {}",allReviewers.toString());
+          reviewerManager.addReviewers(change, allReviewers);
         }
       } catch (OrmException e) {
         logger.warn("Could not open change: {}", id, e);
