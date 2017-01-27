@@ -3,6 +3,7 @@ package com.vmware.gerrit.owners.common;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Sets;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 
@@ -13,6 +14,7 @@ public class OwnersMap {
 
   private SetMultimap<String, Account.Id> pathOwners = HashMultimap.create();
   private Map<String,Matcher> matchers = Maps.newHashMap();
+  private Map<String,Set<Account.Id>> fileOwners = Maps.newHashMap();
 
   @Override
   public String toString() {
@@ -36,5 +38,17 @@ public class OwnersMap {
   }
   public void addPathOwners(String ownersPath, Set<Id> owners) {
     pathOwners.putAll(ownersPath, owners);
+  }
+  public Map<String,Set<Id>> getFileOwners() {
+    return fileOwners;
+  }
+  public void addFileOwners(String file, Set<Id> owners) {
+    Set<Id> set = fileOwners.get(file);
+    if(set!=null) {
+      // add new owners removing duplicates
+      set.addAll(owners);
+    } else {
+      fileOwners.put(file, Sets.newHashSet(owners));
+    }
   }
 }
