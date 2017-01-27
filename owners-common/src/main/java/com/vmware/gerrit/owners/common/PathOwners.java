@@ -47,6 +47,8 @@ public class PathOwners {
 
   private Map<String, Matcher> matches;
 
+  private Map<String, Set<Id>> fileOwners;
+
   public PathOwners(AccountResolver resolver, ReviewDb db,
       Repository repository, PatchList patchList) {
     this.repository = repository;
@@ -56,6 +58,7 @@ public class PathOwners {
     OwnersMap map = fetchOwners();
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     matches = map.getMatchers();
+    fileOwners = map.getFileOwners();
   }
 
   /**
@@ -69,6 +72,10 @@ public class PathOwners {
 
   public Map<String, Matcher> getMatches() {
     return matches;
+  }
+
+  public Map<String, Set<Account.Id>> getFileOwners() {
+    return fileOwners;
   }
 
   /**
@@ -88,7 +95,8 @@ public class PathOwners {
       Set<String> modifiedPaths = getModifiedPaths();
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       for (String path : modifiedPaths) {
-        PathOwnersEntry currentEntry = resolvePathEntry(path, rootEntry, entries);
+        PathOwnersEntry currentEntry =
+            resolvePathEntry(path, rootEntry, entries);
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -105,7 +113,7 @@ public class PathOwners {
         HashMap<String, Matcher> newMatchers = Maps.newHashMap();
         // extra loop
         for (String path : modifiedPaths) {
-          processMatcherPerPath(fullMatchers, newMatchers, path);
+          processMatcherPerPath(fullMatchers, newMatchers, path, ownersMap);
         }
         if (fullMatchers.size() != newMatchers.size()) {
           ownersMap.setMatchers(newMatchers);
@@ -119,18 +127,20 @@ public class PathOwners {
   }
 
   private void processMatcherPerPath(Map<String, Matcher> fullMatchers,
-      HashMap<String, Matcher> newMatchers, String path) {
+      HashMap<String, Matcher> newMatchers, String path, OwnersMap ownersMap) {
     Iterator<Matcher> it = fullMatchers.values().iterator();
     while (it.hasNext()) {
       Matcher matcher = it.next();
       if (matcher.matches(path)) {
         newMatchers.put(matcher.getPath(), matcher);
+        ownersMap.addFileOwners(path, matcher.getOwners());
       }
     }
   }
 
   private PathOwnersEntry resolvePathEntry(String path,
-      PathOwnersEntry rootEntry, Map<String, PathOwnersEntry> entries) throws IOException {
+      PathOwnersEntry rootEntry, Map<String, PathOwnersEntry> entries)
+      throws IOException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
     Set<Id> currentOwners = currentEntry.getOwners();
@@ -147,10 +157,16 @@ public class PathOwners {
         currentEntry = entries.get(partial);
       } else {
         String ownersPath = partial + "OWNERS";
+        Optional<OwnersConfig> conf = getOwnersConfig(ownersPath);
         currentEntry =
-            getOwnersConfig(ownersPath).map(
-                conf -> new PathOwnersEntry(ownersPath, conf, parser,
-                    currentOwners)).orElse(currentEntry);
+            conf.map(
+                c -> new PathOwnersEntry(ownersPath, c, parser, currentOwners))
+                .orElse(currentEntry);
+        if (conf.map(OwnersConfig::isInherited).orElse(false)) {
+          for (Matcher m : currentEntry.getMatchers().values()) {
+            currentEntry.addMatcher(m);
+          }
+        }
         entries.put(partial, currentEntry);
       }
     }
