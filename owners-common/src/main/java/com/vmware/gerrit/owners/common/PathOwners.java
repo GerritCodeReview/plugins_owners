@@ -10,6 +10,7 @@ import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.Patch;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.account.AccountResolver;
@@ -45,6 +46,8 @@ public class PathOwners {
 
   private Map<String, Matcher> matches;
 
+  private Map<String, Set<Id>> fileOwners;
+
   public PathOwners(AccountResolver resolver, ReviewDb db,
       Repository repository, PatchList patchList) throws OrmException {
     this.repository = repository;
@@ -54,6 +57,7 @@ public class PathOwners {
     OwnersMap map = fetchOwners();
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     matches = map.getMatchers();
+    fileOwners = map.getFileOwners();
   }
 
   /**
@@ -67,6 +71,10 @@ public class PathOwners {
 
   public Map<String, Matcher> getMatches() {
     return matches;
+  }
+
+  public Map<String,Set<Account.Id>> getFileOwners() {
+    return fileOwners;
   }
 
   /**
@@ -109,6 +117,9 @@ public class PathOwners {
             entry.setMatchers(config.getMatchers());
             if (config.isInherited()) {
               entry.getOwners().addAll(currentEntry.getOwners());
+              for(Matcher m:currentEntry.getMatchers().values()){
+                entry.addMatcher(m);
+              }
             }
             currentEntry = entry;
           }
@@ -130,13 +141,13 @@ public class PathOwners {
     Map<String, Matcher> fullMatchers = retMap.getMatchers();
     if (fullMatchers.size() > 0) {
       HashMap<String, Matcher> newMatchers = Maps.newHashMap();
-      // extra loop
       for (String path : paths) {
         Iterator<Matcher> it = fullMatchers.values().iterator();
         while (it.hasNext()) {
           Matcher matcher = it.next();
           if (matcher.matches(path)) {
             newMatchers.put(matcher.getPath(), matcher);
+            retMap.addFileOwners(path, matcher.getOwners());
           }
         }
       }
