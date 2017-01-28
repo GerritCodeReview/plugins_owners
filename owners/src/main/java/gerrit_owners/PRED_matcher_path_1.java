@@ -34,12 +34,9 @@ public class PRED_matcher_path_1 extends Predicate.P1 {
   public Operation exec(Prolog engine) throws PrologException {
     engine.cont = cont;
     engine.setB0();
-
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
     engine.r1 = arg1;
-    // must only iterate over the paths for which there are actual files
-    // this is already being done when collecting OWNERS files
-    engine.r2 = new JavaObjectTerm(owners.getMatches().values().iterator());
+    engine.r2 = new JavaObjectTerm(owners.getFileOwners().keySet().iterator());
     return engine.jtry2(OWNER_PATH_CHECK, OWNER_PATH_NEXT);
   }
 
@@ -51,15 +48,13 @@ public class PRED_matcher_path_1 extends Predicate.P1 {
       Term a2 = engine.r2;
 
       @SuppressWarnings("unchecked")
-      Iterator<Matcher> iter = (Iterator<Matcher>) ((JavaObjectTerm) a2).object();
+      Iterator<String> iter = (Iterator<String>) ((JavaObjectTerm) a2).object();
       while (iter.hasNext()) {
-        Matcher matcher = iter.next();
-
-        SymbolTerm pathTerm = SymbolTerm.create(matcher.getPath());
+        String file = iter.next();
+        SymbolTerm pathTerm = SymbolTerm.create(file);
         if (!a1.unify(pathTerm, engine.trail)) {
           continue;
         }
-
         return engine.cont;
       }
       return engine.fail();
