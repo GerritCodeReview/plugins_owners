@@ -94,9 +94,13 @@ public class PathOwners {
 
       Set<String> modifiedPaths = getModifiedPaths();
       Map<String, PathOwnersEntry> entries = new HashMap<>();
+      PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
-        PathOwnersEntry currentEntry =
+        currentEntry =
             resolvePathEntry(path, rootEntry, entries);
+
+        // add owners to file for matcher predicates
+        ownersMap.addFileOwners(path,currentEntry.getOwners());
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -108,14 +112,14 @@ public class PathOwners {
       }
 
       // We need to only keep matchers that match files in the patchset
-      Map<String, Matcher> fullMatchers = ownersMap.getMatchers();
-      if (fullMatchers.size() > 0) {
+      Map<String, Matcher> matchers = ownersMap.getMatchers();
+      if (matchers.size() > 0) {
         HashMap<String, Matcher> newMatchers = Maps.newHashMap();
         // extra loop
         for (String path : modifiedPaths) {
-          processMatcherPerPath(fullMatchers, newMatchers, path, ownersMap);
+          processMatcherPerPath(matchers, newMatchers, path, ownersMap);
         }
-        if (fullMatchers.size() != newMatchers.size()) {
+        if (matchers.size() != newMatchers.size()) {
           ownersMap.setMatchers(newMatchers);
         }
       }
