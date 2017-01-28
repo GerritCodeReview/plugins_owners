@@ -128,6 +128,8 @@ public class PathOwners {
           currentEntry = entries.get(partial);
         }
       }
+      // add owners to file for matcher predicates
+      retMap.addFileOwners(path,currentEntry.getOwners());
 
       // Only add the path to the OWNERS file to reduce the number of
       // entries in the result
@@ -137,12 +139,11 @@ public class PathOwners {
       }
       retMap.addMatchers(currentEntry.getMatchers());
     }
-    // We need to only keep matchers that match files in the patchset
-    Map<String, Matcher> fullMatchers = retMap.getMatchers();
-    if (fullMatchers.size() > 0) {
+    Map<String, Matcher> matchers = retMap.getMatchers();
+    if (matchers.size() > 0) {
       HashMap<String, Matcher> newMatchers = Maps.newHashMap();
       for (String path : paths) {
-        Iterator<Matcher> it = fullMatchers.values().iterator();
+        Iterator<Matcher> it = matchers.values().iterator();
         while (it.hasNext()) {
           Matcher matcher = it.next();
           if (matcher.matches(path)) {
@@ -151,10 +152,11 @@ public class PathOwners {
           }
         }
       }
-      if (fullMatchers.size() != newMatchers.size()) {
+      if (matchers.size() != newMatchers.size()) {
         retMap.setMatchers(newMatchers);
       }
     }
+
     return retMap;
   }
 
