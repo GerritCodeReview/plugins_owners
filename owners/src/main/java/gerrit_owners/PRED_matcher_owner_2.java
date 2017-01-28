@@ -47,8 +47,7 @@ public class PRED_matcher_owner_2 extends Predicate.P2 {
 
     Term term = engine.r1.dereference();
     String path = term.toString();
-
-    engine.r3 = new JavaObjectTerm(owners.getMatches().get(path).getOwners().iterator());
+    engine.r3 = new JavaObjectTerm(owners.getFileOwners().get(path).iterator());
     return engine.jtry3(OWNER_CHECK, OWNER_NEXT);
   }
 
