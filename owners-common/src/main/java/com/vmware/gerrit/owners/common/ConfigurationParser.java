@@ -88,7 +88,11 @@ public class ConfigurationParser {
     emails.stream().forEach(email -> {
       try {
         Set<Id> foundIds = resolver.findAll(db, email);
-        result.addAll(foundIds);
+        if(foundIds.isEmpty()){
+          log.warn("Unknown user {} in OWNERS configuration",email);
+        } else {
+          result.addAll(foundIds);
+        }
       } catch (OrmException e) {
         log.error("cannot resolve emails", e);
       }
@@ -110,10 +114,8 @@ public class ConfigurationParser {
       return Optional.empty();
     }
     Set<String> ownersEmails = extractOwners(ownersNode);
-
     Set<Account.Id> ownersIds = Sets.newHashSet();
     ownersIds = getOwnersFromEmails(ownersEmails);
-
 
     Optional<JsonNode> suffixValue =
         Optional.ofNullable(element.get("suffix"));
