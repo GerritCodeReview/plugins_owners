@@ -144,22 +144,39 @@ public class RegexTest extends RegexConfig {
 
     // now checks file owners as well
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
-    assertEquals(3, fileOwners.size());
+    assertEquals(5, fileOwners.size());
 
     Set<Account.Id> set1 = fileOwners.get("project/file.txt");
-    assertEquals(2, set1.size());
+    assertEquals(4, set1.size());
+    assertTrue(set1.contains(mapping.inverse().get("a")));
     assertTrue(set1.contains(mapping.inverse().get("d")));
     assertTrue(set1.contains(mapping.inverse().get("e")));
+    assertTrue(set1.contains(mapping.inverse().get("f")));
+
 
     Set<Account.Id> set2 = fileOwners.get("project/afile2.sql");
-    assertEquals(3, set2.size());
+    assertEquals(5, set2.size());
+    assertTrue(set2.contains(mapping.inverse().get("a")));
     assertTrue(set2.contains(mapping.inverse().get("b")));
     assertTrue(set2.contains(mapping.inverse().get("c")));
     assertTrue(set2.contains(mapping.inverse().get("d")));
+    assertTrue(set2.contains(mapping.inverse().get("f")));
 
     Set<Account.Id> set3 = fileOwners.get("project/file.sql");
-    assertEquals(2, set3.size());
+    assertEquals(4, set3.size());
+    assertTrue(set3.contains(mapping.inverse().get("a")));
     assertTrue(set3.contains(mapping.inverse().get("b")));
     assertTrue(set3.contains(mapping.inverse().get("c")));
+    assertTrue(set3.contains(mapping.inverse().get("f")));
+
+    Set<Account.Id> set4 = fileOwners.get("file1.txt");
+    assertEquals(1, set4.size());
+    assertTrue(set4.contains(mapping.inverse().get("a")));
+
+    Set<Account.Id> set5 = fileOwners.get("project/bfile.txt");
+    assertEquals(2, set5.size());
+    assertTrue(set5.contains(mapping.inverse().get("a")));
+    assertTrue(set5.contains(mapping.inverse().get("f")));
+
   }
 }
