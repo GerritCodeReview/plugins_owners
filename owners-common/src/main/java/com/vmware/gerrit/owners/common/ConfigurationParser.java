@@ -129,16 +129,20 @@ public class ConfigurationParser {
         getText(node, "suffix").map(el -> new SuffixMatcher(el, owners));
     Optional<Matcher> regexMatcher =
         getText(node, "regex").map(el -> new RegExMatcher(el, owners));
+    Optional<Matcher> partialRegexMatcher =
+        getText(node, "partial_regex").map(
+            el -> new PartialRegExMatcher(el, owners));
     Optional<Matcher> exactMatcher =
         getText(node, "exact").map(el -> new ExactMatcher(el, owners));
 
     return Optional.ofNullable(suffixMatcher
         .orElseGet(() -> regexMatcher
+        .orElseGet(() -> partialRegexMatcher
         .orElseGet(() -> exactMatcher
         .orElseGet(() -> {
           log.warn("Ignoring invalid element " + node.toString());
           return null;
-        }))));
+        })))));
   }
 
   private static Optional<String> getText(JsonNode node, String field) {
