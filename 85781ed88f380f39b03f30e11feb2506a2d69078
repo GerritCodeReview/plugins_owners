@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a7a778e7_1b75f206",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-01-31T01:07:12Z",
+      "side": 1,
+      "message": "This should be changed to com.google.inject.Inject, either in this change or in a separate one.",
+      "range": {
+        "startLine": 32,
+        "startChar": 7,
+        "endLine": 32,
+        "endChar": 27
+      },
+      "revId": "85781ed88f380f39b03f30e11feb2506a2d69078",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
