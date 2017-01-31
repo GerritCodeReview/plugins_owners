@@ -41,6 +41,8 @@ public class RegexConfig extends Config {
           sb.append("- exact: " + matcher.path + "\n");
         } else if (matcher instanceof SuffixMatcher) {
           sb.append("- suffix: " + matcher.path + "\n");
+        } else if (matcher instanceof PartialRegExMatcher) {
+          sb.append("- partial_regex: " + matcher.path + "\n");
         }
         sb.append("  owners: \n");
         for(Account.Id owner : matcher.getOwners()) {
