@@ -129,6 +129,12 @@ public class ConfigurationParser {
       return Optional
           .of(new RegExMatcher(regexValue.get().asText(), ownersIds));
     }
+    Optional<JsonNode> partialRegexValue =
+        Optional.ofNullable(element.get("partial_regex"));
+    if (partialRegexValue.isPresent()) {
+      return Optional
+          .of(new PartialRegExMatcher(partialRegexValue.get().asText(), ownersIds));
+    }
     Optional<JsonNode> exactValue =
         Optional.ofNullable(element.get("exact"));
     if (exactValue.isPresent()) {
