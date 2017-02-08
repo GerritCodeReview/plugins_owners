@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbc46b7c_1823d361",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/StreamUtils.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T23:15:53Z",
+      "side": 1,
+      "message": "Used only once from the method above: just collapse the two of them.",
+      "range": {
+        "startLine": 28,
+        "startChar": 30,
+        "endLine": 28,
+        "endChar": 84
+      },
+      "revId": "9c4b41f710a8797f8ebf35787376f8bb1d55fc84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6d251c5_57eef672",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/StreamUtils.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T23:15:53Z",
+      "side": 1,
+      "message": "Optional\u003c\u003e isn\u0027t a Stream and it would be really overkill to create one for it. Checking where this is actually used, it doesn\u0027t justify this strange method and the associated overhead.\n\nJust get rid of it :-)",
+      "range": {
+        "startLine": 33,
+        "startChar": 30,
+        "endLine": 33,
+        "endChar": 46
+      },
+      "revId": "9c4b41f710a8797f8ebf35787376f8bb1d55fc84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
