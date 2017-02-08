@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6f9f3882_f28ca95a",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T09:38:53Z",
+      "side": 1,
+      "message": "Why are we creating a new HashSet if then we drop it in the following line to get the one from emails?",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 50
+      },
+      "revId": "767a05a8a47f3237ad0d6d6f4ab376b2816acdab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8f46bc82_c41f34ef",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T09:38:53Z",
+      "side": 1,
+      "message": "You should leverage the chaining of optionals ... otherwise why should we optionals at all?",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 28
+      },
+      "revId": "767a05a8a47f3237ad0d6d6f4ab376b2816acdab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
