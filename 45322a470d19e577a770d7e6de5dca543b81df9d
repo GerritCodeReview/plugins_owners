@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b9fd997e_7ca84714",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/Matcher.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "Missing license?",
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a45d09bb_e257cd66",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/Matcher.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "All fields declared at the top of the file.",
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26413cbf_fbd20895",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/Matcher.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "Constructor as first method.",
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6607cafc_d9165ff4",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/Matcher.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "Final?",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 17
+      },
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8ede0f4_9dfae296",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "License at the beginning?",
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd1ab5c2_f3d6f258",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "This method has become *really* unreadable: trying to split in more readable chunks.",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 18
+      },
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "540edaaf_0282e580",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "There isn\u0027t actually any benefit from using Sets here :-(",
+      "range": {
+        "startLine": 156,
+        "startChar": 24,
+        "endLine": 156,
+        "endChar": 32
+      },
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bd802671_710279ff",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-08T22:08:56Z",
+      "side": 1,
+      "message": "Why don\u0027t you like the .flatMap(parser::getOwnersConfig) ?",
+      "range": {
+        "startLine": 183,
+        "startChar": 19,
+        "endLine": 183,
+        "endChar": 58
+      },
+      "revId": "45322a470d19e577a770d7e6de5dca543b81df9d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
