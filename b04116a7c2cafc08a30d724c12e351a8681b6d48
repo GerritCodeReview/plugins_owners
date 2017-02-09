@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3d8992c8_c872c606",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-09T00:40:04Z",
+      "side": 0,
+      "message": "Don\u0027t mix formatting and code changes ... as it would make other people\u0027s lives more difficult when merging it :-(",
+      "revId": "b04116a7c2cafc08a30d724c12e351a8681b6d48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
