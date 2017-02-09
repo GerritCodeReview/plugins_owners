@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d917e7d_a81b8227",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-09T10:27:39Z",
+      "side": 1,
+      "message": "Are we just adding one warning? Can we skip this change altogether to minimise the conflict resolutions?",
+      "range": {
+        "startLine": 92,
+        "startChar": 10,
+        "endLine": 92,
+        "endChar": 68
+      },
+      "revId": "077ba53e2fe0c4328aa3cc8bb31a7b2b78451203",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
