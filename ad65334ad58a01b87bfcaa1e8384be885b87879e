@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8bb3c453_2dc18444",
+        "filename": "owners-common/owners",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-10T08:37:47Z",
+      "side": 1,
+      "message": "What is this?",
+      "revId": "ad65334ad58a01b87bfcaa1e8384be885b87879e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e326201d_008f2004",
+        "filename": "owners-common/owners-autoassign",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-10T08:37:47Z",
+      "side": 1,
+      "message": "What is this?",
+      "revId": "ad65334ad58a01b87bfcaa1e8384be885b87879e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
