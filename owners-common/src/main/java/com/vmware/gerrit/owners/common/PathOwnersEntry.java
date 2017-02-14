@@ -22,12 +22,12 @@ class PathOwnersEntry {
   public PathOwnersEntry() {
   }
 
-  public PathOwnersEntry(String path, OwnersConfig config,
-      ConfigurationParser parser, Set<Account.Id> inheritedOwners) {
+  public PathOwnersEntry(String path, OwnersConfig config, Accounts accounts,
+      Set<Account.Id> inheritedOwners) {
     this.ownersPath = path;
     this.owners =
-        parser.getOwnersFromEmails(config.getOwners().stream()).collect(
-            Collectors.toSet());
+        config.getOwners().stream().flatMap(o -> accounts.find(o).stream())
+            .collect(Collectors.toSet());
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
     }

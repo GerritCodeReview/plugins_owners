@@ -14,18 +14,14 @@
 
 package com.vmware.gerrit.owners.common;
 
+import static com.vmware.gerrit.owners.common.MatcherConfig.exactMatcher;
+import static com.vmware.gerrit.owners.common.MatcherConfig.partialRegexMatcher;
+import static com.vmware.gerrit.owners.common.MatcherConfig.regexMatcher;
+import static com.vmware.gerrit.owners.common.MatcherConfig.suffixMatcher;
 import static com.vmware.gerrit.owners.common.StreamUtils.iteratorStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
-
-import com.google.gerrit.reviewdb.client.Account;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,13 +31,41 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.google.gerrit.reviewdb.client.Account;
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JgitWrapper.class)
-public class RegexTest extends RegexConfig {
+public class RegexTest extends Config {
+
+  private static final String ACCOUNT_A = "a";
+  private static final String ACCOUNT_B = "b";
+  private static final String ACCOUNT_C = "c";
+  private static final String ACCOUNT_D = "d";
+  private static final String ACCOUNT_E = "e";
+  private static final String ACCOUNT_F = "f";
+  private static final Account.Id ACCOUNT_A_ID = new Account.Id(1);
+  private static final Account.Id ACCOUNT_B_ID = new Account.Id(2);
+  private static final Account.Id ACCOUNT_C_ID = new Account.Id(3);
+  private static final Account.Id ACCOUNT_D_ID = new Account.Id(4);
+  private static final Account.Id ACCOUNT_E_ID = new Account.Id(5);
+  private static final Account.Id ACCOUNT_F_ID = new Account.Id(6);
 
   @Override
   @Before
   public void setup() throws Exception {
+    accounts.put(ACCOUNT_A, ACCOUNT_A_ID);
+    accounts.put(ACCOUNT_B, ACCOUNT_B_ID);
+    accounts.put(ACCOUNT_C, ACCOUNT_C_ID);
+    accounts.put(ACCOUNT_D, ACCOUNT_D_ID);
+    accounts.put(ACCOUNT_E, ACCOUNT_E_ID);
+    accounts.put(ACCOUNT_F, ACCOUNT_F_ID);
+
     super.setup();
   }
 
@@ -49,13 +73,13 @@ public class RegexTest extends RegexConfig {
   public void testNewParsingYaml() throws Exception {
     replayAll();
 
-    String fullConfig = createConfig(true, new String[] {"a"},
-        new Matcher[] {
-            new SuffixMatcher(".sql",
-                convertEmailsToIds(new String[] {"b", "c"})),
-            new RegExMatcher(".*/a.*", convertEmailsToIds(new String[] {"d"})),
-            new PartialRegExMatcher("Product.sql",
-                convertEmailsToIds(new String[] {"a"}))});
+    String fullConfig =
+        createConfig(
+            true,
+            owners(ACCOUNT_A),
+                suffixMatcher(".sql", ACCOUNT_B, ACCOUNT_C),
+                regexMatcher(".*/a.*", ACCOUNT_D),
+                partialRegexMatcher("Product.sql", ACCOUNT_A));
     // the function to test
     Optional<OwnersConfig> configNullable = getOwnersConfig(fullConfig);
     // check classical configuration
@@ -66,7 +90,7 @@ public class RegexTest extends RegexConfig {
 
     Set<String> owners = config.getOwners();
     assertEquals(1, owners.size());
-    assertTrue(owners.contains("a"));
+    assertTrue(owners.contains(ACCOUNT_A));
     // check matchers
     Map<String, Matcher> matchers = config.getMatchers();
     assertEquals(3, matchers.size());
@@ -78,37 +102,36 @@ public class RegexTest extends RegexConfig {
     Matcher advMatcher = matchers.get(".sql");
     assertEquals(2, advMatcher.getOwners().size());
     Set<Account.Id> advOwners = advMatcher.getOwners();
-    assertTrue(advOwners.contains(mapping.inverse().get("b")));
-    assertTrue(advOwners.contains(mapping.inverse().get("c")));
+    assertTrue(advOwners.contains(ACCOUNT_B_ID));
+    assertTrue(advOwners.contains(ACCOUNT_C_ID));
 
     // regex matcher
     Matcher dbMatcher = matchers.get(".*/a.*");
     assertEquals(1, dbMatcher.getOwners().size());
     Set<Account.Id> dbOwners = dbMatcher.getOwners();
-    assertTrue(dbOwners.contains(mapping.inverse().get("d")));
+    assertTrue(dbOwners.contains(ACCOUNT_D_ID));
 
 
     // partial_regex matcher
     Matcher partial = matchers.get("Product.sql");
     assertEquals(1, partial.getOwners().size());
     Set<Account.Id> partialOwners = partial.getOwners();
-    assertTrue(partialOwners.contains(mapping.inverse().get("a")));
+    assertTrue(partialOwners.contains(ACCOUNT_A_ID));
   }
 
   @Test
   public void checkMatchers() throws Exception {
-    String parentConfig = createConfig(true, new String[] {"a"}, new Matcher[] {
-        new SuffixMatcher(".sql", convertEmailsToIds(new String[] {"b", "c"})),
-        new RegExMatcher(".*/a.*", convertEmailsToIds(new String[] {"d"}))});
-    String childConfig = createConfig(true, new String[] {"f"},
-        new Matcher[] {
-            new ExactMatcher("project/file.txt",
-                convertEmailsToIds(new String[] {"d", "e"})),
-            new PartialRegExMatcher("alfa",
-                convertEmailsToIds(new String[] {"a"}))});
+    String parentConfig =
+        createConfig(true, owners(ACCOUNT_A),
+            suffixMatcher(".sql", ACCOUNT_B, ACCOUNT_C),
+            regexMatcher(".*/a.*", ACCOUNT_D));
+    String childConfig =
+        createConfig(true, owners(ACCOUNT_F),
+            exactMatcher("project/file.txt", ACCOUNT_D, ACCOUNT_E),
+            partialRegexMatcher("alfa", ACCOUNT_A));
 
-    expectWrapper("OWNERS", Optional.of(parentConfig.getBytes()));
-    expectWrapper("project/OWNERS", Optional.of(childConfig.getBytes()));
+    expectConfig("OWNERS", parentConfig);
+    expectConfig("project/OWNERS", childConfig);
 
     creatingPatchList(Arrays.asList("project/file.txt", // matches exact in
                                                         // project owners d,e
@@ -120,7 +143,7 @@ public class RegexTest extends RegexConfig {
     replayAll();
 
     // function under test
-    PathOwners owners = new PathOwners(resolver, db, repository, patchList);
+    PathOwners owners = new PathOwners(accounts, repository, patchList);
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -168,28 +191,28 @@ public class RegexTest extends RegexConfig {
 
     Set<Account.Id> set1 = fileOwners.get("project/file.txt");
     assertEquals(4,set1.size()); // includes classic owners a and f
-    assertTrue(set1.contains(mapping.inverse().get("a")));
-    assertTrue(set1.contains(mapping.inverse().get("d")));
-    assertTrue(set1.contains(mapping.inverse().get("e")));
-    assertTrue(set1.contains(mapping.inverse().get("f")));
+    assertTrue(set1.contains(ACCOUNT_A_ID));
+    assertTrue(set1.contains(ACCOUNT_D_ID));
+    assertTrue(set1.contains(ACCOUNT_E_ID));
+    assertTrue(set1.contains(ACCOUNT_F_ID));
 
     Set<Account.Id> set2 = fileOwners.get("project/afile2.sql");
     assertEquals(5,set2.size());
-    assertTrue(set2.contains(mapping.inverse().get("a")));
-    assertTrue(set2.contains(mapping.inverse().get("b")));
-    assertTrue(set2.contains(mapping.inverse().get("c")));
-    assertTrue(set2.contains(mapping.inverse().get("d")));
-    assertTrue(set2.contains(mapping.inverse().get("f")));
+    assertTrue(set2.contains(ACCOUNT_A_ID));
+    assertTrue(set2.contains(ACCOUNT_B_ID));
+    assertTrue(set2.contains(ACCOUNT_C_ID));
+    assertTrue(set2.contains(ACCOUNT_D_ID));
+    assertTrue(set2.contains(ACCOUNT_F_ID));
 
     Set<Account.Id> set3 = fileOwners.get("project/file.sql");
     assertEquals(4,set3.size());
-    assertTrue(set3.contains(mapping.inverse().get("a")));
-    assertTrue(set3.contains(mapping.inverse().get("b")));
-    assertTrue(set3.contains(mapping.inverse().get("c")));
-    assertTrue(set3.contains(mapping.inverse().get("f")));
+    assertTrue(set3.contains(ACCOUNT_A_ID));
+    assertTrue(set3.contains(ACCOUNT_B_ID));
+    assertTrue(set3.contains(ACCOUNT_C_ID));
+    assertTrue(set3.contains(ACCOUNT_F_ID));
 
     Set<Account.Id> set4 = fileOwners.get("projectalfa");
     assertEquals(1,set4.size()); // only 1 because a is class and alfa owner
-    assertTrue(set4.contains(mapping.inverse().get("a")));
+    assertTrue(set4.contains(ACCOUNT_A_ID));
   }
 }

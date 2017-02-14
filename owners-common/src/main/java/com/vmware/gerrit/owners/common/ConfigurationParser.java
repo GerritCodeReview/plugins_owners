@@ -17,36 +17,28 @@ package com.vmware.gerrit.owners.common;
 
 import static com.vmware.gerrit.owners.common.StreamUtils.iteratorStream;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Account.Id;
-import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.account.AccountResolver;
-import com.google.gwtorm.server.OrmException;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.gerrit.reviewdb.client.Account.Id;
+
 public class ConfigurationParser {
 
   private static final Logger log =
       LoggerFactory.getLogger(OwnersConfig.class);
-  private ReviewDb db;
-  private AccountResolver resolver;
+  private Accounts accounts;
 
-  public ConfigurationParser(AccountResolver resolver, ReviewDb db) {
-    this.resolver = resolver;
-    this.db = db;
+  public ConfigurationParser(Accounts accounts) {
+    this.accounts = accounts;
   }
 
   public Optional<OwnersConfig> getOwnersConfig(byte[] yamlBytes) {
@@ -75,7 +67,11 @@ public class ConfigurationParser {
   }
 
   private static <T> Set<T> flattenSet(Optional<Stream<T>> optionalStream) {
-    return optionalStream.orElse(Stream.empty()).collect(Collectors.toSet());
+    return flatten(optionalStream).collect(Collectors.toSet());
+  }
+
+  private static <T> Stream<T> flatten(Optional<Stream<T>> optionalStream) {
+    return optionalStream.orElse(Stream.empty());
   }
 
   private void addMatchers(JsonNode jsonNode, OwnersConfig ret) {
@@ -97,29 +93,14 @@ public class ConfigurationParser {
             .map(JsonNode::asText);
   }
 
-  /**
-   * Translates emails to Account.Ids.
-   *
-   * @param emails emails to translate
-   * @return set of account ids
-   */
-  Stream<Account.Id> getOwnersFromEmails(Stream<String> emails) {
-    return emails.flatMap(mail -> resolveEmail(mail).stream());
-  }
 
-  private Set<Account.Id> resolveEmail(String email) {
-    try {
-      return resolver.findAll(db, email);
-    } catch (OrmException e) {
-      log.error("cannot resolve email " + email, e);
-      return Collections.emptySet();
-    }
-  }
 
   private Optional<Matcher> toMatcher(JsonNode node) {
     Set<Id> owners =
-        flattenSet(getNode(node, "owners").map(
-            o -> getOwnersFromEmails(extractOwners(o))));
+        flatten(getNode(node, "owners")
+            .map(ConfigurationParser::extractOwners))
+            .flatMap(o -> accounts.find(o).stream())
+            .collect(Collectors.toSet());
     if (owners.isEmpty()) {
       log.warn("Matches must contain a list of owners");
       return Optional.empty();

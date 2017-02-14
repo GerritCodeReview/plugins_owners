@@ -5,22 +5,6 @@ package com.vmware.gerrit.owners.common;
 
 import static com.vmware.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Sets;
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Account.Id;
-import com.google.gerrit.reviewdb.client.Patch;
-import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.account.AccountResolver;
-import com.google.gerrit.server.patch.PatchList;
-import com.google.gerrit.server.patch.PatchListEntry;
-
-import org.eclipse.jgit.lib.Repository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +12,20 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import org.eclipse.jgit.lib.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Sets;
+import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.Account.Id;
+import com.google.gerrit.reviewdb.client.Patch;
+import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.patch.PatchListEntry;
 
 /**
  * Calculates the owners of a patch list.
@@ -45,15 +43,19 @@ public class PathOwners {
 
   private final ConfigurationParser parser;
 
+  private final Accounts accounts;
+
   private Map<String, Matcher> matches;
 
   private Map<String, Set<Id>> fileOwners;
 
-  public PathOwners(AccountResolver resolver, ReviewDb db,
-      Repository repository, PatchList patchList) {
+  public PathOwners(Accounts accounts,
+      Repository repository,
+      PatchList patchList) {
     this.repository = repository;
     this.patchList = patchList;
-    this.parser = new ConfigurationParser(resolver, db);
+    this.parser = new ConfigurationParser(accounts);
+    this.accounts = accounts;
 
     OwnersMap map = fetchOwners();
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
@@ -89,7 +91,7 @@ public class PathOwners {
       String rootPath = "OWNERS";
       PathOwnersEntry rootEntry =
           getOwnersConfig(rootPath).map(
-              conf -> new PathOwnersEntry(rootPath, conf, parser, Collections
+              conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections
                   .emptySet())).orElse(new PathOwnersEntry());
 
       Set<String> modifiedPaths = getModifiedPaths();
@@ -164,7 +166,7 @@ public class PathOwners {
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath);
         currentEntry =
             conf.map(
-                c -> new PathOwnersEntry(ownersPath, c, parser, currentOwners))
+                c -> new PathOwnersEntry(ownersPath, c, accounts, currentOwners))
                 .orElse(currentEntry);
         if (conf.map(OwnersConfig::isInherited).orElse(false)) {
           for (Matcher m : currentEntry.getMatchers().values()) {

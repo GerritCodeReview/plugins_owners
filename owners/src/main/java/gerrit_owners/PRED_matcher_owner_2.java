@@ -3,9 +3,8 @@
  */
 package gerrit_owners;
 
-import com.vmware.gerrit.owners.OwnersStoredValues;
-import com.vmware.gerrit.owners.common.Matcher;
-import com.vmware.gerrit.owners.common.PathOwners;
+import java.util.Iterator;
+import java.util.Map;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.googlecode.prolog_cafe.exceptions.PrologException;
@@ -17,9 +16,8 @@ import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlecode.prolog_cafe.lang.StructureTerm;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
-
-import java.util.Iterator;
-import java.util.Map;
+import com.vmware.gerrit.owners.OwnersStoredValues;
+import com.vmware.gerrit.owners.common.PathOwners;
 
 /**
  * 'owner'(-Path, -User)

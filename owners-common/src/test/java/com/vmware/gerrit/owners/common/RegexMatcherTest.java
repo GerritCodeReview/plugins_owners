@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class RegexMatcherUnit {
+public class RegexMatcherTest {
   @Test
   public void testRegex() {
     RegExMatcher matcher = new RegExMatcher(".*/a.*", null);

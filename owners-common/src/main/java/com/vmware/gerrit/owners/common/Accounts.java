@@ -14,25 +14,13 @@
 
 package com.vmware.gerrit.owners.common;
 
-import org.junit.Ignore;
+import java.util.Set;
 
 import com.google.gerrit.reviewdb.client.Account;
+import com.google.inject.ImplementedBy;
 
-@Ignore
-public class ClassicConfig extends Config {
-  public static final String USER_A_EMAIL_COM = "user-a@email.com";
-  public static final String USER_B_EMAIL_COM = "user-b@email.com";
-  public static final String USER_C_EMAIL_COM = "user-c@email.com";
-  public static final Account.Id USER_A_ID = new Account.Id(1);
-  public static final Account.Id USER_B_ID = new Account.Id(2);
-  public static final Account.Id USER_C_ID = new Account.Id(3);
+@ImplementedBy(AccountsImpl.class)
+public interface Accounts {
 
-  @Override
-  public void setup() throws Exception {
-    accounts.put(USER_A_EMAIL_COM, USER_A_ID);
-    accounts.put(USER_B_EMAIL_COM, USER_B_ID);
-    accounts.put(USER_C_EMAIL_COM, USER_C_ID);
-
-    super.setup();
-  }
+  Set<Account.Id> find(String nameOrEmail);
 }
