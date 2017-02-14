@@ -5,6 +5,14 @@ package com.vmware.gerrit.owners.common;
 
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
 
+import java.io.IOException;
+import java.util.Set;
+
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.Sets;
 import com.google.gerrit.extensions.annotations.Listen;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
@@ -12,24 +20,14 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
 import com.google.gwtorm.server.OrmException;
-import com.google.inject.Provider;
-
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.Repository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.Set;
-
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 @Listen
 public class GitRefListener implements GitReferenceUpdatedListener {
@@ -44,7 +42,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private final GitRepositoryManager repositoryManager;
 
-  private final AccountResolver accountResolver;
+  private final Accounts accounts;
 
   private final ReviewerManager reviewerManager;
 
@@ -52,12 +50,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   public GitRefListener(Provider<ReviewDb> db,
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
-      AccountResolver accountResolver,
+      Accounts accounts,
       ReviewerManager reviewerManager) {
     this.db = db;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
-    this.accountResolver = accountResolver;
+    this.accounts = accounts;
     this.reviewerManager = reviewerManager;
   }
 
@@ -81,12 +79,11 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private void processEvent(Repository repository, Event event) {
     if (event.getRefName().startsWith(CHANGES_REF)) {
       Change.Id id = Change.Id.fromRef(event.getRefName());
-      try {
-        ReviewDb reviewDb = db.get();
+      try(ReviewDb reviewDb = db.get()) {
         Change change = reviewDb.changes().get(id);
         PatchList patchList = getPatchList(event, change);
         if (patchList != null) {
-          PathOwners owners = new PathOwners(accountResolver, reviewDb,
+          PathOwners owners = new PathOwners(accounts,
               repository, patchList);
           Set<Account.Id> allReviewers = Sets.newHashSet();
           allReviewers.addAll(owners.get().values());

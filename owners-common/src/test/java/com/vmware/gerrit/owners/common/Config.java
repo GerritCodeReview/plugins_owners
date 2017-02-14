@@ -18,72 +18,55 @@ import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Maps;
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Patch;
-import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.account.AccountResolver;
-import com.google.gerrit.server.patch.PatchList;
-import com.google.gerrit.server.patch.PatchListEntry;
-import com.google.gwtorm.server.OrmException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
 import org.powermock.api.easymock.PowerMock;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nonnull;
+import com.google.common.base.Charsets;
+import com.google.gerrit.reviewdb.client.Patch;
+import com.google.gerrit.reviewdb.server.ReviewDb;
+import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.patch.PatchListEntry;
 
 @Ignore
 public abstract class Config {
   protected ReviewDb db;
   protected Repository repository;
-  protected AccountResolver resolver;
   protected PatchList patchList;
-  protected Map<String, Account.Id> accounts = Maps.newHashMap();
   protected ConfigurationParser parser;
+  protected TestAccounts accounts = new TestAccounts();
 
   public void setup() throws Exception {
     PowerMock.mockStatic(JgitWrapper.class);
 
-    db = PowerMock.createMock(ReviewDb.class);
     repository = PowerMock.createMock(Repository.class);
-    resolver = PowerMock.createMock(AccountResolver.class);
-    parser = new ConfigurationParser(resolver, db);
-    resolvingEmailToAccountIdMocking();
+    parser = new ConfigurationParser(accounts);
   }
 
-
-
-  abstract void resolvingEmailToAccountIdMocking() throws Exception;
-
-  void expectWrapper(String path, @Nonnull Optional<byte[]> value)
-      throws IOException {
-    expect(JgitWrapper.getBlobAsBytes(anyObject(Repository.class),
-        anyObject(String.class), eq(path))).andReturn(value).anyTimes();
+  void expectConfig(String path, String config) throws IOException {
+    expect(
+        JgitWrapper.getBlobAsBytes(anyObject(Repository.class),
+            anyObject(String.class), eq(path))).andReturn(
+        Optional.of(config.getBytes())).anyTimes();
   }
 
-  void resolveEmail(String email, int value) throws OrmException {
-    Account.Id acct = new Account.Id(value);
-    Set<Account.Id> set = new HashSet<>();
-    set.add(acct);
-    expect(resolver.findAll(anyObject(ReviewDb.class), eq(email)))
-        .andReturn(set).anyTimes();
-    accounts.put(email, acct);
+  void expectNoConfig(String path) throws IOException {
+    expect(
+        JgitWrapper.getBlobAsBytes(anyObject(Repository.class),
+            anyObject(String.class), eq(path))).andReturn(Optional.empty())
+        .anyTimes();
   }
 
   void creatingPatchList(List<String> names) {
     patchList = PowerMock.createMock(PatchList.class);
-    List<PatchListEntry> entries = names.stream()
-        .map(name -> expectEntry(name)).collect(Collectors.toList());
+    List<PatchListEntry> entries =
+        names.stream().map(name -> expectEntry(name))
+            .collect(Collectors.toList());
     expect(patchList.getPatches()).andReturn(entries);
   }
 
@@ -99,5 +82,26 @@ public abstract class Config {
 
   Optional<OwnersConfig> getOwnersConfig(String string) {
     return parser.getOwnersConfig(string.getBytes(Charsets.UTF_8));
+  }
+
+  public String createConfig(boolean inherited, String[] owners,
+      MatcherConfig... matchers) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("inherited: " + inherited + "\n");
+    sb.append("owners: \n");
+    for (String owner : owners) {
+      sb.append("- " + owner + "\n");
+    }
+    if (matchers.length > 0) {
+      sb.append("matches: \n");
+      for (MatcherConfig matcher : matchers) {
+        sb.append(matcher.toYaml());
+      }
+    }
+    return sb.toString();
+  }
+
+  public String[] owners(String... owners) {
+    return owners;
   }
 }
