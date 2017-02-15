@@ -8,7 +8,7 @@
 add_owner_approval(In, Out) :-
   owner_path(Path),
   \+ owner_approved(Path),
-  Out = [label('Owner-Approval', need(_)) | In],
+  Out = [label('Code-Review from owners', need(_)) | In],
   !.
 
 add_owner_approval(In, Out) :- In = Out.
@@ -16,7 +16,7 @@ add_owner_approval(In, Out) :- In = Out.
 add_owner_approval(Users, In, Out) :-
   owner_path(Path),
   \+ owner_approved(Users, Path),
-  Out = [label('Owner-Approval', need(_)) | In],
+  Out = [label('Code-Review from owners', need(_)) | In],
   !.
 
 add_owner_approval(_, In, Out) :- In = Out.
@@ -38,20 +38,20 @@ member(X, [_|L]) :- member(X, L).
 findall_match_file_user(FileAndUser) :-
     matcher_path(F),
     findall(US,code_review_user(US),Approvers),
-    gerrit_owners:matcher_needed(Approvers,F,FileAndUser).
+    matcher_needed(Approvers,F,FileAndUser).
 
 code_review_user(U) :-
     gerrit:commit_label(label('Code-Review', 2), user(U)).
 
 % this loops over all the paths and if for any
 % we have some labels generated then add a single
-% Owner-Approval need to block submit button
+% Owner-Code-Review need to block submit button
 add_match_owner_approval(In,Out) :-
     matcher_path(P),
     findall(US,code_review_user(US),Approvers),
     matcher_needed(Approvers,P,W),
     \+ W == [],
-    Out = [label('Owner-Approval', need(_)) | In], !.
+    Out = [label('Code-Review from owners', need(_)) | In], !.
 
 add_match_owner_approval(In,Out) :- Out = In.
 
