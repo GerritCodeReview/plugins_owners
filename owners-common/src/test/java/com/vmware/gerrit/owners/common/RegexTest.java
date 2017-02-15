@@ -149,13 +149,13 @@ public class RegexTest extends Config {
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
     assertEquals(2, ownersSet.size());
 
-    // get matches
-    Map<String, Matcher> matches = owners.getMatches();
-    assertEquals(4, matches.size());
+    // get matchers
+    Map<String, Matcher> matchers = owners.getMatchers();
+    assertEquals(4, matchers.size());
 
     // asserts we have 1 exact matcher
     List<Entry<String, Matcher>> onlyExacts =
-        iteratorStream(matches.entrySet().iterator()).filter(
+        iteratorStream(matchers.entrySet().iterator()).filter(
             entry -> entry.getValue() instanceof ExactMatcher).collect(
             Collectors.toList());
     assertEquals(1, onlyExacts.size());
@@ -163,7 +163,7 @@ public class RegexTest extends Config {
 
     // ... 1 regex matcher
     List<Entry<String, Matcher>> regexList =
-        StreamUtils.iteratorStream(matches.entrySet().iterator())
+        StreamUtils.iteratorStream(matchers.entrySet().iterator())
             .filter(entry -> entry.getValue() instanceof RegExMatcher)
             .collect(Collectors.toList());
     assertEquals(1, regexList.size());
@@ -171,7 +171,7 @@ public class RegexTest extends Config {
 
     // ... 1 partial regex matcher
     List<Entry<String, Matcher>> partialRegexList =
-       iteratorStream(matches.entrySet().iterator())
+       iteratorStream(matchers.entrySet().iterator())
             .filter(entry -> entry.getValue() instanceof PartialRegExMatcher)
             .collect(Collectors.toList());
     assertEquals(1, partialRegexList.size());
@@ -179,7 +179,7 @@ public class RegexTest extends Config {
 
     // .... 1 suffix matcher
     List<Entry<String, Matcher>> suffixList =
-        iteratorStream(matches.entrySet().iterator()).filter(
+        iteratorStream(matchers.entrySet().iterator()).filter(
             entry -> entry.getValue() instanceof SuffixMatcher).collect(
             Collectors.toList());
     assertEquals(1, suffixList.size());

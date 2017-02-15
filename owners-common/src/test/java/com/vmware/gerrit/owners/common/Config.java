@@ -93,7 +93,7 @@ public abstract class Config {
       sb.append("- " + owner + "\n");
     }
     if (matchers.length > 0) {
-      sb.append("matches: \n");
+      sb.append("matchers: \n");
       for (MatcherConfig matcher : matchers) {
         sb.append(matcher.toYaml());
       }
