@@ -87,7 +87,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
               repository, patchList);
           Set<Account.Id> allReviewers = Sets.newHashSet();
           allReviewers.addAll(owners.get().values());
-          for(Matcher matcher: owners.getMatches().values()) {
+          for(Matcher matcher: owners.getMatchers().values()) {
             allReviewers.addAll( matcher.getOwners());
           }
           logger.debug("Autoassigned reviewers are: {}",allReviewers.toString());

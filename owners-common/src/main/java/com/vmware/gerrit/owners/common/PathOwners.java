@@ -45,7 +45,7 @@ public class PathOwners {
 
   private final Accounts accounts;
 
-  private Map<String, Matcher> matches;
+  private Map<String, Matcher> matchers;
 
   private Map<String, Set<Id>> fileOwners;
 
@@ -59,7 +59,7 @@ public class PathOwners {
 
     OwnersMap map = fetchOwners();
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
-    matches = map.getMatchers();
+    matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
   }
 
@@ -72,8 +72,8 @@ public class PathOwners {
     return owners;
   }
 
-  public Map<String, Matcher> getMatches() {
-    return matches;
+  public Map<String, Matcher> getMatchers() {
+    return matchers;
   }
 
   public Map<String, Set<Account.Id>> getFileOwners() {

@@ -75,7 +75,7 @@ public class ConfigurationParser {
   }
 
   private void addMatchers(JsonNode jsonNode, OwnersConfig ret) {
-    getNode(jsonNode, "matches")
+    getNode(jsonNode, "matchers")
     .map(this::getMatchers)
     .ifPresent(m -> m.forEach(ret::addMatcher));
   }
@@ -102,7 +102,7 @@ public class ConfigurationParser {
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
     if (owners.isEmpty()) {
-      log.warn("Matches must contain a list of owners");
+      log.warn("Matchers must contain a list of owners");
       return Optional.empty();
     }
 
