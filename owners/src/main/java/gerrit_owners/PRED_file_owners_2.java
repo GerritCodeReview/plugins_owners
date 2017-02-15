@@ -34,6 +34,7 @@ import com.vmware.gerrit.owners.common.PathOwners;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -84,11 +85,12 @@ class PRED_file_owners_2 extends Predicate.P2 {
   public Term createFormattedList(Prolog engine, Term key) {
     String path = key.toString();
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
-    String userNames =
-        iteratorStream(owners.getFileOwners().get(path).iterator())
-            .map(id -> getFullNameFromId(engine, id))
-            .collect(Collectors.joining(" "));
-    return SymbolTerm.create((new File(path)).getName()+" "+userNames);
+    Set<String> ownersNames =
+        iteratorStream(owners.getFileOwners().get(path).iterator()).map(
+            id -> getFullNameFromId(engine, id)).collect(Collectors.toSet());
+    String ownVerb = ownersNames.size() > 1 ? " own " : " owns ";
+    String userNames = ownersNames.stream().collect(Collectors.joining(", "));
+    return SymbolTerm.create(userNames + ownVerb + (new File(path)).getName());
   }
 
   private static IdentifiedUser.GenericFactory userFactory(Prolog engine) {
