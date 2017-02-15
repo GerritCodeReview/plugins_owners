@@ -55,10 +55,10 @@ Example:
    $ git clone https://gerrit.googlesource.com/gerrit
    $ cd gerrit/plugins
    $ ln -s ../../owners/owners* .
-   $ cp -f owners-common/external_plugin_deps.bzl .
+   $ cp -f ../../owners/external_plugin_deps.bzl .
    $ cd ..
-   $ bazel build plugins/owners
-   $ bazel build plugins/owners-autoassign
+   $ bazel test plugins/owners-common:test
+   $ bazel build plugins/owners plugins/owners-autoassign
 ```
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
