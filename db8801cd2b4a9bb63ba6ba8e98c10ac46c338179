@@ -16,6 +16,24 @@
       "revId": "db8801cd2b4a9bb63ba6ba8e98c10ac46c338179",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "beb28679_a1a132c5",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/OneOffRequestContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-16T07:21:25Z",
+      "side": 1,
+      "message": "With this class, current master is compatible with both Gerrit 2.13 and Gerrit 2.14-SNAPSHOT. We would like current Gerrit 2.13 users enjoying the new owners plugin features well before 2.14 :-)",
+      "parentUuid": "13f7bf36_3134e93e",
+      "revId": "db8801cd2b4a9bb63ba6ba8e98c10ac46c338179",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
