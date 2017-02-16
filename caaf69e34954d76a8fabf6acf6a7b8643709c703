@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b1ac914b_434ddfdd",
+        "filename": "owners-common/src/test/java/com/vmware/gerrit/owners/common/RegexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-02-16T01:36:04Z",
+      "side": 1,
+      "message": "matchers",
+      "range": {
+        "startLine": 152,
+        "startChar": 11,
+        "endLine": 152,
+        "endChar": 18
+      },
+      "revId": "caaf69e34954d76a8fabf6acf6a7b8643709c703",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
