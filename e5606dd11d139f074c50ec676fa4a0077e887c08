@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "726a76d6_8c28c605",
+        "filename": "config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-02-16T06:54:59Z",
+      "side": 1,
+      "message": "logged",
+      "range": {
+        "startLine": 29,
+        "startChar": 42,
+        "endLine": 29,
+        "endChar": 45
+      },
+      "revId": "e5606dd11d139f074c50ec676fa4a0077e887c08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
