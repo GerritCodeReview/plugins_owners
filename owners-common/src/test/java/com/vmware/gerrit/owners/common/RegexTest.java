@@ -14,6 +14,8 @@
 
 package com.vmware.gerrit.owners.common;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth8.assertThat;
 import static com.vmware.gerrit.owners.common.MatcherConfig.exactMatcher;
 import static com.vmware.gerrit.owners.common.MatcherConfig.partialRegexMatcher;
 import static com.vmware.gerrit.owners.common.MatcherConfig.regexMatcher;
@@ -214,5 +216,36 @@ public class RegexTest extends Config {
     Set<Account.Id> set4 = fileOwners.get("projectalfa");
     assertEquals(1,set4.size()); // only 1 because a is class and alfa owner
     assertTrue(set4.contains(ACCOUNT_A_ID));
+  }
+
+  @Test
+  public void testMatchersOnlyConfig() throws Exception {
+    replayAll();
+
+    Optional<OwnersConfig> ownersConfigOpt =
+        getOwnersConfig(createConfig(false, new String[0],
+            suffixMatcher(".txt", ACCOUNT_B)));
+
+    assertThat(ownersConfigOpt).named("ownersConfig").isPresent();
+    OwnersConfig ownersConfig = ownersConfigOpt.get();
+
+    assertThat(ownersConfig.getOwners()).isEmpty();
+    assertThat(ownersConfig.getMatchers()).isNotEmpty();
+  }
+
+  @Test
+  public void testkRegexShouldMatchOnlyOnSuffix() throws Exception {
+    String configString =
+        createConfig(false, new String[0], suffixMatcher(".sql", ACCOUNT_B));
+
+    expectConfig("OWNERS", configString);
+    expectNoConfig("project/OWNERS");
+    creatingPatch("project/file.sql", "another.txt");
+    replayAll();
+
+    PathOwners owners = new PathOwners(accounts, repository, patchList);
+
+    Set<String> ownedFiles = owners.getFileOwners().keySet();
+    assertThat(ownedFiles).containsExactly("project/file.sql");
   }
 }

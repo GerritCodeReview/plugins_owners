@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,6 +63,10 @@ public abstract class Config {
         .anyTimes();
   }
 
+  void creatingPatch(String... fileNames) {
+    creatingPatchList(Arrays.asList(fileNames));
+  }
+
   void creatingPatchList(List<String> names) {
     patchList = PowerMock.createMock(PatchList.class);
     List<PatchListEntry> entries =
@@ -88,9 +93,11 @@ public abstract class Config {
       MatcherConfig... matchers) {
     StringBuilder sb = new StringBuilder();
     sb.append("inherited: " + inherited + "\n");
-    sb.append("owners: \n");
-    for (String owner : owners) {
-      sb.append("- " + owner + "\n");
+    if (owners.length > 0) {
+      sb.append("owners: \n");
+      for (String owner : owners) {
+        sb.append("- " + owner + "\n");
+      }
     }
     if (matchers.length > 0) {
       sb.append("matchers: \n");

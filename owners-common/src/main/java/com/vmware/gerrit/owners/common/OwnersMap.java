@@ -56,6 +56,10 @@ public class OwnersMap {
     return fileOwners;
   }
   public void addFileOwners(String file, Set<Id> owners) {
+    if(owners.isEmpty()) {
+      return;
+    }
+
     Set<Id> set = fileOwners.get(file);
     if(set!=null) {
       // add new owners removing duplicates
