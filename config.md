@@ -8,20 +8,20 @@ The `OWNERS` file has the following YAML structure:
 ```yaml
 inherited: true
 owners:
-  - some.email@example.com
-  - User Name
+- some.email@example.com
+- User Name
 matchers:
-  - suffix: .java
-      owners:
-        [...]
-  - regex: .*/README.*
-      owners:
-        [...]
-  - partial_regex: example
-      owners:
-        [...]
-  - exact: /path/to/file.txt
-        [...]
+- suffix: .java
+  owners:
+      [...]
+- regex: .*/README.*
+  owners:
+      [...]
+- partial_regex: example
+  owners:
+      [...]
+- exact: /path/to/file.txt
+      [...]
 ```
 
 _NOTE: Be aware to double check that emails and full user names correspond to
@@ -66,8 +66,8 @@ Given an OWNERS configuration of:
 ```yaml
 inherited: true
 owners:
-  - John Doe
-  - Doug Smith
+- John Doe
+- Doug Smith
 ```
 
 And sample rules.pl that uses this predicate to enable the submit rule if
@@ -100,8 +100,8 @@ Given an OWNERS configuration of:
 ```yaml
 inherited: true
 owners:
-  - John Doe
-  - Doug Smith
+- John Doe
+- Doug Smith
 ```
 
 And a rule which makes submittable a change if at least one of the owners has
@@ -164,8 +164,8 @@ Given now an OWNERS configuration of:
 ```yaml
 inherited: true
 owners:
-  - John Doe
-  - Doug Smith
+- John Doe
+- Doug Smith
 ```
 
 A change cannot be submitted until John Doe or Doug Smith add a label
@@ -183,13 +183,13 @@ Given an OWNERS configuration of:
 ```yaml
 inherited: true
 matchers:
-  - suffix: .sql
-      owners:
-        - Mister Dba
-  - suffix: .css
-      owners:
-        - John Creative
-        - Matt Designer
+- suffix: .sql
+  owners:
+  - Mister Dba
+- suffix: .css
+  owners:
+  - John Creative
+  - Matt Designer
 ```
 
 And a rules.pl of:
