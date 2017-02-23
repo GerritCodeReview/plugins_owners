@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "372accb2_13d85cee",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/Gerrit214ManualRequestContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-23T23:19:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "443c7691_a8426a98",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 4
+      },
+      "revId": "494760a4a14d9f2cd6ea1df029698956f32871b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db1af9b0_643101c3",
         "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2017-02-23T10:41:43Z",
       "side": 1,
       "message": "Nit: space. I wonder, if we want to re-format this and other plugins with Google-java-format? To make the life easier (not in the change of course).",
+      "range": {
+        "startLine": 49,
+        "startChar": 7,
+        "endLine": 49,
+        "endChar": 8
+      },
+      "revId": "494760a4a14d9f2cd6ea1df029698956f32871b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "786470d7_aec7d167",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-02-23T23:19:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db1af9b0_643101c3",
       "range": {
         "startLine": 49,
         "startChar": 7,
