@@ -19,7 +19,6 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.InternalUser;
-import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
@@ -36,14 +35,14 @@ import com.google.inject.Singleton;
  * {@link IdentifiedUser} associated to the userId passed as parameter.
  */
 @Singleton
-public class OneOffRequestContext {
+public class Gerrit214OneOffRequestContext {
   private final InternalUser.Factory userFactory;
   private final SchemaFactory<ReviewDb> schemaFactory;
   private final ThreadLocalRequestContext requestContext;
   private final IdentifiedUser.GenericFactory identifiedUserFactory;
 
   @Inject
-  OneOffRequestContext(InternalUser.Factory userFactory,
+  Gerrit214OneOffRequestContext(InternalUser.Factory userFactory,
       SchemaFactory<ReviewDb> schemaFactory,
       ThreadLocalRequestContext requestContext,
       IdentifiedUser.GenericFactory identifiedUserFactory) {
@@ -53,13 +52,13 @@ public class OneOffRequestContext {
     this.identifiedUserFactory = identifiedUserFactory;
   }
 
-  public ManualRequestContext open() throws OrmException {
-    return new ManualRequestContext(userFactory.create(),
+  public Gerrit214ManualRequestContext open() throws OrmException {
+    return new Gerrit214ManualRequestContext(userFactory.create(),
         schemaFactory, requestContext);
   }
 
-  public ManualRequestContext openAs(Account.Id userId) throws OrmException {
-    return new ManualRequestContext(identifiedUserFactory.create(userId),
+  public Gerrit214ManualRequestContext openAs(Account.Id userId) throws OrmException {
+    return new Gerrit214ManualRequestContext(identifiedUserFactory.create(userId),
         schemaFactory, requestContext);
   }
 }
