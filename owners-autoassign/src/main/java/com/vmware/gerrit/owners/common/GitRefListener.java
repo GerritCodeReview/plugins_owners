@@ -92,7 +92,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private void processEvent(Repository repository, Event event) {
     if (event.getRefName().startsWith(CHANGES_REF)) {
       Change.Id id = Change.Id.fromRef(event.getRefName());
-      try(ReviewDb reviewDb = db.get()) {
+      ReviewDb reviewDb = db.get();
+      // The provider injected by Gerrit is shared with other workers on the
+      // same local thread and thus cannot be closed in this event listener.
+      try {
         Change change = reviewDb.changes().get(id);
         PatchList patchList = getPatchList(event, change);
         if (patchList != null) {
