@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ccfdd54_a4cb1c89",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-02-24T04:51:55Z",
+      "side": 1,
+      "message": "Nit: wrong indent.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 25
+      },
+      "revId": "4f41f613c979474dfc7272d507fff8c36ebca950",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
