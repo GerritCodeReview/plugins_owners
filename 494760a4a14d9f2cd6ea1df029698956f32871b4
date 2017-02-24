@@ -117,6 +117,30 @@
       "revId": "494760a4a14d9f2cd6ea1df029698956f32871b4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b9b57e45_81d1b66e",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-02-24T04:51:55Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "d62551e1_7f6d0085",
+      "range": {
+        "startLine": 49,
+        "startChar": 7,
+        "endLine": 49,
+        "endChar": 8
+      },
+      "revId": "494760a4a14d9f2cd6ea1df029698956f32871b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
