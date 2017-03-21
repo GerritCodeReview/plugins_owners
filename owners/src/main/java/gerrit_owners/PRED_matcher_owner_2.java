@@ -16,29 +16,34 @@
 
 package gerrit_owners;
 
-import com.vmware.gerrit.owners.OwnersStoredValues;
-import com.vmware.gerrit.owners.common.PathOwners;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.google.gerrit.reviewdb.client.Account;
 import com.googlecode.prolog_cafe.exceptions.PrologException;
+import com.googlecode.prolog_cafe.lang.IntegerTerm;
 import com.googlecode.prolog_cafe.lang.JavaObjectTerm;
 import com.googlecode.prolog_cafe.lang.Operation;
 import com.googlecode.prolog_cafe.lang.Predicate;
 import com.googlecode.prolog_cafe.lang.Prolog;
+import com.googlecode.prolog_cafe.lang.StructureTerm;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
-
-import java.util.Iterator;
+import com.vmware.gerrit.owners.OwnersStoredValues;
+import com.vmware.gerrit.owners.common.PathOwners;
 
 /**
- * 'owner_path'(-Path)
+ * 'owner'(-Path, -User)
  */
-public class PRED_owner_path_1 extends Predicate.P1 {
+public class PRED_matcher_owner_2 extends Predicate.P2 {
 
-  private static final PRED_owner_path_check OWNER_PATH_CHECK = new PRED_owner_path_check();
-  private static final PRED_owner_path_empty OWNER_PATH_EMPTY = new PRED_owner_path_empty();
-  private static final PRED_owner_path_next OWNER_PATH_NEXT = new PRED_owner_path_next();
+  private static final PRED_owner_check OWNER_CHECK = new PRED_owner_check();
+  private static final PRED_owner_empty OWNER_EMPTY = new PRED_owner_empty();
+  private static final PRED_owner_next OWNER_NEXT = new PRED_owner_next();
 
-  public PRED_owner_path_1(Term a1, Operation n) {
+  public PRED_matcher_owner_2(Term a1, Term a2, Operation n) {
     this.arg1 = a1;
+    this.arg2 = a2;
     this.cont = n;
   }
 
@@ -49,24 +54,37 @@ public class PRED_owner_path_1 extends Predicate.P1 {
 
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
     engine.r1 = arg1;
-    engine.r2 = new JavaObjectTerm(owners.get().keys().iterator());
-    return engine.jtry2(OWNER_PATH_CHECK, OWNER_PATH_NEXT);
+    engine.r2 = arg2;
+
+    Term term = engine.r1.dereference();
+    String path = term.toString();
+    engine.r3 = new JavaObjectTerm(owners.getFileOwners().get(path).iterator());
+    return engine.jtry3(OWNER_CHECK, OWNER_NEXT);
   }
 
-  private static class PRED_owner_path_check extends Operation {
+  private static class PRED_owner_check extends Operation {
 
     @Override
     public Operation exec(Prolog engine) throws PrologException {
       Term a1 = engine.r1;
       Term a2 = engine.r2;
+      Term a3 = engine.r3;
+
+      Term term = engine.r1.dereference();
+      String pathS = term.toString();
 
       @SuppressWarnings("unchecked")
-      Iterator<String> iter = (Iterator<String>) ((JavaObjectTerm) a2).object();
+      Iterator<Account.Id> iter = (Iterator<Account.Id>) ((JavaObjectTerm) a3).object();
       while (iter.hasNext()) {
-        String path = iter.next();
+        Account.Id entry = iter.next();
 
-        SymbolTerm pathTerm = SymbolTerm.create(path);
-        if (!a1.unify(pathTerm, engine.trail)) {
+        SymbolTerm path = SymbolTerm.create(pathS);
+        if (!a1.unify(path, engine.trail)) {
+          continue;
+        }
+
+        StructureTerm user = new StructureTerm("user", new IntegerTerm(entry.get()));
+        if (!a2.unify(user, engine.trail)) {
           continue;
         }
 
@@ -76,27 +94,28 @@ public class PRED_owner_path_1 extends Predicate.P1 {
     }
   }
 
-  private static class PRED_owner_path_next extends Operation {
+  private static class PRED_owner_next extends Operation {
 
     @Override
     public Operation exec(Prolog engine) throws PrologException {
-      return engine.trust(OWNER_PATH_EMPTY);
+      return engine.trust(OWNER_EMPTY);
     }
   }
 
-  private static class PRED_owner_path_empty extends Operation {
+  private static class PRED_owner_empty extends Operation {
 
     @Override
     public Operation exec(Prolog engine) throws PrologException {
-      Term a2 = engine.r2;
+      Term a3 = engine.r3;
 
       @SuppressWarnings("unchecked")
-      Iterator<String> iter = (Iterator<String>) ((JavaObjectTerm) a2).object();
+      Iterator<Map.Entry<String, Account.Id>> iter =
+          (Iterator<Map.Entry<String, Account.Id>>) ((JavaObjectTerm) a3).object();
       if (!iter.hasNext()) {
         return engine.fail();
       }
 
-      return engine.jtry2(OWNER_PATH_CHECK, OWNER_PATH_NEXT);
+      return engine.jtry3(OWNER_CHECK, OWNER_NEXT);
     }
   }
 
