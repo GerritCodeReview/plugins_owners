@@ -16,8 +16,8 @@
 
 package gerrit_owners;
 
-import com.vmware.gerrit.owners.OwnersStoredValues;
-import com.vmware.gerrit.owners.common.PathOwners;
+import java.util.Iterator;
+
 import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.JavaObjectTerm;
 import com.googlecode.prolog_cafe.lang.Operation;
@@ -25,19 +25,19 @@ import com.googlecode.prolog_cafe.lang.Predicate;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
-
-import java.util.Iterator;
+import com.vmware.gerrit.owners.OwnersStoredValues;
+import com.vmware.gerrit.owners.common.PathOwners;
 
 /**
  * 'owner_path'(-Path)
  */
-public class PRED_owner_path_1 extends Predicate.P1 {
+public class PRED_matcher_path_1 extends Predicate.P1 {
 
   private static final PRED_owner_path_check OWNER_PATH_CHECK = new PRED_owner_path_check();
   private static final PRED_owner_path_empty OWNER_PATH_EMPTY = new PRED_owner_path_empty();
   private static final PRED_owner_path_next OWNER_PATH_NEXT = new PRED_owner_path_next();
 
-  public PRED_owner_path_1(Term a1, Operation n) {
+  public PRED_matcher_path_1(Term a1, Operation n) {
     this.arg1 = a1;
     this.cont = n;
   }
@@ -46,10 +46,9 @@ public class PRED_owner_path_1 extends Predicate.P1 {
   public Operation exec(Prolog engine) throws PrologException {
     engine.cont = cont;
     engine.setB0();
-
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
     engine.r1 = arg1;
-    engine.r2 = new JavaObjectTerm(owners.get().keys().iterator());
+    engine.r2 = new JavaObjectTerm(owners.getFileOwners().keySet().iterator());
     return engine.jtry2(OWNER_PATH_CHECK, OWNER_PATH_NEXT);
   }
 
@@ -63,13 +62,11 @@ public class PRED_owner_path_1 extends Predicate.P1 {
       @SuppressWarnings("unchecked")
       Iterator<String> iter = (Iterator<String>) ((JavaObjectTerm) a2).object();
       while (iter.hasNext()) {
-        String path = iter.next();
-
-        SymbolTerm pathTerm = SymbolTerm.create(path);
+        String file = iter.next();
+        SymbolTerm pathTerm = SymbolTerm.create(file);
         if (!a1.unify(pathTerm, engine.trail)) {
           continue;
         }
-
         return engine.cont;
       }
       return engine.fail();

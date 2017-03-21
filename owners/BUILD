@@ -39,4 +39,5 @@ gerrit_plugin(
         ":gerrit-owners-lib",
         ":gerrit-owners-prolog-rules",
     ] + EXTERNAL_DEPS,
+    resources = glob(["src/main/**/*"]),
 )
