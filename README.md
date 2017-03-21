@@ -42,11 +42,12 @@ change when it's created or updated.
 Create three symbolic links of the owners-owners, owners-common and owners-autoassign
 from the Gerrit source code /plugins directory to the subdirectories of this project.
 
-Overwrite the Gerrit /plugins/external_plugin_deps.bzl with the one contained
-in the owners-common directory.
-
 Then build the owners and owners-autoassign plugins with the usual Gerrit
 plugin compile command.
+
+NOTE: This plugin requires Java 8, even if Gerrit 2.13 can be built with Java 7.
+      To enable Java 8 when building this plugin, append the .buckconfig to the Gerrit's
+      one.
 
 Example:
 
@@ -55,10 +56,10 @@ Example:
    $ git clone https://gerrit.googlesource.com/gerrit
    $ cd gerrit/plugins
    $ ln -s ../../owners/owners* .
-   $ cp -f owners-common/external_plugin_deps.bzl .
    $ cd ..
-   $ bazel build plugins/owners
-   $ bazel build plugins/owners-autoassign
+   $ cat ../owners/.buckconfig >> .buckconfig
+   $ buck test plugins/owners-common:test
+   $ buck build plugins/owners plugins/owners-autoassign
 ```
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
