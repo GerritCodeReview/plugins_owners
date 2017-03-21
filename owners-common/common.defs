@@ -1,0 +1,7 @@
+EXTERNAL_DEPS = [
+  '//plugins/owners-common' + i for i in [
+    ':jackson-core',
+    ':jackson-databind',
+    ':jackson-annotations',
+    ':jackson-dataformat-yaml',
+]]

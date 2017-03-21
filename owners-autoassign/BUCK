@@ -1,0 +1,19 @@
+include_defs('//plugins/owners-common/common.defs')
+include_defs('//lib/maven.defs')
+include_defs('//lib/prolog/prolog.defs')
+
+gerrit_plugin(
+  name = 'owners-autoassign',
+  srcs = glob([
+    'src/main/java/**/*.java',
+  ]),
+  manifest_entries = [
+    'Implementation-Title: Gerrit OWNERS autoassign plugin',
+    'Implementation-URL: https://gerrit.googlesource.com/plugins/owners',
+    'Gerrit-PluginName: owners-autoassign',
+    'Gerrit-Module: com.vmware.gerrit.owners.common.AutoassignModule',
+  ],
+  deps = [
+    '//plugins/owners-common:common',
+  ] + EXTERNAL_DEPS,
+)
