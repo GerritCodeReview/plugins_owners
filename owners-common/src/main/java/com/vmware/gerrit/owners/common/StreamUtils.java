@@ -8,22 +8,20 @@
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-// implied.
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.vmware.gerrit.owners;
+package com.vmware.gerrit.owners.common;
 
-import com.google.gerrit.rules.PredicateProvider;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.inject.AbstractModule;
+import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+public class StreamUtils {
 
-public class OwnersModule extends AbstractModule {
-  @Override
-  protected void configure() {
-    DynamicSet.bind(binder(), PredicateProvider.class)
-        .to(OwnerPredicateProvider.class);
+  public static <T> Stream<T> iteratorStream(Iterator<T> sourceIterator) {
+    Iterable<T> iterable = () -> sourceIterator;
+    return StreamSupport.stream(iterable.spliterator(), false);
   }
 }

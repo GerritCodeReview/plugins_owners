@@ -13,17 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.vmware.gerrit.owners;
+package com.vmware.gerrit.owners.common;
 
-import com.google.gerrit.rules.PredicateProvider;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.inject.AbstractModule;
+import com.google.gerrit.reviewdb.client.Account;
 
+import java.util.Set;
 
-public class OwnersModule extends AbstractModule {
+public class ExactMatcher extends Matcher {
+  public ExactMatcher(String path, Set<Account.Id> owners ){
+    super(path, owners);
+  }
+
   @Override
-  protected void configure() {
-    DynamicSet.bind(binder(), PredicateProvider.class)
-        .to(OwnerPredicateProvider.class);
+  public boolean matches(String pathToMatch) {
+    return pathToMatch.equals(path);
   }
 }

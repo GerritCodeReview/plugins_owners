@@ -1,8 +1,25 @@
-/*
- * Copyright (c) 2013 VMware, Inc. All Rights Reserved.
- */
+// Copyright (c) 2013 VMware, Inc. All Rights Reserved.
+// Copyright (C) 2017 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+// implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.vmware.gerrit.owners.common;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -19,7 +36,18 @@ public class OwnersConfig {
   /**
    * Set of OWNER email addresses.
    */
-  private Set<String> owners;
+  private Set<String> owners = Sets.newHashSet();
+
+  /**
+   * Map name of matcher and Matcher (value + Set Owners)
+   */
+  private Map<String,Matcher> matchers = Maps.newHashMap();
+
+  @Override
+  public String toString() {
+    return "OwnersConfig [inherited=" + inherited + ", owners=" + owners
+        + ", matchers=" + matchers + "]";
+  }
 
   public boolean isInherited() {
     return inherited;
@@ -35,5 +63,13 @@ public class OwnersConfig {
 
   public void setOwners(Set<String> owners) {
     this.owners = owners;
+  }
+
+  public Map<String,Matcher> getMatchers() {
+    return matchers;
+  }
+
+  public Matcher addMatcher(Matcher matcher) {
+    return this.matchers.put(matcher.path, matcher);
   }
 }
