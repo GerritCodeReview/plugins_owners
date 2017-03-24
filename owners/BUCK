@@ -38,5 +38,6 @@ gerrit_plugin(
   deps = [
     ':gerrit-owners-lib',
     ':gerrit-owners-prolog-rules',
+    '//plugins/owners-common:common',
   ] + EXTERNAL_DEPS,
 )
