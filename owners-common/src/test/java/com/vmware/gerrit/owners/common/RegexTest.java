@@ -15,7 +15,6 @@
 package com.vmware.gerrit.owners.common;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
 import static com.vmware.gerrit.owners.common.MatcherConfig.exactMatcher;
 import static com.vmware.gerrit.owners.common.MatcherConfig.partialRegexMatcher;
 import static com.vmware.gerrit.owners.common.MatcherConfig.regexMatcher;
@@ -226,7 +225,7 @@ public class RegexTest extends Config {
         getOwnersConfig(createConfig(false, new String[0],
             suffixMatcher(".txt", ACCOUNT_B)));
 
-    assertThat(ownersConfigOpt).named("ownersConfig").isPresent();
+    assertThat(ownersConfigOpt.isPresent()).named("ownersConfig").isTrue();
     OwnersConfig ownersConfig = ownersConfigOpt.get();
 
     assertThat(ownersConfig.getOwners()).isEmpty();
