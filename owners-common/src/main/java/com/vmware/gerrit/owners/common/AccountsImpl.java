@@ -14,28 +14,34 @@
 
 package com.vmware.gerrit.owners.common;
 
-import java.util.Collections;
-import java.util.Set;
+import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.Account.Id;
+import com.google.gerrit.reviewdb.server.ReviewDb;
+import com.google.gerrit.server.account.AccountCache;
+import com.google.gerrit.server.account.AccountResolver;
+import com.google.gerrit.server.account.AccountState;
+import com.google.gwtorm.server.OrmException;
+import com.google.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Account.Id;
-import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.account.AccountResolver;
-import com.google.gwtorm.server.OrmException;
-import com.google.inject.Inject;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AccountsImpl implements Accounts {
   private static final Logger log = LoggerFactory.getLogger(AccountsImpl.class);
 
   private ReviewDb db;
   private AccountResolver resolver;
+  private final AccountCache byId;
 
   @Inject
-  public AccountsImpl(AccountResolver resolver, ReviewDb db) {
+  public AccountsImpl(AccountResolver resolver, AccountCache byId,
+      ReviewDb db) {
     this.resolver = resolver;
+    this.byId = byId;
     this.db = db;
   }
 
@@ -43,7 +49,9 @@ public class AccountsImpl implements Accounts {
   public Set<Account.Id> find(String nameOrEmail) {
     Set<Id> accountIds = Collections.emptySet();
     try {
-      accountIds = resolver.findAll(db, nameOrEmail);
+      accountIds = resolver.findAll(db, nameOrEmail).stream()
+          .filter(id -> isFullMatch(id, nameOrEmail))
+          .collect(Collectors.toSet());
     } catch (OrmException e) {
       log.error("Error trying to resolve user " + nameOrEmail, e);
     }
@@ -51,5 +59,13 @@ public class AccountsImpl implements Accounts {
       log.warn("User {} does not correspond to any account id", nameOrEmail);
     }
     return accountIds;
+  }
+
+  private boolean isFullMatch(Account.Id id, String nameOrEmail) {
+    AccountState account = byId.get(id);
+    return account.getAccount().getFullName().trim()
+        .equalsIgnoreCase(nameOrEmail)
+        || account.getExternalIds().stream().anyMatch(extId -> extId
+            .getSchemeRest().trim().equalsIgnoreCase(nameOrEmail));
   }
 }
