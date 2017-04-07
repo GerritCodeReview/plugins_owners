@@ -8,6 +8,8 @@ import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
+import com.google.gerrit.reviewdb.client.Branch.NameKey;
+import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
@@ -77,9 +79,14 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       Change.Id id = Change.Id.fromRef(event.getRefName());
       try {
         Change change = db.get().changes().get(id);
+
+        //getting branch name
+        String branch = change.getDest().getShortName(); 
+        //logger.info("branch is " + branch);
+
         PatchList patchList = getPatchList(event, change);
         if (patchList != null) {
-          PathOwners owners = new PathOwners(accountResolver, repository, patchList);
+          PathOwners owners = new PathOwners(accountResolver, repository, patchList, branch);
           reviewerManager.addReviewers(change, owners.get().values());
         }
       } catch (OrmException e) {

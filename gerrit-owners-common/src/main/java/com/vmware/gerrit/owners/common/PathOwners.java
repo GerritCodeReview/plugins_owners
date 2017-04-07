@@ -25,6 +25,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/*import com.google.gerrit.rules.StoredValue;
+import com.google.gerrit.rules.StoredValues;
+import com.google.gerrit.reviewdb.client.Change;
+import com.google.gerrit.reviewdb.client.Branch.NameKey;
+import com.google.gerrit.reviewdb.client.Branch;*/
+
 /**
  * Calculates the owners of a patch list.
  */
@@ -41,10 +47,21 @@ public class PathOwners {
 
   private final PatchList patchList;
 
-  public PathOwners(AccountResolver resolver, Repository repository, PatchList patchList) throws OrmException {
+  private String branch;
+
+  public PathOwners(AccountResolver resolver, Repository repository, PatchList patchList, String aBranch) throws OrmException {
     this.repository = repository;
     this.resolver = resolver;
     this.patchList = patchList;
+    
+    branch = aBranch;
+
+    /*try {
+      branch = repository.getBranch();
+      //log.info("branch is " + branch);
+    } catch (IOException e) {
+      log.error("An IOException was caught :"+e.getMessage());
+    }*/
 
     owners = Multimaps.unmodifiableSetMultimap(fetchOwners());
   }
@@ -66,10 +83,14 @@ public class PathOwners {
   private SetMultimap<String, Account.Id> fetchOwners() throws OrmException {
     SetMultimap<String, Account.Id> result = HashMultimap.create();
     Map<String, PathOwnersEntry> entries = new HashMap<String, PathOwnersEntry>();
+    
+    // debug statement
+    //log.info("fetching owners");
 
     PathOwnersEntry rootEntry = new PathOwnersEntry();
     OwnersConfig rootConfig = getOwners("OWNERS");
     if (rootConfig != null) {
+      //log.info("./OWNERS");
       rootEntry.setOwnersPath("OWNERS");
       rootEntry.addOwners(getOwnersFromEmails(rootConfig.getOwners()));
     }
@@ -90,6 +111,9 @@ public class PathOwners {
         // Skip if we already parsed this path
         if (!entries.containsKey(partial)) {
           String ownersPath = partial + "OWNERS";
+
+          //log.info(ownersPath);
+
           OwnersConfig config = getOwners(ownersPath);
           if (config != null) {
             PathOwnersEntry entry = new PathOwnersEntry();
@@ -146,7 +170,7 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    */
   private OwnersConfig getOwners(String ownersPath) {
-    String owners = BlobUtils.getContent(repository, "master", ownersPath);
+    String owners = BlobUtils.getContent(repository, branch, ownersPath);
 
     if (owners != null) {
       ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -169,6 +193,7 @@ public class PathOwners {
   private Set<Account.Id> getOwnersFromEmails(Set<String> emails) throws OrmException {
     Set<Account.Id> result = new HashSet<Account.Id>();
     for (String email : emails) {
+      //log.info("fetching " + email);
       Set<Account.Id> ids = resolver.findAll(email);
       result.addAll(ids);
     }
