@@ -14,7 +14,8 @@ java_library(
   ], excludes=COMPILE_STUB),
   deps = [
     '//plugins/owners/gerrit-owners-common:common',
-  ] + COMPILE_DEPS + EXTERNAL_DEPS,
+  ] + EXTERNAL_DEPS,
+  provided_deps = COMPILE_DEPS,
 )
 
 prolog_cafe_library(
