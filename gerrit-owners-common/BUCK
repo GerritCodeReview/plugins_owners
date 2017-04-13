@@ -33,12 +33,13 @@ maven_jar(
   license = 'Apache2.0',
 )
 
-# see common.defs on why this is a java_library2 rather than java_library
+# see common.defs on why COMPILE_DEPS is used with provided_deps
 java_library(
   name = 'common',
   srcs = glob([
     'src/main/java/**/*.java',
   ]),
-  deps = COMPILE_DEPS + EXTERNAL_DEPS,
+  deps = EXTERNAL_DEPS,
+  provided_deps = COMPILE_DEPS,
   visibility = ['PUBLIC'],
 )

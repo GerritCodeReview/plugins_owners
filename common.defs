@@ -13,7 +13,7 @@ EXTERNAL_DEPS = [
 # These are dependencies that must be made available to the plugins' libraries at compilation
 # time, but should not be included in the plugins' jar files since they will be provided
 # by the gerrit server jar.
-# For this reason all the intermediate java libraries that we build are java_library2 targets
+# For this reason it should be consumed using provided_deps and not deps in hava_library.
 # rather than java_library.
 COMPILE_DEPS = [
   '//lib:guava',
