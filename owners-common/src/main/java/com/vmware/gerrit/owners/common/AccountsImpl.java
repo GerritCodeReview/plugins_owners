@@ -20,6 +20,7 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
+import com.google.gerrit.server.account.ExternalId;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 
@@ -66,6 +67,6 @@ public class AccountsImpl implements Accounts {
     return account.getAccount().getFullName().trim()
         .equalsIgnoreCase(nameOrEmail)
         || account.getExternalIds().stream().anyMatch(extId -> extId
-            .getSchemeRest().trim().equalsIgnoreCase(nameOrEmail));
+            .key().get().trim().equalsIgnoreCase(ExternalId.SCHEME_MAILTO + ":" + nameOrEmail));
   }
 }
