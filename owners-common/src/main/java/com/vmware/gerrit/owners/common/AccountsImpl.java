@@ -20,7 +20,6 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
-import com.google.gerrit.server.account.ExternalId;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 
@@ -39,8 +38,7 @@ public class AccountsImpl implements Accounts {
   private final AccountCache byId;
 
   @Inject
-  public AccountsImpl(AccountResolver resolver, AccountCache byId,
-      ReviewDb db) {
+  public AccountsImpl(AccountResolver resolver, AccountCache byId, ReviewDb db) {
     this.resolver = resolver;
     this.byId = byId;
     this.db = db;
@@ -48,25 +46,44 @@ public class AccountsImpl implements Accounts {
 
   @Override
   public Set<Account.Id> find(String nameOrEmail) {
-    Set<Id> accountIds = Collections.emptySet();
     try {
-      accountIds = resolver.findAll(db, nameOrEmail).stream()
-          .filter(id -> isFullMatch(id, nameOrEmail))
-          .collect(Collectors.toSet());
+      Set<Id> accountIds = resolver.findAll(db, nameOrEmail);
+      if (accountIds.isEmpty()) {
+        log.warn("User '{}' does not resolve to any account.", nameOrEmail);
+        return accountIds;
+      }
+
+      Set<Id> fulllyMatchedAccountIds =
+          accountIds
+              .stream()
+              .filter(id -> isFullMatch(id, nameOrEmail))
+              .collect(Collectors.toSet());
+      if (fulllyMatchedAccountIds.isEmpty()) {
+        log.warn(
+            "User '{}' resolves to {} accounts {}, but does not correspond to any them",
+            nameOrEmail,
+            accountIds.size(),
+            accountIds);
+        return fulllyMatchedAccountIds;
+      }
+
+      return accountIds;
     } catch (OrmException e) {
       log.error("Error trying to resolve user " + nameOrEmail, e);
+      return Collections.emptySet();
     }
-    if (accountIds.isEmpty()) {
-      log.warn("User {} does not correspond to any account id", nameOrEmail);
-    }
-    return accountIds;
   }
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
     AccountState account = byId.get(id);
-    return account.getAccount().getFullName().trim()
-        .equalsIgnoreCase(nameOrEmail)
-        || account.getExternalIds().stream().anyMatch(extId -> extId
-            .key().get().trim().equalsIgnoreCase(ExternalId.SCHEME_MAILTO + ":" + nameOrEmail));
+    return account.getAccount().getFullName().trim().equalsIgnoreCase(nameOrEmail)
+        || account
+            .getExternalIds()
+            .stream()
+            .anyMatch(extId -> getSchemeRest(extId.key().scheme(), extId.key().get()).trim().equalsIgnoreCase(nameOrEmail));
+  }
+
+  private String getSchemeRest(String scheme, String key) {
+    return null != scheme ? key.substring(scheme.length() + 1) : null;
   }
 }
