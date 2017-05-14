@@ -21,6 +21,8 @@ import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
+import com.google.gerrit.server.util.ManualRequestContext;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -36,18 +38,18 @@ public class ReviewerManager {
       .getLogger(ReviewerManager.class);
 
   private final GerritApi gApi;
-  private final Gerrit214OneOffRequestContext requestContext;
+  private final OneOffRequestContext requestContext;
 
   @Inject
   public ReviewerManager(GerritApi gApi,
-      Gerrit214OneOffRequestContext requestContext) {
+      OneOffRequestContext requestContext) {
     this.gApi = gApi;
     this.requestContext = requestContext;
   }
 
   public void addReviewers(Change change, Collection<Account.Id> reviewers)
       throws ReviewerManagerException {
-    try (Gerrit214ManualRequestContext ctx = requestContext.openAs(
+    try (ManualRequestContext ctx = requestContext.openAs(
       change.getOwner())) {
 
       ChangeApi cApi = gApi.changes().id(change.getId().get());
