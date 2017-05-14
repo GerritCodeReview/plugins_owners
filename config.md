@@ -10,6 +10,7 @@ inherited: true
 owners:
 - some.email@example.com
 - User Name
+- group/Group of Users
 matchers:
 - suffix: .java
   owners:
@@ -32,6 +33,9 @@ user entry dropped._
 That translates to inheriting owner email address from any parent OWNER files
 and to define 'some.email@example.com' or 'User Name' users as the mandatory
 reviewers for all changes that include modification to those files.
+
+To specify a group of people instead of naming individual owners, prefix the
+group name or UUID with 'group/'.
 
 Additional owners can be specified for files selected by other matching
 conditions (matchers section). Matching can be done by file suffix, regex

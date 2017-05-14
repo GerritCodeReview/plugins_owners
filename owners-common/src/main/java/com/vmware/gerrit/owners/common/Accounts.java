@@ -21,6 +21,7 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(AccountsImpl.class)
 public interface Accounts {
+  public String GROUP_PREFIX = "group/";
 
   Set<Account.Id> find(String nameOrEmail);
 }
