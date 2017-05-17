@@ -16,7 +16,6 @@
 package com.vmware.gerrit.owners.common;
 
 import com.google.gerrit.reviewdb.client.Account;
-
 import java.util.Set;
 
 public class SuffixMatcher extends Matcher {

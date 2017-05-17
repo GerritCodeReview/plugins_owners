@@ -18,21 +18,19 @@ import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.eclipse.jgit.lib.Repository;
-import org.junit.Ignore;
-import org.powermock.api.easymock.PowerMock;
-
 import com.google.common.base.Charsets;
 import com.google.gerrit.reviewdb.client.Patch;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.eclipse.jgit.lib.Repository;
+import org.junit.Ignore;
+import org.powermock.api.easymock.PowerMock;
 
 @Ignore
 public abstract class Config {
@@ -52,15 +50,17 @@ public abstract class Config {
 
   void expectConfig(String path, String config) throws IOException {
     expect(
-        JgitWrapper.getBlobAsBytes(anyObject(Repository.class),
-            anyObject(String.class), eq(path))).andReturn(
-        Optional.of(config.getBytes())).anyTimes();
+            JgitWrapper.getBlobAsBytes(
+                anyObject(Repository.class), anyObject(String.class), eq(path)))
+        .andReturn(Optional.of(config.getBytes()))
+        .anyTimes();
   }
 
   void expectNoConfig(String path) throws IOException {
     expect(
-        JgitWrapper.getBlobAsBytes(anyObject(Repository.class),
-            anyObject(String.class), eq(path))).andReturn(Optional.empty())
+            JgitWrapper.getBlobAsBytes(
+                anyObject(Repository.class), anyObject(String.class), eq(path)))
+        .andReturn(Optional.empty())
         .anyTimes();
   }
 
@@ -71,16 +71,14 @@ public abstract class Config {
   void creatingPatchList(List<String> names) {
     patchList = PowerMock.createMock(PatchList.class);
     List<PatchListEntry> entries =
-        names.stream().map(name -> expectEntry(name))
-            .collect(Collectors.toList());
+        names.stream().map(name -> expectEntry(name)).collect(Collectors.toList());
     expect(patchList.getPatches()).andReturn(entries);
   }
 
   PatchListEntry expectEntry(String name) {
     PatchListEntry entry = PowerMock.createMock(PatchListEntry.class);
     expect(entry.getNewName()).andReturn(name).anyTimes();
-    expect(entry.getChangeType()).andReturn(Patch.ChangeType.MODIFIED)
-        .anyTimes();
+    expect(entry.getChangeType()).andReturn(Patch.ChangeType.MODIFIED).anyTimes();
     expect(entry.getDeletions()).andReturn(1);
     expect(entry.getInsertions()).andReturn(1);
     return entry;

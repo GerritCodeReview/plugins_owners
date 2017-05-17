@@ -18,18 +18,6 @@ package com.vmware.gerrit.owners.common;
 
 import static com.vmware.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.eclipse.jgit.lib.Repository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -40,10 +28,18 @@ import com.google.gerrit.reviewdb.client.Patch;
 import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import org.eclipse.jgit.lib.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Calculates the owners of a patch list.
- */
+/** Calculates the owners of a patch list. */
 // TODO(vspivak): provide assisted factory
 public class PathOwners {
 
@@ -108,9 +104,9 @@ public class PathOwners {
               .orElse(new PathOwnersEntry());
 
       PathOwnersEntry rootEntry =
-          getOwnersConfig(rootPath, branch).map(
-              conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections
-                  .emptySet())).orElse(new PathOwnersEntry());
+          getOwnersConfig(rootPath, branch)
+              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .orElse(new PathOwnersEntry());
 
       Set<String> modifiedPaths = getModifiedPaths();
       Map<String, PathOwnersEntry> entries = new HashMap<>();
@@ -119,13 +115,12 @@ public class PathOwners {
         currentEntry = resolvePathEntry(path, branch, projectEntry, rootEntry, entries);
 
         // add owners to file for matcher predicates
-        ownersMap.addFileOwners(path,currentEntry.getOwners());
+        ownersMap.addFileOwners(path, currentEntry.getOwners());
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
         if (currentEntry.getOwnersPath() != null) {
-          ownersMap.addPathOwners(currentEntry.getOwnersPath(),
-              currentEntry.getOwners());
+          ownersMap.addPathOwners(currentEntry.getOwnersPath(), currentEntry.getOwners());
         }
         ownersMap.addMatchers(currentEntry.getMatchers());
       }
@@ -149,8 +144,11 @@ public class PathOwners {
     }
   }
 
-  private void processMatcherPerPath(Map<String, Matcher> fullMatchers,
-      HashMap<String, Matcher> newMatchers, String path, OwnersMap ownersMap) {
+  private void processMatcherPerPath(
+      Map<String, Matcher> fullMatchers,
+      HashMap<String, Matcher> newMatchers,
+      String path,
+      OwnersMap ownersMap) {
     Iterator<Matcher> it = fullMatchers.values().iterator();
     while (it.hasNext()) {
       Matcher matcher = it.next();
@@ -174,8 +172,8 @@ public class PathOwners {
     StringBuilder builder = new StringBuilder();
 
     if (rootEntry.isInherited()) {
-      for(Matcher matcher : projectEntry.getMatchers().values()) {
-        if(!currentEntry.hasMatcher(matcher.getPath())) {
+      for (Matcher matcher : projectEntry.getMatchers().values()) {
+        if (!currentEntry.hasMatcher(matcher.getPath())) {
           currentEntry.addMatcher(matcher);
         }
       }

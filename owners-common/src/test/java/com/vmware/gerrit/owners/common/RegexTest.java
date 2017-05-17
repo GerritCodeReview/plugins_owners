@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
+import com.google.gerrit.reviewdb.client.Account;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,14 +32,11 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.google.gerrit.reviewdb.client.Account;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JgitWrapper.class)
@@ -78,9 +76,9 @@ public class RegexTest extends Config {
         createConfig(
             true,
             owners(ACCOUNT_A),
-                suffixMatcher(".sql", ACCOUNT_B, ACCOUNT_C),
-                regexMatcher(".*/a.*", ACCOUNT_D),
-                partialRegexMatcher("Product.sql", ACCOUNT_A));
+            suffixMatcher(".sql", ACCOUNT_B, ACCOUNT_C),
+            regexMatcher(".*/a.*", ACCOUNT_D),
+            partialRegexMatcher("Product.sql", ACCOUNT_A));
     // the function to test
     Optional<OwnersConfig> configNullable = getOwnersConfig(fullConfig);
     // check classical configuration
@@ -112,7 +110,6 @@ public class RegexTest extends Config {
     Set<Account.Id> dbOwners = dbMatcher.getOwners();
     assertTrue(dbOwners.contains(ACCOUNT_D_ID));
 
-
     // partial_regex matcher
     Matcher partial = matchers.get("Product.sql");
     assertEquals(1, partial.getOwners().size());
@@ -123,24 +120,30 @@ public class RegexTest extends Config {
   @Test
   public void checkMatchers() throws Exception {
     String parentConfig =
-        createConfig(true, owners(ACCOUNT_A),
+        createConfig(
+            true,
+            owners(ACCOUNT_A),
             suffixMatcher(".sql", ACCOUNT_B, ACCOUNT_C),
             regexMatcher(".*/a.*", ACCOUNT_D));
     String childConfig =
-        createConfig(true, owners(ACCOUNT_F),
+        createConfig(
+            true,
+            owners(ACCOUNT_F),
             exactMatcher("project/file.txt", ACCOUNT_D, ACCOUNT_E),
             partialRegexMatcher("alfa", ACCOUNT_A));
 
     expectConfig("OWNERS", parentConfig);
     expectConfig("project/OWNERS", childConfig);
 
-    creatingPatchList(Arrays.asList("project/file.txt", // matches exact in
-                                                        // project owners d,e
-        "file1.txt", // no matches so nothing for this
-        "project/afile2.sql", // matches two matchers so we have b,c,d
-        "project/bfile.txt",  // no matching
-        "projectalfa", // matches PartialRegex
-        "project/file.sql")); // only .sql matching b,c
+    creatingPatchList(
+        Arrays.asList(
+            "project/file.txt", // matches exact in
+            // project owners d,e
+            "file1.txt", // no matches so nothing for this
+            "project/afile2.sql", // matches two matchers so we have b,c,d
+            "project/bfile.txt", // no matching
+            "projectalfa", // matches PartialRegex
+            "project/file.sql")); // only .sql matching b,c
     replayAll();
 
     // function under test
@@ -156,9 +159,9 @@ public class RegexTest extends Config {
 
     // asserts we have 1 exact matcher
     List<Entry<String, Matcher>> onlyExacts =
-        iteratorStream(matchers.entrySet().iterator()).filter(
-            entry -> entry.getValue() instanceof ExactMatcher).collect(
-            Collectors.toList());
+        iteratorStream(matchers.entrySet().iterator())
+            .filter(entry -> entry.getValue() instanceof ExactMatcher)
+            .collect(Collectors.toList());
     assertEquals(1, onlyExacts.size());
     assertEquals("project/file.txt", onlyExacts.get(0).getKey());
 
@@ -172,7 +175,7 @@ public class RegexTest extends Config {
 
     // ... 1 partial regex matcher
     List<Entry<String, Matcher>> partialRegexList =
-       iteratorStream(matchers.entrySet().iterator())
+        iteratorStream(matchers.entrySet().iterator())
             .filter(entry -> entry.getValue() instanceof PartialRegExMatcher)
             .collect(Collectors.toList());
     assertEquals(1, partialRegexList.size());
@@ -180,25 +183,25 @@ public class RegexTest extends Config {
 
     // .... 1 suffix matcher
     List<Entry<String, Matcher>> suffixList =
-        iteratorStream(matchers.entrySet().iterator()).filter(
-            entry -> entry.getValue() instanceof SuffixMatcher).collect(
-            Collectors.toList());
+        iteratorStream(matchers.entrySet().iterator())
+            .filter(entry -> entry.getValue() instanceof SuffixMatcher)
+            .collect(Collectors.toList());
     assertEquals(1, suffixList.size());
     assertEquals(".sql", suffixList.get(0).getKey());
 
     // now checks file owners as well
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
-    assertEquals(6,fileOwners.size());
+    assertEquals(6, fileOwners.size());
 
     Set<Account.Id> set1 = fileOwners.get("project/file.txt");
-    assertEquals(4,set1.size()); // includes classic owners a and f
+    assertEquals(4, set1.size()); // includes classic owners a and f
     assertTrue(set1.contains(ACCOUNT_A_ID));
     assertTrue(set1.contains(ACCOUNT_D_ID));
     assertTrue(set1.contains(ACCOUNT_E_ID));
     assertTrue(set1.contains(ACCOUNT_F_ID));
 
     Set<Account.Id> set2 = fileOwners.get("project/afile2.sql");
-    assertEquals(5,set2.size());
+    assertEquals(5, set2.size());
     assertTrue(set2.contains(ACCOUNT_A_ID));
     assertTrue(set2.contains(ACCOUNT_B_ID));
     assertTrue(set2.contains(ACCOUNT_C_ID));
@@ -206,14 +209,14 @@ public class RegexTest extends Config {
     assertTrue(set2.contains(ACCOUNT_F_ID));
 
     Set<Account.Id> set3 = fileOwners.get("project/file.sql");
-    assertEquals(4,set3.size());
+    assertEquals(4, set3.size());
     assertTrue(set3.contains(ACCOUNT_A_ID));
     assertTrue(set3.contains(ACCOUNT_B_ID));
     assertTrue(set3.contains(ACCOUNT_C_ID));
     assertTrue(set3.contains(ACCOUNT_F_ID));
 
     Set<Account.Id> set4 = fileOwners.get("projectalfa");
-    assertEquals(1,set4.size()); // only 1 because a is class and alfa owner
+    assertEquals(1, set4.size()); // only 1 because a is class and alfa owner
     assertTrue(set4.contains(ACCOUNT_A_ID));
   }
 
@@ -222,8 +225,7 @@ public class RegexTest extends Config {
     replayAll();
 
     Optional<OwnersConfig> ownersConfigOpt =
-        getOwnersConfig(createConfig(false, new String[0],
-            suffixMatcher(".txt", ACCOUNT_B)));
+        getOwnersConfig(createConfig(false, new String[0], suffixMatcher(".txt", ACCOUNT_B)));
 
     assertThat(ownersConfigOpt.isPresent()).named("ownersConfig").isTrue();
     OwnersConfig ownersConfig = ownersConfigOpt.get();
@@ -234,8 +236,7 @@ public class RegexTest extends Config {
 
   @Test
   public void testkRegexShouldMatchOnlyOnSuffix() throws Exception {
-    String configString =
-        createConfig(false, new String[0], suffixMatcher(".sql", ACCOUNT_B));
+    String configString = createConfig(false, new String[0], suffixMatcher(".sql", ACCOUNT_B));
 
     expectConfig("OWNERS", configString);
     expectNoConfig("project/OWNERS");

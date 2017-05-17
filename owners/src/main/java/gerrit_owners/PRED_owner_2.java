@@ -16,9 +16,6 @@
 
 package gerrit_owners;
 
-import com.vmware.gerrit.owners.OwnersStoredValues;
-import com.vmware.gerrit.owners.common.PathOwners;
-
 import com.google.gerrit.reviewdb.client.Account;
 import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.IntegerTerm;
@@ -29,13 +26,12 @@ import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlecode.prolog_cafe.lang.StructureTerm;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
-
+import com.vmware.gerrit.owners.OwnersStoredValues;
+import com.vmware.gerrit.owners.common.PathOwners;
 import java.util.Iterator;
 import java.util.Map;
 
-/**
- * 'owner'(-Path, -User)
- */
+/** 'owner'(-Path, -User) */
 public class PRED_owner_2 extends Predicate.P2 {
 
   private static final PRED_owner_check OWNER_CHECK = new PRED_owner_check();
@@ -114,5 +110,4 @@ public class PRED_owner_2 extends Predicate.P2 {
       return engine.jtry3(OWNER_CHECK, OWNER_NEXT);
     }
   }
-
 }
