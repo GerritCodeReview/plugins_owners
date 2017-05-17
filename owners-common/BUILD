@@ -19,10 +19,10 @@ gerrit_plugin(
 )
 
 junit_tests(
-  name = 'test',
-  testonly = 1,
-  srcs = glob(['src/test/java/**/*.java']),
-  deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
-  	":owners-common",
-  ]
+    name = "test",
+    testonly = 1,
+    srcs = glob(["src/test/java/**/*.java"]),
+    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+        ":owners-common",
+    ],
 )

@@ -35,9 +35,9 @@ gerrit_plugin(
         "Gerrit-Module: com.vmware.gerrit.owners.OwnersModule",
         "Gerrit-ApiVersion: 2.14-SNAPSHOT",
     ],
+    resources = glob(["src/main/**/*"]),
     deps = [
         ":gerrit-owners-lib",
         ":gerrit-owners-prolog-rules",
     ] + EXTERNAL_DEPS,
-    resources = glob(["src/main/**/*"]),
 )
