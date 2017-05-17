@@ -18,35 +18,33 @@ package com.vmware.gerrit.owners.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import java.util.Map;
 import java.util.Set;
 
 /**
  * OWNERS file model.
- * <p/>
- * Used for de-serializing the OWNERS files.
+ *
+ * <p>Used for de-serializing the OWNERS files.
  */
 public class OwnersConfig {
-  /**
-   * Flag for marking that this OWNERS file inherits from the parent OWNERS.
-   */
+  /** Flag for marking that this OWNERS file inherits from the parent OWNERS. */
   private boolean inherited = true;
 
-  /**
-   * Set of OWNER email addresses.
-   */
+  /** Set of OWNER email addresses. */
   private Set<String> owners = Sets.newHashSet();
 
-  /**
-   * Map name of matcher and Matcher (value + Set Owners)
-   */
-  private Map<String,Matcher> matchers = Maps.newHashMap();
+  /** Map name of matcher and Matcher (value + Set Owners) */
+  private Map<String, Matcher> matchers = Maps.newHashMap();
 
   @Override
   public String toString() {
-    return "OwnersConfig [inherited=" + inherited + ", owners=" + owners
-        + ", matchers=" + matchers + "]";
+    return "OwnersConfig [inherited="
+        + inherited
+        + ", owners="
+        + owners
+        + ", matchers="
+        + matchers
+        + "]";
   }
 
   public boolean isInherited() {
@@ -65,7 +63,7 @@ public class OwnersConfig {
     this.owners = owners;
   }
 
-  public Map<String,Matcher> getMatchers() {
+  public Map<String, Matcher> getMatchers() {
     return matchers;
   }
 

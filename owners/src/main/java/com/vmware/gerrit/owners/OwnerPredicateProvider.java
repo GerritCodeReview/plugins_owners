@@ -16,16 +16,13 @@
 
 package com.vmware.gerrit.owners;
 
-
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.Listen;
 import com.google.gerrit.rules.PredicateProvider;
 import com.google.inject.Inject;
 import com.vmware.gerrit.owners.common.Accounts;
 
-/**
- * Gerrit OWNERS Prolog Predicate Provider.
- */
+/** Gerrit OWNERS Prolog Predicate Provider. */
 @Listen
 public class OwnerPredicateProvider implements PredicateProvider {
   @Inject

@@ -15,7 +15,6 @@
 package com.vmware.gerrit.owners.common;
 
 import com.google.gerrit.reviewdb.client.Account;
-
 import java.util.Set;
 
 public abstract class Matcher {
@@ -44,10 +43,9 @@ public abstract class Matcher {
     this.path = path;
   }
 
-
   public String getPath() {
     return path;
   }
 
-  abstract public boolean matches(String pathToMatch);
+  public abstract boolean matches(String pathToMatch);
 }
