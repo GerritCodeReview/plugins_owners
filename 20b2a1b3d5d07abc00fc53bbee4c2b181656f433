@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bec3c8f5_6d6c2e4b",
+        "filename": "owners-common/BUCK",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-05-17T13:12:45Z",
+      "side": 0,
+      "message": "Do we even need the BUCK file after all? I do not believe so.",
+      "revId": "20b2a1b3d5d07abc00fc53bbee4c2b181656f433",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
