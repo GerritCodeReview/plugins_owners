@@ -20,7 +20,6 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.rules.PrologEnvironment;
 import com.google.gerrit.rules.StoredValues;
 import com.google.gerrit.server.IdentifiedUser;
-
 import com.googlecode.prolog_cafe.exceptions.PInstantiationException;
 import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.Operation;
@@ -31,16 +30,14 @@ import com.googlecode.prolog_cafe.lang.Term;
 import com.googlecode.prolog_cafe.lang.VariableTerm;
 import com.vmware.gerrit.owners.OwnersStoredValues;
 import com.vmware.gerrit.owners.common.PathOwners;
-
 import java.io.File;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Get the list of users owning this file Actually a variation of
- * PRED_current_user/2 in gerrit main module, sharing its cache.. This is really
- * needed to avoid prolog consuming rules and RAM space
+ * Get the list of users owning this file Actually a variation of PRED_current_user/2 in gerrit main
+ * module, sharing its cache.. This is really needed to avoid prolog consuming rules and RAM space
  *
  * <pre>
  *   gerrit_owners:file_owners(+FilePath, -UserListFormatted).
@@ -86,8 +83,9 @@ class PRED_file_owners_2 extends Predicate.P2 {
     String path = key.toString();
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
     Set<String> ownersNames =
-        iteratorStream(owners.getFileOwners().get(path).iterator()).map(
-            id -> getFullNameFromId(engine, id)).collect(Collectors.toSet());
+        iteratorStream(owners.getFileOwners().get(path).iterator())
+            .map(id -> getFullNameFromId(engine, id))
+            .collect(Collectors.toSet());
     String ownVerb = ownersNames.size() > 1 ? " own " : " owns ";
     String userNames = ownersNames.stream().collect(Collectors.joining(", "));
     return SymbolTerm.create(userNames + ownVerb + (new File(path)).getName());

@@ -14,10 +14,9 @@
 
 package com.vmware.gerrit.owners.common;
 
-import java.util.Set;
-
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.inject.ImplementedBy;
+import java.util.Set;
 
 @ImplementedBy(AccountsImpl.class)
 public interface Accounts {

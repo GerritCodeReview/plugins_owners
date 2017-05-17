@@ -26,31 +26,26 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
+import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-
 @Singleton
 public class ReviewerManager {
-  private static final Logger log = LoggerFactory
-      .getLogger(ReviewerManager.class);
+  private static final Logger log = LoggerFactory.getLogger(ReviewerManager.class);
 
   private final GerritApi gApi;
   private final OneOffRequestContext requestContext;
 
   @Inject
-  public ReviewerManager(GerritApi gApi,
-      OneOffRequestContext requestContext) {
+  public ReviewerManager(GerritApi gApi, OneOffRequestContext requestContext) {
     this.gApi = gApi;
     this.requestContext = requestContext;
   }
 
   public void addReviewers(Change change, Collection<Account.Id> reviewers)
       throws ReviewerManagerException {
-    try (ManualRequestContext ctx = requestContext.openAs(
-      change.getOwner())) {
+    try (ManualRequestContext ctx = requestContext.openAs(change.getOwner())) {
 
       ChangeApi cApi = gApi.changes().id(change.getId().get());
       for (Account.Id account : reviewers) {
