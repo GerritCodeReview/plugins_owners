@@ -17,24 +17,21 @@ package com.vmware.gerrit.owners.common;
 
 import static com.vmware.gerrit.owners.common.StreamUtils.iteratorStream;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.gerrit.reviewdb.client.Account.Id;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.gerrit.reviewdb.client.Account.Id;
-
 public class ConfigurationParser {
 
-  private static final Logger log =
-      LoggerFactory.getLogger(OwnersConfig.class);
+  private static final Logger log = LoggerFactory.getLogger(OwnersConfig.class);
   private Accounts accounts;
 
   public ConfigurationParser(Accounts accounts) {
@@ -44,10 +41,9 @@ public class ConfigurationParser {
   public Optional<OwnersConfig> getOwnersConfig(byte[] yamlBytes) {
     try {
       final OwnersConfig ret = new OwnersConfig();
-      JsonNode jsonNode = new ObjectMapper(new YAMLFactory())
-          .readValue(yamlBytes, JsonNode.class);
-      Boolean inherited = Optional.ofNullable(jsonNode.get("inherited"))
-          .map(JsonNode::asBoolean).orElse(false);
+      JsonNode jsonNode = new ObjectMapper(new YAMLFactory()).readValue(yamlBytes, JsonNode.class);
+      Boolean inherited =
+          Optional.ofNullable(jsonNode.get("inherited")).map(JsonNode::asBoolean).orElse(false);
       ret.setInherited(inherited);
       addClassicMatcher(jsonNode, ret);
       addMatchers(jsonNode, ret);
@@ -60,10 +56,8 @@ public class ConfigurationParser {
 
   private void addClassicMatcher(JsonNode jsonNode, OwnersConfig ret) {
     Optional<Stream<String>> owners =
-        Optional.ofNullable(jsonNode.get("owners"))
-        .map(ConfigurationParser::extractOwners);
+        Optional.ofNullable(jsonNode.get("owners")).map(ConfigurationParser::extractOwners);
     ret.setOwners(flattenSet(owners));
-
   }
 
   private static <T> Set<T> flattenSet(Optional<Stream<T>> optionalStream) {
@@ -75,9 +69,7 @@ public class ConfigurationParser {
   }
 
   private void addMatchers(JsonNode jsonNode, OwnersConfig ret) {
-    getNode(jsonNode, "matchers")
-    .map(this::getMatchers)
-    .ifPresent(m -> m.forEach(ret::addMatcher));
+    getNode(jsonNode, "matchers").map(this::getMatchers).ifPresent(m -> m.forEach(ret::addMatcher));
   }
 
   private Stream<Matcher> getMatchers(JsonNode node) {
@@ -87,18 +79,13 @@ public class ConfigurationParser {
         .map(m -> m.get());
   }
 
-  private static Stream<String> extractOwners(
-      JsonNode node) {
-    return iteratorStream(node.iterator())
-            .map(JsonNode::asText);
+  private static Stream<String> extractOwners(JsonNode node) {
+    return iteratorStream(node.iterator()).map(JsonNode::asText);
   }
-
-
 
   private Optional<Matcher> toMatcher(JsonNode node) {
     Set<Id> owners =
-        flatten(getNode(node, "owners")
-            .map(ConfigurationParser::extractOwners))
+        flatten(getNode(node, "owners").map(ConfigurationParser::extractOwners))
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
     if (owners.isEmpty()) {
@@ -108,22 +95,23 @@ public class ConfigurationParser {
 
     Optional<Matcher> suffixMatcher =
         getText(node, "suffix").map(el -> new SuffixMatcher(el, owners));
-    Optional<Matcher> regexMatcher =
-        getText(node, "regex").map(el -> new RegExMatcher(el, owners));
+    Optional<Matcher> regexMatcher = getText(node, "regex").map(el -> new RegExMatcher(el, owners));
     Optional<Matcher> partialRegexMatcher =
-        getText(node, "partial_regex").map(
-            el -> new PartialRegExMatcher(el, owners));
-    Optional<Matcher> exactMatcher =
-        getText(node, "exact").map(el -> new ExactMatcher(el, owners));
+        getText(node, "partial_regex").map(el -> new PartialRegExMatcher(el, owners));
+    Optional<Matcher> exactMatcher = getText(node, "exact").map(el -> new ExactMatcher(el, owners));
 
-    return Optional.ofNullable(suffixMatcher
-        .orElseGet(() -> regexMatcher
-        .orElseGet(() -> partialRegexMatcher
-        .orElseGet(() -> exactMatcher
-        .orElseGet(() -> {
-          log.warn("Ignoring invalid element " + node.toString());
-          return null;
-        })))));
+    return Optional.ofNullable(
+        suffixMatcher.orElseGet(
+            () ->
+                regexMatcher.orElseGet(
+                    () ->
+                        partialRegexMatcher.orElseGet(
+                            () ->
+                                exactMatcher.orElseGet(
+                                    () -> {
+                                      log.warn("Ignoring invalid element " + node.toString());
+                                      return null;
+                                    })))));
   }
 
   private static Optional<String> getText(JsonNode node, String field) {

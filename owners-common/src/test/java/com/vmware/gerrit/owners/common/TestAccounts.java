@@ -14,19 +14,16 @@
 
 package com.vmware.gerrit.owners.common;
 
+import com.google.gerrit.reviewdb.client.Account;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
 import org.junit.Ignore;
 
-import com.google.gerrit.reviewdb.client.Account;
-
 @Ignore
-public class TestAccounts extends HashMap<String, Account.Id> implements
-    Accounts {
+public class TestAccounts extends HashMap<String, Account.Id> implements Accounts {
   private static final long serialVersionUID = 1L;
 
   @Override

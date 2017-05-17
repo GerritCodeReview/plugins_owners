@@ -18,17 +18,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
+import com.google.gerrit.reviewdb.client.Account;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.google.gerrit.reviewdb.client.Account;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JgitWrapper.class)
@@ -43,8 +41,7 @@ public class PathOwnersTest extends ClassicConfig {
   @Test
   public void testClassic() throws Exception {
     expectNoConfig("OWNERS");
-    expectConfig("classic/OWNERS",
-        createConfig(false, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+    expectConfig("classic/OWNERS", createConfig(false, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
@@ -59,8 +56,7 @@ public class PathOwnersTest extends ClassicConfig {
   @Test
   public void testClassicWithInheritance() throws Exception {
     expectConfig("OWNERS", createConfig(true, owners(USER_C_EMAIL_COM)));
-    expectConfig("classic/OWNERS",
-        createConfig(true, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+    expectConfig("classic/OWNERS", createConfig(true, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
@@ -79,8 +75,7 @@ public class PathOwnersTest extends ClassicConfig {
   public void testClassicWithInheritanceAndDeepNesting() throws Exception {
     expectConfig("OWNERS", createConfig(true, owners(USER_C_EMAIL_COM)));
     expectConfig("dir/OWNERS", createConfig(true, owners(USER_B_EMAIL_COM)));
-    expectConfig("dir/subdir/OWNERS",
-        createConfig(true, owners(USER_A_EMAIL_COM)));
+    expectConfig("dir/subdir/OWNERS", createConfig(true, owners(USER_A_EMAIL_COM)));
 
     creatingPatchList(Arrays.asList("dir/subdir/file.txt"));
     replayAll();
@@ -96,14 +91,11 @@ public class PathOwnersTest extends ClassicConfig {
 
   @Test
   public void testParsingYaml() {
-    String yamlString = (
-        "inherited: true\n" +
-        "owners:\n" +
-        "- " + USER_C_EMAIL_COM);
+    String yamlString = ("inherited: true\nowners:\n- " + USER_C_EMAIL_COM);
     Optional<OwnersConfig> config = getOwnersConfig(yamlString);
     assertTrue(config.isPresent());
     assertTrue(config.get().isInherited());
-    assertEquals(1,config.get().getOwners().size());
+    assertEquals(1, config.get().getOwners().size());
     assertTrue(config.get().getOwners().contains(USER_C_EMAIL_COM));
   }
 }

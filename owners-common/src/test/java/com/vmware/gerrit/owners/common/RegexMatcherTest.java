@@ -32,11 +32,10 @@ public class RegexMatcherTest {
   }
 
   @Test
-  public void testFloatingRegex(){
+  public void testFloatingRegex() {
     PartialRegExMatcher matcher = new PartialRegExMatcher("a.*.sql", null);
     assertTrue(matcher.matches("xxxxxxx/alfa.sql"));
     assertTrue(matcher.matches("alfa.sqlxxxxx"));
     assertFalse(matcher.matches("alfa.bar"));
   }
-
 }
