@@ -1,9 +1,8 @@
+load("//tools/bzl:gwt.bzl", "PLUGIN_DEPS_NEVERLINK")
 load("//tools/bzl:junit.bzl", "junit_tests")
 load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS")
 load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
 load("//plugins/owners-common:common.bzl", "EXTERNAL_DEPS")
-
-COMPILE_STUB = ["src/main/java/com/vmware/gerrit/owners/CompileStub.java"]
 
 java_library(
     name = "gerrit-owners-lib",
@@ -11,23 +10,22 @@ java_library(
         "src/main/java/**/*.java",
     ]),
     deps = [
-        "@prolog_runtime//jar",
+        "@prolog_runtime//jar:neverlink",
         "//plugins/owners-common:owners-common",
-    ] + PLUGIN_DEPS + EXTERNAL_DEPS,
+    ] + PLUGIN_DEPS_NEVERLINK + EXTERNAL_DEPS,
 )
 
 prolog_cafe_library(
     name = "gerrit-owners-prolog-rules",
     srcs = glob(["src/main/prolog/*.pl"]),
-    deps = [
-        ":gerrit-owners-lib",
-        "//gerrit-server/src/main/prolog:common",
+    deps = PLUGIN_DEPS_NEVERLINK + [
+        ":gerrit-owners-lib"
     ],
 )
 
 gerrit_plugin(
     name = "owners",
-    srcs = COMPILE_STUB,
+    srcs = ["src/main/java/com/vmware/gerrit/owners/CompileStub.java"],
     manifest_entries = [
         "Implementation-Title: Gerrit OWNERS plugin",
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
