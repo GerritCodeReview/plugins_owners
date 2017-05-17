@@ -23,7 +23,6 @@ import com.google.inject.AbstractModule;
 public class AutoassignModule extends AbstractModule {
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), GitReferenceUpdatedListener.class)
-        .to(GitRefListener.class);
+    DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
   }
 }

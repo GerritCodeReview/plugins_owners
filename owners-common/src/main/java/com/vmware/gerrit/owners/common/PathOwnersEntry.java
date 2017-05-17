@@ -19,27 +19,27 @@ package com.vmware.gerrit.owners.common;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gerrit.reviewdb.client.Account;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Path Owners Entry.
- * <p/>
- * Used internally by PathOwners to represent and compute the owners at a
- * specific path.
+ *
+ * <p>Used internally by PathOwners to represent and compute the owners at a specific path.
  */
 class PathOwnersEntry {
 
-  public PathOwnersEntry() {
-  }
+  public PathOwnersEntry() {}
 
-  public PathOwnersEntry(String path, OwnersConfig config, Accounts accounts,
-      Set<Account.Id> inheritedOwners) {
+  public PathOwnersEntry(
+      String path, OwnersConfig config, Accounts accounts, Set<Account.Id> inheritedOwners) {
     this.ownersPath = path;
     this.owners =
-        config.getOwners().stream().flatMap(o -> accounts.find(o).stream())
+        config
+            .getOwners()
+            .stream()
+            .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
@@ -49,15 +49,19 @@ class PathOwnersEntry {
 
   @Override
   public String toString() {
-    return "PathOwnersEntry [ownersPath=" + ownersPath + ", owners=" + owners
-        + ", matchers=" + matchers + "]";
+    return "PathOwnersEntry [ownersPath="
+        + ownersPath
+        + ", owners="
+        + owners
+        + ", matchers="
+        + matchers
+        + "]";
   }
 
   private String ownersPath;
   private Set<Account.Id> owners = Sets.newHashSet();
 
   private Map<String, Matcher> matchers = Maps.newHashMap();
-
 
   public void addMatcher(Matcher matcher) {
     this.matchers.put(matcher.getPath(), matcher);

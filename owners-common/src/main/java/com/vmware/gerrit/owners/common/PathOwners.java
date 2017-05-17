@@ -18,18 +18,6 @@ package com.vmware.gerrit.owners.common;
 
 import static com.vmware.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.eclipse.jgit.lib.Repository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -39,10 +27,18 @@ import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.Patch;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import org.eclipse.jgit.lib.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Calculates the owners of a patch list.
- */
+/** Calculates the owners of a patch list. */
 // TODO(vspivak): provide assisted factory
 public class PathOwners {
 
@@ -62,9 +58,7 @@ public class PathOwners {
 
   private Map<String, Set<Id>> fileOwners;
 
-  public PathOwners(Accounts accounts,
-      Repository repository,
-      PatchList patchList) {
+  public PathOwners(Accounts accounts, Repository repository, PatchList patchList) {
     this.repository = repository;
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
@@ -103,25 +97,23 @@ public class PathOwners {
     try {
       String rootPath = "OWNERS";
       PathOwnersEntry rootEntry =
-          getOwnersConfig(rootPath).map(
-              conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections
-                  .emptySet())).orElse(new PathOwnersEntry());
+          getOwnersConfig(rootPath)
+              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .orElse(new PathOwnersEntry());
 
       Set<String> modifiedPaths = getModifiedPaths();
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
-        currentEntry =
-            resolvePathEntry(path, rootEntry, entries);
+        currentEntry = resolvePathEntry(path, rootEntry, entries);
 
         // add owners to file for matcher predicates
-        ownersMap.addFileOwners(path,currentEntry.getOwners());
+        ownersMap.addFileOwners(path, currentEntry.getOwners());
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
         if (currentEntry.getOwnersPath() != null) {
-          ownersMap.addPathOwners(currentEntry.getOwnersPath(),
-              currentEntry.getOwners());
+          ownersMap.addPathOwners(currentEntry.getOwnersPath(), currentEntry.getOwners());
         }
         ownersMap.addMatchers(currentEntry.getMatchers());
       }
@@ -145,8 +137,11 @@ public class PathOwners {
     }
   }
 
-  private void processMatcherPerPath(Map<String, Matcher> fullMatchers,
-      HashMap<String, Matcher> newMatchers, String path, OwnersMap ownersMap) {
+  private void processMatcherPerPath(
+      Map<String, Matcher> fullMatchers,
+      HashMap<String, Matcher> newMatchers,
+      String path,
+      OwnersMap ownersMap) {
     Iterator<Matcher> it = fullMatchers.values().iterator();
     while (it.hasNext()) {
       Matcher matcher = it.next();
@@ -157,8 +152,8 @@ public class PathOwners {
     }
   }
 
-  private PathOwnersEntry resolvePathEntry(String path,
-      PathOwnersEntry rootEntry, Map<String, PathOwnersEntry> entries)
+  private PathOwnersEntry resolvePathEntry(
+      String path, PathOwnersEntry rootEntry, Map<String, PathOwnersEntry> entries)
       throws IOException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
@@ -178,8 +173,7 @@ public class PathOwners {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath);
         currentEntry =
-            conf.map(
-                c -> new PathOwnersEntry(ownersPath, c, accounts, currentOwners))
+            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, currentOwners))
                 .orElse(currentEntry);
         if (conf.map(OwnersConfig::isInherited).orElse(false)) {
           for (Matcher m : currentEntry.getMatchers().values()) {
@@ -221,9 +215,8 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    * @throws IOException
    */
-  private Optional<OwnersConfig> getOwnersConfig(String ownersPath)
-      throws IOException {
-    return getBlobAsBytes(repository, "master", ownersPath).flatMap(
-        bytes -> parser.getOwnersConfig(bytes));
+  private Optional<OwnersConfig> getOwnersConfig(String ownersPath) throws IOException {
+    return getBlobAsBytes(repository, "master", ownersPath)
+        .flatMap(bytes -> parser.getOwnersConfig(bytes));
   }
 }

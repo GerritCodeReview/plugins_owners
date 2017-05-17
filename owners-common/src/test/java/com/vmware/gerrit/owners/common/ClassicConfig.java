@@ -14,9 +14,8 @@
 
 package com.vmware.gerrit.owners.common;
 
-import org.junit.Ignore;
-
 import com.google.gerrit.reviewdb.client.Account;
+import org.junit.Ignore;
 
 @Ignore
 public class ClassicConfig extends Config {
