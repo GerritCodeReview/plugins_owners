@@ -135,10 +135,11 @@ public class AccountsImpl implements Accounts {
             .getExternalIds()
             .stream()
             .anyMatch(
-                extId ->
-                    getSchemeRest(extId.key().scheme(), extId.key().get())
-                        .trim()
-                        .equalsIgnoreCase(nameOrEmail));
+                extId -> {
+                    String schemeRest = getSchemeRest(extId.key().scheme(), extId.key().get());
+                    return null != schemeRest && schemeRest.trim().equalsIgnoreCase(nameOrEmail);
+                }
+            );
   }
 
   private String getSchemeRest(String scheme, String key) {
