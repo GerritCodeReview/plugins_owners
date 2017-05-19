@@ -142,6 +142,6 @@ public class AccountsImpl implements Accounts {
   }
 
   private String getSchemeRest(String scheme, String key) {
-    return null != scheme ? key.substring(scheme.length() + 1) : null;
+    return null != scheme ? key.substring(scheme.length() + 1) : key;
   }
 }
