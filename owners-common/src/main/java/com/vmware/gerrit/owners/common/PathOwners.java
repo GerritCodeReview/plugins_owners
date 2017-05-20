@@ -37,6 +37,7 @@ import com.google.common.collect.Sets;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.Patch;
+import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 
@@ -100,6 +101,12 @@ public class PathOwners {
     OwnersMap ownersMap = new OwnersMap();
     try {
       String rootPath = "OWNERS";
+
+      PathOwnersEntry projectEntry =
+          getOwnersConfig(rootPath, RefNames.REFS_CONFIG)
+              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .orElse(new PathOwnersEntry());
+
       PathOwnersEntry rootEntry =
           getOwnersConfig(rootPath, branch).map(
               conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections
@@ -109,7 +116,7 @@ public class PathOwners {
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
-        currentEntry = resolvePathEntry(path, branch, rootEntry, entries);
+        currentEntry = resolvePathEntry(path, branch, projectEntry, rootEntry, entries);
 
         // add owners to file for matcher predicates
         ownersMap.addFileOwners(path,currentEntry.getOwners());
@@ -155,12 +162,32 @@ public class PathOwners {
   }
 
   private PathOwnersEntry resolvePathEntry(
-      String path, String branch, PathOwnersEntry rootEntry, Map<String, PathOwnersEntry> entries)
+      String path,
+      String branch,
+      PathOwnersEntry projectEntry,
+      PathOwnersEntry rootEntry,
+      Map<String, PathOwnersEntry> entries)
       throws IOException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
     Set<Id> currentOwners = currentEntry.getOwners();
     StringBuilder builder = new StringBuilder();
+
+    if (rootEntry.isInherited()) {
+      for(Matcher matcher : projectEntry.getMatchers().values()) {
+        if(!currentEntry.hasMatcher(matcher.getPath())) {
+          currentEntry.addMatcher(matcher);
+        }
+      }
+      if (currentEntry.getOwners().isEmpty()) {
+        currentEntry.setOwners(projectEntry.getOwners());
+        currentOwners = currentEntry.getOwners();
+      }
+      if (currentEntry.getOwnersPath() == null) {
+        currentEntry.setOwnersPath(projectEntry.getOwnersPath());
+      }
+    }
+
     // Iterate through the parent paths, not including the file name
     // itself
     for (int i = 0; i < parts.length - 1; i++) {
@@ -174,9 +201,9 @@ public class PathOwners {
       } else {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
+        final Set<Id> owners = currentOwners;
         currentEntry =
-            conf.map(
-                c -> new PathOwnersEntry(ownersPath, c, accounts, currentOwners))
+            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners))
                 .orElse(currentEntry);
         if (conf.map(OwnersConfig::isInherited).orElse(false)) {
           for (Matcher m : currentEntry.getMatchers().values()) {
