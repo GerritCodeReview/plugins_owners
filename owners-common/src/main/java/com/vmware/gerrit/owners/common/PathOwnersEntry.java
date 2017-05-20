@@ -20,6 +20,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gerrit.reviewdb.client.Account;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,8 +32,10 @@ import java.util.stream.Collectors;
  * specific path.
  */
 class PathOwnersEntry {
+  private final boolean inherited;
 
   public PathOwnersEntry() {
+    inherited = true;
   }
 
   public PathOwnersEntry(String path, OwnersConfig config, Accounts accounts,
@@ -45,6 +48,7 @@ class PathOwnersEntry {
       this.owners.addAll(inheritedOwners);
     }
     this.matchers = config.getMatchers();
+    this.inherited = config.isInherited();
   }
 
   @Override
@@ -85,5 +89,19 @@ class PathOwnersEntry {
 
   public void setMatchers(Map<String, Matcher> matchers) {
     this.matchers = matchers;
+  }
+
+  public boolean isInherited() {
+    return inherited;
+  }
+
+  public void addMatchers(Collection<Matcher> values) {
+    for (Matcher matcher : values) {
+      addMatcher(matcher);
+    }
+  }
+
+  public boolean hasMatcher(String path) {
+    return this.matchers.containsKey(path);
   }
 }
