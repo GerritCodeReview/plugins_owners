@@ -63,6 +63,26 @@ to true combine it with the owners listed in /OWNERS.
 If for each patch there is a reviewer who gave a Code-Review +2 then the plugin
 will not add any labels, otherwise, it will add ```label('Code-Review from owners', need(_)).```
 
+## Global project OWNERS
+
+Set a OWNERS file into the project refs/meta/config to define a global set of
+rules applied to every change pushed, regardless of the folder or target branch.
+
+Example of assigning every configuration files to a specific owner group:
+```yaml
+matchers:
+- suffix: *.config
+  owners:
+  - Configuration Managers
+```
+
+Global refs/meta/config OWNERS configuration is inherited only when the OWNERS file
+contain the 'inherited: true' condition at the top of the file or if they are absent.
+
+That means that in the absence of any OWNERS file in the target branch, the refs/meta/config
+OWNERS is used as global default.
+
+
 ## Example 1 - OWNERS file without matchers and default Gerrit submit rules
 
 Given an OWNERS configuration of:
