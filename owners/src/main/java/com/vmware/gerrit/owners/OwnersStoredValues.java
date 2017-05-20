@@ -42,14 +42,16 @@ public class OwnersStoredValues {
       return;
     }
     log.info("Initializing OwnerStoredValues");
-    PATH_OWNERS = new StoredValue<PathOwners>() {
-      @Override
-      protected PathOwners createValue(Prolog engine) {
-        PatchList patchList = StoredValues.PATCH_LIST.get(engine);
-        Repository repository = StoredValues.REPOSITORY.get(engine);
-        return new PathOwners(accounts, repository, patchList);
-      }
-    };
+    PATH_OWNERS =
+        new StoredValue<PathOwners>() {
+          @Override
+          protected PathOwners createValue(Prolog engine) {
+            PatchList patchList = StoredValues.PATCH_LIST.get(engine);
+            Repository repository = StoredValues.REPOSITORY.get(engine);
+            String branch = StoredValues.getChange(engine).getDest().get();
+            return new PathOwners(accounts, repository, branch, patchList);
+          }
+        };
   }
 
   private OwnersStoredValues() {

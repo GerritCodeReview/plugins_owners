@@ -30,6 +30,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import com.google.common.base.Charsets;
 import com.google.gerrit.reviewdb.client.Patch;
+import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
@@ -41,6 +42,7 @@ public abstract class Config {
   protected PatchList patchList;
   protected ConfigurationParser parser;
   protected TestAccounts accounts = new TestAccounts();
+  protected String branch = "master";
 
   public void setup() throws Exception {
     PowerMock.mockStatic(JgitWrapper.class);
@@ -89,8 +91,7 @@ public abstract class Config {
     return parser.getOwnersConfig(string.getBytes(Charsets.UTF_8));
   }
 
-  public String createConfig(boolean inherited, String[] owners,
-      MatcherConfig... matchers) {
+  public String createConfig(boolean inherited, String[] owners, MatcherConfig... matchers) {
     StringBuilder sb = new StringBuilder();
     sb.append("inherited: " + inherited + "\n");
     if (owners.length > 0) {

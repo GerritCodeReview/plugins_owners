@@ -49,7 +49,7 @@ public class PathOwnersTest extends ClassicConfig {
     creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
 
-    PathOwners owners = new PathOwners(accounts, repository, patchList);
+    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
     Set<Account.Id> ownersSet = owners.get().get("classic/OWNERS");
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
@@ -65,7 +65,7 @@ public class PathOwnersTest extends ClassicConfig {
     creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
 
-    PathOwners owners2 = new PathOwners(accounts, repository, patchList);
+    PathOwners owners2 = new PathOwners(accounts, repository, branch, patchList);
     Set<Account.Id> ownersSet2 = owners2.get().get("classic/OWNERS");
 
     // in this case we are inheriting the acct3 from /OWNERS

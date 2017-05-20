@@ -62,15 +62,13 @@ public class PathOwners {
 
   private Map<String, Set<Id>> fileOwners;
 
-  public PathOwners(Accounts accounts,
-      Repository repository,
-      PatchList patchList) {
+  public PathOwners(Accounts accounts, Repository repository, String branch, PatchList patchList) {
     this.repository = repository;
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
     this.accounts = accounts;
 
-    OwnersMap map = fetchOwners();
+    OwnersMap map = fetchOwners(branch);
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
@@ -98,12 +96,12 @@ public class PathOwners {
    *
    * @return A structure containing matchers paths to owners
    */
-  private OwnersMap fetchOwners() {
+  private OwnersMap fetchOwners(String branch) {
     OwnersMap ownersMap = new OwnersMap();
     try {
       String rootPath = "OWNERS";
       PathOwnersEntry rootEntry =
-          getOwnersConfig(rootPath).map(
+          getOwnersConfig(rootPath, branch).map(
               conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections
                   .emptySet())).orElse(new PathOwnersEntry());
 
@@ -111,8 +109,7 @@ public class PathOwners {
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
-        currentEntry =
-            resolvePathEntry(path, rootEntry, entries);
+        currentEntry = resolvePathEntry(path, branch, rootEntry, entries);
 
         // add owners to file for matcher predicates
         ownersMap.addFileOwners(path,currentEntry.getOwners());
@@ -157,8 +154,8 @@ public class PathOwners {
     }
   }
 
-  private PathOwnersEntry resolvePathEntry(String path,
-      PathOwnersEntry rootEntry, Map<String, PathOwnersEntry> entries)
+  private PathOwnersEntry resolvePathEntry(
+      String path, String branch, PathOwnersEntry rootEntry, Map<String, PathOwnersEntry> entries)
       throws IOException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
@@ -176,7 +173,7 @@ public class PathOwners {
         currentEntry = entries.get(partial);
       } else {
         String ownersPath = partial + "OWNERS";
-        Optional<OwnersConfig> conf = getOwnersConfig(ownersPath);
+        Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
         currentEntry =
             conf.map(
                 c -> new PathOwnersEntry(ownersPath, c, accounts, currentOwners))
@@ -221,9 +218,9 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    * @throws IOException
    */
-  private Optional<OwnersConfig> getOwnersConfig(String ownersPath)
+  private Optional<OwnersConfig> getOwnersConfig(String ownersPath, String branch)
       throws IOException {
-    return getBlobAsBytes(repository, "master", ownersPath).flatMap(
-        bytes -> parser.getOwnersConfig(bytes));
+    return getBlobAsBytes(repository, branch, ownersPath)
+        .flatMap(bytes -> parser.getOwnersConfig(bytes));
   }
 }
