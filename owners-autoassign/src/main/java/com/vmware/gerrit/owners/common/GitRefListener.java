@@ -99,8 +99,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         Change change = reviewDb.changes().get(id);
         PatchList patchList = getPatchList(event, change);
         if (patchList != null) {
-          PathOwners owners = new PathOwners(accounts,
-              repository, patchList);
+          PathOwners owners =
+              new PathOwners(accounts, repository, change.getDest().get(), patchList);
           Set<Account.Id> allReviewers = Sets.newHashSet();
           allReviewers.addAll(owners.get().values());
           for(Matcher matcher: owners.getMatchers().values()) {
