@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c579e995_03452b94",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-05-22T06:08:11Z",
+      "side": 1,
+      "message": "I trust you use use the Google format ... but his looks so much worse than before :-O",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 43
+      },
+      "revId": "b7b3a20ad384d292768f12013462d4b174de356c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ddf476b8_66c4ebcc",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-05-22T06:08:11Z",
+      "side": 1,
+      "message": "Is this needed?",
+      "range": {
+        "startLine": 27,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "b7b3a20ad384d292768f12013462d4b174de356c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0d6964cf_3cdd1147",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-05-22T06:08:11Z",
+      "side": 1,
+      "message": "Is this needed?",
+      "range": {
+        "startLine": 30,
+        "startChar": 3,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "b7b3a20ad384d292768f12013462d4b174de356c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
