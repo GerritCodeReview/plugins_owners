@@ -170,7 +170,6 @@ public class PathOwners {
       throws IOException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
-    Set<Id> currentOwners = currentEntry.getOwners();
     StringBuilder builder = new StringBuilder();
 
     if (rootEntry.isInherited()) {
@@ -181,7 +180,6 @@ public class PathOwners {
       }
       if (currentEntry.getOwners().isEmpty()) {
         currentEntry.setOwners(projectEntry.getOwners());
-        currentOwners = currentEntry.getOwners();
       }
       if (currentEntry.getOwnersPath() == null) {
         currentEntry.setOwnersPath(projectEntry.getOwnersPath());
@@ -201,7 +199,7 @@ public class PathOwners {
       } else {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
-        final Set<Id> owners = currentOwners;
+        final Set<Id> owners = currentEntry.getOwners();
         currentEntry =
             conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners))
                 .orElse(currentEntry);
