@@ -76,6 +76,25 @@ public class PathOwnersTest extends ClassicConfig {
   }
 
   @Test
+  public void testClassicWithInheritanceAndDeepNesting() throws Exception {
+    expectConfig("OWNERS", createConfig(true, owners(USER_C_EMAIL_COM)));
+    expectConfig("dir/OWNERS", createConfig(true, owners(USER_B_EMAIL_COM)));
+    expectConfig("dir/subdir/OWNERS",
+        createConfig(true, owners(USER_A_EMAIL_COM)));
+
+    creatingPatchList(Arrays.asList("dir/subdir/file.txt"));
+    replayAll();
+
+    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
+    Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
+
+    assertEquals(3, ownersSet.size());
+    assertTrue(ownersSet.contains(USER_A_ID));
+    assertTrue(ownersSet.contains(USER_B_ID));
+    assertTrue(ownersSet.contains(USER_C_ID));
+  }
+
+  @Test
   public void testParsingYaml() {
     String yamlString = (
         "inherited: true\n" +
@@ -83,6 +102,7 @@ public class PathOwnersTest extends ClassicConfig {
         "- " + USER_C_EMAIL_COM);
     Optional<OwnersConfig> config = getOwnersConfig(yamlString);
     assertTrue(config.isPresent());
+    assertTrue(config.get().isInherited());
     assertEquals(1,config.get().getOwners().size());
     assertTrue(config.get().getOwners().contains(USER_C_EMAIL_COM));
   }
