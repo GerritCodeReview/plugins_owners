@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4602286_fb1c189a",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1042993
+      },
+      "writtenOn": "2017-05-24T16:16:43Z",
+      "side": 1,
+      "message": "We need `currentOwners \u003d currentEntry.getOwners()` here and elsewhere the currentEntry is updated. Instead of adding it, I removed the currentOwners variable and call getOwners() explicitly, to avoid similar issues in the future. Let me know if you think we should keep it.",
+      "revId": "5eeadbcefc76b0d528923f0b4e18fea724ed276e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
