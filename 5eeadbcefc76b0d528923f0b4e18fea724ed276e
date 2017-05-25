@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "cf1b8fea_c6b062a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-05-25T21:02:40Z",
+      "side": 1,
+      "message": "Could you raise a formal bug with the symptom of the problem in [Gerrit issue tracker](https://bugs.chromium.org/p/gerrit/issues/list?can\u003d2) and then include the Bug-Id in the footer?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 3
+      },
+      "revId": "5eeadbcefc76b0d528923f0b4e18fea724ed276e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c4602286_fb1c189a",
         "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
         "patchSetId": 1
@@ -13,6 +36,47 @@
       "writtenOn": "2017-05-24T16:16:43Z",
       "side": 1,
       "message": "We need `currentOwners \u003d currentEntry.getOwners()` here and elsewhere the currentEntry is updated. Instead of adding it, I removed the currentOwners variable and call getOwners() explicitly, to avoid similar issues in the future. Let me know if you think we should keep it.",
+      "revId": "5eeadbcefc76b0d528923f0b4e18fea724ed276e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0ee022f_1c2920aa",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-05-25T21:02:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c4602286_fb1c189a",
+      "revId": "5eeadbcefc76b0d528923f0b4e18fea724ed276e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4240fa7_20c5d621",
+        "filename": "owners-common/src/test/java/com/vmware/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-05-25T21:02:40Z",
+      "side": 1,
+      "message": "This is good, but not related to this fix, isn\u0027t it?",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 43
+      },
       "revId": "5eeadbcefc76b0d528923f0b4e18fea724ed276e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
