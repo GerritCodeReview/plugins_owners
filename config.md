@@ -43,7 +43,7 @@ conditions (matchers section). Matching can be done by file suffix, regex
 
 The plugin analyzes the latest patch set by looking at each file directory and
 building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
-“inherited” set to false (by default it’s true.)
+“inherited” set to false (it’s the default.)
 
 For example, imagine the following tree:
 
