@@ -32,6 +32,7 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -129,7 +130,9 @@ public class AccountsImpl implements Accounts {
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
     AccountState account = byId.get(id);
-    return account.getAccount().getFullName().trim().equalsIgnoreCase(nameOrEmail)
+    return Objects.toString(account.getAccount().getFullName(), "")
+            .trim()
+            .equalsIgnoreCase(nameOrEmail)
         || account
             .getExternalIds()
             .stream()
