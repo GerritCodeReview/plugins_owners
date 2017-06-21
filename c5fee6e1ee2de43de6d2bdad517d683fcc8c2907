@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1180e3bd_bb2b4c3b",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1028863
+      },
+      "writtenOn": "2017-06-21T06:44:03Z",
+      "side": 1,
+      "message": "No, google-java-format did that.",
+      "parentUuid": "73c21e96_b9c737a3",
+      "revId": "c5fee6e1ee2de43de6d2bdad517d683fcc8c2907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46c09d59_5c93f8fb",
         "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2017-06-21T05:28:19Z",
       "side": 1,
       "message": "Not sure about indenting: have you checked with google-java-format?",
+      "range": {
+        "startLine": 133,
+        "startChar": 1,
+        "endLine": 135,
+        "endChar": 12
+      },
+      "revId": "c5fee6e1ee2de43de6d2bdad517d683fcc8c2907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "380326af_11f3af39",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1028863
+      },
+      "writtenOn": "2017-06-21T06:44:03Z",
+      "side": 1,
+      "message": "Yes, I ran \u0027java -jar ~/bin/google-java-format-1.3-all-deps.jar -i AccountsImpl.java\u0027",
+      "parentUuid": "46c09d59_5c93f8fb",
       "range": {
         "startLine": 133,
         "startChar": 1,
