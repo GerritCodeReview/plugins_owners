@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "2d03d6d6_739c4add",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-06-21T07:29:37Z",
+      "side": 1,
+      "message": "That\u0027s fine, as we are all targeting to align all the source code to the Google style :-)",
+      "parentUuid": "1180e3bd_bb2b4c3b",
+      "revId": "c5fee6e1ee2de43de6d2bdad517d683fcc8c2907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46c09d59_5c93f8fb",
         "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
         "patchSetId": 1
