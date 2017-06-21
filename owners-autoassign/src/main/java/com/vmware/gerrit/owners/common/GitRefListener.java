@@ -118,13 +118,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     ObjectId newId = null;
     if (event.getNewObjectId() != null) {
       newId = ObjectId.fromString(event.getNewObjectId());
-    }
-
-    PatchListKey plKey = new PatchListKey(null, newId, IGNORE_NONE);
-    try {
-      return patchListCache.get(plKey, change.getProject());
-    } catch (PatchListNotAvailableException e) {
-      logger.warn("Could not load patch list: {}", plKey, e);
+      PatchListKey plKey = PatchListKey.againstCommit(null, newId, IGNORE_NONE);
+      try {
+        return patchListCache.get(plKey, change.getProject());
+      } catch (PatchListNotAvailableException e) {
+        logger.warn("Could not load patch list: {}", plKey, e);
+      }
     }
     return null;
   }
