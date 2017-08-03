@@ -22,6 +22,30 @@
       "revId": "bfe1c2f7aaed97394a9d26e7d35df2095ed97d3b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33bffe9f_9e302dc8",
+        "filename": "owners/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-08-03T08:22:10Z",
+      "side": 1,
+      "message": "I think this plugin is still targeted to stable-2.14 branch.\n\n@Luca, should we create stable-2.14 branch?",
+      "parentUuid": "459ea318_4cfc6856",
+      "range": {
+        "startLine": 33,
+        "startChar": 33,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "bfe1c2f7aaed97394a9d26e7d35df2095ed97d3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
