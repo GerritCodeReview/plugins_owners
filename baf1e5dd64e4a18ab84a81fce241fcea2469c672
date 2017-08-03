@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0641e110_fc7145b2",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-08-03T06:22:14Z",
+      "side": 0,
+      "message": "Note to the reviewers: Bazel 0.5.3 rejects files with tabs.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 1
+      },
+      "revId": "baf1e5dd64e4a18ab84a81fce241fcea2469c672",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
