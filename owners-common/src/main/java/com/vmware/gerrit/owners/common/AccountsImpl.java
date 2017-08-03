@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,7 +122,7 @@ public class AccountsImpl implements Accounts {
       }
 
       return accountIds;
-    } catch (OrmException e) {
+    } catch (OrmException | IOException | ConfigInvalidException e) {
       log.error("Error trying to resolve user " + nameOrEmail, e);
       return Collections.emptySet();
     }
