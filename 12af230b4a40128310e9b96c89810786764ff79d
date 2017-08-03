@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d16ecd7f_303893b3",
+        "filename": "owners-common/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-08-03T06:25:21Z",
+      "side": 0,
+      "message": "Just for my understanding, this means gwt is no longer needed on this plugin?",
+      "range": {
+        "startLine": 1,
+        "startChar": 5,
+        "endLine": 1,
+        "endChar": 51
+      },
+      "revId": "12af230b4a40128310e9b96c89810786764ff79d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
