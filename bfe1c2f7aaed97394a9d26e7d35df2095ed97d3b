@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1ebf8fab_e22f82a9",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-03T17:07:51Z",
+      "side": 1,
+      "message": "Isn\u0027t better to just check for Exception? We aren\u0027t really managing the exception here, we just log whatever comes through.",
+      "range": {
+        "startLine": 125,
+        "startChar": 13,
+        "endLine": 125,
+        "endChar": 64
+      },
+      "revId": "bfe1c2f7aaed97394a9d26e7d35df2095ed97d3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "459ea318_4cfc6856",
         "filename": "owners/BUILD",
         "patchSetId": 1
@@ -37,6 +60,30 @@
       "side": 1,
       "message": "I think this plugin is still targeted to stable-2.14 branch.\n\n@Luca, should we create stable-2.14 branch?",
       "parentUuid": "459ea318_4cfc6856",
+      "range": {
+        "startLine": 33,
+        "startChar": 33,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "bfe1c2f7aaed97394a9d26e7d35df2095ed97d3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e9143a2_024daf4d",
+        "filename": "owners/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-03T17:07:51Z",
+      "side": 1,
+      "message": "Not sure that this is read anywhere, can we just get rid of it? Possibly in a different change?",
+      "parentUuid": "33bffe9f_9e302dc8",
       "range": {
         "startLine": 33,
         "startChar": 33,
