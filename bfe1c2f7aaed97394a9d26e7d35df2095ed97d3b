@@ -93,6 +93,30 @@
       "revId": "bfe1c2f7aaed97394a9d26e7d35df2095ed97d3b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c623cb97_29a1626e",
+        "filename": "owners/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-03T17:16:01Z",
+      "side": 1,
+      "message": "stable-2.14 branch created :-)",
+      "parentUuid": "33bffe9f_9e302dc8",
+      "range": {
+        "startLine": 33,
+        "startChar": 33,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "bfe1c2f7aaed97394a9d26e7d35df2095ed97d3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
