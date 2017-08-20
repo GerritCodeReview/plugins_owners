@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2072b02c_d9a3057b",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-20T08:48:07Z",
+      "side": 1,
+      "message": "Are we really managing here any of those exceptions? Why don\u0027t we just catch Exception and make this piece of code more future-proof? :-)",
+      "range": {
+        "startLine": 125,
+        "startChar": 13,
+        "endLine": 125,
+        "endChar": 64
+      },
+      "revId": "8a01c13c70efc07ebc5fd19d6d1f9e7dc5d054c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
