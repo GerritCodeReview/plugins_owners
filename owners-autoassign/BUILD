@@ -1,7 +1,5 @@
-load("//tools/bzl:junit.bzl", "junit_tests")
-load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS")
-load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
-load("//plugins/owners-common:common.bzl", "EXTERNAL_DEPS")
+load("//tools/bzl:plugin.bzl", "gerrit_plugin")
+load("//plugins/owners/owners-common:common.bzl", "EXTERNAL_DEPS")
 
 gerrit_plugin(
     name = "owners-autoassign",
@@ -11,12 +9,12 @@ gerrit_plugin(
     manifest_entries = [
         "Implementation-Title: Gerrit OWNERS autoassign plugin",
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
+        "Implementation-Version: 2.15",
         "Gerrit-PluginName: owners-autoassign",
         "Gerrit-Module: com.vmware.gerrit.owners.common.AutoassignModule",
-        "Gerrit-ApiVersion: 2.14-SNAPSHOT",
     ],
     deps = [
-        "//plugins/owners-common",
-    ],
-    resources = glob(["src/main/**/*"]),
+        "//plugins/owners/owners-common",
+    ] + EXTERNAL_DEPS,
+    resources = glob(["src/main/resources/**/*"]),
 )

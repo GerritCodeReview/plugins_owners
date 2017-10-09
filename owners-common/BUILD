@@ -1,7 +1,6 @@
-load("//tools/bzl:gwt.bzl", "PLUGIN_DEPS_NEVERLINK")
 load("//tools/bzl:junit.bzl", "junit_tests")
-load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS")
-load("//plugins/owners-common:common.bzl", "EXTERNAL_DEPS")
+load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_DEPS_NEVERLINK", "PLUGIN_TEST_DEPS")
+load("//plugins/owners/owners-common:common.bzl", "EXTERNAL_DEPS")
 
 java_library(
     name = "owners-common",
