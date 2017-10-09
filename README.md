@@ -54,8 +54,8 @@ Example:
    $ ln -s ../../owners/owners* .
    $ ln -sf ../../owners/external_plugin_deps.bzl .
    $ cd ..
-   $ bazel test plugins/owners-common:test
-   $ bazel build plugins/owners plugins/owners-autoassign
+   $ bazel test plugins/owners/owners-common:test
+   $ bazel build plugins/owners/owners plugins/owners/owners-autoassign plugins/owners/owners-common
 ```
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
