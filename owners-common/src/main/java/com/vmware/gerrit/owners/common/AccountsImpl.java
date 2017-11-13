@@ -23,6 +23,7 @@ import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
+import com.google.gerrit.server.account.ExternalId;
 import com.google.gerrit.server.account.GroupCache;
 import com.google.gerrit.server.account.GroupMembers;
 import com.google.gerrit.server.project.NoSuchProjectException;
@@ -129,15 +130,28 @@ public class AccountsImpl implements Accounts {
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
     AccountState account = byId.get(id);
-    return account.getAccount().getFullName().trim().equalsIgnoreCase(nameOrEmail)
-        || account
-            .getExternalIds()
-            .stream()
-            .anyMatch(
-                extId ->
-                    getSchemeRest(extId.key().scheme(), extId.key().get())
-                        .trim()
-                        .equalsIgnoreCase(nameOrEmail));
+    return isFullNameMatch(account, nameOrEmail)
+        || account.getExternalIds().stream().anyMatch(eid -> isEMailMatch(eid, nameOrEmail));
+  }
+
+  private boolean isFullNameMatch(AccountState account, String fullName) {
+    return Optional.ofNullable(account.getAccount().getFullName())
+        .filter(n -> n.trim().equalsIgnoreCase(fullName))
+        .isPresent();
+  }
+
+  private boolean isEMailMatch(ExternalId externalId, String email) {
+    return OptionalUtils.combine(
+            Optional.ofNullable(externalId.email()).filter(mail -> mail.equalsIgnoreCase(email)),
+            emailFromExternalId(externalId.key()).filter(mail -> mail.equalsIgnoreCase(email)))
+        .isPresent();
+  }
+
+  private Optional<String> emailFromExternalId(ExternalId.Key extIdKey) {
+    if (extIdKey.scheme().equals(ExternalId.SCHEME_MAILTO)) {
+      return Optional.of(getSchemeRest(extIdKey.scheme(), extIdKey.get()).trim());
+    }
+    return Optional.empty();
   }
 
   private String getSchemeRest(String scheme, String key) {
