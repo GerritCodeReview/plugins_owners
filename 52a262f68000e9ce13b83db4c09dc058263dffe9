@@ -22,6 +22,30 @@
       "revId": "52a262f68000e9ce13b83db4c09dc058263dffe9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9b40238_bf894f53",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-11-14T22:10:12Z",
+      "side": 1,
+      "message": "True, let me break it down in more self-documenting fragments.",
+      "parentUuid": "266b437a_cec9df28",
+      "range": {
+        "startLine": 132,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 59
+      },
+      "revId": "52a262f68000e9ce13b83db4c09dc058263dffe9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
