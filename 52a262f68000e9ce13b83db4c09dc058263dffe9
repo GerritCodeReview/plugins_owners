@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "266b437a_cec9df28",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-11-14T22:05:58Z",
+      "side": 1,
+      "message": "This is particularly obscure coding (even in the original code you amended). If you think that it is impossible to split into simpler methods because maybe of performance issues, I think it really needs a comment explaining what we are trying to achieve. In this example after a lot of deep studies, I understood that returns true (matches) if\n1) full name matches the search term (name or email)\n2) if not if there is at least one ext id with email matching search term\n3) or at least one ext id which scheme (I believe in this case we are attempting to match groups: scheme to allow specification of groups in OWNERS rules.",
+      "range": {
+        "startLine": 132,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 59
+      },
+      "revId": "52a262f68000e9ce13b83db4c09dc058263dffe9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
