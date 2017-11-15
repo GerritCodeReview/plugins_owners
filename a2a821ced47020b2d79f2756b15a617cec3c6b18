@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f1d142f_6c15d4f8",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1023193
+      },
+      "writtenOn": "2017-11-15T22:16:09Z",
+      "side": 1,
+      "message": "This is actually doing a different thing compared to the base version.\nIt was considering all the schemes and accept the first one matching.\nWhile this can have some strange bugs, I believed that this feature is used by some users, so if we let this restriction come out we might have a regression somewhere.",
+      "range": {
+        "startLine": 151,
+        "startChar": 3,
+        "endLine": 151,
+        "endChar": 60
+      },
+      "revId": "a2a821ced47020b2d79f2756b15a617cec3c6b18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
