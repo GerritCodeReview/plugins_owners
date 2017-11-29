@@ -20,7 +20,6 @@ import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.AccountGroup;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
@@ -44,7 +43,7 @@ import org.slf4j.LoggerFactory;
 public class AccountsImpl implements Accounts {
   private static final Logger log = LoggerFactory.getLogger(AccountsImpl.class);
 
-  private final ReviewDb db;
+  private final OneOffRequestContext requestCtx;
   private final AccountResolver resolver;
   private final AccountCache byId;
   private final GroupCache groupCache;
@@ -56,14 +55,14 @@ public class AccountsImpl implements Accounts {
   public AccountsImpl(
       AccountResolver resolver,
       AccountCache byId,
-      ReviewDb db,
+      OneOffRequestContext requestCtx,
       GroupCache groupCache,
       GroupMembers.Factory groupMembersFactory,
       OneOffRequestContext oneOffRequestContext,
       IdentifiedUser.GenericFactory userFactory) {
     this.resolver = resolver;
     this.byId = byId;
-    this.db = db;
+    this.requestCtx = requestCtx;
     this.groupCache = groupCache;
     this.groupMembers = groupMembersFactory;
     this.adminUser = userFactory.create(new Account.Id(1000000));
@@ -102,8 +101,8 @@ public class AccountsImpl implements Accounts {
   }
 
   private Set<Account.Id> findUserOrEmail(String nameOrEmail) {
-    try {
-      Set<Id> accountIds = resolver.findAll(db, nameOrEmail);
+    try (ManualRequestContext ctx = oneOffRequestContext.open()) {
+      Set<Id> accountIds = resolver.findAll(ctx.getReviewDbProvider().get(), nameOrEmail);
       if (accountIds.isEmpty()) {
         log.warn("User '{}' does not resolve to any account.", nameOrEmail);
         return accountIds;

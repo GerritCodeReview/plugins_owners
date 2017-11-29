@@ -22,6 +22,8 @@ import com.google.inject.AbstractModule;
 public class OwnersModule extends AbstractModule {
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), PredicateProvider.class).to(OwnerPredicateProvider.class);
+    DynamicSet.bind(binder(), PredicateProvider.class)
+        .to(OwnerPredicateProvider.class)
+        .asEagerSingleton();
   }
 }
