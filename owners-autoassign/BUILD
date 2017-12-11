@@ -1,7 +1,4 @@
-load("//tools/bzl:junit.bzl", "junit_tests")
-load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS")
-load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
-load("//plugins/owners-common:common.bzl", "EXTERNAL_DEPS")
+load("//tools/bzl:plugin.bzl", "gerrit_plugin")
 
 gerrit_plugin(
     name = "owners-autoassign",
