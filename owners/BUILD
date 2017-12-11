@@ -1,8 +1,5 @@
-load("//tools/bzl:gwt.bzl", "PLUGIN_DEPS_NEVERLINK")
-load("//tools/bzl:junit.bzl", "junit_tests")
-load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS")
+load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS_NEVERLINK")
 load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
-load("//plugins/owners-common:common.bzl", "EXTERNAL_DEPS")
 
 java_library(
     name = "gerrit-owners-lib",
@@ -12,7 +9,7 @@ java_library(
     deps = [
         "@prolog_runtime//jar:neverlink",
         "//plugins/owners-common:owners-common",
-    ] + PLUGIN_DEPS_NEVERLINK + EXTERNAL_DEPS,
+    ] + PLUGIN_DEPS_NEVERLINK,
 )
 
 prolog_cafe_library(
@@ -37,5 +34,5 @@ gerrit_plugin(
     deps = [
         ":gerrit-owners-lib",
         ":gerrit-owners-prolog-rules",
-    ] + EXTERNAL_DEPS,
+    ],
 )
