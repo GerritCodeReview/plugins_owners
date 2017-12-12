@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "24965100_33e4c0d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-12T16:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28f4c5bf_88f33e95",
+      "revId": "79d19b879ba14df4c5f42980edd883464713a7c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "680dda43_66ac37fd",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2017-12-12T15:59:18Z",
       "side": 1,
       "message": "You mean, you haven\u0027t actually tested that plugins do what they should?",
+      "revId": "79d19b879ba14df4c5f42980edd883464713a7c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "efefa93a_065b9d12",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-12T16:11:56Z",
+      "side": 1,
+      "message": "I\u0027am doing this right now. Will only vote verified when plugins functionality is tested.",
+      "parentUuid": "680dda43_66ac37fd",
       "revId": "79d19b879ba14df4c5f42980edd883464713a7c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
