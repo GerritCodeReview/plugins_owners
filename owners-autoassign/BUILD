@@ -15,8 +15,8 @@ gerrit_plugin(
         "Gerrit-Module: com.vmware.gerrit.owners.common.AutoassignModule",
         "Gerrit-ApiVersion: 2.14-SNAPSHOT",
     ],
+    resources = glob(["src/main/**/*"]),
     deps = [
         "//plugins/owners-common",
     ],
-    resources = glob(["src/main/**/*"]),
 )
