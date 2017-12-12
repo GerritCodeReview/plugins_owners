@@ -17,6 +17,8 @@
 package com.vmware.gerrit.owners.common;
 
 public class ReviewerManagerException extends Exception {
+  private static final long serialVersionUID = 1L;
+
   public ReviewerManagerException(String message) {
     super(message);
   }

@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
 public class AccountsImpl implements Accounts {
   private static final Logger log = LoggerFactory.getLogger(AccountsImpl.class);
 
-  private final OneOffRequestContext requestCtx;
   private final AccountResolver resolver;
   private final AccountCache byId;
   private final GroupCache groupCache;
@@ -55,14 +54,12 @@ public class AccountsImpl implements Accounts {
   public AccountsImpl(
       AccountResolver resolver,
       AccountCache byId,
-      OneOffRequestContext requestCtx,
       GroupCache groupCache,
       GroupMembers.Factory groupMembersFactory,
       OneOffRequestContext oneOffRequestContext,
       IdentifiedUser.GenericFactory userFactory) {
     this.resolver = resolver;
     this.byId = byId;
-    this.requestCtx = requestCtx;
     this.groupCache = groupCache;
     this.groupMembers = groupMembersFactory;
     this.adminUser = userFactory.create(new Account.Id(1000000));
