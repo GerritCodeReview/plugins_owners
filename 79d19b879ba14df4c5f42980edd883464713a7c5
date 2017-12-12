@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28f4c5bf_88f33e95",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-12T15:59:18Z",
+      "side": 1,
+      "message": "Just to make sure, the external dependencies (Jackson stuff) isn\u0027T really removed. It was specified twice: explicitly and over owner-common as transitive deps. May be add this statement here to make the review easier?",
+      "revId": "79d19b879ba14df4c5f42980edd883464713a7c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "680dda43_66ac37fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-12T15:59:18Z",
+      "side": 1,
+      "message": "You mean, you haven\u0027t actually tested that plugins do what they should?",
+      "revId": "79d19b879ba14df4c5f42980edd883464713a7c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
