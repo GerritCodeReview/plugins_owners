@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a623b753_9508f946",
+        "filename": "owners/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-13T12:57:33Z",
+      "side": 1,
+      "message": "For sure, you\u0027re second option is cleaner. Done.",
+      "parentUuid": "73352e91_c81cad72",
+      "range": {
+        "startLine": 6,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 7
+      },
+      "revId": "242e38a36593d428b87a85bc68874393d8fabe92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "509918fc_f4cb174c",
         "filename": "owners/BUILD",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2017-12-13T07:46:54Z",
       "side": 1,
       "message": "Should this be just: \"src/main/resources/**/*\", to avoid inclusion of:\n\n  main/prolog/gerrit_owners.pl \n  gerrit_owners/PRED_owner_path_1.java\n  [...]\n  com/vmware/gerrit/owners/OwnersStoredValues.java\n\nin the final plugin artifact?",
+      "range": {
+        "startLine": 33,
+        "startChar": 22,
+        "endLine": 33,
+        "endChar": 37
+      },
+      "revId": "242e38a36593d428b87a85bc68874393d8fabe92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7cb4fe97_92894611",
+        "filename": "owners/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-13T12:57:33Z",
+      "side": 1,
+      "message": "Absolutely. Thanks for fixing this.",
+      "parentUuid": "509918fc_f4cb174c",
       "range": {
         "startLine": 33,
         "startChar": 22,
