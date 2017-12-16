@@ -10,7 +10,7 @@ java_library(
     srcs = PROLOG_PREDICATES,
     deps = [
         "@prolog_runtime//jar:neverlink",
-        "//plugins/owners-common:owners-common",
+        "//owners-common:owners-common",
     ] + PLUGIN_DEPS_NEVERLINK,
 )
 
@@ -39,8 +39,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        ":gerrit-owners-predicates",
         ":gerrit-owners-prolog-rules",
-        "//plugins/owners:gerrit-owners-predicates",
-        "//plugins/owners-common",
+        "//owners-common",
     ],
 )
