@@ -2,3 +2,9 @@
 *.iml
 *.ipr
 .idea
+/.classpath
+/.primary_build_tool
+/.project
+/.settings/
+/bazel-*
+/eclipse-out/
