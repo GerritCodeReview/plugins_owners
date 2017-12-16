@@ -39,8 +39,46 @@ change when it's created or updated.
 
 ## How to build
 
-Create three symbolic links of the owners-owners, owners-common and owners-autoassign
-from the Gerrit source code /plugins directory to the subdirectories of this project.
+This plugin is built with Bazel and two build modes are supported:
+
+ * Standalone
+ * In Gerrit tree
+
+### Build standalone
+
+To build the plugin, issue the following command:
+
+```
+  bazel build :all
+```
+
+The output is created in
+
+```
+  bazel-genfiles/owner/owner.jar
+  bazel-genfiles/owner-autoassign/owner-autoassign.jar
+
+```
+
+To execute the tests run:
+
+```
+  bazel test //...
+```
+
+This project can be imported into the Eclipse IDE:
+
+```
+  ./tools/eclipse/project.sh
+```
+
+## Build in Gerrit tree
+
+Create symbolic links of the owners and owners-autoassign folders and of the
+external_plugin_deps.bzl file to the Gerrit source code /plugins directory.
+
+Create a symbolic link of the owners-common plugin to the Gerrit source code
+directory.
 
 Then build the owners and owners-autoassign plugins with the usual Gerrit
 plugin compile command.
@@ -51,14 +89,37 @@ Example:
    $ git clone https://gerrit.googlesource.com/plugins/owners
    $ git clone https://gerrit.googlesource.com/gerrit
    $ cd gerrit/plugins
-   $ ln -s ../../owners/owners* .
+   $ ln -s ../../owners/owners .
+   $ ln -s ../../owners/owners-autoassign .
    $ ln -sf ../../owners/external_plugin_deps.bzl .
    $ cd ..
-   $ bazel test plugins/owners-common:test
+   $ ln -s ../owners/owners-common .
    $ bazel build plugins/owners plugins/owners-autoassign
 ```
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
 and does not need to be built separately being a direct dependency of the build
 process. Its resulting .jar must not be installed in gerrit plugins directory.
+
+The output is created in
+
+```
+  bazel-genfiles/plugins/owner/owner.jar
+  bazel-genfiles/plugins/owner-autoassign/owner-autoassign.jar
+```
+
+To execute the tests run:
+
+```
+  bazel test owners-common:test
+```
+
+This project can be imported into the Eclipse IDE:
+
+Add the plugin name to the `CUSTOM_PLUGINS` in Gerrit core in
+`tools/bzl/plugins.bzl` file and run:
+
+```
+  ./tools/eclipse/project.py
+```
 
