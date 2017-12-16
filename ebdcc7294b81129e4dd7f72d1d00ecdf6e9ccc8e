@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c7b111eb_5b705681",
+        "filename": "tools/workspace-status.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-16T09:35:59Z",
+      "side": 1,
+      "message": "Note that we cannot add here another line:\n\n  echo STABLE_BUILD_OWNERS_LABEL $(rev .)\n\nThat\u0027s because we would get double match, as gerrit_plugin.bzl grep for plugin name, and for OWNERS, we would get double match and poison META-INF/MANIFEST.MF file.",
+      "revId": "ebdcc7294b81129e4dd7f72d1d00ecdf6e9ccc8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
