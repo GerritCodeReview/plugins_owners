@@ -14,6 +14,6 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/**/*"]),
     deps = [
-        "//plugins/owners-common",
+        "//owners-common",
     ],
 )
