@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "0d7d2e0e_e1364680",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T20:01:41Z",
+      "side": 1,
+      "message": "Thanks for checking and adding the documentation!",
+      "parentUuid": "d09499f8_1680c06d",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "0e979c788dca379d5e3809bffd9842e5fac577f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "03802c6d_a34e7ecb",
         "filename": "/COMMIT_MSG",
         "patchSetId": 7
