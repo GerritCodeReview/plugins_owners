@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80e4234e_44efd30e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-18T13:25:51Z",
+      "side": 1,
+      "message": "One option to avoid this would be to have all the source code in one plugin and separated in different packages (owners, owners-autoassign and owners-common). In that case, we could have only one \"plugin\" but build two different targets (calling two different gerrit_plugin rules) and each one of those targets would include the commons package when building. Should we try this approach?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "0e979c788dca379d5e3809bffd9842e5fac577f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
