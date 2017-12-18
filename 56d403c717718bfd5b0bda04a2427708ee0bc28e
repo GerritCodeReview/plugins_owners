@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "57382bcb_5d1b9565",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T20:01:41Z",
+      "side": 1,
+      "message": "This is stale now, and should be either removed entirely, or clarified, that with changed linking in gerrit tree, both modes are supported.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "56d403c717718bfd5b0bda04a2427708ee0bc28e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "868196c1_4e57037d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T20:01:41Z",
+      "side": 1,
+      "message": "Should we mentioned, that unless the correspoinding Bazlets change wasn\u0027t merged, we should patch WORKSPACE and switch to consuming the Bazllets locally?",
+      "revId": "56d403c717718bfd5b0bda04a2427708ee0bc28e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5269ba23_06bf820d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T20:01:41Z",
+      "side": 1,
+      "message": "Nit: move PASSED in 1.9sm so it match 73 chars length restrictions.",
+      "revId": "56d403c717718bfd5b0bda04a2427708ee0bc28e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ba6484e_02a978d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T20:01:41Z",
+      "side": 1,
+      "message": "Nice!",
+      "revId": "56d403c717718bfd5b0bda04a2427708ee0bc28e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15e78481_3b3cd25a",
+        "filename": "README.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T20:01:41Z",
+      "side": 1,
+      "message": "The tests already mentioned on the line 97 above. Remove it there?",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 3
+      },
+      "revId": "56d403c717718bfd5b0bda04a2427708ee0bc28e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
