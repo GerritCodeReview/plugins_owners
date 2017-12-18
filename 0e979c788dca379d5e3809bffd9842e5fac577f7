@@ -25,6 +25,53 @@
     },
     {
       "key": {
+        "uuid": "2fbbb794_071034ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T14:09:45Z",
+      "side": 1,
+      "message": "I\u0027m not sure we want to complicate things. Remember, that this change would need to be approved by Luca. He was often sceptical about standalone build mode. I wouldn\u0027t be surprised, if he would reject the whole idea.\n\nI thought about a very simple and non-invasive approach to make this change (as-is) work in gerrit tree build mode:\n\n* link owners/owners to gerrit/plugins\n* link owners/owners-common to gerrit\n\ndone. I haven\u0027t tried it, though, so no guarantee, it will work.",
+      "parentUuid": "80e4234e_44efd30e",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "0e979c788dca379d5e3809bffd9842e5fac577f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03802c6d_a34e7ecb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T14:09:45Z",
+      "side": 1,
+      "message": "This is not true any more and should be removed.",
+      "range": {
+        "startLine": 16,
+        "startChar": 41,
+        "endLine": 16,
+        "endChar": 67
+      },
+      "revId": "0e979c788dca379d5e3809bffd9842e5fac577f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5391b7cd_d2c09bc1",
         "filename": "BUILD",
         "patchSetId": 7
@@ -65,6 +112,29 @@
         "startChar": 8,
         "endLine": 29,
         "endChar": 26
+      },
+      "revId": "0e979c788dca379d5e3809bffd9842e5fac577f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f559b38f_8a9e05d9",
+        "filename": "WORKSPACE",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-18T14:09:45Z",
+      "side": 1,
+      "message": "\u003cuser\u003e",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 31
       },
       "revId": "0e979c788dca379d5e3809bffd9842e5fac577f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
