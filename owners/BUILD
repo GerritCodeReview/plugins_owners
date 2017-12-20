@@ -39,8 +39,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        ":gerrit-owners-predicates",
         ":gerrit-owners-prolog-rules",
-        "//plugins/owners:gerrit-owners-predicates",
         "//plugins/owners-common",
     ],
 )
