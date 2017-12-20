@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2bdc637d_20ea500b",
+        "filename": "tools/BUILD",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-20T16:29:24Z",
+      "side": 1,
+      "message": "Unused after we removed: tools/genrule2.bzl and can be removed?",
+      "revId": "9c4393014f6f37bcc5bc54d97bd6a9d0fd8a8288",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e33279ea_94ff1348",
+        "filename": "tools/genrule2.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-20T16:29:24Z",
+      "side": 1,
+      "message": "Unused now and can be moreover, as we changed in prolog.bzl to native.genrule?",
+      "revId": "9c4393014f6f37bcc5bc54d97bd6a9d0fd8a8288",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
