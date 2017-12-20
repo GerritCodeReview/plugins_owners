@@ -45,6 +45,30 @@
       "revId": "e17ec6c197576120747e5bc428b76926e0f3833d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c464343f_4c967bfa",
+        "filename": "owners/BUILD",
+        "patchSetId": 17
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-20T16:56:04Z",
+      "side": 0,
+      "message": "Yes, I\u0027ll do it right now.",
+      "parentUuid": "8905e995_159bdd7b",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 51
+      },
+      "revId": "e17ec6c197576120747e5bc428b76926e0f3833d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
