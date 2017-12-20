@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81c8590b_ae68b2c6",
+        "filename": "BUILD",
+        "patchSetId": 14
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-20T11:43:42Z",
+      "side": 1,
+      "message": "owners-common",
+      "revId": "0372a7699782a10db75c755d956724bd5266bad3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
