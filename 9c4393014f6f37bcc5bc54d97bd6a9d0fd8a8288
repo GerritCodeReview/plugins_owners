@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "95f5ddb4_aca310a4",
+        "filename": "BUILD",
+        "patchSetId": 16
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-20T16:41:45Z",
+      "side": 1,
+      "message": "Jepp. The reference should just work as is.",
+      "parentUuid": "2f58a959_301b5d6e",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 9
+      },
+      "revId": "9c4393014f6f37bcc5bc54d97bd6a9d0fd8a8288",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2bdc637d_20ea500b",
         "filename": "tools/BUILD",
         "patchSetId": 16
