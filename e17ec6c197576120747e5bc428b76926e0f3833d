@@ -22,6 +22,29 @@
       "revId": "e17ec6c197576120747e5bc428b76926e0f3833d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8905e995_159bdd7b",
+        "filename": "owners/BUILD",
+        "patchSetId": 17
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-20T16:51:09Z",
+      "side": 0,
+      "message": "Optional: Should we fix that bug in its own change, replace it with \":gerrit-owners-predicates\"? This modification is actually entirely unrelated to this change.",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 51
+      },
+      "revId": "e17ec6c197576120747e5bc428b76926e0f3833d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
