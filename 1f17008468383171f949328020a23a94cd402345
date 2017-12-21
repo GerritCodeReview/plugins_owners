@@ -189,6 +189,30 @@
       "revId": "1f17008468383171f949328020a23a94cd402345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6488e3a1_06b81c82",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-12-21T14:05:02Z",
+      "side": 1,
+      "message": "Good catch David and Hector.\nCan we externalise the JACKSON_VERSION and get it automatically from the target Gerrit version?\nAnd, of course as you said, prevent his inclusion in the final jar file.",
+      "parentUuid": "60d5aae8_7d3d48a5",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 54
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
