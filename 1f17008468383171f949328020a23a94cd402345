@@ -141,6 +141,30 @@
       "revId": "1f17008468383171f949328020a23a94cd402345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "024a936f_f101b517",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-21T12:28:54Z",
+      "side": 1,
+      "message": "Seems to be the case. Just for the sake of testing, I modified external_plugin_deps.bzl in order to use the same 2.6.6 jackson-core version declared in Gerrit and the Jackson libraries are now identical between standalone build and in-tree. Seems we were always using the Gerrit declared version when building in-tree?",
+      "parentUuid": "76223b51_e8fb6955",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 54
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
