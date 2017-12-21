@@ -213,6 +213,30 @@
       "revId": "1f17008468383171f949328020a23a94cd402345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ac062f8_30b5835b",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-21T14:22:40Z",
+      "side": 1,
+      "message": "Unfortunately, now, that we want to provide standalone build we cannot consume JACKSON_VERSION from any place, because standalone build per definition doesn\u0027t know anything except bazlets, that know nothing about Jackson.\n\nI\u0027m afraid, the best thing we can do, is adapt the Jackson version on corresponding gerrit stable branches.\n\nOf course the better approach would be to eliminate that decency altogether and only reliy on Gson.",
+      "parentUuid": "6488e3a1_06b81c82",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 54
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
