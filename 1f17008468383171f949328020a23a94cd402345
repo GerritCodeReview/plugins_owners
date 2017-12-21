@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "04ebf340_d8e8798f",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-21T11:48:36Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "166114e2_67eaaaeb",
+      "range": {
+        "startLine": 52,
+        "startChar": 14,
+        "endLine": 52,
+        "endChar": 17
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f782ce93_823b6709",
         "filename": "README.md",
         "patchSetId": 19
@@ -45,6 +69,30 @@
       "revId": "1f17008468383171f949328020a23a94cd402345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af79d6ed_ca14c046",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1019328
+      },
+      "writtenOn": "2017-12-21T11:48:36Z",
+      "side": 1,
+      "message": "Yes, there are slight differences in some of the Prolog classes mostly due to the path differences (the \u0027plugins\u0027 part) which are expected IMHO. For the Jackson files I do not have an explanation (David?) but functionality wise the artifacts produced by the standalone build are behaving as expected, at least for the 5 examples given in the documentation.",
+      "parentUuid": "f782ce93_823b6709",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 54
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
