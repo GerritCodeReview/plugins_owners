@@ -165,6 +165,30 @@
       "revId": "1f17008468383171f949328020a23a94cd402345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60d5aae8_7d3d48a5",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-21T12:53:32Z",
+      "side": 1,
+      "message": "Yes, we have dependency collision! Ut was worth it to implement standalone build to detect it ;-)\n\nElasticsearch depends on jackson:\n\n   WORKSPACE:JACKSON_VERSION \u003d \"2.8.9\"\n\non master:\n\n    \"//lib/jackson:jackson-core\",\n    \"//lib/jackson:jackson-dataformat-cbor\",\n    \"//lib/jackson:jackson-dataformat-smile\",\n\nwhile the owners plugin depends on 2.1.1. Gerrit doesn\u0027t support different version of the same jar. What should happen is (in its own change):\n\n* 1. Synchronize Jackson-core Versions between core and owners plugin\n* 2.. Stop shipping jackson-core.jar in the plugin, because it is already available in gerrit core. This can be easily achieved, by depending on jackson-core:neverlink jar, that is exposed by our maven_jar rule.",
+      "parentUuid": "024a936f_f101b517",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 54
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
