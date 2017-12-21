@@ -285,6 +285,30 @@
       "revId": "1f17008468383171f949328020a23a94cd402345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02b40a20_f5bd8d81",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-12-21T14:46:40Z",
+      "side": 1,
+      "message": "The only reason why Jackson is included is to parse the OWNERS YAML file ... if Gson doesn\u0027t support YAML then it is not an option.\n\nWhat about then including //lib/jackson:jackson-core:neverlink as you suggested and then using the VERSION declared there for the external deps?\nFor the standalone build, you could just add that file from the Gerrit tree into the Owners project.",
+      "parentUuid": "7bd46619_ab6a9a27",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 54
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
