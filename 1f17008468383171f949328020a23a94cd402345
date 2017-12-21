@@ -237,6 +237,30 @@
       "revId": "1f17008468383171f949328020a23a94cd402345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd4741c8_0884daee",
+        "filename": "README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-12-21T14:24:37Z",
+      "side": 1,
+      "message": "Good idea: does Gson support YAML?",
+      "parentUuid": "5ac062f8_30b5835b",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 54
+      },
+      "revId": "1f17008468383171f949328020a23a94cd402345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
