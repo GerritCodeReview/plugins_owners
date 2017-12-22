@@ -16,9 +16,9 @@
 
 package com.vmware.gerrit.owners;
 
-import com.google.gerrit.rules.StoredValue;
-import com.google.gerrit.rules.StoredValues;
 import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.rules.StoredValue;
+import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.vmware.gerrit.owners.common.Accounts;
 import com.vmware.gerrit.owners.common.PathOwners;

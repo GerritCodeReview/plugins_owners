@@ -17,9 +17,9 @@ package gerrit_owners;
 import static com.vmware.gerrit.owners.common.StreamUtils.iteratorStream;
 
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.rules.PrologEnvironment;
-import com.google.gerrit.rules.StoredValues;
 import com.google.gerrit.server.IdentifiedUser;
+import com.google.gerrit.server.rules.PrologEnvironment;
+import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.exceptions.PInstantiationException;
 import com.googlecode.prolog_cafe.exceptions.PrologException;
 import com.googlecode.prolog_cafe.lang.Operation;

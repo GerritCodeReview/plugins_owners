@@ -14,20 +14,16 @@
 
 package com.vmware.gerrit.owners.common;
 
-import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.AccountGroup;
-import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
 import com.google.gerrit.server.account.GroupCache;
 import com.google.gerrit.server.account.GroupMembers;
+import com.google.gerrit.server.group.InternalGroup;
 import com.google.gerrit.server.project.NoSuchProjectException;
-import com.google.gerrit.server.util.ManualRequestContext;
-import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import java.io.IOException;
@@ -35,36 +31,28 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AccountsImpl implements Accounts {
   private static final Logger log = LoggerFactory.getLogger(AccountsImpl.class);
 
-  private final ReviewDb db;
   private final AccountResolver resolver;
   private final AccountCache byId;
   private final GroupCache groupCache;
-  private final GroupMembers.Factory groupMembers;
-  private final IdentifiedUser adminUser;
-  private final OneOffRequestContext oneOffRequestContext;
+  private final GroupMembers groupMembers;
 
   @Inject
   public AccountsImpl(
       AccountResolver resolver,
       AccountCache byId,
-      ReviewDb db,
       GroupCache groupCache,
-      GroupMembers.Factory groupMembersFactory,
-      OneOffRequestContext oneOffRequestContext,
-      IdentifiedUser.GenericFactory userFactory) {
+      GroupMembers groupMembers) {
     this.resolver = resolver;
     this.byId = byId;
-    this.db = db;
     this.groupCache = groupCache;
-    this.groupMembers = groupMembersFactory;
-    this.adminUser = userFactory.create(new Account.Id(1000000));
-    this.oneOffRequestContext = oneOffRequestContext;
+    this.groupMembers = groupMembers;
   }
 
   @Override
@@ -76,23 +64,22 @@ public class AccountsImpl implements Accounts {
   }
 
   private Set<Id> findAccountsInGroup(String groupNameOrUUID) {
-    AccountGroup group =
+    Optional<InternalGroup> group =
         Optional.ofNullable(groupCache.get(new AccountGroup.NameKey(groupNameOrUUID)))
             .orElse(groupCache.get(new AccountGroup.UUID(groupNameOrUUID)));
 
-    if (group == null) {
+    if (!group.isPresent()) {
       log.warn("Group {} was not found", groupNameOrUUID);
+      return Collections.emptySet();
     }
 
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(adminUser.getAccountId())) {
-
+    try {
       return groupMembers
-          .create(adminUser)
-          .listAccounts(group.getGroupUUID(), null)
+          .listAccounts(group.get().getGroupUUID(), null)
           .stream()
           .map(Account::getId)
           .collect(Collectors.toSet());
-    } catch (NoSuchGroupException | NoSuchProjectException | OrmException | IOException e) {
+    } catch (NoSuchProjectException | IOException e) {
       log.error("Unable to list accounts in group " + group, e);
       return Collections.emptySet();
     }
@@ -100,7 +87,7 @@ public class AccountsImpl implements Accounts {
 
   private Set<Account.Id> findUserOrEmail(String nameOrEmail) {
     try {
-      Set<Id> accountIds = resolver.findAll(db, nameOrEmail);
+      Set<Id> accountIds = resolver.findAll(nameOrEmail);
       if (accountIds.isEmpty()) {
         log.warn("User '{}' does not resolve to any account.", nameOrEmail);
         return accountIds;
@@ -121,7 +108,7 @@ public class AccountsImpl implements Accounts {
       }
 
       return accountIds;
-    } catch (OrmException e) {
+    } catch (OrmException | IOException | ConfigInvalidException e) {
       log.error("Error trying to resolve user " + nameOrEmail, e);
       return Collections.emptySet();
     }
