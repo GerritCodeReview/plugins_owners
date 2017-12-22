@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8986ee5_b365c3e5",
+        "filename": "external_plugin_deps_standalone.bzl",
+        "patchSetId": 21
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-22T11:13:53Z",
+      "side": 1,
+      "message": "If my suggestion in parent change is accepted, this should be:\n\n  external_plugin_deps(omit_jackson_core \u003d False)",
+      "range": {
+        "startLine": 8,
+        "startChar": 2,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "91b2c980794d9232689d64215e2a4b1876f8d11e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
