@@ -94,6 +94,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       // same local thread and thus cannot be closed in this event listener.
       try {
         Change change = reviewDb.changes().get(id);
+        if (change == null) {
+          return;
+        }
         PatchList patchList = getPatchList(event, change);
         if (patchList != null) {
           PathOwners owners =
