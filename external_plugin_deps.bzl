@@ -3,6 +3,9 @@ load("//tools/bzl:maven_jar.bzl", "maven_jar")
 JACKSON_REV = "2.1.1"
 
 def external_plugin_deps():
+  owners()
+
+def owners():
         maven_jar(
           name = "jackson_core",
           artifact = "com.fasterxml.jackson.core:jackson-core:%s" % JACKSON_REV,
