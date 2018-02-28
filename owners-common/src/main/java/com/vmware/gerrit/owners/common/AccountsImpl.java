@@ -118,11 +118,12 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
-    AccountState account = byId.get(id);
-    return Objects.toString(account.getAccount().getFullName(), "")
+    Optional<AccountState> account = byId.get(id);
+    return account.isPresent() && Objects.toString(account.get().getAccount().getFullName(), "")
             .trim()
             .equalsIgnoreCase(nameOrEmail)
         || account
+            .get()
             .getExternalIds()
             .stream()
             .anyMatch(
