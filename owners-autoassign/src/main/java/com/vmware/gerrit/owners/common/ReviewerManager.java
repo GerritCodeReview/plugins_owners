@@ -18,6 +18,7 @@ package com.vmware.gerrit.owners.common;
 
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
+import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
@@ -34,20 +35,17 @@ import org.slf4j.LoggerFactory;
 public class ReviewerManager {
   private static final Logger log = LoggerFactory.getLogger(ReviewerManager.class);
 
-  private final GerritApi gApi;
   private final OneOffRequestContext requestContext;
 
   @Inject
-  public ReviewerManager(GerritApi gApi, OneOffRequestContext requestContext) {
-    this.gApi = gApi;
+  public ReviewerManager(OneOffRequestContext requestContext) {
     this.requestContext = requestContext;
   }
 
-  public void addReviewers(Change change, Collection<Account.Id> reviewers)
+  public void addReviewers(ChangeApi cApi, Collection<Account.Id> reviewers)
       throws ReviewerManagerException {
-    try (ManualRequestContext ctx = requestContext.openAs(change.getOwner())) {
+    try (ManualRequestContext ctx = requestContext.openAs(new Account.Id(cApi.get().owner._accountId))) {
 
-      ChangeApi cApi = gApi.changes().id(change.getId().get());
       for (Account.Id account : reviewers) {
         cApi.addReviewer(account.toString());
       }
