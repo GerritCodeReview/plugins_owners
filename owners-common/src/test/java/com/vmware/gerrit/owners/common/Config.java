@@ -20,7 +20,6 @@ import static org.easymock.EasyMock.expect;
 
 import com.google.common.base.Charsets;
 import com.google.gerrit.reviewdb.client.Patch;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
@@ -34,7 +33,6 @@ import org.powermock.api.easymock.PowerMock;
 
 @Ignore
 public abstract class Config {
-  protected ReviewDb db;
   protected Repository repository;
   protected PatchList patchList;
   protected ConfigurationParser parser;
