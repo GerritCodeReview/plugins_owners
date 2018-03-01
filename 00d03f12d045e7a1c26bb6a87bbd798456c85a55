@@ -16,6 +16,24 @@
       "revId": "00d03f12d045e7a1c26bb6a87bbd798456c85a55",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9e35355_f0fb948d",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-03-01T13:17:28Z",
+      "side": 0,
+      "message": "The Google-Java-Format did it for me :-O",
+      "parentUuid": "442a4eba_e5dad981",
+      "revId": "00d03f12d045e7a1c26bb6a87bbd798456c85a55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "cf6f3b24_cc119e5f",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-03-01T13:17:28Z",
+      "side": 1,
+      "message": "I need the ChangeApi anyway in ReviewerManager.",
+      "parentUuid": "7862f9b4_0716d8ef",
+      "range": {
+        "startLine": 116,
+        "startChar": 39,
+        "endLine": 116,
+        "endChar": 43
+      },
+      "revId": "82065a843a4fa291f96a8a4fdaf57257ae259120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "55721fcc_93b8095f",
         "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2018-02-28T20:44:45Z",
       "side": 1,
       "message": "This could be ChangeInfo instance.",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 41
+      },
+      "revId": "82065a843a4fa291f96a8a4fdaf57257ae259120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15cb3575_1a1aeac7",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-03-01T13:17:28Z",
+      "side": 1,
+      "message": "Yes, however I would need the ChangeApi for L50 anyway. Better to remove the number of parameters and pass only the ChangeApi as it is today IMHO.",
+      "parentUuid": "55721fcc_93b8095f",
       "range": {
         "startLine": 45,
         "startChar": 27,
