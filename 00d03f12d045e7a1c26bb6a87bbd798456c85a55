@@ -52,6 +52,24 @@
       "revId": "00d03f12d045e7a1c26bb6a87bbd798456c85a55",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ca68913_6a4638db",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-03-01T13:42:35Z",
+      "side": 0,
+      "message": "True, let me remove from this change now and then make a unique push with a GJF.",
+      "parentUuid": "c7a35647_4d8744c5",
+      "revId": "00d03f12d045e7a1c26bb6a87bbd798456c85a55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
