@@ -34,6 +34,24 @@
       "revId": "00d03f12d045e7a1c26bb6a87bbd798456c85a55",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c7a35647_4d8744c5",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-03-01T13:30:43Z",
+      "side": 0,
+      "message": "Could be in its own change?",
+      "parentUuid": "d9e35355_f0fb948d",
+      "revId": "00d03f12d045e7a1c26bb6a87bbd798456c85a55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
