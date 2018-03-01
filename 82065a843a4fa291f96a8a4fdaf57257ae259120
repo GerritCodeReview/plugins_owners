@@ -187,6 +187,30 @@
       "revId": "82065a843a4fa291f96a8a4fdaf57257ae259120",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "09c81cea_299d6be7",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-03-01T13:39:32Z",
+      "side": 1,
+      "message": "I have actually tested right now and, even if I have more than one reviewer, it fires only 1 e-mail with all the correct CC. The duplication e-mails since to have been resolved, at from 2.15 onwards.",
+      "parentUuid": "5ebed68d_11255064",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 50,
+        "endChar": 45
+      },
+      "revId": "82065a843a4fa291f96a8a4fdaf57257ae259120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
