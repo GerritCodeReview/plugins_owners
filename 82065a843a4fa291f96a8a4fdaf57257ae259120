@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e4713834_b97a582f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-03-01T13:28:55Z",
+      "side": 1,
+      "message": "Oh yes, that\u0027s a good point indeed :-)\nLet me move this change to the stable-2.15 branch.",
+      "parentUuid": "699833d9_29264664",
+      "range": {
+        "startLine": 10,
+        "startChar": 23,
+        "endLine": 10,
+        "endChar": 28
+      },
+      "revId": "82065a843a4fa291f96a8a4fdaf57257ae259120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7862f9b4_0716d8ef",
         "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 1
