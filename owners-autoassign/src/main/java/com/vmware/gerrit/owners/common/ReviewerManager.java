@@ -53,14 +53,18 @@ public class ReviewerManager {
       ReviewInput in = new ReviewInput();
       in.reviewers = new ArrayList<>(reviewers.size());
       for (Account.Id account : reviewers) {
-        AddReviewerInput addReviewerInput = new AddReviewerInput();
-        addReviewerInput.reviewer = account.toString();
-        in.reviewers.add(addReviewerInput);
+        addReviewer(in, account);
       }
       gApi.changes().id(change.getId().get()).current().review(in);
     } catch (RestApiException | OrmException e) {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);
     }
+  }
+
+  private void addReviewer(ReviewInput in, Account.Id account) {
+    AddReviewerInput addReviewerInput = new AddReviewerInput();
+    addReviewerInput.reviewer = account.toString();
+    in.reviewers.add(addReviewerInput);
   }
 }
