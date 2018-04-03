@@ -109,6 +109,7 @@ public class AccountsImpl implements Accounts {
           accountIds
               .stream()
               .filter(id -> isFullMatch(id, nameOrEmail))
+              .filter(this::isActive)
               .collect(Collectors.toSet());
       if (fulllyMatchedAccountIds.isEmpty()) {
         log.warn(
@@ -153,6 +154,10 @@ public class AccountsImpl implements Accounts {
             Optional.ofNullable(externalId.email()).filter(mail -> mail.equalsIgnoreCase(email)),
             keySchemeRest(SCHEME_MAILTO, externalKey).filter(mail -> mail.equalsIgnoreCase(email)))
         .isPresent();
+  }
+
+  private boolean isActive(Account.Id accountId) {
+    return byId.get(accountId).getAccount().isActive();
   }
 
   private Optional<String> keySchemeRest(String scheme, ExternalId.Key key) {
