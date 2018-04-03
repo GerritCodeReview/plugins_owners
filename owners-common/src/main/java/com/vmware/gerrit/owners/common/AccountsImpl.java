@@ -105,8 +105,19 @@ public class AccountsImpl implements Accounts {
         return accountIds;
       }
 
+      Set<Id> activeAccountIds =
+          accountIds.stream().filter(this::isActive).collect(Collectors.toSet());
+      if (activeAccountIds.isEmpty()) {
+        log.warn(
+            "User '{}' resolves to {} accounts {}, but does not correspond to any them",
+            nameOrEmail,
+            accountIds.size(),
+            accountIds);
+        return activeAccountIds;
+      }
+
       Set<Id> fulllyMatchedAccountIds =
-          accountIds
+          activeAccountIds
               .stream()
               .filter(id -> isFullMatch(id, nameOrEmail))
               .collect(Collectors.toSet());
@@ -153,6 +164,10 @@ public class AccountsImpl implements Accounts {
             Optional.ofNullable(externalId.email()).filter(mail -> mail.equalsIgnoreCase(email)),
             keySchemeRest(SCHEME_MAILTO, externalKey).filter(mail -> mail.equalsIgnoreCase(email)))
         .isPresent();
+  }
+
+  private boolean isActive(Account.Id accountId) {
+    return byId.get(accountId).getAccount().isActive();
   }
 
   private Optional<String> keySchemeRest(String scheme, ExternalId.Key key) {
