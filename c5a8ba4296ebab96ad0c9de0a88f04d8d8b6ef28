@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08804729_870a4a64",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-04-03T18:26:03Z",
+      "side": 1,
+      "message": "isActive methode retrieves the account state from the cache. The same does the isFullMatch() couple of lines below. One optimization would be to combine those filters in one stream run and extract the mapping from the id to account, apply the filter and then reduce the account state back to the ids again, something like:\n\n  Set\u003cId\u003e fulllyMatchedActiveAccountIds \u003d\n     accountIds\n        .stream()\n        .map(id -\u003e byId.get(id))\n        .filter(Account::isActive)\n        .filter(this::isFullMatch2)\n        .map(Account::getId)\n        .collect(Collectors.toSet());",
+      "range": {
+        "startLine": 109,
+        "startChar": 37,
+        "endLine": 109,
+        "endChar": 51
+      },
+      "revId": "c5a8ba4296ebab96ad0c9de0a88f04d8d8b6ef28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
