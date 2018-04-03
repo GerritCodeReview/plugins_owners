@@ -22,6 +22,30 @@
       "revId": "c5a8ba4296ebab96ad0c9de0a88f04d8d8b6ef28",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3128bc17_41c209a7",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-04-03T22:36:09Z",
+      "side": 1,
+      "message": "Yes, it is :-)\nHowever, I wanted to keep the logging of when accounts are getting discarded because:\n- they are not a full match\n- they are inactive\n\nBut I could still do within the isActive or isFullMatch method, just working on the full Account instead of its id.\n\nFollow-up change?",
+      "parentUuid": "08804729_870a4a64",
+      "range": {
+        "startLine": 109,
+        "startChar": 37,
+        "endLine": 109,
+        "endChar": 51
+      },
+      "revId": "c5a8ba4296ebab96ad0c9de0a88f04d8d8b6ef28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
