@@ -36,12 +36,19 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AccountsImpl implements Accounts {
   private static final Logger log = LoggerFactory.getLogger(AccountsImpl.class);
+  private static final Set<AccountState> NO_ACCOUNTS = Collections.emptySet();
+  private static final Set<Account.Id> NO_ACCOUNT_IDS = Collections.emptySet();
+  private static final Stream<AccountState> NO_ACCOUNTS_STREAM = NO_ACCOUNTS.stream();
 
   private final AccountResolver resolver;
   private final AccountCache byId;
@@ -99,46 +106,57 @@ public class AccountsImpl implements Accounts {
 
   private Set<Account.Id> findUserOrEmail(String nameOrEmail) {
     try (ManualRequestContext ctx = oneOffRequestContext.open()) {
-      Set<Id> accountIds = resolver.findAll(ctx.getReviewDbProvider().get(), nameOrEmail);
-      if (accountIds.isEmpty()) {
+      Stream<AccountState> accounts =
+          streamIfEmpty(
+              resolver
+                  .findAll(ctx.getReviewDbProvider().get(), nameOrEmail)
+                  .stream()
+                  .map(byId::get));
+      if (accounts == NO_ACCOUNTS_STREAM) {
         log.warn("User '{}' does not resolve to any account.", nameOrEmail);
-        return accountIds;
+        return NO_ACCOUNT_IDS;
       }
 
-      Set<Id> activeAccountIds =
-          accountIds.stream().filter(this::isActive).collect(Collectors.toSet());
-      if (activeAccountIds.isEmpty()) {
+      Stream<AccountState> activeAccounts = streamIfEmpty(accounts.filter(this::isActive));
+      if (activeAccounts == NO_ACCOUNTS_STREAM) {
         log.warn(
-            "User '{}' resolves to {} accounts {}, but none of them are active",
+            "User '{}' resolves to {} accounts, but none of them are active",
             nameOrEmail,
-            accountIds.size(),
-            accountIds);
-        return activeAccountIds;
+            accounts.count());
+        return NO_ACCOUNT_IDS;
       }
 
-      Set<Id> fulllyMatchedAccountIds =
-          activeAccountIds
-              .stream()
-              .filter(id -> isFullMatch(id, nameOrEmail))
-              .collect(Collectors.toSet());
-      if (fulllyMatchedAccountIds.isEmpty()) {
+      Stream<AccountState> fullyMatchedAccounts =
+          streamIfEmpty(activeAccounts.filter(id -> isFullMatch(id, nameOrEmail)));
+
+      if (fullyMatchedAccounts == NO_ACCOUNTS_STREAM) {
         log.warn(
-            "User '{}' resolves to {} accounts {}, but does not correspond to any them",
+            "User '{}' resolves to {} accounts, but does not correspond to any them",
             nameOrEmail,
-            accountIds.size(),
-            accountIds);
-        return fulllyMatchedAccountIds;
+            accounts.count());
+        return NO_ACCOUNT_IDS;
       }
 
-      return accountIds;
+      return fullyMatchedAccounts
+          .map(account -> account.getAccount().getId())
+          .collect(Collectors.toSet());
     } catch (OrmException e) {
       log.error("Error trying to resolve user " + nameOrEmail, e);
       return Collections.emptySet();
     }
   }
 
-  private boolean isFullMatch(Account.Id id, String nameOrEmail) {
-    AccountState account = byId.get(id);
+  private static Stream<AccountState> streamIfEmpty(Stream<AccountState> accounts) {
+    final Spliterator<AccountState> spliterator = accounts.spliterator();
+    final AtomicReference<AccountState> reference = new AtomicReference<>();
+    if (spliterator.tryAdvance(reference::set)) {
+      return Stream.concat(
+          Stream.of(reference.get()), StreamSupport.stream(spliterator, accounts.isParallel()));
+    }
+    return NO_ACCOUNTS_STREAM;
+  }
+
+  private boolean isFullMatch(AccountState account, String nameOrEmail) {
     return isFullNameMatch(account, nameOrEmail)
         || account
             .getExternalIds()
@@ -166,8 +184,8 @@ public class AccountsImpl implements Accounts {
         .isPresent();
   }
 
-  private boolean isActive(Account.Id accountId) {
-    return byId.get(accountId).getAccount().isActive();
+  private boolean isActive(AccountState account) {
+    return account.getAccount().isActive();
   }
 
   private Optional<String> keySchemeRest(String scheme, ExternalId.Key key) {
