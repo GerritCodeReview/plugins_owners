@@ -22,6 +22,30 @@
       "revId": "1ad35de622f184bfeee43f90400f27619560f649",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ada159ac_49b2599b",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2018-04-11T07:12:52Z",
+      "side": 1,
+      "message": "Yes, because here we do not compare the \"object value\" but just the pointer to the static instance \"NO_ACCOUNTS_STREAM\".\nThat is returned at L117",
+      "parentUuid": "45b81dab_ca8c641e",
+      "range": {
+        "startLine": 115,
+        "startChar": 10,
+        "endLine": 115,
+        "endChar": 40
+      },
+      "revId": "1ad35de622f184bfeee43f90400f27619560f649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
