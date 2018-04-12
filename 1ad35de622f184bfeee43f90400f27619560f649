@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "c9eca772_f1888c12",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1064613
+      },
+      "writtenOn": "2018-04-12T09:55:20Z",
+      "side": 1,
+      "message": "Where is the optimisation here? For NO_ACCOUNTS_STREAM to be returned by streamIfEmpty then tryAdvance must return false. This means the whole stream has to be processed. The same occurs at line 121 and line 132. The only way that the stream will not be fully traversed is if you reach line 140 at which point it must be traversed anyway.\n\nI may be missing something subtle but to me this looks like less maintainable code for no benefit. Do you have a test/benchmark that validates the optimisation?",
+      "revId": "1ad35de622f184bfeee43f90400f27619560f649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "45b81dab_ca8c641e",
         "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
         "patchSetId": 1
@@ -46,6 +63,29 @@
       "revId": "1ad35de622f184bfeee43f90400f27619560f649",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2a84c19a_fb69fd5d",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1064613
+      },
+      "writtenOn": "2018-04-12T09:55:20Z",
+      "side": 1,
+      "message": "Bug? As streamIfEmpty calls spliterator() (which is a terminal operation) I would expect this to throw an IllegalStateException. Same at line 136.\n\nYou can\u0027t call count() on any stream that was previously passed to streamIfEmpty.\n\nHere\u0027s a test to demonstrate:\n\n  @Test\n  public void testStreamTermination()\n  {\n    Stream\u003c String \u003e stream \u003d Arrays.asList( \"foo\", \"bar\" ).stream();\n    Stream\u003c String \u003e streamMatching \u003d streamIfEmpty( stream.filter( s -\u003e s.equals( \"bar\" ) ) );\n    System.out.println( streamMatching.count() ); // Prints 1 as not yet terminated\n    System.out.println( stream.count() ); // Throws IllegalStateException as already terminated\n  }\n\n  private static Stream\u003c String \u003e streamIfEmpty( final Stream\u003c String \u003e stream )\n  {\n    final Spliterator\u003c String \u003e spliterator \u003d stream.spliterator();\n    final AtomicReference\u003c String \u003e reference \u003d new AtomicReference\u003c\u003e();\n    if ( spliterator.tryAdvance( reference::set ) )\n    {\n      return Stream.concat(\n          Stream.of( reference.get() ), StreamSupport.stream( spliterator, stream.isParallel() ) );\n    }\n    return Collections.\u003c String \u003e emptyList().stream();\n  }",
+      "range": {
+        "startLine": 125,
+        "startChar": 20,
+        "endLine": 125,
+        "endChar": 28
+      },
+      "revId": "1ad35de622f184bfeee43f90400f27619560f649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
