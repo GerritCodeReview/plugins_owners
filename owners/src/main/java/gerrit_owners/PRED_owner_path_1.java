@@ -23,8 +23,8 @@ import com.googlecode.prolog_cafe.lang.Predicate;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
-import com.vmware.gerrit.owners.OwnersStoredValues;
-import com.vmware.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.OwnersStoredValues;
+import com.googlesource.gerrit.owners.common.PathOwners;
 import java.util.Iterator;
 
 /** 'owner_path'(-Path) */

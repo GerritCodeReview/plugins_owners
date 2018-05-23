@@ -14,7 +14,7 @@
 
 package gerrit_owners;
 
-import static com.vmware.gerrit.owners.common.StreamUtils.iteratorStream;
+import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.IdentifiedUser;
@@ -28,8 +28,8 @@ import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlecode.prolog_cafe.lang.SymbolTerm;
 import com.googlecode.prolog_cafe.lang.Term;
 import com.googlecode.prolog_cafe.lang.VariableTerm;
-import com.vmware.gerrit.owners.OwnersStoredValues;
-import com.vmware.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.OwnersStoredValues;
+import com.googlesource.gerrit.owners.common.PathOwners;
 import java.io.File;
 import java.util.Map;
 import java.util.Set;

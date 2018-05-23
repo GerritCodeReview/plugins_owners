@@ -24,12 +24,12 @@ prolog_cafe_library(
 
 gerrit_plugin(
     name = "owners",
-    srcs = ["src/main/java/com/vmware/gerrit/owners/CompileStub.java"],
+    srcs = ["src/main/java/com/googlesource/gerrit/owners/CompileStub.java"],
     manifest_entries = [
         "Implementation-Title: Gerrit OWNERS plugin",
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
         "Gerrit-PluginName: owners",
-        "Gerrit-Module: com.vmware.gerrit.owners.OwnersModule",
+        "Gerrit-Module: com.googlesource.gerrit.owners.OwnersModule",
         "Gerrit-ApiVersion: 2.14-SNAPSHOT",
     ],
     resources = glob(["src/main/**/*"]),

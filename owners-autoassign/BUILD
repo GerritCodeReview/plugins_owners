@@ -12,7 +12,7 @@ gerrit_plugin(
         "Implementation-Title: Gerrit OWNERS autoassign plugin",
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
         "Gerrit-PluginName: owners-autoassign",
-        "Gerrit-Module: com.vmware.gerrit.owners.common.AutoassignModule",
+        "Gerrit-Module: com.googlesource.gerrit.owners.common.AutoassignModule",
         "Gerrit-ApiVersion: 2.14-SNAPSHOT",
     ],
     deps = [
