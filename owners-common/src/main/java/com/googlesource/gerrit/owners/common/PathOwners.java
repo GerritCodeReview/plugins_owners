@@ -220,8 +220,9 @@ public class PathOwners {
   private Set<String> getModifiedPaths() {
     Set<String> paths = Sets.newHashSet();
     for (PatchListEntry patch : patchList.getPatches()) {
-      // Ignore commit message
-      if (!patch.getNewName().equals("/COMMIT_MSG")) {
+      // Ignore commit message and Merge List
+      if (!patch.getNewName().equals("/COMMIT_MSG") &&
+          !patch.getNewName().equals("/MERGE_LIST")) {
         paths.add(patch.getNewName());
 
         // If a file was moved then we need approvals for old and new
