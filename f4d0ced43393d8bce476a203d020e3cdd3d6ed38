@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d26a3d97_a9441d4b",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1061275
+      },
+      "writtenOn": "2018-06-11T17:31:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b2bbb36_e4c43df2",
+      "revId": "f4d0ced43393d8bce476a203d020e3cdd3d6ed38",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c1dadf3e_96e1833d",
         "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
         "patchSetId": 2
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "07a24673_f0ca8061",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1061275
+      },
+      "writtenOn": "2018-06-11T17:31:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1dadf3e_96e1833d",
+      "range": {
+        "startLine": 61,
+        "startChar": 30,
+        "endLine": 61,
+        "endChar": 31
+      },
+      "revId": "f4d0ced43393d8bce476a203d020e3cdd3d6ed38",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "66c1051c_467bc154",
         "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
         "patchSetId": 2
@@ -62,6 +104,30 @@
       "revId": "f4d0ced43393d8bce476a203d020e3cdd3d6ed38",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40a05efb_80e4ca18",
+        "filename": "gerrit-owners/src/main/java/com/vmware/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1061275
+      },
+      "writtenOn": "2018-06-11T17:31:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66c1051c_467bc154",
+      "range": {
+        "startLine": 77,
+        "startChar": 48,
+        "endLine": 77,
+        "endChar": 49
+      },
+      "revId": "f4d0ced43393d8bce476a203d020e3cdd3d6ed38",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
