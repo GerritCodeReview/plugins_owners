@@ -8,7 +8,7 @@ def external_plugin_deps_standalone():
   external_plugin_deps(omit_jackson_core = False)
 
   maven_jar(
-    name = "prolog_runtime",
+    name = "prolog-runtime",
     artifact = "com.googlecode.prolog-cafe:prolog-runtime:" + PROLOG_VERS,
     attach_source = False,
     repository = PROLOG_REPO,
@@ -16,7 +16,7 @@ def external_plugin_deps_standalone():
   )
 
   maven_jar(
-    name = "prolog_compiler",
+    name = "prolog-compiler",
     artifact = "com.googlecode.prolog-cafe:prolog-compiler:" + PROLOG_VERS,
     attach_source = False,
     repository = PROLOG_REPO,
@@ -24,7 +24,7 @@ def external_plugin_deps_standalone():
   )
 
   maven_jar(
-    name = "prolog_io",
+    name = "prolog-io",
     artifact = "com.googlecode.prolog-cafe:prolog-io:" + PROLOG_VERS,
     attach_source = False,
     repository = PROLOG_REPO,
