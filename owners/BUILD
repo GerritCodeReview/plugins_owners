@@ -9,7 +9,7 @@ java_library(
     name = "gerrit-owners-predicates",
     srcs = PROLOG_PREDICATES,
     deps = [
-        "@prolog_runtime//jar:neverlink",
+        "@prolog-runtime//jar:neverlink",
         "//owners-common:owners-common",
     ] + PLUGIN_DEPS_NEVERLINK,
 )
