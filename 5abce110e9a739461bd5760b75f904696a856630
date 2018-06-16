@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e8e0811_b649937b",
+        "filename": "owners-common/common.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-06-16T13:14:08Z",
+      "side": 1,
+      "message": "Why it\u0027s included in the shaded JAR?\n\nIn gerrit core we do have jackson-core and it is used in final artifact, because ES rest client depends on it:\n\n  $ bazel query \"somepath(//:release, @jackson-core//jar)\"\n  //:release\n  //java/com/google/gerrit/httpd/init:init\n  //java/com/google/gerrit/elasticsearch:elasticsearch\n  //lib/jackson:jackson-core\n  @jackson-core//jar:jar\n\nMoreover, we have version collision here, as completely different versions are included.\n\n* Gerrit core: JACKSON_VERSION \u003d \"2.8.9\"\n* JACKSON_REV \u003d \"2.1.1\"\n\nI think what should happen:\n\n* 1. Harmonize jackson versions used in core and this plugin.\n* 2. Don\u0027t shade jackson-core in this plugin atifact, by using above:\n\n  EXTERNAL_DEPS \u003d [ \n    \u0027@jackson-core//jar:neverlink\u0027,",
+      "range": {
+        "startLine": 2,
+        "startChar": 4,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "5abce110e9a739461bd5760b75f904696a856630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
