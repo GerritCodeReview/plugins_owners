@@ -9,7 +9,7 @@ java_library(
         "src/main/java/**/*.java",
     ]),
     deps = [
-        "@prolog_runtime//jar:neverlink",
+        "@prolog-runtime//jar:neverlink",
         "//plugins/owners-common:owners-common",
     ] + PLUGIN_DEPS_NEVERLINK + EXTERNAL_DEPS,
 )
