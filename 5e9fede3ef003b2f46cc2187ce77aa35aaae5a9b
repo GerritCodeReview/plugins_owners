@@ -46,6 +46,30 @@
       "revId": "5e9fede3ef003b2f46cc2187ce77aa35aaae5a9b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e15fafee_42fe534f",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-06-16T23:34:31Z",
+      "side": 1,
+      "message": "I\u0027ll fix this in a separate commit. I\u0027d rather keep this commit the same as the original.",
+      "parentUuid": "ce810c8f_5902ee61",
+      "range": {
+        "startLine": 134,
+        "startChar": 11,
+        "endLine": 134,
+        "endChar": 27
+      },
+      "revId": "5e9fede3ef003b2f46cc2187ce77aa35aaae5a9b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
