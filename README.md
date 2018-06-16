@@ -51,10 +51,11 @@ Example:
    $ git clone https://gerrit.googlesource.com/plugins/owners
    $ git clone https://gerrit.googlesource.com/gerrit
    $ cd gerrit/plugins
-   $ ln -s ../../owners/owners* .
+   $ ln -s ../../owners/owners .
+   $ ln -s ../../owners/owners-autoassign .
    $ ln -sf ../../owners/external_plugin_deps.bzl .
    $ cd ..
-   $ bazel test plugins/owners-common:test
+   $ ln -s ../owners/owners-common .
    $ bazel build plugins/owners plugins/owners-autoassign
 ```
 
