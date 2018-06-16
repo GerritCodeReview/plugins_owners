@@ -22,6 +22,30 @@
       "revId": "5abce110e9a739461bd5760b75f904696a856630",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05bed856_1ef04dac",
+        "filename": "owners-common/common.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-06-16T14:26:06Z",
+      "side": 1,
+      "message": "I think both of these issues are fixed on stable-2.14. I\u0027ll check tomorrow and cherry pick them.",
+      "parentUuid": "0e8e0811_b649937b",
+      "range": {
+        "startLine": 2,
+        "startChar": 4,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "5abce110e9a739461bd5760b75f904696a856630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
