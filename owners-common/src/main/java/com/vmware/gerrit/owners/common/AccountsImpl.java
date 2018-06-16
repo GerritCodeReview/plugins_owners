@@ -14,7 +14,7 @@
 
 package com.vmware.gerrit.owners.common;
 
-import static com.google.gerrit.server.account.ExternalId.*;
+import static com.google.gerrit.server.account.externalids.ExternalId.*;
 
 import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
@@ -24,9 +24,9 @@ import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
-import com.google.gerrit.server.account.ExternalId;
 import com.google.gerrit.server.account.GroupCache;
 import com.google.gerrit.server.account.GroupMembers;
+import com.google.gerrit.server.account.externalids.ExternalId;
 import com.google.gerrit.server.group.InternalGroup;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.util.ManualRequestContext;
