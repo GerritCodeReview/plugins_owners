@@ -1,5 +1,5 @@
 load("//tools/bzl:junit.bzl", "junit_tests")
-load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS", "PLUGIN_TEST_DEPS", "gerrit_plugin")
 load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
 load("//owners-common:common.bzl", "EXTERNAL_DEPS")
 
@@ -15,8 +15,8 @@ gerrit_plugin(
         "Gerrit-Module: com.vmware.gerrit.owners.common.AutoassignModule",
         "Gerrit-ApiVersion: 2.14-SNAPSHOT",
     ],
+    resources = glob(["src/main/**/*"]),
     deps = [
         "//owners-common",
     ],
-    resources = glob(["src/main/**/*"]),
 )
