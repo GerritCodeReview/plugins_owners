@@ -1,6 +1,6 @@
-EXTERNAL_DEPS = [ 
-    '@jackson_core//jar',
-    '@jackson_databind//jar',
-    '@jackson_annotations//jar',
-    '@jackson_dataformat_yaml//jar'
+EXTERNAL_DEPS = [
+    '@jackson-core//jar:neverlink',
+    '@jackson-databind//jar',
+    '@jackson-annotations//jar',
+    '@jackson-dataformat-yaml//jar'
   ]

@@ -14,6 +14,8 @@
 
 package com.vmware.gerrit.owners.common;
 
+import static com.google.gerrit.server.account.ExternalId.*;
+
 import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
@@ -22,6 +24,7 @@ import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
+import com.google.gerrit.server.account.ExternalId;
 import com.google.gerrit.server.account.GroupCache;
 import com.google.gerrit.server.account.GroupMembers;
 import com.google.gerrit.server.group.InternalGroup;
@@ -107,8 +110,19 @@ public class AccountsImpl implements Accounts {
         return accountIds;
       }
 
+      Set<Id> activeAccountIds =
+          accountIds.stream().filter(this::isActive).collect(Collectors.toSet());
+      if (activeAccountIds.isEmpty()) {
+        log.warn(
+            "User '{}' resolves to {} accounts {}, but none of them are active",
+            nameOrEmail,
+            accountIds.size(),
+            accountIds);
+        return activeAccountIds;
+      }
+
       Set<Id> fulllyMatchedAccountIds =
-          accountIds
+          activeAccountIds
               .stream()
               .filter(id -> isFullMatch(id, nameOrEmail))
               .collect(Collectors.toSet());
@@ -130,18 +144,41 @@ public class AccountsImpl implements Accounts {
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
     AccountState account = byId.get(id);
-    return account.getAccount().getFullName().trim().equalsIgnoreCase(nameOrEmail)
+    return isFullNameMatch(account, nameOrEmail)
         || account
             .getExternalIds()
             .stream()
-            .anyMatch(
-                extId ->
-                    getSchemeRest(extId.key().scheme(), extId.key().get())
-                        .trim()
-                        .equalsIgnoreCase(nameOrEmail));
+            .anyMatch(eid -> isEMailMatch(eid, nameOrEmail) || isUsernameMatch(eid, nameOrEmail));
   }
 
-  private String getSchemeRest(String scheme, String key) {
-    return null != scheme ? key.substring(scheme.length() + 1) : key;
+  private boolean isFullNameMatch(AccountState account, String fullName) {
+    return Optional.ofNullable(account.getAccount().getFullName())
+        .filter(n -> n.trim().equalsIgnoreCase(fullName))
+        .isPresent();
+  }
+
+  private boolean isUsernameMatch(ExternalId externalId, String username) {
+    return keySchemeRest(SCHEME_GERRIT, externalId.key())
+        .filter(name -> name.equals(username))
+        .isPresent();
+  }
+
+  private boolean isEMailMatch(ExternalId externalId, String email) {
+    ExternalId.Key externalKey = externalId.key();
+    return OptionalUtils.combine(
+            Optional.ofNullable(externalId.email()).filter(mail -> mail.equalsIgnoreCase(email)),
+            keySchemeRest(SCHEME_MAILTO, externalKey).filter(mail -> mail.equalsIgnoreCase(email)))
+        .isPresent();
+  }
+
+  private boolean isActive(Account.Id accountId) {
+    return byId.get(accountId).getAccount().isActive();
+  }
+
+  private Optional<String> keySchemeRest(String scheme, ExternalId.Key key) {
+    if (scheme != null && key.isScheme(scheme)) {
+      return Optional.of(key.get().substring(scheme.length() + 1));
+    }
+    return Optional.empty();
   }
 }
