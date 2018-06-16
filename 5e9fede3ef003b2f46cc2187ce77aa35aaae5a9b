@@ -22,6 +22,30 @@
       "revId": "5e9fede3ef003b2f46cc2187ce77aa35aaae5a9b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce810c8f_5902ee61",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-06-16T14:24:12Z",
+      "side": 1,
+      "message": "Maybe, but this is what was done in the original change that I cherry picked.",
+      "parentUuid": "541f6191_f3065af2",
+      "range": {
+        "startLine": 134,
+        "startChar": 11,
+        "endLine": 134,
+        "endChar": 27
+      },
+      "revId": "5e9fede3ef003b2f46cc2187ce77aa35aaae5a9b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
