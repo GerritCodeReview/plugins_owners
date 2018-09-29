@@ -1,4 +1,4 @@
-load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS_NEVERLINK")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK", "gerrit_plugin")
 load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
 
 PROLOG_PREDICATES = glob(["src/main/java/gerrit_owners/**/*.java"]) + [
