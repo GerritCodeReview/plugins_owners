@@ -14,7 +14,8 @@
 
 package com.vmware.gerrit.owners.common;
 
-import static com.google.gerrit.server.account.ExternalId.*;
+import static com.google.gerrit.server.account.ExternalId.SCHEME_GERRIT;
+import static com.google.gerrit.server.account.ExternalId.SCHEME_MAILTO;
 
 import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
