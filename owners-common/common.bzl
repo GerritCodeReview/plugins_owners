@@ -3,4 +3,5 @@ EXTERNAL_DEPS = [
     "@jackson-databind//jar",
     "@jackson-annotations//jar",
     "@jackson-dataformat-yaml//jar",
+    "@snakeyaml//jar",
 ]
