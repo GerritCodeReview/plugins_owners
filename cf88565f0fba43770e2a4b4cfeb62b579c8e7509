@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b4312b9_f75866de",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-24T00:52:41Z",
+      "side": 1,
+      "message": "There are constants for these strings in com.google.gerrit.reviewdb.client.Patch (COMMIT_MSG and MERGE_LIST) so it would be better to static import and use those.\n\nAlso, the way the comparisons are written makes them vulnerable to NPE if for some reason patch.getNewName() returns null.  It would be better to write the comparisons with the constant on the left.\n\nFinally, and this is probably something that should be done separately, it would be useful to add a utility method on the Patch class to hide the details of these conditions and make it more future proof if additional \u0027magic\u0027 filenames are added.",
+      "range": {
+        "startLine": 224,
+        "startChar": 7,
+        "endLine": 225,
+        "endChar": 54
+      },
+      "revId": "cf88565f0fba43770e2a4b4cfeb62b579c8e7509",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
