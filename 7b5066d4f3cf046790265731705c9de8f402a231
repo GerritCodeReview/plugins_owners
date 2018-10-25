@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a45cbf6f_696e6e34",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-25T06:33:41Z",
+      "side": 1,
+      "message": "Note that this is actually the correct sha1.  It was wrong before.",
+      "range": {
+        "startLine": 10,
+        "startChar": 20,
+        "endLine": 10,
+        "endChar": 60
+      },
+      "revId": "7b5066d4f3cf046790265731705c9de8f402a231",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7fb1d613_5a6ecb12",
         "filename": "lib/prolog/BUILD",
         "patchSetId": 1
@@ -19,6 +42,24 @@
     },
     {
       "key": {
+        "uuid": "45da7a03_9f75494f",
+        "filename": "lib/prolog/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-25T06:33:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fb1d613_5a6ecb12",
+      "revId": "7b5066d4f3cf046790265731705c9de8f402a231",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1232dab0_04ec0172",
         "filename": "tools/bzl/BUILD",
         "patchSetId": 1
@@ -33,6 +74,24 @@
       "revId": "7b5066d4f3cf046790265731705c9de8f402a231",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0e0262b_35952b6f",
+        "filename": "tools/bzl/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-25T06:33:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1232dab0_04ec0172",
+      "revId": "7b5066d4f3cf046790265731705c9de8f402a231",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
