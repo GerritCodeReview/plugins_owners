@@ -22,6 +22,30 @@
       "revId": "6c0cc337f86577226f75f52fe4445996720fe913",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd8d6a33_ea45de21",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-10-25T08:08:56Z",
+      "side": 1,
+      "message": "I think it\u0027s not needed any more.",
+      "parentUuid": "52f68188_5ec9f2df",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 66
+      },
+      "revId": "6c0cc337f86577226f75f52fe4445996720fe913",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
