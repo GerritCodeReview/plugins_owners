@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52f68188_5ec9f2df",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/AccountsImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-25T06:52:04Z",
+      "side": 1,
+      "message": "Do we still need this?\n\nOn stable-2.14 the ctx is used on line 108 in the call to findAll.  On stable-2.14 that method takes a ReviewDb, which is got from the ctx.",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 66
+      },
+      "revId": "6c0cc337f86577226f75f52fe4445996720fe913",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
