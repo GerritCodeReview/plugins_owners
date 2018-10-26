@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0112c408_99989ce3",
+        "filename": "tools/workspace-status.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-10-26T04:00:16Z",
+      "side": 1,
+      "message": "This standalone build is unique, as it is building two gerrit plugins with different names from the same repository. However, one name is contain in the another name. So that emitting only this line in the bazel-out/stable-status.txt shoudl be sufficient for both plugins to retrieve the git version:\n\n  $ tail -1 bazel-out/stable-status.txt\n  STABLE_BUILD_OWNERS-AUTOASSIGN_LABEL v1.1-89-g1c7533b\n\nWith this line, both builds, for owners and autoassign plugin should work, as they would issue these commands:\n\n  # owners:\n  $ cat bazel-out/stable-status.txt | grep OWNERS\n  STABLE_BUILD_OWNERS-AUTOASSIGN_LABEL v1.1-89-g1c7533b-dirty\n\n  # owners-autoassign\n  $ cat bazel-out/stable-status.txt | grep OWNERS-AUTOASSIGN\n  STABLE_BUILD_OWNERS-AUTOASSIGN_LABEL v1.1-89-g1c7533b-dirty\n\nMay be add a comment to the line:\n\n  echo STABLE_BUILD_OWNERS-AUTOASSIGN_LABEL $(rev .)\n\nand clarify that?",
+      "revId": "c40158a7beb207e4e4407ea60ec7f2c5bfdb4f67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
