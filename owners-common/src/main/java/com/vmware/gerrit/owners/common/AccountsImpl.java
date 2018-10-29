@@ -144,9 +144,11 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
-    AccountState account = byId.get(id);
-    return isFullNameMatch(account, nameOrEmail)
-        || account
+    AccountState accountState = byId.get(id);
+    Account account = accountState.getAccount();
+    return isFullNameMatch(accountState, nameOrEmail)
+        || nameOrEmail.equalsIgnoreCase(account.getPreferredEmail())
+        || accountState
             .getExternalIds()
             .stream()
             .anyMatch(eid -> isEMailMatch(eid, nameOrEmail) || isUsernameMatch(eid, nameOrEmail));
