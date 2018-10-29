@@ -130,18 +130,19 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
-    AccountState account = byId.get(id);
-    return Objects.toString(account.getAccount().getFullName(), "")
-            .trim()
-            .equalsIgnoreCase(nameOrEmail)
-        || account
+    AccountState accountState = byId.get(id);
+    Account account = accountState.getAccount();
+    return Objects.toString(account.getFullName(), "").trim().equalsIgnoreCase(nameOrEmail)
+        || nameOrEmail.equalsIgnoreCase(account.getPreferredEmail())
+        || accountState
             .getExternalIds()
             .stream()
             .anyMatch(
                 extId ->
-                    getSchemeRest(extId.key().scheme(), extId.key().get())
-                        .trim()
-                        .equalsIgnoreCase(nameOrEmail));
+                    nameOrEmail.equalsIgnoreCase(extId.email())
+                        || getSchemeRest(extId.key().scheme(), extId.key().get())
+                            .trim()
+                            .equalsIgnoreCase(nameOrEmail));
   }
 
   private String getSchemeRest(String scheme, String key) {
