@@ -69,6 +69,7 @@ Set a OWNERS file into the project refs/meta/config to define a global set of
 rules applied to every change pushed, regardless of the folder or target branch.
 
 Example of assigning every configuration files to a specific owner group:
+
 ```yaml
 matchers:
 - suffix: *.config

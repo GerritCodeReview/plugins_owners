@@ -1,10 +1,9 @@
-target
-
 # IntelliJ
 *.iml
 *.ipr
 .idea
-
-# Maven Relase
-pom.xml.*
-release.properties
+/.classpath
+/.project
+/.settings/
+/bazel-*
+/eclipse-out/
