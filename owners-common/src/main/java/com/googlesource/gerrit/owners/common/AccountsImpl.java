@@ -14,6 +14,9 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_GERRIT;
+import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_MAILTO;
+
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.AccountGroup;
@@ -22,19 +25,20 @@ import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
 import com.google.gerrit.server.account.GroupCache;
 import com.google.gerrit.server.account.GroupMembers;
+import com.google.gerrit.server.account.externalids.ExternalId;
 import com.google.gerrit.server.group.InternalGroup;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.googlesource.gerrit.owners.common.OptionalUtils;
 
 public class AccountsImpl implements Accounts {
   private static final Logger log = LoggerFactory.getLogger(AccountsImpl.class);
@@ -96,8 +100,19 @@ public class AccountsImpl implements Accounts {
         return accountIds;
       }
 
+      Set<Id> activeAccountIds =
+          accountIds.stream().filter(this::isActive).collect(Collectors.toSet());
+      if (activeAccountIds.isEmpty()) {
+        log.warn(
+            "User '{}' resolves to {} accounts {}, but none of them are active",
+            nameOrEmail,
+            accountIds.size(),
+            accountIds);
+        return activeAccountIds;
+      }
+
       Set<Id> fulllyMatchedAccountIds =
-          accountIds
+          activeAccountIds
               .stream()
               .filter(id -> isFullMatch(id, nameOrEmail))
               .collect(Collectors.toSet());
@@ -119,21 +134,42 @@ public class AccountsImpl implements Accounts {
 
   private boolean isFullMatch(Account.Id id, String nameOrEmail) {
     Optional<AccountState> account = byId.get(id);
-    return account.isPresent() && Objects.toString(account.get().getAccount().getFullName(), "")
-            .trim()
-            .equalsIgnoreCase(nameOrEmail)
+    return account.isPresent() && (isFullNameMatch(account.get(), nameOrEmail)
         || account
             .get()
             .getExternalIds()
             .stream()
-            .anyMatch(
-                extId ->
-                    getSchemeRest(extId.key().scheme(), extId.key().get())
-                        .trim()
-                        .equalsIgnoreCase(nameOrEmail));
+            .anyMatch(eid -> isEMailMatch(eid, nameOrEmail) || isUsernameMatch(eid, nameOrEmail)));
   }
 
-  private String getSchemeRest(String scheme, String key) {
-    return null != scheme ? key.substring(scheme.length() + 1) : key;
+  private boolean isFullNameMatch(AccountState account, String fullName) {
+    return Optional.ofNullable(account.getAccount().getFullName())
+        .filter(n -> n.trim().equalsIgnoreCase(fullName))
+        .isPresent();
+  }
+
+  private boolean isUsernameMatch(ExternalId externalId, String username) {
+    return keySchemeRest(SCHEME_GERRIT, externalId.key())
+        .filter(name -> name.equals(username))
+        .isPresent();
+  }
+
+  private boolean isEMailMatch(ExternalId externalId, String email) {
+    ExternalId.Key externalKey = externalId.key();
+    return OptionalUtils.combine(
+            Optional.ofNullable(externalId.email()).filter(mail -> mail.equalsIgnoreCase(email)),
+            keySchemeRest(SCHEME_MAILTO, externalKey).filter(mail -> mail.equalsIgnoreCase(email)))
+        .isPresent();
+  }
+
+  private boolean isActive(Account.Id accountId) {
+    return byId.get(accountId).get().getAccount().isActive();
+  }
+
+  private Optional<String> keySchemeRest(String scheme, ExternalId.Key key) {
+    if (scheme != null && key.isScheme(scheme)) {
+      return Optional.of(key.get().substring(scheme.length() + 1));
+    }
+    return Optional.empty();
   }
 }
