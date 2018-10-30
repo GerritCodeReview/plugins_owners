@@ -17,6 +17,8 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
+import static com.google.gerrit.reviewdb.client.Patch.COMMIT_MSG;
+import static com.google.gerrit.reviewdb.client.Patch.MERGE_LIST;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
@@ -220,9 +222,10 @@ public class PathOwners {
   private Set<String> getModifiedPaths() {
     Set<String> paths = Sets.newHashSet();
     for (PatchListEntry patch : patchList.getPatches()) {
-      // Ignore commit message
-      if (!patch.getNewName().equals("/COMMIT_MSG")) {
-        paths.add(patch.getNewName());
+      // Ignore commit message and Merge List
+      String newName = patch.getNewName();
+      if (!COMMIT_MSG.equals(newName) && !MERGE_LIST.equals(newName)) {
+        paths.add(newName);
 
         // If a file was moved then we need approvals for old and new
         // path

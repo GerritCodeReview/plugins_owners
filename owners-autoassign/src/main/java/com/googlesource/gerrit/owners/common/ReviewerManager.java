@@ -17,7 +17,8 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.extensions.api.GerritApi;
-import com.google.gerrit.extensions.api.changes.ChangeApi;
+import com.google.gerrit.extensions.api.changes.AddReviewerInput;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
@@ -26,6 +27,7 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +48,16 @@ public class ReviewerManager {
   public void addReviewers(Change change, Collection<Account.Id> reviewers)
       throws ReviewerManagerException {
     try (ManualRequestContext ctx = requestContext.openAs(change.getOwner())) {
-
-      ChangeApi cApi = gApi.changes().id(change.getId().get());
+      // TODO(davido): Switch back to using changes API again,
+      // when it supports batch mode for adding reviewers
+      ReviewInput in = new ReviewInput();
+      in.reviewers = new ArrayList<>(reviewers.size());
       for (Account.Id account : reviewers) {
-        cApi.addReviewer(account.toString());
+        AddReviewerInput addReviewerInput = new AddReviewerInput();
+        addReviewerInput.reviewer = account.toString();
+        in.reviewers.add(addReviewerInput);
       }
-
+      gApi.changes().id(change.getId().get()).current().review(in);
     } catch (RestApiException | OrmException e) {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);

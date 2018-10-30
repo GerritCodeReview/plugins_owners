@@ -1,29 +1,35 @@
 load("//tools/bzl:maven_jar.bzl", "maven_jar")
 
-JACKSON_REV = "2.1.1"
+JACKSON_VER = "2.9.7"
 
-def external_plugin_deps():
+def external_plugin_deps(omit_jackson_core = True):
+    if not omit_jackson_core:
         maven_jar(
-          name = "jackson_core",
-          artifact = "com.fasterxml.jackson.core:jackson-core:%s" % JACKSON_REV,
-          sha1 = "82ad1c5f92f6dcc6291f5c46ebacb975eaa844de",
+            name = "jackson-core",
+            artifact = "com.fasterxml.jackson.core:jackson-core:" + JACKSON_VER,
+            sha1 = "4b7f0e0dc527fab032e9800ed231080fdc3ac015",
         )
 
-        maven_jar(
-          name = "jackson_databind",
-          artifact = "com.fasterxml.jackson.core:jackson-databind:%s" % JACKSON_REV,
-          sha1 = "38d2b3c0c89af5b937fd98c3e558bf6b58c14aa2",
-        )
+    maven_jar(
+        name = "jackson-databind",
+        artifact = "com.fasterxml.jackson.core:jackson-databind:" + JACKSON_VER,
+        sha1 = "e6faad47abd3179666e89068485a1b88a195ceb7",
+    )
 
-        maven_jar(
-          name = "jackson_annotations",
-          artifact = "com.fasterxml.jackson.core:jackson-annotations:%s" % JACKSON_REV,
-          sha1 = "0b01cc83e745fc4425a3968fafbf8e5b8254a6dd",
+    maven_jar(
+        name = "jackson-annotations",
+        artifact = "com.fasterxml.jackson.core:jackson-annotations:" + JACKSON_VER,
+        sha1 = "4b838e5c4fc17ac02f3293e9a558bb781a51c46d",
+    )
 
-        )
+    maven_jar(
+        name = "jackson-dataformat-yaml",
+        artifact = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:" + JACKSON_VER,
+        sha1 = "a428edc4bb34a2da98a50eb759c26941d4e85960",
+    )
 
-        maven_jar(
-          name = "jackson_dataformat_yaml",
-          artifact = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:%s" % JACKSON_REV,
-          sha1 = "3922d45de7f3ccabe8f16aad4060a6394373c6cb",
-        )
+    maven_jar(
+        name = "snakeyaml",
+        artifact = "org.yaml:snakeyaml:1.23",
+        sha1 = "ec62d74fe50689c28c0ff5b35d3aebcaa8b5be68",
+    )
