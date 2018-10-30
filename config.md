@@ -21,7 +21,7 @@ matchers:
 - partial_regex: example
   owners:
       [...]
-- exact: /path/to/file.txt
+- exact: path/to/file.txt
       [...]
 ```
 
@@ -39,7 +39,8 @@ group name or UUID with 'group/'.
 
 Additional owners can be specified for files selected by other matching
 conditions (matchers section). Matching can be done by file suffix, regex
-(partial or full) and exact string comparison.
+(partial or full) and exact string comparison. For exact match, path is
+relative to the root of the repo.
 
 The plugin analyzes the latest patch set by looking at each file directory and
 building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
@@ -72,7 +73,7 @@ Example of assigning every configuration files to a specific owner group:
 
 ```yaml
 matchers:
-- suffix: *.config
+- suffix: .config
   owners:
   - Configuration Managers
 ```
