@@ -15,3 +15,4 @@ function rev() {
 }
 
 echo STABLE_BUILD_OWNERS-AUTOASSIGN_LABEL $(rev .)
+echo STABLE_BUILD_OWNERS_LABEL $(rev .)
