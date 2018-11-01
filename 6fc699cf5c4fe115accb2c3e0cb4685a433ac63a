@@ -22,6 +22,30 @@
       "revId": "6fc699cf5c4fe115accb2c3e0cb4685a433ac63a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60e3b9fd_6af08e90",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-11-01T03:17:32Z",
+      "side": 1,
+      "message": "Never mind, it looks like it was like this on the stable-2.14 branch.  I\u0027ve uploaded a separate change to fix it.",
+      "parentUuid": "1f5b0f7e_139f7671",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 6
+      },
+      "revId": "6fc699cf5c4fe115accb2c3e0cb4685a433ac63a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
