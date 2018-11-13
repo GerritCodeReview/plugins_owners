@@ -16,9 +16,9 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 import static com.google.gerrit.reviewdb.client.Patch.COMMIT_MSG;
 import static com.google.gerrit.reviewdb.client.Patch.MERGE_LIST;
+import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
