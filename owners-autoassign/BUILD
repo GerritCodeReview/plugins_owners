@@ -5,6 +5,7 @@ gerrit_plugin(
     srcs = glob([
         "src/main/java/**/*.java",
     ]),
+    dir_name = "owners",
     manifest_entries = [
         "Implementation-Title: Gerrit OWNERS autoassign plugin",
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
