@@ -80,6 +80,9 @@ public class ConfigurationParser {
   }
 
   private static Stream<String> extractOwners(JsonNode node) {
+    if (node.isTextual()) {
+      return Stream.of(node.asText());
+    }
     return iteratorStream(node.iterator()).map(JsonNode::asText);
   }
 
