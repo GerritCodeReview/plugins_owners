@@ -39,15 +39,26 @@ import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.eclipse.jgit.lib.Repository;
+import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.inject.Inject;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
+
 /** Calculates the owners of a patch list. */
 // TODO(vspivak): provide assisted factory
 public class PathOwners {
 
   private static final Logger log = LoggerFactory.getLogger(PathOwners.class);
 
+  @Inject
+  GitRepositoryManager repositoryManager;
+
   private final SetMultimap<String, Account.Id> owners;
 
   private final Repository repository;
+
+  private Repository allprojrepo;
 
   private final PatchList patchList;
 
@@ -64,7 +75,15 @@ public class PathOwners {
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
     this.accounts = accounts;
-
+    try {
+      this.allprojrepo = repositoryManager.openRepository(Project.NameKey.parse("All-Projects"));
+    } catch (RepositoryNotFoundException e) {
+      log.info("Exception caught: RepositoryNotFoundException");
+    } catch ( IOException e) {
+      log.info("Exception caught: IOException");
+    } catch (Exception e) {
+      log.info("Exception is: " + e);
+    }
     OwnersMap map = fetchOwners(branch);
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     matchers = map.getMatchers();
@@ -99,7 +118,7 @@ public class PathOwners {
       String rootPath = "OWNERS";
 
       PathOwnersEntry projectEntry =
-          getOwnersConfig(rootPath, RefNames.REFS_CONFIG)
+          getAllProjOwnersConfig(rootPath, RefNames.REFS_CONFIG)
               .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
@@ -245,5 +264,11 @@ public class PathOwners {
       throws IOException {
     return getBlobAsBytes(repository, branch, ownersPath)
         .flatMap(bytes -> parser.getOwnersConfig(bytes));
+  }
+
+  private Optional<OwnersConfig> getAllProjOwnersConfig(String ownersPath, String branch)
+      throws IOException {
+      return getBlobAsBytes(allprojrepo, branch, ownersPath)
+           .flatMap(bytes -> parser.getOwnersConfig(bytes));
   }
 }
