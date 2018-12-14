@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff5cb74b_2bacbee7",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1011624
+      },
+      "writtenOn": "2018-12-14T06:50:42Z",
+      "side": 1,
+      "message": "Just using the All-Projects repo is not really a good idea in many case, I think following the inheritance tree upwards is much more helpful.\n\nAnd beware, you should not keep the repo open but close it. Typically openRepository is used in a try wiht resource block\n\n   try (Repository repo \u003d repoManager.openRepository(branch.getParentKey())) {\n   ...\n }",
+      "revId": "109a77180a6b58d3d4f433070ca7f043001e6b52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
