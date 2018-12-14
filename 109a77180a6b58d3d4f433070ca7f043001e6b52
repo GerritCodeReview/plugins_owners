@@ -33,6 +33,24 @@
       "revId": "109a77180a6b58d3d4f433070ca7f043001e6b52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc573012_80f83ac4",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1028787
+      },
+      "writtenOn": "2018-12-14T19:26:07Z",
+      "side": 1,
+      "message": "I am getting a NullPointerException at line 79. I am not sure how to debug that further. Here are the complete details: https://groups.google.com/forum/#!topic/repo-discuss/yAmrl5VTLfM. Can you please help me on what I might be missing.",
+      "parentUuid": "ff5cb74b_2bacbee7",
+      "revId": "109a77180a6b58d3d4f433070ca7f043001e6b52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
