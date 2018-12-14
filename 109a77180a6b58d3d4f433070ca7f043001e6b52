@@ -16,6 +16,23 @@
       "revId": "109a77180a6b58d3d4f433070ca7f043001e6b52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cdd6e4a_6673a491",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1011624
+      },
+      "writtenOn": "2018-12-14T07:14:58Z",
+      "side": 1,
+      "message": "And don#t hard-code the repo name, it is available from:a \n  com.google.gerrit.server.config.AllProjectsName",
+      "revId": "109a77180a6b58d3d4f433070ca7f043001e6b52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
