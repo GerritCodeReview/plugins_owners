@@ -51,6 +51,24 @@
       "revId": "109a77180a6b58d3d4f433070ca7f043001e6b52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0df9da7e_ad94b84a",
+        "filename": "owners-common/src/main/java/com/vmware/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1011624
+      },
+      "writtenOn": "2018-12-19T14:24:33Z",
+      "side": 1,
+      "message": "Looking at the code I think one possible reason why you get a null-pointer exception here is, that the repomanager is not yet ready a construction time (plugins load early).\n\nAs you should not keep an open repo anyway, move the openReposititory (in a try-with-resource block!)  inside getAllProjOwnersConfig",
+      "parentUuid": "bc573012_80f83ac4",
+      "revId": "109a77180a6b58d3d4f433070ca7f043001e6b52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
