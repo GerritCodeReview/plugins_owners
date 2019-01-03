@@ -43,7 +43,7 @@ public class ConfigurationParser {
       final OwnersConfig ret = new OwnersConfig();
       JsonNode jsonNode = new ObjectMapper(new YAMLFactory()).readValue(yamlBytes, JsonNode.class);
       Boolean inherited =
-          Optional.ofNullable(jsonNode.get("inherited")).map(JsonNode::asBoolean).orElse(false);
+          Optional.ofNullable(jsonNode.get("inherited")).map(JsonNode::asBoolean).orElse(true);
       ret.setInherited(inherited);
       addClassicMatcher(jsonNode, ret);
       addMatchers(jsonNode, ret);
