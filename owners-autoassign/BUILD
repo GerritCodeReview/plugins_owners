@@ -10,7 +10,7 @@ gerrit_plugin(
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
         "Gerrit-PluginName: owners-autoassign",
         "Gerrit-Module: com.vmware.gerrit.owners.common.AutoassignModule",
-        "Gerrit-ApiVersion: 2.14-SNAPSHOT",
+        "Gerrit-ApiVersion: 2.14",
     ],
     resources = glob(["src/main/**/*"]),
     deps = [

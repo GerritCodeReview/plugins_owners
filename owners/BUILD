@@ -35,7 +35,7 @@ gerrit_plugin(
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
         "Gerrit-PluginName: owners",
         "Gerrit-Module: com.vmware.gerrit.owners.OwnersModule",
-        "Gerrit-ApiVersion: 2.14-SNAPSHOT",
+        "Gerrit-ApiVersion: 2.14",
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
