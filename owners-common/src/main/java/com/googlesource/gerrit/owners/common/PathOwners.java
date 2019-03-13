@@ -172,20 +172,6 @@ public class PathOwners {
     PathOwnersEntry currentEntry = rootEntry;
     StringBuilder builder = new StringBuilder();
 
-    if (rootEntry.isInherited()) {
-      for (Matcher matcher : projectEntry.getMatchers().values()) {
-        if (!currentEntry.hasMatcher(matcher.getPath())) {
-          currentEntry.addMatcher(matcher);
-        }
-      }
-      if (currentEntry.getOwners().isEmpty()) {
-        currentEntry.setOwners(projectEntry.getOwners());
-      }
-      if (currentEntry.getOwnersPath() == null) {
-        currentEntry.setOwnersPath(projectEntry.getOwnersPath());
-      }
-    }
-
     // Iterate through the parent paths, not including the file name
     // itself
     for (int i = 0; i < parts.length - 1; i++) {
@@ -209,6 +195,20 @@ public class PathOwners {
           }
         }
         entries.put(partial, currentEntry);
+      }
+    }
+
+    if (rootEntry.isInherited()) {
+      for (Matcher matcher : projectEntry.getMatchers().values()) {
+        if (!currentEntry.hasMatcher(matcher.getPath())) {
+          currentEntry.addMatcher(matcher);
+        }
+      }
+      if (currentEntry.getOwners().isEmpty()) {
+        currentEntry.setOwners(projectEntry.getOwners());
+      }
+      if (currentEntry.getOwnersPath() == null) {
+        currentEntry.setOwnersPath(projectEntry.getOwnersPath());
       }
     }
     return currentEntry;
