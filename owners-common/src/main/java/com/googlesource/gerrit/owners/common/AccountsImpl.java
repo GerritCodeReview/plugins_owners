@@ -17,6 +17,7 @@ package com.googlesource.gerrit.owners.common;
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_GERRIT;
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_MAILTO;
 
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.AccountGroup;
@@ -30,7 +31,6 @@ import com.google.gerrit.server.group.InternalGroup;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
@@ -85,9 +85,7 @@ public class AccountsImpl implements Accounts {
     }
 
     try {
-      return groupMembers
-          .listAccounts(group.get().getGroupUUID(), null)
-          .stream()
+      return groupMembers.listAccounts(group.get().getGroupUUID(), null).stream()
           .map(Account::getId)
           .collect(Collectors.toSet());
     } catch (NoSuchProjectException | IOException e) {
@@ -98,7 +96,7 @@ public class AccountsImpl implements Accounts {
 
   private Set<Account.Id> findUserOrEmail(String nameOrEmail) {
     try (ManualRequestContext ctx = oneOffRequestContext.open()) {
-      Set<Id> accountIds = resolver.findAll(nameOrEmail);
+      Set<Id> accountIds = resolver.resolve(nameOrEmail).asIdSet();
       if (accountIds.isEmpty()) {
         log.warn("User '{}' does not resolve to any account.", nameOrEmail);
         return accountIds;
@@ -116,8 +114,7 @@ public class AccountsImpl implements Accounts {
       }
 
       Set<Id> fulllyMatchedAccountIds =
-          activeAccountIds
-              .stream()
+          activeAccountIds.stream()
               .filter(id -> isFullMatch(id, nameOrEmail))
               .collect(Collectors.toSet());
       if (fulllyMatchedAccountIds.isEmpty()) {
@@ -130,7 +127,7 @@ public class AccountsImpl implements Accounts {
       }
 
       return accountIds;
-    } catch (OrmException | IOException | ConfigInvalidException e) {
+    } catch (StorageException | IOException | ConfigInvalidException e) {
       log.error("Error trying to resolve user " + nameOrEmail, e);
       return Collections.emptySet();
     }
@@ -145,10 +142,7 @@ public class AccountsImpl implements Accounts {
     Account account = accountState.get().getAccount();
     return isFullNameMatch(account, nameOrEmail)
         || nameOrEmail.equalsIgnoreCase(account.getPreferredEmail())
-        || accountState
-            .get()
-            .getExternalIds()
-            .stream()
+        || accountState.get().getExternalIds().stream()
             .anyMatch(eid -> isEMailMatch(eid, nameOrEmail) || isUsernameMatch(eid, nameOrEmail));
   }
 
