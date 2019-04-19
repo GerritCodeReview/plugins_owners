@@ -19,20 +19,19 @@ package com.googlesource.gerrit.owners.common;
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
 
 import com.google.common.collect.Sets;
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.annotations.Listen;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import java.io.IOException;
 import java.util.Set;
 import org.eclipse.jgit.lib.ObjectId;
@@ -46,26 +45,22 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private static final String CHANGES_REF = "refs/changes/";
 
-  private final Provider<ReviewDb> db;
-
   private final PatchListCache patchListCache;
-
   private final GitRepositoryManager repositoryManager;
-
+  private final ChangeNotes.Factory notesFactory;
   private final Accounts accounts;
-
   private final ReviewerManager reviewerManager;
 
   @Inject
   public GitRefListener(
-      Provider<ReviewDb> db,
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
+      ChangeNotes.Factory notesFactory,
       Accounts accounts,
       ReviewerManager reviewerManager) {
-    this.db = db;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
+    this.notesFactory = notesFactory;
     this.accounts = accounts;
     this.reviewerManager = reviewerManager;
   }
@@ -89,11 +84,13 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private void processEvent(Repository repository, Event event) {
     if (event.getRefName().startsWith(CHANGES_REF)) {
       Change.Id id = Change.Id.fromRef(event.getRefName());
-      ReviewDb reviewDb = db.get();
       // The provider injected by Gerrit is shared with other workers on the
       // same local thread and thus cannot be closed in this event listener.
       try {
-        Change change = reviewDb.changes().get(id);
+        Change change =
+            notesFactory
+                .createChecked(Project.NameKey.parse(event.getProjectName()), id)
+                .getChange();
         if (change == null) {
           return;
         }
@@ -109,7 +106,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
           logger.debug("Autoassigned reviewers are: {}", allReviewers.toString());
           reviewerManager.addReviewers(change, allReviewers);
         }
-      } catch (OrmException e) {
+      } catch (StorageException e) {
         logger.warn("Could not open change: {}", id, e);
       } catch (ReviewerManagerException e) {
         logger.warn("Could not add reviewers for change: {}", id, e);

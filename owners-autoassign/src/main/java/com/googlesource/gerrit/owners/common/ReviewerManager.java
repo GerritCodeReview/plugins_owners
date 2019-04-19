@@ -16,6 +16,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
@@ -24,7 +25,6 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class ReviewerManager {
         in.reviewers.add(addReviewerInput);
       }
       gApi.changes().id(change.getId().get()).current().review(in);
-    } catch (RestApiException | OrmException e) {
+    } catch (RestApiException | StorageException e) {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);
     }
