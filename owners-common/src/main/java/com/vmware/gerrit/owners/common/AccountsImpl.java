@@ -16,6 +16,7 @@ package com.vmware.gerrit.owners.common;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_GERRIT;
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_MAILTO;
+import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
 
 import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
@@ -91,10 +92,7 @@ public class AccountsImpl implements Accounts {
 
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(adminUser.getAccountId())) {
 
-      return groupMembers
-          .create(adminUser)
-          .listAccounts(group.get().getGroupUUID(), null)
-          .stream()
+      return groupMembers.create(adminUser).listAccounts(group.get().getGroupUUID(), null).stream()
           .map(Account::getId)
           .collect(Collectors.toSet());
     } catch (NoSuchGroupException | NoSuchProjectException | OrmException | IOException e) {
@@ -123,8 +121,7 @@ public class AccountsImpl implements Accounts {
       }
 
       Set<Id> fulllyMatchedAccountIds =
-          activeAccountIds
-              .stream()
+          activeAccountIds.stream()
               .filter(id -> isFullMatch(id, nameOrEmail))
               .collect(Collectors.toSet());
       if (fulllyMatchedAccountIds.isEmpty()) {
@@ -148,9 +145,7 @@ public class AccountsImpl implements Accounts {
     Account account = accountState.getAccount();
     return isFullNameMatch(accountState, nameOrEmail)
         || nameOrEmail.equalsIgnoreCase(account.getPreferredEmail())
-        || accountState
-            .getExternalIds()
-            .stream()
+        || accountState.getExternalIds().stream()
             .anyMatch(eid -> isEMailMatch(eid, nameOrEmail) || isUsernameMatch(eid, nameOrEmail));
   }
 
@@ -161,7 +156,9 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isUsernameMatch(ExternalId externalId, String username) {
-    return keySchemeRest(SCHEME_GERRIT, externalId.key())
+    return OptionalUtils.combine(
+            keySchemeRest(SCHEME_GERRIT, externalId.key()),
+            keySchemeRest(SCHEME_USERNAME, externalId.key()))
         .filter(name -> name.equals(username))
         .isPresent();
   }
