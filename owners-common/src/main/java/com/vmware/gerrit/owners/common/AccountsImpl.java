@@ -16,6 +16,7 @@ package com.vmware.gerrit.owners.common;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_GERRIT;
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_MAILTO;
+import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
 
 import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
@@ -161,9 +162,11 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isUsernameMatch(ExternalId externalId, String username) {
-    return keySchemeRest(SCHEME_GERRIT, externalId.key())
-        .filter(name -> name.equals(username))
-        .isPresent();
+    return OptionalUtils.combine(
+            keySchemeRest(SCHEME_GERRIT, externalId.key()),
+            keySchemeRest(SCHEME_USERNAME, externalId.key())
+
+    ).filter(name -> name.equals(username)).isPresent();
   }
 
   private boolean isEMailMatch(ExternalId externalId, String email) {
