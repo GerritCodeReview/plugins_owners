@@ -78,7 +78,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     try {
       repository = repositoryManager.openRepository(Project.NameKey.parse(projectName));
       try {
-        processEvent(repository, event);
+        String refName = event.getRefName();
+        if (refName.startsWith(RefNames.REFS_CHANGES) && !RefNames.isNoteDbMetaRef(refName)) {
+          processEvent(repository, event);
+        }
       } finally {
         repository.close();
       }
@@ -87,35 +90,32 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  private void processEvent(Repository repository, Event event) {
-    final String refName = event.getRefName();
-    if (refName.startsWith(RefNames.REFS_CHANGES) && !RefNames.isNoteDbMetaRef(refName)) {
-      Change.Id cId = Change.Id.fromRef(refName);
-      Changes changes = api.changes();
-      // The provider injected by Gerrit is shared with other workers on the
-      // same local thread and thus cannot be closed in this event listener.
-      try {
-        ChangeApi cApi = changes.id(cId.id);
-        ChangeInfo change = cApi.get();
-        if (change == null) {
-          return;
-        }
-        PatchList patchList = getPatchList(event, change);
-        if (patchList != null) {
-          PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
-          Set<Account.Id> allReviewers = Sets.newHashSet();
-          allReviewers.addAll(owners.get().values());
-          for (Matcher matcher : owners.getMatchers().values()) {
-            allReviewers.addAll(matcher.getOwners());
-          }
-          logger.debug("Autoassigned reviewers are: {}", allReviewers.toString());
-          reviewerManager.addReviewers(cApi, allReviewers);
-        }
-      } catch (RestApiException e) {
-        logger.warn("Could not open change: {}", cId, e);
-      } catch (ReviewerManagerException e) {
-        logger.warn("Could not add reviewers for change: {}", cId, e);
+  void processEvent(Repository repository, Event event) {
+    Change.Id cId = Change.Id.fromRef(event.getRefName());
+    Changes changes = api.changes();
+    // The provider injected by Gerrit is shared with other workers on the
+    // same local thread and thus cannot be closed in this event listener.
+    try {
+      ChangeApi cApi = changes.id(cId.id);
+      ChangeInfo change = cApi.get();
+      if (change == null) {
+        return;
       }
+      PatchList patchList = getPatchList(event, change);
+      if (patchList != null) {
+        PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
+        Set<Account.Id> allReviewers = Sets.newHashSet();
+        allReviewers.addAll(owners.get().values());
+        for (Matcher matcher : owners.getMatchers().values()) {
+          allReviewers.addAll(matcher.getOwners());
+        }
+        logger.debug("Autoassigned reviewers are: {}", allReviewers.toString());
+        reviewerManager.addReviewers(cApi, allReviewers);
+      }
+    } catch (RestApiException e) {
+      logger.warn("Could not open change: {}", cId, e);
+    } catch (ReviewerManagerException e) {
+      logger.warn("Could not add reviewers for change: {}", cId, e);
     }
   }
 
