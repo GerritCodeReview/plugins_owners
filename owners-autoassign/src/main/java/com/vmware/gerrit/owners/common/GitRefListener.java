@@ -29,6 +29,7 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
@@ -45,8 +46,6 @@ import org.slf4j.LoggerFactory;
 @Listen
 public class GitRefListener implements GitReferenceUpdatedListener {
   private static final Logger logger = LoggerFactory.getLogger(GitRefListener.class);
-
-  private static final String CHANGES_REF = "refs/changes/";
 
   private final GerritApi api;
 
@@ -89,8 +88,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   }
 
   private void processEvent(Repository repository, Event event) {
-    if (event.getRefName().startsWith(CHANGES_REF)) {
-      Change.Id cId = Change.Id.fromRef(event.getRefName());
+    final String refName = event.getRefName();
+    if (refName.startsWith(RefNames.REFS_CHANGES) && !RefNames.isNoteDbMetaRef(refName)) {
+      Change.Id cId = Change.Id.fromRef(refName);
       Changes changes = api.changes();
       // The provider injected by Gerrit is shared with other workers on the
       // same local thread and thus cannot be closed in this event listener.
