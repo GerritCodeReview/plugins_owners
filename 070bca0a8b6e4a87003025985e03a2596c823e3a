@@ -108,6 +108,24 @@
     },
     {
       "key": {
+        "uuid": "87c101e4_44c18873",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestGitRefListener.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:44:35Z",
+      "side": 1,
+      "message": "Forgot to rename it?",
+      "parentUuid": "e37b0c23_148e3148",
+      "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "abb0fa2e_1c931829",
         "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestReferenceUpdatedEvent.java",
         "patchSetId": 4
