@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b01848c4_53bba0ea",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T20:30:20Z",
+      "side": 1,
+      "message": "Yes, this change is only to introduce integration tests, however, moving this here is a requisite to _make_ the code testable, so I think they make sense together.\n\nPerhaps you have a suggestion on how to write this integration test in a different way, I\u0027d be happy to make the relevant amendments.",
+      "parentUuid": "b6bd08db_47111f7f",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 92
+      },
+      "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9e4b2adc_bbbd5729",
         "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestGitRefListener.java",
         "patchSetId": 4
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "e37b0c23_148e3148",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestGitRefListener.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T20:30:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9e4b2adc_bbbd5729",
+      "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "abb0fa2e_1c931829",
         "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestReferenceUpdatedEvent.java",
         "patchSetId": 4
@@ -56,6 +98,24 @@
       "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7074a3c7_d62498c3",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestReferenceUpdatedEvent.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T20:30:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "abb0fa2e_1c931829",
+      "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
