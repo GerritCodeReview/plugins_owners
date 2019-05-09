@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6bd08db_47111f7f",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T19:52:41Z",
+      "side": 1,
+      "message": "This was checked already in the processEvent, the bug that was fixed with Change-Id: Ief0a82b877d. Any reasons for moving it here? If yes, it should be part of a separate change, as this is intended only to introduce integration tests, isn\u0027t it?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 92
+      },
+      "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e4b2adc_bbbd5729",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestGitRefListener.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T19:52:41Z",
+      "side": 1,
+      "message": "Should be named GitRefListenerTest",
+      "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abb0fa2e_1c931829",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/TestReferenceUpdatedEvent.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T19:52:41Z",
+      "side": 1,
+      "message": "Should be named ReferenceUpdatedEventTest",
+      "revId": "070bca0a8b6e4a87003025985e03a2596c823e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
