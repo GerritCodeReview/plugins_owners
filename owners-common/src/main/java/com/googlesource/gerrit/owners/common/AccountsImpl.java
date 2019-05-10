@@ -16,6 +16,7 @@ package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_GERRIT;
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_MAILTO;
+import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
@@ -85,9 +86,7 @@ public class AccountsImpl implements Accounts {
     }
 
     try {
-      return groupMembers
-          .listAccounts(group.get().getGroupUUID(), null)
-          .stream()
+      return groupMembers.listAccounts(group.get().getGroupUUID(), null).stream()
           .map(Account::getId)
           .collect(Collectors.toSet());
     } catch (NoSuchProjectException | IOException e) {
@@ -116,8 +115,7 @@ public class AccountsImpl implements Accounts {
       }
 
       Set<Id> fulllyMatchedAccountIds =
-          activeAccountIds
-              .stream()
+          activeAccountIds.stream()
               .filter(id -> isFullMatch(id, nameOrEmail))
               .collect(Collectors.toSet());
       if (fulllyMatchedAccountIds.isEmpty()) {
@@ -145,10 +143,7 @@ public class AccountsImpl implements Accounts {
     Account account = accountState.get().getAccount();
     return isFullNameMatch(account, nameOrEmail)
         || nameOrEmail.equalsIgnoreCase(account.getPreferredEmail())
-        || accountState
-            .get()
-            .getExternalIds()
-            .stream()
+        || accountState.get().getExternalIds().stream()
             .anyMatch(eid -> isEMailMatch(eid, nameOrEmail) || isUsernameMatch(eid, nameOrEmail));
   }
 
@@ -159,7 +154,9 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isUsernameMatch(ExternalId externalId, String username) {
-    return keySchemeRest(SCHEME_GERRIT, externalId.key())
+    return OptionalUtils.combine(
+            keySchemeRest(SCHEME_GERRIT, externalId.key()),
+            keySchemeRest(SCHEME_USERNAME, externalId.key()))
         .filter(name -> name.equals(username))
         .isPresent();
   }
