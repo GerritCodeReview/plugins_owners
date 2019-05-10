@@ -26,7 +26,7 @@ java_library(
         "src/main/java/**/*.java",
     ]),
     visibility = ["//visibility:public"],
-    deps = PLUGIN_DEPS + PLUGIN_DEPS_NEVERLINK + [
+    deps = PLUGIN_DEPS_NEVERLINK + [
         "//owners-common",
     ],
 )
