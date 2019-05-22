@@ -16,10 +16,13 @@ package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_GERRIT;
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_MAILTO;
+import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
 
+import com.google.gerrit.common.errors.NoSuchGroupException;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountState;
@@ -48,6 +51,7 @@ public class AccountsImpl implements Accounts {
   private final AccountCache byId;
   private final GroupCache groupCache;
   private final GroupMembers groupMembers;
+  private final IdentifiedUser adminUser;
   private final OneOffRequestContext oneOffRequestContext;
 
   @Inject
@@ -56,11 +60,13 @@ public class AccountsImpl implements Accounts {
       AccountCache byId,
       GroupCache groupCache,
       GroupMembers groupMembers,
-      OneOffRequestContext oneOffRequestContext) {
+      OneOffRequestContext oneOffRequestContext,
+      IdentifiedUser.GenericFactory userFactory) {
     this.resolver = resolver;
     this.byId = byId;
     this.groupCache = groupCache;
     this.groupMembers = groupMembers;
+    this.adminUser = userFactory.create(new Account.Id(1000000));
     this.oneOffRequestContext = oneOffRequestContext;
   }
 
@@ -84,11 +90,12 @@ public class AccountsImpl implements Accounts {
       return Collections.emptySet();
     }
 
-    try {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(adminUser.getAccountId())) {
+
       return groupMembers.listAccounts(group.get().getGroupUUID(), null).stream()
           .map(Account::getId)
           .collect(Collectors.toSet());
-    } catch (NoSuchProjectException | IOException e) {
+    } catch (NoSuchProjectException | OrmException | IOException e) {
       log.error("Unable to list accounts in group " + group, e);
       return Collections.emptySet();
     }
@@ -153,7 +160,9 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isUsernameMatch(ExternalId externalId, String username) {
-    return keySchemeRest(SCHEME_GERRIT, externalId.key())
+    return OptionalUtils.combine(
+            keySchemeRest(SCHEME_GERRIT, externalId.key()),
+            keySchemeRest(SCHEME_USERNAME, externalId.key()))
         .filter(name -> name.equals(username))
         .isPresent();
   }
