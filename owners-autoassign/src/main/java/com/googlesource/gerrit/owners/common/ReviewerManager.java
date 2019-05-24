@@ -50,7 +50,7 @@ public class ReviewerManager {
     try {
       ChangeInfo changeInfo = cApi.get();
       try (ManualRequestContext ctx =
-          requestContext.openAs(new Account.Id(changeInfo.owner._accountId))) {
+          requestContext.openAs(Account.id(changeInfo.owner._accountId))) {
         // TODO(davido): Switch back to using changes API again,
         // when it supports batch mode for adding reviewers
         ReviewInput in = new ReviewInput();
