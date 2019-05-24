@@ -93,7 +93,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     // The provider injected by Gerrit is shared with other workers on the
     // same local thread and thus cannot be closed in this event listener.
     try {
-      ChangeApi cApi = changes.id(cId.id);
+      ChangeApi cApi = changes.id(cId.get());
       ChangeInfo change = cApi.get();
       if (change == null) {
         return;
@@ -124,7 +124,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
     PatchListKey plKey = PatchListKey.againstCommit(null, newId, IGNORE_NONE);
     try {
-      return patchListCache.get(plKey, new Project.NameKey(change.project));
+      return patchListCache.get(plKey, Project.nameKey(change.project));
     } catch (PatchListNotAvailableException e) {
       logger.warn("Could not load patch list: {}", plKey, e);
     }

@@ -64,7 +64,7 @@ public class AccountsImpl implements Accounts {
     this.byId = byId;
     this.groupCache = groupCache;
     this.groupMembers = groupMembers;
-    this.adminUser = userFactory.create(new Account.Id(1000000));
+    this.adminUser = userFactory.create(Account.id(1000000));
     this.oneOffRequestContext = oneOffRequestContext;
   }
 
@@ -79,9 +79,9 @@ public class AccountsImpl implements Accounts {
   private Set<Id> findAccountsInGroup(String groupNameOrUUID) {
     Optional<InternalGroup> group =
         groupCache
-            .get(new AccountGroup.NameKey(groupNameOrUUID))
+            .get(AccountGroup.nameKey(groupNameOrUUID))
             .map(Optional::of)
-            .orElse(groupCache.get(new AccountGroup.UUID(groupNameOrUUID)));
+            .orElse(groupCache.get(AccountGroup.uuid(groupNameOrUUID)));
 
     if (!group.isPresent()) {
       log.warn("Group {} was not found", groupNameOrUUID);

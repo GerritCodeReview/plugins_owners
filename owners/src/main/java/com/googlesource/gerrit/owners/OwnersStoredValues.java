@@ -43,7 +43,7 @@ public class OwnersStoredValues {
           protected PathOwners createValue(Prolog engine) {
             PatchList patchList = StoredValues.PATCH_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
-            String branch = StoredValues.getChange(engine).getDest().get();
+            String branch = StoredValues.getChange(engine).getDest().branch();
             return new PathOwners(accounts, repository, branch, patchList);
           }
         };
