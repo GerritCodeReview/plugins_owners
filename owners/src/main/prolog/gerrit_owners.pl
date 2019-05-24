@@ -24,7 +24,7 @@
 add_owner_approval(In, Out) :-
   owner_path(Path),
   \+ owner_approved(Path),
-  Out = [label('Code-Review from owners', need(_)) | In],
+  Out = [label('Code-Review-from-owners', need(_)) | In],
   !.
 
 add_owner_approval(In, Out) :- In = Out.
@@ -32,7 +32,7 @@ add_owner_approval(In, Out) :- In = Out.
 add_owner_approval(Users, In, Out) :-
   owner_path(Path),
   \+ owner_approved(Users, Path),
-  Out = [label('Code-Review from owners', need(_)) | In],
+  Out = [label('Code-Review-from-owners', need(_)) | In],
   !.
 
 add_owner_approval(_, In, Out) :- In = Out.
@@ -67,7 +67,7 @@ add_match_owner_approval(In,Out) :-
     findall(US,code_review_user(US),Approvers),
     matcher_needed(Approvers,P,W),
     \+ W == [],
-    Out = [label('Code-Review from owners', need(_)) | In], !.
+    Out = [label('Code-Review-from-owners', need(_)) | In], !.
 
 add_match_owner_approval(In,Out) :- Out = In.
 

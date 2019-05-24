@@ -76,7 +76,7 @@ class PRED_file_owners_2 extends Predicate.P2 {
     }
     Account account = user.asIdentifiedUser().state().getAccount();
     String userName = account.getFullName();
-    return userName;
+    return sanitizeAsSubmitLabel(userName);
   }
 
   public Term createFormattedList(Prolog engine, Term key) {
@@ -86,9 +86,13 @@ class PRED_file_owners_2 extends Predicate.P2 {
         iteratorStream(owners.getFileOwners().get(path).iterator())
             .map(id -> getFullNameFromId(engine, id))
             .collect(Collectors.toSet());
-    String ownVerb = ownersNames.size() > 1 ? " own " : " owns ";
-    String userNames = ownersNames.stream().collect(Collectors.joining(", "));
-    return SymbolTerm.create(userNames + ownVerb + (new File(path)).getName());
+    String ownVerb = ownersNames.size() > 1 ? "-own-" : "-owns-";
+    String userNames = ownersNames.stream().collect(Collectors.joining("-"));
+    return SymbolTerm.create(userNames + ownVerb + sanitizeAsSubmitLabel(new File(path).getName()));
+  }
+
+  private String sanitizeAsSubmitLabel(String anyLabelPart) {
+    return anyLabelPart.replaceAll("[\\s_\\.]+", "-");
   }
 
   private static IdentifiedUser.GenericFactory userFactory(Prolog engine) {

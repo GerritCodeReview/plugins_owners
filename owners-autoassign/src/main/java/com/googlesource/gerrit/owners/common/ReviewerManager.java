@@ -16,13 +16,13 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
+import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
@@ -36,29 +36,33 @@ import org.slf4j.LoggerFactory;
 public class ReviewerManager {
   private static final Logger log = LoggerFactory.getLogger(ReviewerManager.class);
 
-  private final GerritApi gApi;
   private final OneOffRequestContext requestContext;
+  private final GerritApi gApi;
 
   @Inject
-  public ReviewerManager(GerritApi gApi, OneOffRequestContext requestContext) {
-    this.gApi = gApi;
+  public ReviewerManager(OneOffRequestContext requestContext, GerritApi gApi) {
     this.requestContext = requestContext;
+    this.gApi = gApi;
   }
 
-  public void addReviewers(Change change, Collection<Account.Id> reviewers)
+  public void addReviewers(ChangeApi cApi, Collection<Account.Id> reviewers)
       throws ReviewerManagerException {
-    try (ManualRequestContext ctx = requestContext.openAs(change.getOwner())) {
-      // TODO(davido): Switch back to using changes API again,
-      // when it supports batch mode for adding reviewers
-      ReviewInput in = new ReviewInput();
-      in.reviewers = new ArrayList<>(reviewers.size());
-      for (Account.Id account : reviewers) {
-        AddReviewerInput addReviewerInput = new AddReviewerInput();
-        addReviewerInput.reviewer = account.toString();
-        in.reviewers.add(addReviewerInput);
+    try {
+      ChangeInfo changeInfo = cApi.get();
+      try (ManualRequestContext ctx =
+          requestContext.openAs(new Account.Id(changeInfo.owner._accountId))) {
+        // TODO(davido): Switch back to using changes API again,
+        // when it supports batch mode for adding reviewers
+        ReviewInput in = new ReviewInput();
+        in.reviewers = new ArrayList<>(reviewers.size());
+        for (Account.Id account : reviewers) {
+          AddReviewerInput addReviewerInput = new AddReviewerInput();
+          addReviewerInput.reviewer = account.toString();
+          in.reviewers.add(addReviewerInput);
+        }
+        gApi.changes().id(changeInfo.id).current().review(in);
       }
-      gApi.changes().id(change.getId().get()).current().review(in);
-    } catch (RestApiException | StorageException e) {
+    } catch (RestApiException e) {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);
     }
