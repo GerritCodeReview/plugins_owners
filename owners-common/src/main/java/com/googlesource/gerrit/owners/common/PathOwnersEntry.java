@@ -40,9 +40,7 @@ class PathOwnersEntry {
       String path, OwnersConfig config, Accounts accounts, Set<Account.Id> inheritedOwners) {
     this.ownersPath = path;
     this.owners =
-        config
-            .getOwners()
-            .stream()
+        config.getOwners().stream()
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
     if (config.isInherited()) {
