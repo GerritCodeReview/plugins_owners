@@ -22,6 +22,30 @@
       "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d56f9d0_61c57e09",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T08:04:28Z",
+      "side": 1,
+      "message": "What about the exception? If you just use the varargs syntax, you can\u0027t pass the exception isn\u0027t it?",
+      "parentUuid": "bdf5333f_54d9eacb",
+      "range": {
+        "startLine": 104,
+        "startChar": 10,
+        "endLine": 104,
+        "endChar": 25
+      },
+      "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
