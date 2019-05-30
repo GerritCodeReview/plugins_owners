@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "be16ce6c_da16bed7",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T08:37:32Z",
+      "side": 1,
+      "message": "\u003e I could be stating the obvious but is that intended to have reviewers added for instance new patchset submitter?\n\nCan you rephrase? Not sure I understand what you mean.\n\n\u003e Wouldn\u0027t it be better to have it done by server ident?\n\nThat could be a security issue: if you are not meant to see a change, you shouldn\u0027t be able to do anything on it. This is a simple fix of an existing behaviour, not a change in behaviour.",
+      "parentUuid": "de0e3fbd_41e0e199",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 5
+      },
+      "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bdf5333f_54d9eacb",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 1
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "9a0c6427_36f7fc52",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T08:37:32Z",
+      "side": 1,
+      "message": "Cool, will change that.",
+      "parentUuid": "bc9e5d1f_33992320",
+      "range": {
+        "startLine": 104,
+        "startChar": 10,
+        "endLine": 104,
+        "endChar": 25
+      },
+      "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f99cb994_dc7f9b5c",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 1
@@ -107,6 +155,30 @@
       "writtenOn": "2019-05-30T08:28:03Z",
       "side": 1,
       "message": "AFAIU com.google.gerrit.extensions.events.GitReferenceUpdatedListener.Event is being fired from multiple places not necessarily related to the review (see all fire methods in com.google.gerrit.server.extensions.events.GitReferenceUpdated). Wouldn\u0027t it be better to check if\ncId !\u003d null\nas this is going to be returned if ref is not a change ref and NPE is going to be thrown in #133?",
+      "range": {
+        "startLine": 127,
+        "startChar": 2,
+        "endLine": 154,
+        "endChar": 3
+      },
+      "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42514e2c_b46164d4",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T08:37:32Z",
+      "side": 1,
+      "message": "You mean, a ref-update for a ref that starts with refs/changes and isn\u0027t related to a change? Did you find the issue? Can you raise it?\nHappy to manage that situation in a separate change.",
+      "parentUuid": "f99cb994_dc7f9b5c",
       "range": {
         "startLine": 127,
         "startChar": 2,
