@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7fbbb77_e6986b6e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-30T16:06:32Z",
+      "side": 1,
+      "message": "Another alternative would be to use change owner identity; this is what reviewers plugin is doing. Note, also that for similar plugin reviewer-by-blame there is this feature request to specify a \nspecific account as Reviewers adder identity: [1].\n\n* [1] https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d10328",
+      "range": {
+        "startLine": 13,
+        "startChar": 36,
+        "endLine": 13,
+        "endChar": 45
+      },
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07321e51_33d2c1ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-30T16:06:32Z",
+      "side": 1,
+      "message": "context",
+      "range": {
+        "startLine": 14,
+        "startChar": 49,
+        "endLine": 14,
+        "endChar": 55
+      },
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5faf67d8_ad96c8e7",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-30T16:06:32Z",
+      "side": 1,
+      "message": "You mean this is needed when the change was created in-line?",
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f1f1a84_6767a7da",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-30T16:06:32Z",
+      "side": 1,
+      "message": "Reviewers plugins doesn\u0027t use the same Listener like in this plugin, but RevisionCreatedEvent. However the user context is created similarly: [1].\n\n* [1] http://paste.openstack.org/show/752306/",
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
