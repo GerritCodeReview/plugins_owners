@@ -65,6 +65,24 @@
     },
     {
       "key": {
+        "uuid": "41885c05_e1ff73af",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T20:22:49Z",
+      "side": 1,
+      "message": "Yes, OR Gerrit has been fixed and the context is propagated.",
+      "parentUuid": "5faf67d8_ad96c8e7",
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f1f1a84_6767a7da",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 2
@@ -76,6 +94,24 @@
       "writtenOn": "2019-05-30T16:06:32Z",
       "side": 1,
       "message": "Reviewers plugins doesn\u0027t use the same Listener like in this plugin, but RevisionCreatedEvent. However the user context is created similarly: [1].\n\n* [1] http://paste.openstack.org/show/752306/",
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8efca0b7_32d5a883",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T20:22:49Z",
+      "side": 1,
+      "message": "Good to know, so that confirms that the solution is similar to yours. Good hint of using the change owner id, for two reasons:\n\n1. It is always there, otherwise the event isn\u0027t related to a change.\n2. The change has been created by the owner, so he is for sure authorized to operate on it.\n\nWill use the same strategy here.",
+      "parentUuid": "3f1f1a84_6767a7da",
       "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
