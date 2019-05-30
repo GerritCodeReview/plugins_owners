@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "18add47d_4a361a34",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T23:19:29Z",
+      "side": 1,
+      "message": "\u003e Good idea will use that one.\n\nActually, I do not have yet access to the change data and thus cannot get the change owner either. Will have to stick to the account that triggered the event.",
+      "parentUuid": "c71ad4f9_a402a084",
+      "range": {
+        "startLine": 13,
+        "startChar": 36,
+        "endLine": 13,
+        "endChar": 45
+      },
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "07321e51_33d2c1ef",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -163,6 +187,24 @@
       "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "421e5b63_04795910",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T23:19:29Z",
+      "side": 1,
+      "message": "As mentioned before, can\u0027t use the same strategy. The change info isn\u0027t available yet.",
+      "parentUuid": "8efca0b7_32d5a883",
+      "revId": "152ead9907ef971be0cd5e70c38c567a66b90525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

@@ -284,6 +284,30 @@
       "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8eee5ec_e8ac35f1",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T23:19:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a838c150_90041a18",
+      "range": {
+        "startLine": 127,
+        "startChar": 2,
+        "endLine": 154,
+        "endChar": 3
+      },
+      "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
