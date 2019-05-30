@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "ca4aa9a2_c295ea9a",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-30T10:57:36Z",
+      "side": 1,
+      "message": "\u003e \u003e Can you rephrase? Not sure I understand what you mean.\n\u003e \n\u003e I meant that in UI it will be a message like \u0027UserX added to REVIEWER: UserY, UserZ\u0027 and what is more AFAIU notification will be sent only to the reviewers added and in case the author was the one who uploaded new PS notification will be not sent to him.\n\nYes, and that makes sense.\n\n\u003e IOW the question is: do we want to keep it that way or better \u0027Gerrit\u0027 should be mentioned as the identity who added reviewers and notification sent also to the author if that happens?\n\nThis is only a bug-fix, so it isn\u0027t supposed to change any existing functionality.\nWith regards to the future, it\u0027s a different point and you can raise a feature request to the issue tracker and get attention to it :-)\n\n\u003e \u003e That could be a security issue:(...)\n\u003e \n\u003e What security issue? Correct me if I\u0027m mistaken but this is post-event action that already happened on the review so the user had permission to perform it. \n\nThe owners plugin only acts at the moment on behalf of the user that performed the action. If we start changing that identity and do something that the user wasn\u0027t allowed to do, that is a different thing and needs to be assessed from a security standpoint.\n\n\u003e I would rather ask what if it fails now? I would rather say that it should not be able to fail no matter what ;)\n\nIt fails now because of a bug in Gerrit, as mentioned in the commit message.\nIt has been working until recently. The first time I\u0027ve seen this problem is in v2.16, but it could have been well introduced already in v2.15 also.",
+      "parentUuid": "341a9455_2f7421d9",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 5
+      },
+      "revId": "7ecedf9721fe42de9481922c6f5b7c8851f51f1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bdf5333f_54d9eacb",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 1
