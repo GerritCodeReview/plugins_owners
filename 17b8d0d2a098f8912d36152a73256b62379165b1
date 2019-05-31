@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dc15a102_6f155b10",
+        "filename": "owners-autoassign/src/main/java/com/vmware/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-31T08:58:25Z",
+      "side": 1,
+      "message": "GitReferenceUpdatedListener interface states that AccountInfo getUpdater() could be nullable.\nThis code would silently do nothing, if that was the case.\nIs that the wanted behaviour? Should we not handle the null case as well?",
+      "revId": "17b8d0d2a098f8912d36152a73256b62379165b1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
