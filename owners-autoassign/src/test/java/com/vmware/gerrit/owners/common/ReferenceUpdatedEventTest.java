@@ -18,6 +18,8 @@ package com.vmware.gerrit.owners.common;
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
+import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.Project;
 import org.eclipse.jgit.transport.ReceiveCommand;
 import org.junit.Ignore;
@@ -30,18 +32,21 @@ public class ReferenceUpdatedEventTest implements GitReferenceUpdatedListener.Ev
   private final String oldObjectId;
   private final String newObjectId;
   private final ReceiveCommand.Type type;
+  private final Id eventAccountId;
 
   public ReferenceUpdatedEventTest(
       Project.NameKey project,
       String ref,
       String oldObjectId,
       String newObjectId,
-      ReceiveCommand.Type type) {
+      ReceiveCommand.Type type,
+      Account.Id eventAccountId) {
     this.projectName = project.get();
     this.ref = ref;
     this.oldObjectId = oldObjectId;
     this.newObjectId = newObjectId;
     this.type = type;
+    this.eventAccountId = eventAccountId;
   }
 
   @Override
@@ -81,7 +86,11 @@ public class ReferenceUpdatedEventTest implements GitReferenceUpdatedListener.Ev
 
   @Override
   public AccountInfo getUpdater() {
-    return null;
+    if (eventAccountId == null) {
+      return null;
+    }
+
+    return new AccountInfo(eventAccountId.get());
   }
 
   @Override
