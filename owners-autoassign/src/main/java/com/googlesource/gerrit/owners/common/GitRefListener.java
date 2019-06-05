@@ -19,10 +19,12 @@ package com.googlesource.gerrit.owners.common;
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
 
 import com.google.common.collect.Sets;
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.annotations.Listen;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.Changes;
+import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
@@ -30,12 +32,16 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
+import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
+import com.google.gerrit.server.util.ManualRequestContext;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import java.io.IOException;
 import java.util.Set;
 import org.eclipse.jgit.lib.ObjectId;
@@ -54,22 +60,58 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private final Accounts accounts;
   private final ReviewerManager reviewerManager;
 
+  private final OneOffRequestContext oneOffReqCtx;
+
+  private Provider<CurrentUser> currentUserProvider;
+
   @Inject
   public GitRefListener(
       GerritApi api,
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
-      ReviewerManager reviewerManager) {
+      ReviewerManager reviewerManager,
+      OneOffRequestContext oneOffReqCtx,
+      Provider<CurrentUser> currentUserProvider) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
     this.accounts = accounts;
     this.reviewerManager = reviewerManager;
+    this.oneOffReqCtx = oneOffReqCtx;
+    this.currentUserProvider = currentUserProvider;
   }
 
   @Override
   public void onGitReferenceUpdated(Event event) {
+    AccountInfo updaterAccountInfo = event.getUpdater();
+    CurrentUser currentUser = currentUserProvider.get();
+    if (currentUser.isIdentifiedUser()) {
+      handleGitReferenceUpdated(event);
+    } else if (updaterAccountInfo != null) {
+      handleGitReferenceUpdatedAsUser(event, new Account.Id(updaterAccountInfo._accountId));
+    } else {
+      handleGitReferenceUpdatedAsServer(event);
+    }
+  }
+
+  private void handleGitReferenceUpdatedAsUser(Event event, Account.Id updaterAccountId) {
+    try (ManualRequestContext ctx = oneOffReqCtx.openAs(updaterAccountId)) {
+      handleGitReferenceUpdated(event);
+    } catch (StorageException e) {
+      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
+    }
+  }
+
+  private void handleGitReferenceUpdatedAsServer(Event event) {
+    try (ManualRequestContext ctx = oneOffReqCtx.open()) {
+      handleGitReferenceUpdated(event);
+    } catch (StorageException e) {
+      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
+    }
+  }
+
+  private void handleGitReferenceUpdated(Event event) {
     String projectName = event.getProjectName();
     Repository repository;
     try {
