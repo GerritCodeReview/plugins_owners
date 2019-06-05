@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "be62fccb_b2af6ee0",
+        "filename": "WORKSPACE",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-06-05T07:04:35Z",
+      "side": 1,
+      "message": "The latest on bazlets stable-2.15 is 70d6ae0cee03c456fa4b32c807f3d13c032ef498",
+      "range": {
+        "startLine": 6,
+        "startChar": 14,
+        "endLine": 6,
+        "endChar": 54
+      },
+      "revId": "a17b07d421c13e8f80c8879381dcfd54204fc8e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
