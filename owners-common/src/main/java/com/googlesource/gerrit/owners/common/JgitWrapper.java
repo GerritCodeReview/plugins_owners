@@ -34,6 +34,11 @@ public class JgitWrapper {
 
   public static Optional<byte[]> getBlobAsBytes(Repository repository, String revision, String path)
       throws IOException {
+    ObjectId objectId = repository.resolve(revision);
+    if (objectId == null) {
+      return Optional.empty();
+    }
+
     try (final TreeWalk w =
         TreeWalk.forPath(
             repository, path, parseCommit(repository, repository.resolve(revision)).getTree())) {
