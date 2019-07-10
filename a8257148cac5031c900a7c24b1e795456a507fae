@@ -22,6 +22,30 @@
       "revId": "a8257148cac5031c900a7c24b1e795456a507fae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a94c4216_3f19f486",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/JgitWrapper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-10T06:36:05Z",
+      "side": 1,
+      "message": "Good catch, done.",
+      "parentUuid": "6fdd5bb9_5fc988b8",
+      "range": {
+        "startLine": 44,
+        "startChar": 54,
+        "endLine": 44,
+        "endChar": 82
+      },
+      "revId": "a8257148cac5031c900a7c24b1e795456a507fae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
