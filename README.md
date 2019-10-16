@@ -55,8 +55,8 @@ To build the plugin, issue the following command:
 The output is created in
 
 ```
-  bazel-genfiles/owners/owners.jar
-  bazel-genfiles/owners-autoassign/owners-autoassign.jar
+  bazel-bin/owners/owners.jar
+  bazel-bin/owners-autoassign/owners-autoassign.jar
 
 ```
 
@@ -104,8 +104,8 @@ process. Its resulting .jar must not be installed in gerrit plugins directory.
 The output is created in
 
 ```
-  bazel-genfiles/plugins/owners/owners.jar
-  bazel-genfiles/plugins/owners-autoassign/owners-autoassign.jar
+  bazel-bin/plugins/owners/owners.jar
+  bazel-bin/plugins/owners-autoassign/owners-autoassign.jar
 ```
 
 To execute the tests run:
