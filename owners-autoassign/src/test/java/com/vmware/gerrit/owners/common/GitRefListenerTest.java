@@ -31,11 +31,11 @@ public class GitRefListenerTest extends GitRefListener {
 
   @Inject
   public GitRefListenerTest(
-          GerritApi api,
-          PatchListCache patchListCache,
-          GitRepositoryManager repositoryManager,
-          Accounts accounts,
-          ReviewerManager reviewerManager) {
+      GerritApi api,
+      PatchListCache patchListCache,
+      GitRepositoryManager repositoryManager,
+      Accounts accounts,
+      ReviewerManager reviewerManager) {
     super(api, patchListCache, repositoryManager, accounts, reviewerManager);
   }
 
