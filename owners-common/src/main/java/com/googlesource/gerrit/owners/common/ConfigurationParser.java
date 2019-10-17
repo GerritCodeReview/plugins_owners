@@ -20,7 +20,7 @@ import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.gerrit.reviewdb.client.Account.Id;
+import com.google.gerrit.entities.Account.Id;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;

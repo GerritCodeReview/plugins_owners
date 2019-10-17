@@ -16,7 +16,7 @@ package gerrit_owners;
 
 import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.rules.PrologEnvironment;
 import com.google.gerrit.server.rules.StoredValues;

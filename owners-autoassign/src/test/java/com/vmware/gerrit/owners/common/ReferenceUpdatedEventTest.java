@@ -15,10 +15,10 @@
 
 package com.vmware.gerrit.owners.common;
 
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
-import com.google.gerrit.reviewdb.client.Project;
 import org.eclipse.jgit.transport.ReceiveCommand;
 import org.junit.Ignore;
 

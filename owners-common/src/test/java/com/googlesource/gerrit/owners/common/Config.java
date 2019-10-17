@@ -19,7 +19,7 @@ import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
 import com.google.common.base.Charsets;
-import com.google.gerrit.reviewdb.client.Patch;
+import com.google.gerrit.entities.Patch;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
