@@ -18,8 +18,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Account.Id;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Account.Id;
 import java.util.Map;
 import java.util.Set;
 

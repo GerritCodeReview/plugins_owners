@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -48,12 +48,12 @@ public class RegexTest extends Config {
   private static final String ACCOUNT_D = "d";
   private static final String ACCOUNT_E = "e";
   private static final String ACCOUNT_F = "f";
-  private static final Account.Id ACCOUNT_A_ID = new Account.Id(1);
-  private static final Account.Id ACCOUNT_B_ID = new Account.Id(2);
-  private static final Account.Id ACCOUNT_C_ID = new Account.Id(3);
-  private static final Account.Id ACCOUNT_D_ID = new Account.Id(4);
-  private static final Account.Id ACCOUNT_E_ID = new Account.Id(5);
-  private static final Account.Id ACCOUNT_F_ID = new Account.Id(6);
+  private static final Account.Id ACCOUNT_A_ID = Account.id(1);
+  private static final Account.Id ACCOUNT_B_ID = Account.id(2);
+  private static final Account.Id ACCOUNT_C_ID = Account.id(3);
+  private static final Account.Id ACCOUNT_D_ID = Account.id(4);
+  private static final Account.Id ACCOUNT_E_ID = Account.id(5);
+  private static final Account.Id ACCOUNT_F_ID = Account.id(6);
 
   @Override
   @Before

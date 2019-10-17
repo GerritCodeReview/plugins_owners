@@ -16,18 +16,18 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import static com.google.gerrit.reviewdb.client.Patch.COMMIT_MSG;
-import static com.google.gerrit.reviewdb.client.Patch.MERGE_LIST;
+import static com.google.gerrit.entities.Patch.COMMIT_MSG;
+import static com.google.gerrit.entities.Patch.MERGE_LIST;
 import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Account.Id;
-import com.google.gerrit.reviewdb.client.Patch;
-import com.google.gerrit.reviewdb.client.RefNames;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Account.Id;
+import com.google.gerrit.entities.Patch;
+import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;

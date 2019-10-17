@@ -15,7 +15,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import java.util.Set;
 
 public class ExactMatcher extends Matcher {

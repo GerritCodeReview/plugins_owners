@@ -18,7 +18,7 @@ package com.googlesource.gerrit.owners.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
