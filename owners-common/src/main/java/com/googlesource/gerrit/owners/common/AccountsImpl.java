@@ -18,9 +18,9 @@ import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_GER
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_MAILTO;
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Account.Id;
-import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Account.Id;
+import com.google.gerrit.entities.AccountGroup;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
@@ -91,7 +91,7 @@ public class AccountsImpl implements Accounts {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(adminUser.getAccountId())) {
 
       return groupMembers.listAccounts(group.get().getGroupUUID(), null).stream()
-          .map(Account::getId)
+          .map(Account::id)
           .collect(Collectors.toSet());
     } catch (NoSuchProjectException | IOException e) {
       log.error("Unable to list accounts in group " + group, e);
@@ -144,15 +144,15 @@ public class AccountsImpl implements Accounts {
       return false;
     }
 
-    Account account = accountState.get().getAccount();
+    Account account = accountState.get().account();
     return isFullNameMatch(account, nameOrEmail)
-        || nameOrEmail.equalsIgnoreCase(account.getPreferredEmail())
-        || accountState.get().getExternalIds().stream()
+        || nameOrEmail.equalsIgnoreCase(account.preferredEmail())
+        || accountState.get().externalIds().stream()
             .anyMatch(eid -> isEMailMatch(eid, nameOrEmail) || isUsernameMatch(eid, nameOrEmail));
   }
 
   private boolean isFullNameMatch(Account account, String fullName) {
-    return Optional.ofNullable(account.getFullName())
+    return Optional.ofNullable(account.fullName())
         .filter(n -> n.trim().equalsIgnoreCase(fullName))
         .isPresent();
   }
@@ -174,7 +174,7 @@ public class AccountsImpl implements Accounts {
   }
 
   private boolean isActive(Account.Id accountId) {
-    return byId.get(accountId).map(AccountState::getAccount).map(Account::isActive).orElse(false);
+    return byId.get(accountId).map(AccountState::account).map(Account::isActive).orElse(false);
   }
 
   private Optional<String> keySchemeRest(String scheme, ExternalId.Key key) {

@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import org.junit.Ignore;
 
 @Ignore
@@ -22,9 +22,9 @@ public class ClassicConfig extends Config {
   public static final String USER_A_EMAIL_COM = "user-a@email.com";
   public static final String USER_B_EMAIL_COM = "user-b@email.com";
   public static final String USER_C_EMAIL_COM = "user-c@email.com";
-  public static final Account.Id USER_A_ID = new Account.Id(1);
-  public static final Account.Id USER_B_ID = new Account.Id(2);
-  public static final Account.Id USER_C_ID = new Account.Id(3);
+  public static final Account.Id USER_A_ID = Account.id(1);
+  public static final Account.Id USER_B_ID = Account.id(2);
+  public static final Account.Id USER_C_ID = Account.id(3);
 
   @Override
   public void setup() throws Exception {

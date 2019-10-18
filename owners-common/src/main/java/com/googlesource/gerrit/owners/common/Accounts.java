@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import com.google.inject.ImplementedBy;
 import java.util.Set;
 

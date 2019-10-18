@@ -19,8 +19,8 @@ import static org.junit.Assert.assertEquals;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
-import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.inject.AbstractModule;
 import org.eclipse.jgit.transport.ReceiveCommand.Type;
 import org.junit.Test;

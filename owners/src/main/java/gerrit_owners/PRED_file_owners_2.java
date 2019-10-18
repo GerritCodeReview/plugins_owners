@@ -16,7 +16,7 @@ package gerrit_owners;
 
 import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.rules.PrologEnvironment;
 import com.google.gerrit.server.rules.StoredValues;
@@ -74,8 +74,8 @@ class PRED_file_owners_2 extends Predicate.P2 {
       cache.put(accountId, who);
       user = who;
     }
-    Account account = user.asIdentifiedUser().state().getAccount();
-    String userName = account.getFullName();
+    Account account = user.asIdentifiedUser().state().account();
+    String userName = account.fullName();
     return sanitizeAsSubmitLabel(userName);
   }
 

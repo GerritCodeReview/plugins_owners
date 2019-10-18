@@ -4,4 +4,12 @@ EXTERNAL_DEPS = [
     "@jackson-annotations//jar",
     "@jackson-dataformat-yaml//jar",
     "@snakeyaml//jar",
+    "@easymock//jar",
+    "@powermock-module-junit4//jar",
+    "@powermock-module-junit4-common//jar",
+    "@powermock-reflect//jar",
+    "@powermock-api-easymock//jar",
+    "@powermock-api-support//jar",
+    "@powermock-core//jar",
+    "@javassist//jar",
 ]

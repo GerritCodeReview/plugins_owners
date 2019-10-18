@@ -33,3 +33,68 @@ def external_plugin_deps(omit_jackson_core = True):
         artifact = "org.yaml:snakeyaml:1.23",
         sha1 = "ec62d74fe50689c28c0ff5b35d3aebcaa8b5be68",
     )
+
+    maven_jar(
+        name = "easymock",
+        artifact = "org.easymock:easymock:3.1",
+        sha1 = "3e127311a86fc2e8f550ef8ee4abe094bbcf7e7e",
+        deps = [
+            "@cglib//jar",
+            "@objenesis//jar",
+        ],
+    )
+
+    maven_jar(
+        name = "cglib",
+        artifact = "cglib:cglib-nodep:3.2.6",
+        sha1 = "92bf48723d277d6efd1150b2f7e9e1e92cb56caf",
+    )
+
+    maven_jar(
+        name = "objenesis",
+        artifact = "org.objenesis:objenesis:2.6",
+        sha1 = "639033469776fd37c08358c6b92a4761feb2af4b",
+    )
+
+    POWERM_VERS = "1.6.1"
+    maven_jar(
+        name = "powermock-module-junit4",
+        artifact = "org.powermock:powermock-module-junit4:" + POWERM_VERS,
+        sha1 = "ea8530b2848542624f110a393513af397b37b9cf",
+    )
+
+    maven_jar(
+        name = "powermock-module-junit4-common",
+        artifact = "org.powermock:powermock-module-junit4-common:" + POWERM_VERS,
+        sha1 = "7222ced54dabc310895d02e45c5428ca05193cda",
+    )
+
+    maven_jar(
+        name = "powermock-reflect",
+        artifact = "org.powermock:powermock-reflect:" + POWERM_VERS,
+        sha1 = "97d25eda8275c11161bcddda6ef8beabd534c878",
+    )
+
+    maven_jar(
+        name = "powermock-api-easymock",
+        artifact = "org.powermock:powermock-api-easymock:" + POWERM_VERS,
+        sha1 = "aa740ecf89a2f64d410b3d93ef8cd6833009ef00",
+    )
+
+    maven_jar(
+        name = "powermock-api-support",
+        artifact = "org.powermock:powermock-api-support:" + POWERM_VERS,
+        sha1 = "592ee6d929c324109d3469501222e0c76ccf0869",
+    )
+
+    maven_jar(
+        name = "powermock-core",
+        artifact = "org.powermock:powermock-core:" + POWERM_VERS,
+        sha1 = "5afc1efce8d44ed76b30af939657bd598e45d962",
+    )
+
+    maven_jar(
+        name = "javassist",
+        artifact = "org.javassist:javassist:3.22.0-GA",
+        sha1 = "3e83394258ae2089be7219b971ec21a8288528ad",
+    )

@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
