@@ -21,7 +21,11 @@ import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.Change;
+import com.google.gerrit.server.IdentifiedUser;
+import com.google.gerrit.server.change.ChangesCollection;
+import com.google.gerrit.server.project.ChangeControl;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
@@ -38,29 +42,51 @@ public class ReviewerManager {
 
   private final GerritApi gApi;
   private final OneOffRequestContext requestContext;
+  private final IdentifiedUser.GenericFactory userFactory;
+
+  private final ChangesCollection changes;
 
   @Inject
-  public ReviewerManager(GerritApi gApi, OneOffRequestContext requestContext) {
+  public ReviewerManager(
+      GerritApi gApi,
+      OneOffRequestContext requestContext,
+      IdentifiedUser.GenericFactory userFactory,
+      ChangesCollection changes) {
     this.gApi = gApi;
     this.requestContext = requestContext;
+    this.userFactory = userFactory;
+    this.changes = changes;
   }
 
   public void addReviewers(Change change, Collection<Account.Id> reviewers)
       throws ReviewerManagerException {
     try (ManualRequestContext ctx = requestContext.openAs(change.getOwner())) {
+      ChangeControl changeControl = changes.parse(change.getId()).getControl();
+
       // TODO(davido): Switch back to using changes API again,
       // when it supports batch mode for adding reviewers
       ReviewInput in = new ReviewInput();
       in.reviewers = new ArrayList<>(reviewers.size());
       for (Account.Id account : reviewers) {
-        AddReviewerInput addReviewerInput = new AddReviewerInput();
-        addReviewerInput.reviewer = account.toString();
-        in.reviewers.add(addReviewerInput);
+        if (isVisibleTo(changeControl, account)) {
+          AddReviewerInput addReviewerInput = new AddReviewerInput();
+          addReviewerInput.reviewer = account.toString();
+          in.reviewers.add(addReviewerInput);
+        } else {
+          log.warn(
+              "Not adding account {} as reviewer to change {} because the associated ref is not visible",
+              account,
+              change.getId());
+        }
       }
       gApi.changes().id(change.getId().get()).current().review(in);
     } catch (RestApiException | OrmException e) {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);
     }
+  }
+
+  private boolean isVisibleTo(ChangeControl changeControl, Id account) {
+    return changeControl.forUser(userFactory.create(account)).isRefVisible();
   }
 }
