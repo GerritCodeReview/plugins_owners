@@ -88,6 +88,24 @@
       "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c676dc3c_d0e3e907",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-01-28T19:06:25Z",
+      "side": 1,
+      "message": "I fixed both build modes, in Gerrit tree and standalone in this series: [1].\n\n* [1] https://gerrit-review.googlesource.com/c/plugins/owners/+/252254",
+      "parentUuid": "a18e9f27_f4827638",
+      "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
