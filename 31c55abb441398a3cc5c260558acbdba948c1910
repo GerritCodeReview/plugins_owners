@@ -52,6 +52,24 @@
       "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39438cfa_93ae27b4",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-01-28T15:59:43Z",
+      "side": 1,
+      "message": "OK, got it. It is this incompatible Bazel change that disallowed to load Starlark dependencies transitively: [1]. All others plugins were fixed, here is the fix for that incompatible change for oauth plugin: [2].\n\nOwners (and other plugin managed by Luca?) were not fixed. So I think the right course of action would be: file a issue for that, and either get standalone build mode fixed or get it entirely deleted, o that only in Gerrit tree mode is supported.\n\nNote, that of you only interested to build/debug/run the owners-plugin, you could still build it in Gerrit tree mode, without any issue, right?\n\n* [1] https://github.com/bazelbuild/bazel/issues/5636\n* [2] https://gerrit.googlesource.com/plugins/oauth/+/71b1128b63ec8710343ba920465c328d1eccac11",
+      "parentUuid": "72f96f85_d1790ee9",
+      "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
