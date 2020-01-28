@@ -70,6 +70,24 @@
       "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a18e9f27_f4827638",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2020-01-28T16:10:27Z",
+      "side": 1,
+      "message": "Thanks for the pointers. Will follow-up on this tomorrow.\n\nYes, with the in Gerrit tree mode I was able to build it successfully.\nOnly the tests do not work for me [1], but that is likely a different issue.\n\n[1]\n$ bazel test owners-common:test \nINFO: Invocation ID: 219d77f6-1486-43f8-bf1a-f4b859353101\nINFO: Analyzed target //owners-common:test (3 packages loaded, 1477 targets configured).\nINFO: Found 1 test target...\nERROR: /usr/local/google/home/ekempin/git/gerrit/owners-common/BUILD:20:1: Building owners-common/test.jar (8 source files) and running annotation processors (AutoAnnotationProcessor, AutoValueProcessor) failed (Exit 1)\nowners-common/src/test/java/com/googlesource/gerrit/owners/common/Config.java:43: error: [strict] Using type org.powermock.api.easymock.PowerMock from an indirect dependency (TOOL_INFO: \"@powermock-api-easymock//jar\"). See command below **\n    PowerMock.mockStatic(JgitWrapper.class);\n    ^\nowners-common/src/test/java/com/googlesource/gerrit/owners/common/Config.java:17: error: [strict] Using type org.easymock.EasyMock from an indirect dependency (TOOL_INFO: \"@easymock//jar\"). See command below **\nimport static org.easymock.EasyMock.anyObject;\n                          ^\nowners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java:31: error: [strict] Using type org.powermock.modules.junit4.PowerMockRunner from an indirect dependency (TOOL_INFO: \"@powermock-module-junit4//jar\"). See command below **\n@RunWith(PowerMockRunner.class)\n         ^\nowners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java:32: error: [strict] Using type org.powermock.core.classloader.annotations.PrepareForTest from an indirect dependency (TOOL_INFO: \"@powermock-core//jar\"). See command below **\n@PrepareForTest(JgitWrapper.class)\n ^\n ** Please add the following dependencies: \n  @easymock//jar @powermock-api-easymock//jar @powermock-core//jar @powermock-module-junit4//jar to //owners-common:test \n ** You can use the following buildozer command: \nbuildozer \u0027add deps @easymock//jar @powermock-api-easymock//jar @powermock-core//jar @powermock-module-junit4//jar\u0027 //owners-common:test \n\nTarget //owners-common:test failed to build\nUse --verbose_failures to see the command lines of failed build steps.\nINFO: Elapsed time: 37.289s, Critical Path: 36.93s\nINFO: 96 processes: 47 linux-sandbox, 49 worker.\nFAILED: Build did NOT complete successfully\n\nFAILED: Build did NOT complete successfully",
+      "parentUuid": "39438cfa_93ae27b4",
+      "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
