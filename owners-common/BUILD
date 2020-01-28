@@ -1,6 +1,6 @@
 load("//tools/bzl:junit.bzl", "junit_tests")
 load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS", "PLUGIN_DEPS_NEVERLINK", "PLUGIN_TEST_DEPS", "gerrit_plugin")
-load("//owners-common:common.bzl", "EXTERNAL_DEPS")
+load("//owners-common:common.bzl", "EXTERNAL_DEPS", "EXTERNAL_TEST_DEPS")
 
 java_library(
     name = "owners-common",
@@ -21,7 +21,7 @@ junit_tests(
     name = "test",
     testonly = 1,
     srcs = glob(["src/test/java/**/*.java"]),
-    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+    deps = EXTERNAL_TEST_DEPS + PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":owners-common",
     ],
 )

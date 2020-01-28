@@ -1,6 +1,6 @@
-load("//tools/bzl:plugin.bzl", "PLUGIN_TEST_DEPS", "PLUGIN_DEPS_NEVERLINK", "gerrit_plugin")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK", "PLUGIN_TEST_DEPS", "gerrit_plugin")
 load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
-load("//owners-common:common.bzl", "EXTERNAL_DEPS")
+load("//owners-common:common.bzl", "EXTERNAL_DEPS", "EXTERNAL_TEST_DEPS")
 
 PROLOG_PREDICATES = glob(["src/main/java/gerrit_owners/**/*.java"]) + [
     "src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
@@ -50,5 +50,5 @@ java_library(
     name = "owners__plugin_test_deps",
     testonly = 1,
     visibility = ["//visibility:public"],
-    exports = EXTERNAL_DEPS + PLUGIN_TEST_DEPS,
+    exports = EXTERNAL_DEPS + EXTERNAL_TEST_DEPS + PLUGIN_TEST_DEPS,
 )
