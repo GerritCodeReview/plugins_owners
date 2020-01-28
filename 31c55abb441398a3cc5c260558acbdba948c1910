@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d607b228_586d384d",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2020-01-28T15:28:27Z",
+      "side": 1,
+      "message": "Do you know if this is still supposed to work?\n\nWhen I try this, I get:\n\n$ bazel build :all\nDEBUG: Rule \u0027com_googlesource_gerrit_bazlets\u0027 indicated that a canonical reproducible form can be obtained by modifying arguments shallow_since \u003d \"1549850496 +0900\"\nDEBUG: Call stack for the definition of repository \u0027com_googlesource_gerrit_bazlets\u0027 which is a git_repository (rule definition at /usr/local/google/home/ekempin/.cache/bazel/_bazel_ekempin/dd195c92c6b36e01b4a77a75d621fe1d/external/bazel_tools/tools/build_defs/repo/git.bzl:195:18):\n - /usr/local/google/home/ekempin/git/plugins/owners/bazlets.bzl:9:9\n - /usr/local/google/home/ekempin/git/plugins/owners/WORKSPACE:5:1\nERROR: /usr/local/google/home/ekempin/git/plugins/owners/external_plugin_deps.bzl:1:1: file \u0027//tools/bzl:maven_jar.bzl\u0027 does not contain symbol \u0027maven_jar\u0027\nERROR: error loading package \u0027\u0027: in /usr/local/google/home/ekempin/git/plugins/owners/external_plugin_deps_standalone.bzl: Extension file \u0027external_plugin_deps.bzl\u0027 has errors\nERROR: error loading package \u0027\u0027: in /usr/local/google/home/ekempin/git/plugins/owners/external_plugin_deps_standalone.bzl: Extension file \u0027external_plugin_deps.bzl\u0027 has errors\nINFO: Elapsed time: 0.062s\nINFO: 0 processes.\nFAILED: Build did NOT complete successfully (0 packages loaded)",
+      "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
