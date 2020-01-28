@@ -16,6 +16,24 @@
       "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbf9c721_e2ab3487",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-01-28T15:45:23Z",
+      "side": 1,
+      "message": "In the latest Bazel release native maven_jar rule was removed. Apparently import of Gerrit\u0027s own maven_jar rule was missed here. I can see, that it exists on master: [1].\n\nCan you try to build in satandalone mode on master, or does it have to be stable-2.15 branch?\n\n* [1] https://gerrit.googlesource.com/plugins/owners/+/refs/heads/master/external_plugin_deps.bzl#1",
+      "parentUuid": "d607b228_586d384d",
+      "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
