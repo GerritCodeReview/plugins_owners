@@ -106,6 +106,24 @@
       "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "583c61d5_83a30772",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2020-01-29T07:32:51Z",
+      "side": 1,
+      "message": "Perfect! Thank you very much!! The standalone build and the tests are now working for me with this series!!",
+      "parentUuid": "c676dc3c_d0e3e907",
+      "revId": "31c55abb441398a3cc5c260558acbdba948c1910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
