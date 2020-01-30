@@ -21,7 +21,12 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
+import com.google.gerrit.reviewdb.client.RefNames;
+import com.google.gerrit.server.AnonymousUser;
+import com.google.gerrit.server.util.ManualRequestContext;
+import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import org.eclipse.jgit.transport.ReceiveCommand.Type;
 import org.junit.Test;
 
@@ -29,6 +34,13 @@ import org.junit.Test;
     name = "owners-autoassign",
     sysModule = "com.vmware.gerrit.owners.common.GitRefListenerIT$TestModule")
 public class GitRefListenerIT extends LightweightPluginDaemonTest {
+
+  @Inject GitRefListenerTest gitRefListener;
+  @Inject ThreadLocalRequestContext requestContext;
+
+  String aRefChange = RefNames.REFS_CHANGES + "01/01/01";
+  String anOldObjectId = "anOldRef";
+  String aNewObjectId = "aNewRef";
 
   public static class TestModule extends AbstractModule {
     @Override
@@ -39,15 +51,14 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldNotProcessNoteDbOnlyRefs() {
-    GitRefListenerTest gitRefListener = getPluginInstance(GitRefListenerTest.class);
-
-    String aRefChange = RefNames.REFS_CHANGES + "01/01" + RefNames.META_SUFFIX;
-    String anOldObjectId = "anOldRef";
-    String aNewObjectId = "aNewRef";
-
     ReferenceUpdatedEventTest refUpdatedEvent =
         new ReferenceUpdatedEventTest(
-            project, aRefChange, anOldObjectId, aNewObjectId, Type.CREATE);
+            project,
+            RefNames.REFS_CHANGES + "01/01" + RefNames.META_SUFFIX,
+            anOldObjectId,
+            aNewObjectId,
+            Type.CREATE,
+            admin.id());
 
     gitRefListener.onGitReferenceUpdated(refUpdatedEvent);
     assertEquals(0, gitRefListener.getProcessedEvents());
@@ -55,21 +66,31 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldProcessRefChanges() {
-    GitRefListenerTest gitRefListener = getPluginInstance(GitRefListenerTest.class);
-
-    String aRefChange = RefNames.REFS_CHANGES + "01/01/01";
-    String anOldObjectId = "anOldRef";
-    String aNewObjectId = "aNewRef";
-
-    ReferenceUpdatedEventTest refUpdatedEvent =
-        new ReferenceUpdatedEventTest(
-            project, aRefChange, anOldObjectId, aNewObjectId, Type.CREATE);
-
-    gitRefListener.onGitReferenceUpdated(refUpdatedEvent);
+    gitRefListener.onGitReferenceUpdated(newRefUpdateEvent());
     assertEquals(1, gitRefListener.getProcessedEvents());
   }
 
-  private <T> T getPluginInstance(Class<T> clazz) {
-    return plugin.getSysInjector().getInstance(clazz);
+  @Test
+  public void shouldRetrieveChangeFromAnonymousContext() throws Exception {
+    try (ManualRequestContext ctx = new ManualRequestContext(new AnonymousUser(), requestContext)) {
+      gitRefListener.onGitReferenceUpdated(newRefUpdateEvent());
+      assertEquals(1, gitRefListener.getProcessedEvents());
+    }
+  }
+
+  @Test
+  public void shouldRetrieveChangeFromAnonymousContextWithoutAccountId() throws Exception {
+    ReferenceUpdatedEventTest refUpdateWithoutAccountId =
+        new ReferenceUpdatedEventTest(
+            project, aRefChange, anOldObjectId, aNewObjectId, Type.CREATE, null);
+    try (ManualRequestContext ctx = new ManualRequestContext(new AnonymousUser(), requestContext)) {
+      gitRefListener.onGitReferenceUpdated(refUpdateWithoutAccountId);
+      assertEquals(1, gitRefListener.getProcessedEvents());
+    }
+  }
+
+  private ReferenceUpdatedEventTest newRefUpdateEvent() {
+    return new ReferenceUpdatedEventTest(
+        project, aRefChange, anOldObjectId, aNewObjectId, Type.CREATE, admin.id());
   }
 }
