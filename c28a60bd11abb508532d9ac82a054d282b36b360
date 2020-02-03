@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62cb9587_322b110d",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-03T23:08:43Z",
+      "side": 1,
+      "message": "This is wrong: instead of creating the full list of reviewers and call the API, this would add the reviewers one by one, creating duplications in the notifications.",
+      "range": {
+        "startLine": 88,
+        "startChar": 10,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "c28a60bd11abb508532d9ac82a054d282b36b360",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
