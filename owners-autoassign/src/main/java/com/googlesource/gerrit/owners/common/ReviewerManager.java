@@ -86,8 +86,8 @@ public class ReviewerManager {
                 account,
                 changeInfo._number);
           }
-          gApi.changes().id(changeInfo.id).current().review(in);
         }
+        gApi.changes().id(changeInfo.id).current().review(in);
       }
     } catch (RestApiException | OrmException e) {
       log.error("Couldn't add reviewers to the change", e);
