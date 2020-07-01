@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1877b495_a2ef1c25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-01T22:56:51Z",
+      "side": 1,
+      "message": "Verified that plugin can be built in standalone build mode and all tests are passing.",
+      "revId": "256916f0cd37b494c9c45d70e95201d3f31f9e8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
