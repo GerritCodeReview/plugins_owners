@@ -87,6 +87,23 @@
       "revId": "17817c9e319073c03513f9d5177b6142b8fd567b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72523cb3_14305586",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-01T22:56:05Z",
+      "side": 1,
+      "message": "Verified that plugin can be built in standalone build mode and all tests are passing.",
+      "revId": "17817c9e319073c03513f9d5177b6142b8fd567b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
