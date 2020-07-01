@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "aca3fc87_ca9b5a1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-01T22:18:58Z",
+      "side": 1,
+      "message": "I could add this reference, but it was reported against 3.0 branch. Will upload the fix there as well and reference issue 13071 there.",
+      "parentUuid": "c9910654_34e6db64",
+      "revId": "cb1c3dbe38250e603cc9efdde8aeac7119481012",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe8da96d_12ae0dfc",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -30,6 +48,23 @@
       "writtenOn": "2020-07-01T22:00:56Z",
       "side": 1,
       "message": "@Ponch can you verify the change?",
+      "revId": "cb1c3dbe38250e603cc9efdde8aeac7119481012",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7b294cce_b0b70d69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-01T22:18:58Z",
+      "side": 1,
+      "message": "Verified that standalone build works with this upgrade, I have not tested the plugin on gerrit site.",
       "revId": "cb1c3dbe38250e603cc9efdde8aeac7119481012",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
