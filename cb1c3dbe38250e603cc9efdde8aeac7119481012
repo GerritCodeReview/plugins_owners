@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "ac1701df_1ff96661",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-01T22:22:26Z",
+      "side": 1,
+      "message": "See change 274056 for the fix on stable-3.0 as reported in issue 13071.",
+      "parentUuid": "aca3fc87_ca9b5a1c",
+      "revId": "cb1c3dbe38250e603cc9efdde8aeac7119481012",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe8da96d_12ae0dfc",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
