@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "85213f93_c48aef41",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-01T22:50:27Z",
+      "side": 1,
+      "message": "I just replicated what is usually done by David and Marco, e.g. see: [1].\n\n[1] https://gerrit-review.googlesource.com/q/hashtag:%22gerrit-3.2.2%22+(status:open%20OR%20status:merged)",
+      "parentUuid": "d10253a6_3db4c2cc",
+      "range": {
+        "startLine": 7,
+        "startChar": 19,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "17817c9e319073c03513f9d5177b6142b8fd567b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dada67fc_baba2441",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
