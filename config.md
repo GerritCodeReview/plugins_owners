@@ -200,7 +200,7 @@ A change cannot be submitted until John Doe or Doug Smith add a label
 ## Example 4 - Owners based on matchers
 
 Often the ownership comes from the developer's skills and competencies and
-cannot be purely defined by the project's directory structure.
+cannot be defined solely by the project's directory structure.
 For instance, all the files ending with .sql should be owned and signed-off by
 the DBA while all the ones ending with .css by approved by the UX Team.
 
@@ -234,6 +234,19 @@ owners of the modified files will be added. The final submit is enabled if both
 Gerrit default rules are satisfied and all the owners of the .sql files
 (Mister Dba) and the .css files (either John Creative or Matt Designer) have
 provided their Code-Review +2 feedback.
+
+The `add_match_owner_approval` predicate would also honour the OWNERS file
+without matchers, giving, therefore, the possibility of having different ownership
+criteria for different subdirectories. Example: /foo-dir/OWNERS can define a
+directory-based ownership while /bar-dir/OWNERS can rely on matching rules.
+
+__PERFORMANCE NOTE: The predicate `add_match_owner_approval` looks,
+at first sight, more powerful and versatile. However, it may generate a significant
+number of reductions and therefore, impact the Gerrit server performance.
+When used with changes with a high number of files involved, it may even crash
+the Gerrit default `rules.reductionLimit`.
+When not using any matcher in the OWNERS file, prefer the `add_owner_approval`,
+which generates a minimal number of reductions.__
 
 ## Example 5 - Owners details on a per-file basis
 
