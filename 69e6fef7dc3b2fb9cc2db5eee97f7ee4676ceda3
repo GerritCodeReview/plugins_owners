@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2fa8ed0e_4f122adb",
+        "filename": "config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-17T07:55:01Z",
+      "side": 1,
+      "message": "The read may wonder *why* then we have two different predicates? It is worth mentioning here the performance implications.\n\nThis NOTE should be part of the description and, as a NOTE, we should explicitly mention the performance implications of using add_match_owner_approval vs. add_owner_approval.",
+      "range": {
+        "startLine": 238,
+        "startChar": 49,
+        "endLine": 239,
+        "endChar": 16
+      },
+      "revId": "69e6fef7dc3b2fb9cc2db5eee97f7ee4676ceda3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
