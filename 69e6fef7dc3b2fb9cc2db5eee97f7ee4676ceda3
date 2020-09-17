@@ -22,6 +22,30 @@
       "revId": "69e6fef7dc3b2fb9cc2db5eee97f7ee4676ceda3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eff02908_7e65134f",
+        "filename": "config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-17T08:06:45Z",
+      "side": 1,
+      "message": "Clarified the difference between the two predicates and the associated performance implications.",
+      "parentUuid": "2fa8ed0e_4f122adb",
+      "range": {
+        "startLine": 238,
+        "startChar": 49,
+        "endLine": 239,
+        "endChar": 16
+      },
+      "revId": "69e6fef7dc3b2fb9cc2db5eee97f7ee4676ceda3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
