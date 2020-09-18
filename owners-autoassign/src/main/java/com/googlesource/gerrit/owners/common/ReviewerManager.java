@@ -17,12 +17,18 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Change;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.IdentifiedUser;
+import com.google.gerrit.server.permissions.ChangePermission;
+import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.query.change.ChangeData;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
@@ -38,11 +44,22 @@ public class ReviewerManager {
 
   private final OneOffRequestContext requestContext;
   private final GerritApi gApi;
+  private final IdentifiedUser.GenericFactory userFactory;
+  private final ChangeData.Factory changeDataFactory;
+  private final PermissionBackend permissionBackend;
 
   @Inject
-  public ReviewerManager(OneOffRequestContext requestContext, GerritApi gApi) {
+  public ReviewerManager(
+      OneOffRequestContext requestContext,
+      GerritApi gApi,
+      IdentifiedUser.GenericFactory userFactory,
+      ChangeData.Factory changeDataFactory,
+      PermissionBackend permissionBackend) {
     this.requestContext = requestContext;
     this.gApi = gApi;
+    this.userFactory = userFactory;
+    this.changeDataFactory = changeDataFactory;
+    this.permissionBackend = permissionBackend;
   }
 
   public void addReviewers(ChangeApi cApi, Collection<Account.Id> reviewers)
@@ -56,9 +73,16 @@ public class ReviewerManager {
         ReviewInput in = new ReviewInput();
         in.reviewers = new ArrayList<>(reviewers.size());
         for (Account.Id account : reviewers) {
-          AddReviewerInput addReviewerInput = new AddReviewerInput();
-          addReviewerInput.reviewer = account.toString();
-          in.reviewers.add(addReviewerInput);
+          if (isVisibleTo(changeInfo, account)) {
+            AddReviewerInput addReviewerInput = new AddReviewerInput();
+            addReviewerInput.reviewer = account.toString();
+            in.reviewers.add(addReviewerInput);
+          } else {
+            log.warn(
+                "Not adding account {} as reviewer to change {} because the associated ref is not visible",
+                account,
+                changeInfo._number);
+          }
         }
         gApi.changes().id(changeInfo.id).current().review(in);
       }
@@ -66,5 +90,15 @@ public class ReviewerManager {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);
     }
+  }
+
+  private boolean isVisibleTo(ChangeInfo changeInfo, Account.Id account) {
+    ChangeData changeData =
+        changeDataFactory.create(
+            Project.nameKey(changeInfo.project), Change.id(changeInfo._number));
+    return permissionBackend
+        .user(userFactory.create(account))
+        .change(changeData)
+        .testOrFalse(ChangePermission.READ);
   }
 }
