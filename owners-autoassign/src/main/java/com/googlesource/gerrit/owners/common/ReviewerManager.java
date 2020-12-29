@@ -23,10 +23,8 @@ import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.permissions.ChangePermission;
 import com.google.gerrit.server.permissions.PermissionBackend;
@@ -75,7 +73,7 @@ public class ReviewerManager {
         ReviewInput in = new ReviewInput();
         in.reviewers = new ArrayList<>(reviewers.size());
         for (Account.Id account : reviewers) {
-          if (isVisibleTo(ctx.getReviewDbProvider().get(), changeInfo, account)) {
+          if (isVisibleTo(changeInfo, account)) {
             AddReviewerInput addReviewerInput = new AddReviewerInput();
             addReviewerInput.reviewer = account.toString();
             in.reviewers.add(addReviewerInput);
@@ -94,10 +92,10 @@ public class ReviewerManager {
     }
   }
 
-  private boolean isVisibleTo(ReviewDb reviewDb, ChangeInfo changeInfo, Id account) {
+  private boolean isVisibleTo(ChangeInfo changeInfo, Account.Id account) {
     ChangeData changeData =
         changeDataFactory.create(
-            reviewDb, new Project.NameKey(changeInfo.project), new Change.Id(changeInfo._number));
+            new Project.NameKey(changeInfo.project), new Change.Id(changeInfo._number));
     return permissionBackend
         .user(userFactory.create(account))
         .change(changeData)
