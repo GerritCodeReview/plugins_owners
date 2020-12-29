@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edca5c88_5b277f23",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-29T11:00:43Z",
+      "side": 1,
+      "message": "This wasn\u0027t adapted during the merge from stable-2.16 branch. It was correctly adapted in another merge change 252479, that was staled.",
+      "range": {
+        "startLine": 97,
+        "startChar": 30,
+        "endLine": 97,
+        "endChar": 47
+      },
+      "revId": "ea80eac2ac2004d6b2843075ba8758fbe3e7ccf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
