@@ -87,6 +87,11 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   @Override
   public void onGitReferenceUpdated(Event event) {
+    if (event.isDelete()) {
+      logger.debug("Ref-update event on ref %s is a deletion: ignoring", event.getRefName());
+      return;
+    }
+
     AccountInfo updaterAccountInfo = event.getUpdater();
     CurrentUser currentUser = currentUserProvider.get();
     if (currentUser.isIdentifiedUser()) {
@@ -140,9 +145,6 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     try {
       ChangeApi cApi = changes.id(cId.id);
       ChangeInfo change = cApi.get();
-      if (change == null) {
-        return;
-      }
       PatchList patchList = getPatchList(event, change);
       if (patchList != null) {
         PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
