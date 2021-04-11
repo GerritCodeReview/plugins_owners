@@ -21,6 +21,7 @@ import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USE
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.AccountGroup;
+import com.google.gerrit.entities.InternalGroup;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.AccountResolver;
@@ -28,7 +29,6 @@ import com.google.gerrit.server.account.AccountState;
 import com.google.gerrit.server.account.GroupCache;
 import com.google.gerrit.server.account.GroupMembers;
 import com.google.gerrit.server.account.externalids.ExternalId;
-import com.google.gerrit.server.group.InternalGroup;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
