@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc64d782_5801eba5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-11T13:40:19Z",
+      "side": 1,
+      "message": "The newest stable branch is stable-3.1. We would have to create stable branches from the parent change.",
+      "revId": "4041c9cb5d2f262decd07207262a53a48e62d66a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
