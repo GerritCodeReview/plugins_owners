@@ -23,6 +23,7 @@ import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.IdentifiedUser;
@@ -35,6 +36,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +78,7 @@ public class ReviewerManager {
           if (isVisibleTo(changeInfo, account)) {
             AddReviewerInput addReviewerInput = new AddReviewerInput();
             addReviewerInput.reviewer = account.toString();
+            addReviewerInput.state = ReviewerState.CC;
             in.reviewers.add(addReviewerInput);
           } else {
             log.warn(
@@ -84,12 +87,19 @@ public class ReviewerManager {
                 changeInfo._number);
           }
         }
+
+        selectTopTwoReviers(in.reviewers);
+
         gApi.changes().id(changeInfo.id).current().review(in);
       }
     } catch (RestApiException e) {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);
     }
+  }
+
+  private void selectTopTwoReviers(List<AddReviewerInput> reviewers) {
+    reviewers.stream().limit(2).forEach((reviewer) -> reviewer.state = ReviewerState.REVIEWER);
   }
 
   private boolean isVisibleTo(ChangeInfo changeInfo, Account.Id account) {

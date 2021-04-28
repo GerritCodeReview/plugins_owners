@@ -150,6 +150,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         for (Matcher matcher : owners.getMatchers().values()) {
           allReviewers.addAll(matcher.getOwners());
         }
+
         logger.debug("Autoassigned reviewers are: {}", allReviewers.toString());
         reviewerManager.addReviewers(cApi, allReviewers);
       }
