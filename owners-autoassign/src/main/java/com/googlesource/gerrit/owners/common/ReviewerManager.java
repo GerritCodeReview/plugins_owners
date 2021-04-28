@@ -21,9 +21,12 @@ import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
+import com.google.gerrit.extensions.api.changes.AttentionSetInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.ChangeInfo;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.permissions.ChangePermission;
@@ -33,8 +36,11 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,18 +54,22 @@ public class ReviewerManager {
   private final ChangeData.Factory changeDataFactory;
   private final PermissionBackend permissionBackend;
 
+  private DynamicItem<OwnersAttentionSet> ownersForAttentionSet;
+
   @Inject
   public ReviewerManager(
       OneOffRequestContext requestContext,
       GerritApi gApi,
       IdentifiedUser.GenericFactory userFactory,
       ChangeData.Factory changeDataFactory,
-      PermissionBackend permissionBackend) {
+      PermissionBackend permissionBackend,
+      DynamicItem<OwnersAttentionSet> ownersForAttentionSet) {
     this.requestContext = requestContext;
     this.gApi = gApi;
     this.userFactory = userFactory;
     this.changeDataFactory = changeDataFactory;
     this.permissionBackend = permissionBackend;
+    this.ownersForAttentionSet = ownersForAttentionSet;
   }
 
   public void addReviewers(ChangeApi cApi, Collection<Account.Id> reviewers)
@@ -71,11 +81,14 @@ public class ReviewerManager {
         // TODO(davido): Switch back to using changes API again,
         // when it supports batch mode for adding reviewers
         ReviewInput in = new ReviewInput();
+        Collection<Account.Id> reviewersAccounts =
+            ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewers);
         in.reviewers = new ArrayList<>(reviewers.size());
         for (Account.Id account : reviewers) {
           if (isVisibleTo(changeInfo, account)) {
             AddReviewerInput addReviewerInput = new AddReviewerInput();
             addReviewerInput.reviewer = account.toString();
+            addReviewerInput.state = ReviewerState.REVIEWER;
             in.reviewers.add(addReviewerInput);
           } else {
             log.warn(
@@ -84,12 +97,22 @@ public class ReviewerManager {
                 changeInfo._number);
           }
         }
+
+        in.ignoreAutomaticAttentionSetRules = true;
+        in.addToAttentionSet = selectTopTwoReviers(reviewersAccounts);
+
         gApi.changes().id(changeInfo.id).current().review(in);
       }
     } catch (RestApiException e) {
       log.error("Couldn't add reviewers to the change", e);
       throw new ReviewerManagerException(e);
     }
+  }
+
+  private List<AttentionSetInput> selectTopTwoReviers(Collection<Account.Id> reviewers) {
+    return reviewers.stream()
+        .map((reviewer) -> new AttentionSetInput(reviewer.toString(), "Included in the OWNER file"))
+        .collect(Collectors.toList());
   }
 
   private boolean isVisibleTo(ChangeInfo changeInfo, Account.Id account) {
