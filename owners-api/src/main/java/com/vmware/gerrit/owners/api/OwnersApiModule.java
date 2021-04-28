@@ -1,5 +1,4 @@
-// Copyright (c) 2013 VMware, Inc. All Rights Reserved.
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.owners.common;
+package com.vmware.gerrit.owners.api;
 
-import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.AbstractModule;
 
-public class AutoassignModule extends AbstractModule {
+public class OwnersApiModule extends AbstractModule {
+
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
+    DynamicItem.itemOf(binder(), OwnersAttentionSet.class);
   }
 }

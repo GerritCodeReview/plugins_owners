@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.owners.common;
+package com.vmware.gerrit.owners.common;
 
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
 
@@ -42,6 +42,10 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.googlesource.gerrit.owners.common.Accounts;
+import com.googlesource.gerrit.owners.common.Matcher;
+import com.googlesource.gerrit.owners.common.PathOwners;
+
 import java.io.IOException;
 import java.util.Set;
 import org.eclipse.jgit.lib.ObjectId;

@@ -23,8 +23,6 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.owners.common.Accounts;
-import com.googlesource.gerrit.owners.common.GitRefListener;
-import com.googlesource.gerrit.owners.common.ReviewerManager;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
 

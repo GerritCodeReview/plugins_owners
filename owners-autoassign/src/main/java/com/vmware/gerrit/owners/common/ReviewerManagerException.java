@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.owners.common;
+package com.vmware.gerrit.owners.common;
 
 public class ReviewerManagerException extends Exception {
   private static final long serialVersionUID = 1L;
