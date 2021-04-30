@@ -16,6 +16,29 @@
       "message": "FYI: would this make sense? (P.S. It\u0027s just a prototype, but shows the general approach of reducing the attention of a change with potentially too many reviewers)",
       "revId": "3b27cd970b0ae49cdfccf57c67e006d7ae9620c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9ac0db3_247f9ee0",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-30T05:42:28Z",
+      "side": 1,
+      "message": "Note, though, that notification wouldn\u0027t work, if user set this preference:\n\n  Email notifications: \"Only when I am in the attention set\"\n\nThat\u0027s because you disabled automatic AttentionSet rules the reviewer wouldn\u0027t be added to the attention set and therefore wouldn\u0027t get any notifications at all.\n\nI don\u0027t think this is what you want.",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 43
+      },
+      "revId": "3b27cd970b0ae49cdfccf57c67e006d7ae9620c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
