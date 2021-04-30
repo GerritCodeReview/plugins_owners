@@ -39,6 +39,30 @@
       },
       "revId": "3b27cd970b0ae49cdfccf57c67e006d7ae9620c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce46fbbd_70d5240a",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-30T05:44:53Z",
+      "side": 1,
+      "message": "And if users have not set the above user preference, then all reviewers would get notified independently if they were added to the attention set or not.",
+      "parentUuid": "e9ac0db3_247f9ee0",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 43
+      },
+      "revId": "3b27cd970b0ae49cdfccf57c67e006d7ae9620c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
