@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e2cc14_5df86d14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-04-30T01:03:51Z",
+      "side": 1,
+      "message": "FYI: would this make sense? (P.S. It\u0027s just a prototype, but shows the general approach of reducing the attention of a change with potentially too many reviewers)",
+      "revId": "3b27cd970b0ae49cdfccf57c67e006d7ae9620c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
