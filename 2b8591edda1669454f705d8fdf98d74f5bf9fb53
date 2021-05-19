@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a49dfbb_1368c1a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-19T00:03:33Z",
+      "side": 1,
+      "message": "Still two points to address:\n1. Documentation update (with sample in Groovy)\n2. Test",
+      "revId": "2b8591edda1669454f705d8fdf98d74f5bf9fb53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
