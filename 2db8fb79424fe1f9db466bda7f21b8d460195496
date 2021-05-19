@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "39ab6c10_668c276d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-19T00:02:55Z",
+      "side": 1,
+      "message": "The extension is a pure formula and should not be expensive.\nI see your point of someone making an expensive call outside Gerrit\u0027s domain. However, we should warn the user in the documentation and rely on the common sense of the implementer.\n\nAlso in Gerrit, implementing any extension point would have the same issue.",
+      "parentUuid": "99a908dd_cf5acd8c",
+      "revId": "2db8fb79424fe1f9db466bda7f21b8d460195496",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ceabda41_f6fd1128",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -31,6 +49,30 @@
       "writtenOn": "2021-05-17T21:16:14Z",
       "side": 1,
       "message": "What happens to the account which are not selected? Are they going to be added in CC to the change or they are not added at all to the change? It might be worth specifying it.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 13
+      },
+      "revId": "2db8fb79424fe1f9db466bda7f21b8d460195496",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92305ca0_cace8b1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-19T00:02:55Z",
+      "side": 1,
+      "message": "The accounts not selected will continue to work as normal reviewers, as it happens today.",
+      "parentUuid": "ceabda41_f6fd1128",
       "range": {
         "startLine": 14,
         "startChar": 0,
