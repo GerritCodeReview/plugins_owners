@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "900ac0b2_7825f49a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-05-20T15:36:05Z",
+      "side": 1,
+      "message": "Ok makes sense. Maybe we could just add a timeout in the plugin to stay on the same side.",
+      "parentUuid": "39ab6c10_668c276d",
+      "revId": "2db8fb79424fe1f9db466bda7f21b8d460195496",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceabda41_f6fd1128",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "The accounts not selected will continue to work as normal reviewers, as it happens today.",
       "parentUuid": "ceabda41_f6fd1128",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 13
+      },
+      "revId": "2db8fb79424fe1f9db466bda7f21b8d460195496",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042c17a4_620ed6e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-05-20T15:36:05Z",
+      "side": 1,
+      "message": "And the owner will be recalculated for each new patchset? For example:\n- userA creates a change \n- userB, userC, userD are the owners candidates\n- the custom algorithm set userB, userC in the AS and userD as normal reviewer\n- userB add some comments\n- userA addresses them\n\nWho will be at this point in the AS? only userB and userC?",
+      "parentUuid": "92305ca0_cace8b1a",
       "range": {
         "startLine": 14,
         "startChar": 0,
