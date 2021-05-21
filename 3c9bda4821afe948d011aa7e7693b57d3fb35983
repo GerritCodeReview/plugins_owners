@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d264008_67312e76",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-05-21T08:36:00Z",
+      "side": 1,
+      "message": "nit: from consistency level it would be better to have it moved to the constructor so that all injections happen from the single place...",
+      "range": {
+        "startLine": 59,
+        "startChar": 2,
+        "endLine": 60,
+        "endChar": 64
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7350cf83_b009509a",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-05-21T08:36:00Z",
+      "side": 1,
+      "message": "nit: s/di -\u003e di.get()/DynamicItem::get/",
+      "range": {
+        "startLine": 87,
+        "startChar": 16,
+        "endLine": 87,
+        "endChar": 36
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea718de_b95fef12",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-05-21T08:36:00Z",
+      "side": 1,
+      "message": "I believe this should be removed ;)",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 70
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41e6a900_4c00dda8",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-05-21T08:36:00Z",
+      "side": 1,
+      "message": "and this too :D",
+      "range": {
+        "startLine": 117,
+        "startChar": 2,
+        "endLine": 121,
+        "endChar": 3
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
