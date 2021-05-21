@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdf62164_74bbd67d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2497b7dc_b2c29265",
+      "range": {
+        "startLine": 20,
+        "startChar": 48,
+        "endLine": 20,
+        "endChar": 52
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9a9d492_1e9bf79e",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-05-21T09:10:06Z",
       "side": 1,
       "message": "You also need neverlink java library with API-class only to be used by the plugins, to not shade this plugins insider other plugins. May be:\n\njava_library(\n    name \u003d \"owners-api-neverlink\",\n    srcs \u003d [\"src/main/java/com/googlesource/gerrit/owners/api/OwnersAttentionSet.java\"],\n    neverlink \u003d 1,\n    deps \u003d PLUGIN_DEPS_NEVERLINK\n)",
+      "range": {
+        "startLine": 5,
+        "startChar": 12,
+        "endLine": 5,
+        "endChar": 22
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a50b1f_590b4465",
+        "filename": "owners-api/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "Actually here it is needed to have linked and included, for allowing existing setups to continue to work.",
+      "parentUuid": "e9a9d492_1e9bf79e",
       "range": {
         "startLine": 5,
         "startChar": 12,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1cc42b70_29843735",
+        "filename": "owners-api/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "Good catch: it isn\u0027t needed.",
+      "parentUuid": "3a9f5909_9ce483ea",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 26
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c08a2dc_f36f4835",
         "filename": "owners-api/BUILD",
         "patchSetId": 7
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea7378d3_d515cb6f",
+        "filename": "owners-api/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "There are tests in the next PS.",
+      "parentUuid": "9c08a2dc_f36f4835",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 1
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5be19af1_ab430a03",
         "filename": "owners-autoassign/BUILD",
         "patchSetId": 7
@@ -106,6 +202,30 @@
       "writtenOn": "2021-05-21T09:10:06Z",
       "side": 1,
       "message": "That would shade this dependency into the plugin, in addition to already included this owners-api JAR into \u003cgerrit_site\u003e/lib directory. You should instead use NEVERLINK version of that library, see my comment in another BUILD file:\n\n  deps \u003d [\n        \"//owners-common\",\n        \"//plugins/owners-api-neverlink\",",
+      "range": {
+        "startLine": 19,
+        "startChar": 7,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37f22d96_2edca05c",
+        "filename": "owners-autoassign/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "I know, but if I don\u0027t link it then the owners-autoassign won\u0027t work anymore as standalone plugin, breaking existing setups.",
+      "parentUuid": "5be19af1_ab430a03",
       "range": {
         "startLine": 19,
         "startChar": 7,
@@ -165,6 +285,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3005bbe_227f410d",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "Thanks for the feedback and yes, it deserves a comment I believe.\n\nAs @davido mentioned, it can\u0027t be optional in the constructor.\nThe optional binding is needed because otherwise the existing owners plugin setups won\u0027t work without the libModule.\n\nThis is a compromise that, of course, involves some tech debt that can be removed on master. Will do that also after the merge.\n\nHaving a default binding involves to have the definition of the DynamicItem\u003c\u003e done always in the libModule, but what about existing setups that do not have it?\n\nThis is a stable branch and that\u0027s why we have to come to compromise to support existing users. On master, I agree with you both :-)",
+      "parentUuid": "a6a3ff59_317e591f",
+      "range": {
+        "startLine": 59,
+        "startChar": 2,
+        "endLine": 60,
+        "endChar": 64
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7350cf83_b009509a",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 7
@@ -176,6 +320,30 @@
       "writtenOn": "2021-05-21T08:36:00Z",
       "side": 1,
       "message": "nit: s/di -\u003e di.get()/DynamicItem::get/",
+      "range": {
+        "startLine": 87,
+        "startChar": 16,
+        "endLine": 87,
+        "endChar": 36
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "470ba7b4_29c03c82",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7350cf83_b009509a",
       "range": {
         "startLine": 87,
         "startChar": 16,
@@ -211,6 +379,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce853145_3637f3d7",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "Yes, the method isn\u0027t useful anymore and the name is also misleading. Will inline.",
+      "parentUuid": "eea718de_b95fef12",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 70
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41e6a900_4c00dda8",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 7
@@ -222,6 +414,30 @@
       "writtenOn": "2021-05-21T08:36:00Z",
       "side": 1,
       "message": "and this too :D",
+      "range": {
+        "startLine": 117,
+        "startChar": 2,
+        "endLine": 121,
+        "endChar": 3
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31fc3927_2bdee2ef",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T19:41:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41e6a900_4c00dda8",
       "range": {
         "startLine": 117,
         "startChar": 2,
