@@ -142,6 +142,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c8f4ff2_f482f4e3",
+        "filename": "owners-api/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T23:29:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cc42b70_29843735",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 26
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c08a2dc_f36f4835",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "There are tests in the next PS.",
       "parentUuid": "9c08a2dc_f36f4835",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 1
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7814cef_d1bdd688",
+        "filename": "owners-api/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T23:29:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea7378d3_d515cb6f",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -307,6 +355,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5742def4_da4d1f1d",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T23:29:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a3005bbe_227f410d",
+      "range": {
+        "startLine": 59,
+        "startChar": 2,
+        "endLine": 60,
+        "endChar": 64
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7350cf83_b009509a",
@@ -391,6 +463,30 @@
       "side": 1,
       "message": "Yes, the method isn\u0027t useful anymore and the name is also misleading. Will inline.",
       "parentUuid": "eea718de_b95fef12",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 70
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75e2b859_775405ef",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-21T23:29:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce853145_3637f3d7",
       "range": {
         "startLine": 107,
         "startChar": 8,
