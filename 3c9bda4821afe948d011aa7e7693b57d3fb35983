@@ -286,6 +286,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4733382a_0a5c16d5",
+        "filename": "owners-autoassign/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-05-22T07:58:34Z",
+      "side": 1,
+      "message": "The right answer to this is: the users of owners-autoassign should now also install the owners-api plugin as LibModule after the upgrade to new release.\n\nWe did the same with pull-replication. It depends on replication plugin, yet we excluded it from the pull-replication plugin. IOW, the users of pull-replication have to install replication plugin separately, even if they don\u0027t use it.",
+      "parentUuid": "37f22d96_2edca05c",
+      "range": {
+        "startLine": 19,
+        "startChar": 7,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d264008_67312e76",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 7
