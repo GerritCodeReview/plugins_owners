@@ -310,6 +310,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9571e861_3ca7cc52",
+        "filename": "owners-autoassign/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-23T08:16:46Z",
+      "side": 1,
+      "message": "\u003e The right answer to this is: the users of owners-autoassign should now also install the owners-api plugin as LibModule after the upgrade to new release.\n\nSure, on master, not on stable-3.3 (see the target branch of this change)\n\n\u003e We did the same with pull-replication. It depends on replication plugin, yet we excluded it from the pull-replication plugin. IOW, the users of pull-replication have to install replication plugin separately, even if they don\u0027t use it.\n\npull-replication is still in early alpha stage, so doing that in a stable branch was still OK. owners is used by lots of people, I won\u0027t like to break their setups on stable-3.3.\n\nApart from having two more classes in the jar, what is the consequence of this compromise on stable-3.3?",
+      "parentUuid": "4733382a_0a5c16d5",
+      "range": {
+        "startLine": 19,
+        "startChar": 7,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d264008_67312e76",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 7
