@@ -21,9 +21,11 @@ import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
+import com.google.gerrit.extensions.api.changes.AttentionSetInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.common.ChangeInfo;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.permissions.ChangePermission;
@@ -33,8 +35,12 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +53,16 @@ public class ReviewerManager {
   private final IdentifiedUser.GenericFactory userFactory;
   private final ChangeData.Factory changeDataFactory;
   private final PermissionBackend permissionBackend;
+
+  /**
+   * TODO: The optional injection here is needed for keeping backward compatibility with existing
+   * setups that do not have the owners-api.jar configured as Gerrit libModule.
+   *
+   * <p>Once merged to master, the optional injection can go and this can be moved as extra argument
+   * in the constructor.
+   */
+  @Inject(optional = true)
+  private DynamicItem<OwnersAttentionSet> ownersForAttentionSet;
 
   @Inject
   public ReviewerManager(
@@ -71,6 +87,12 @@ public class ReviewerManager {
         // TODO(davido): Switch back to using changes API again,
         // when it supports batch mode for adding reviewers
         ReviewInput in = new ReviewInput();
+        Collection<Account.Id> reviewersAccounts =
+            Optional.ofNullable(ownersForAttentionSet)
+                .map(DynamicItem::get)
+                .filter(Objects::nonNull)
+                .map(owners -> owners.addToAttentionSet(changeInfo, reviewers))
+                .orElse(reviewers);
         in.reviewers = new ArrayList<>(reviewers.size());
         for (Account.Id account : reviewers) {
           if (isVisibleTo(changeInfo, account)) {
@@ -84,6 +106,16 @@ public class ReviewerManager {
                 changeInfo._number);
           }
         }
+
+        in.ignoreAutomaticAttentionSetRules = true;
+        in.addToAttentionSet =
+            reviewersAccounts.stream()
+                .map(
+                    (reviewer) ->
+                        new AttentionSetInput(
+                            reviewer.toString(), "Selected as member of the OWNERS file"))
+                .collect(Collectors.toList());
+
         gApi.changes().id(changeInfo.id).current().review(in);
       }
     } catch (RestApiException e) {
