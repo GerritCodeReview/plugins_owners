@@ -16,6 +16,23 @@
       "message": "LGTM: there are 2 outstanding comments from DavidO I think they could be addressed in a followup, WDYT ? If so I am happy to give a +2 ",
       "revId": "dd77ddb0cf5945d7553f1a747cc74b88f7240c26",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1000c14b_46157a3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-24T21:33:55Z",
+      "side": 1,
+      "message": "Works E2E. @DavidO let\u0027s continue the discussion in the follow-up of this change. I will merge in the meantime upstream, adopting your suggestions.",
+      "revId": "dd77ddb0cf5945d7553f1a747cc74b88f7240c26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
