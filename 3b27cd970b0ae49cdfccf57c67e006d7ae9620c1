@@ -153,6 +153,30 @@
       },
       "revId": "3b27cd970b0ae49cdfccf57c67e006d7ae9620c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c664a9_a9343cd3",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-24T21:39:51Z",
+      "side": 1,
+      "message": "Let\u0027s discuss offline.",
+      "parentUuid": "bc64272f_e3b1b3d6",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 43
+      },
+      "revId": "3b27cd970b0ae49cdfccf57c67e006d7ae9620c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
