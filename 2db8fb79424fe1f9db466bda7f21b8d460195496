@@ -147,6 +147,30 @@
       },
       "revId": "2db8fb79424fe1f9db466bda7f21b8d460195496",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a7bd25_f6a9a68e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-24T17:11:42Z",
+      "side": 1,
+      "message": "This is already possible because that information is in Change. The example already covers that use-case.",
+      "parentUuid": "2b89b7d9_5ffece69",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 13
+      },
+      "revId": "2db8fb79424fe1f9db466bda7f21b8d460195496",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
