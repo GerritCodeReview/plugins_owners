@@ -334,6 +334,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e346d1e5_76854611",
+        "filename": "owners-autoassign/BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-24T17:11:42Z",
+      "side": 1,
+      "message": "Ping?",
+      "parentUuid": "9571e861_3ca7cc52",
+      "range": {
+        "startLine": 19,
+        "startChar": 7,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "3c9bda4821afe948d011aa7e7693b57d3fb35983",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d264008_67312e76",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
         "patchSetId": 7
