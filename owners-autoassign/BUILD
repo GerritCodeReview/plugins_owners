@@ -15,8 +15,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/**/*"]),
     deps = [
+        ":owners-api-neverlink",
         "//owners-common",
-        "//plugins/owners-api",
     ],
 )
 
@@ -28,8 +28,14 @@ java_library(
     visibility = ["//visibility:public"],
     deps = PLUGIN_DEPS_NEVERLINK + [
         "//owners-common",
-        "//plugins/owners-api",
+        ":owners-api-neverlink",
     ],
+)
+
+java_library(
+    name = "owners-api-neverlink",
+    neverlink = 1,
+    exports = ["//plugins/owners-api"],
 )
 
 junit_tests(

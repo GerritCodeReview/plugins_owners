@@ -38,8 +38,6 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,15 +51,6 @@ public class ReviewerManager {
   private final IdentifiedUser.GenericFactory userFactory;
   private final ChangeData.Factory changeDataFactory;
   private final PermissionBackend permissionBackend;
-
-  /**
-   * TODO: The optional injection here is needed for keeping backward compatibility with existing
-   * setups that do not have the owners-api.jar configured as Gerrit libModule.
-   *
-   * <p>Once merged to master, the optional injection can go and this can be moved as extra argument
-   * in the constructor.
-   */
-  @Inject(optional = true)
   private DynamicItem<OwnersAttentionSet> ownersForAttentionSet;
 
   @Inject
@@ -70,12 +59,14 @@ public class ReviewerManager {
       GerritApi gApi,
       IdentifiedUser.GenericFactory userFactory,
       ChangeData.Factory changeDataFactory,
-      PermissionBackend permissionBackend) {
+      PermissionBackend permissionBackend,
+      DynamicItem<OwnersAttentionSet> ownersForAttentionSet) {
     this.requestContext = requestContext;
     this.gApi = gApi;
     this.userFactory = userFactory;
     this.changeDataFactory = changeDataFactory;
     this.permissionBackend = permissionBackend;
+    this.ownersForAttentionSet = ownersForAttentionSet;
   }
 
   public void addReviewers(ChangeApi cApi, Collection<Account.Id> reviewers)
@@ -87,12 +78,6 @@ public class ReviewerManager {
         // TODO(davido): Switch back to using changes API again,
         // when it supports batch mode for adding reviewers
         ReviewInput in = new ReviewInput();
-        Collection<Account.Id> reviewersAccounts =
-            Optional.ofNullable(ownersForAttentionSet)
-                .map(DynamicItem::get)
-                .filter(Objects::nonNull)
-                .map(owners -> owners.addToAttentionSet(changeInfo, reviewers))
-                .orElse(reviewers);
         in.reviewers = new ArrayList<>(reviewers.size());
         for (Account.Id account : reviewers) {
           if (isVisibleTo(changeInfo, account)) {
@@ -109,7 +94,7 @@ public class ReviewerManager {
 
         in.ignoreAutomaticAttentionSetRules = true;
         in.addToAttentionSet =
-            reviewersAccounts.stream()
+            ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewers).stream()
                 .map(
                     (reviewer) ->
                         new AttentionSetInput(

@@ -23,10 +23,8 @@ import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.ChangeInfo;
-import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
-import com.google.inject.Scopes;
 import com.googlesource.gerrit.owners.api.OwnersApiModule;
 import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 import java.util.Collection;
@@ -34,7 +32,8 @@ import org.junit.Test;
 
 @TestPlugin(
     name = "owners-autoassign",
-    sysModule = "com.googlesource.gerrit.owners.common.OwnersAutoassignWithAttentionSetIT$TestModule")
+    sysModule =
+        "com.googlesource.gerrit.owners.common.OwnersAutoassignWithAttentionSetIT$TestModule")
 public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonTest {
 
   @Override
@@ -45,11 +44,7 @@ public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonT
   public static class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-      install(new AutoassignModule());
-
-      DynamicItem.bind(binder(), OwnersAttentionSet.class)
-          .to(SelectFirstOwnerForAttentionSet.class)
-          .in(Scopes.SINGLETON);
+      install(new AutoassignModule(SelectFirstOwnerForAttentionSet.class));
     }
   }
 

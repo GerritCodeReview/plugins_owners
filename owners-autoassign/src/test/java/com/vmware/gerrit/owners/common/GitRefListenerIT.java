@@ -28,6 +28,8 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.google.inject.Module;
+import com.googlesource.gerrit.owners.api.OwnersApiModule;
 import java.util.stream.StreamSupport;
 import org.eclipse.jgit.transport.ReceiveCommand.Type;
 import org.junit.Test;
@@ -42,6 +44,11 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
 
   String anOldObjectId = "anOldRef";
   String aNewObjectId = "aNewRef";
+
+  @Override
+  public Module createModule() {
+    return new OwnersApiModule();
+  }
 
   public static class TestModule extends AbstractModule {
     @Override
