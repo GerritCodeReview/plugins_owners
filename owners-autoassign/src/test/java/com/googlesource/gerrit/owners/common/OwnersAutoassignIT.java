@@ -24,12 +24,14 @@ import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import com.googlesource.gerrit.owners.api.OwnersApiModule;
 import java.util.Collection;
 import org.junit.Test;
 
 @TestPlugin(
     name = "owners-api",
-    sysModule = "com.vmware.gerrit.owners.common.OwnersAutoassignIT$TestModule")
+    sysModule = "com.googlesource.gerrit.owners.common.OwnersAutoassignIT$TestModule")
 public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
 
   public static class TestModule extends AbstractModule {
@@ -37,6 +39,11 @@ public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
     protected void configure() {
       install(new AutoassignModule());
     }
+  }
+
+  @Override
+  public Module createModule() {
+    return new OwnersApiModule();
   }
 
   @UseLocalDisk
