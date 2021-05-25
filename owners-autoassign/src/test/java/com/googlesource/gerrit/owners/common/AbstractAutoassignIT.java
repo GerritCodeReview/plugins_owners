@@ -23,6 +23,8 @@ import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import com.googlesource.gerrit.owners.api.OwnersApiModule;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +46,11 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     protected void configure() {
       install(new AutoassignModule());
     }
+  }
+
+  @Override
+  public Module createModule() {
+    return new OwnersApiModule();
   }
 
   @Test
