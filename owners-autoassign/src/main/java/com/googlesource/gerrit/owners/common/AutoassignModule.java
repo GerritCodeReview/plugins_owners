@@ -16,13 +16,34 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Scopes;
+import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 
 public class AutoassignModule extends AbstractModule {
+
+  private final Class<? extends OwnersAttentionSet> ownersAttentionSetImpl;
+
+  @Inject
+  public AutoassignModule() {
+    this(DefaultAddAllOwnersToAttentionSet.class);
+  }
+
+  @VisibleForTesting
+  public AutoassignModule(Class<? extends OwnersAttentionSet> ownersAttentionSetImpl) {
+    this.ownersAttentionSetImpl = ownersAttentionSetImpl;
+  }
+
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
+    DynamicItem.bind(binder(), OwnersAttentionSet.class)
+        .to(ownersAttentionSetImpl)
+        .in(Scopes.SINGLETON);
   }
 }
