@@ -17,12 +17,18 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 
 public class AutoassignModule extends AbstractModule {
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
+    DynamicItem.bind(binder(), OwnersAttentionSet.class)
+        .to(DefaultOwnersAttentionSet.class)
+        .in(Scopes.SINGLETON);
   }
 }
