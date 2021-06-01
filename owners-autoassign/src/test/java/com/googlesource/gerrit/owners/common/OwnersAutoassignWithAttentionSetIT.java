@@ -20,7 +20,6 @@ import static java.util.stream.Collectors.toList;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -35,7 +34,7 @@ import org.junit.Test;
 
 @TestPlugin(
     name = "owners-autoassign",
-    sysModule = "com.vmware.gerrit.owners.common.OwnersAutoassignWithAttentionSetIT$TestModule")
+    sysModule = "com.googlesource.gerrit.owners.common.OwnersAutoassignWithAttentionSetIT$TestModule")
 public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonTest {
 
   @Override
@@ -62,7 +61,6 @@ public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonT
     }
   }
 
-  @UseLocalDisk
   @Test
   public void shouldAutoassignTwoOwnersWithOneAttentionSet() throws Exception {
     String ownerEmail1 = user.email();

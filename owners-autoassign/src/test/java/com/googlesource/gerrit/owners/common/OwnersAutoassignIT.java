@@ -19,7 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.AccountInfo;
@@ -29,7 +28,7 @@ import org.junit.Test;
 
 @TestPlugin(
     name = "owners-api",
-    sysModule = "com.vmware.gerrit.owners.common.OwnersAutoassignIT$TestModule")
+    sysModule = "com.googlesource.gerrit.owners.common.OwnersAutoassignIT$TestModule")
 public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
 
   public static class TestModule extends AbstractModule {
@@ -39,7 +38,6 @@ public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
     }
   }
 
-  @UseLocalDisk
   @Test
   public void shouldAutoassignOneOwner() throws Exception {
     String ownerEmail = user.email();
