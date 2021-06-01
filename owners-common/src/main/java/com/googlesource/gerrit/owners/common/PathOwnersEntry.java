@@ -31,20 +31,31 @@ import java.util.stream.Collectors;
  */
 class PathOwnersEntry {
   private final boolean inherited;
+  private Set<Account.Id> owners = Sets.newHashSet();
+  private Set<Account.Id> reviewers = Sets.newHashSet();
 
   public PathOwnersEntry() {
     inherited = true;
   }
 
   public PathOwnersEntry(
-      String path, OwnersConfig config, Accounts accounts, Set<Account.Id> inheritedOwners) {
+      String path,
+      OwnersConfig config,
+      Accounts accounts,
+      Set<Account.Id> inheritedOwners,
+      Set<Account.Id> inheritedReviewers) {
     this.ownersPath = path;
     this.owners =
         config.getOwners().stream()
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
+    this.reviewers =
+        config.getReviewers().stream()
+            .flatMap(o -> accounts.find(o).stream())
+            .collect(Collectors.toSet());
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
+      this.reviewers.addAll(inheritedReviewers);
     }
     this.matchers = config.getMatchers();
     this.inherited = config.isInherited();
@@ -62,7 +73,6 @@ class PathOwnersEntry {
   }
 
   private String ownersPath;
-  private Set<Account.Id> owners = Sets.newHashSet();
 
   private Map<String, Matcher> matchers = Maps.newHashMap();
 
@@ -80,6 +90,14 @@ class PathOwnersEntry {
 
   public void setOwners(Set<Account.Id> owners) {
     this.owners = owners;
+  }
+
+  public Set<Account.Id> getReviewers() {
+    return owners;
+  }
+
+  public void setReviewers(Set<Account.Id> reviewers) {
+    this.reviewers = reviewers;
   }
 
   public String getOwnersPath() {

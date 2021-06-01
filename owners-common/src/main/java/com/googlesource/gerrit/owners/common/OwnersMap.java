@@ -25,6 +25,7 @@ import java.util.Set;
 
 public class OwnersMap {
   private SetMultimap<String, Account.Id> pathOwners = HashMultimap.create();
+  private SetMultimap<String, Account.Id> pathReviewers = HashMultimap.create();
   private Map<String, Matcher> matchers = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileOwners = Maps.newHashMap();
 
@@ -43,6 +44,14 @@ public class OwnersMap {
 
   public void setPathOwners(SetMultimap<String, Account.Id> pathOwners) {
     this.pathOwners = pathOwners;
+  }
+
+  public SetMultimap<String, Account.Id> getPathReviewers() {
+    return pathReviewers;
+  }
+
+  public void setPathReviewers(SetMultimap<String, Account.Id> pathReviewers) {
+    this.pathReviewers = pathReviewers;
   }
 
   public Map<String, Matcher> getMatchers() {

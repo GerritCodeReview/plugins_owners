@@ -147,6 +147,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
+        allReviewers.addAll(owners.getReviewers().values());
         for (Matcher matcher : owners.getMatchers().values()) {
           allReviewers.addAll(matcher.getOwners());
         }
