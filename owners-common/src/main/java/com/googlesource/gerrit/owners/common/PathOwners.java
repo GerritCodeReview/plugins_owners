@@ -49,6 +49,8 @@ public class PathOwners {
 
   private final SetMultimap<String, Account.Id> owners;
 
+  private final SetMultimap<String, Account.Id> reviewers;
+
   private final Repository repository;
 
   private final PatchList patchList;
@@ -61,6 +63,8 @@ public class PathOwners {
 
   private Map<String, Set<Id>> fileOwners;
 
+  private Map<String, Set<Id>> fileReviewers;
+
   public PathOwners(Accounts accounts, Repository repository, String branch, PatchList patchList) {
     this.repository = repository;
     this.patchList = patchList;
@@ -69,8 +73,10 @@ public class PathOwners {
 
     OwnersMap map = fetchOwners(branch);
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
+    reviewers = Multimaps.unmodifiableSetMultimap(map.getPathReviewers());
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
+    fileReviewers = map.getFileReviewers();
   }
 
   /**
@@ -82,11 +88,24 @@ public class PathOwners {
     return owners;
   }
 
+  /**
+   * Returns a read only view of the paths to reviewers mapping.
+   *
+   * @return multimap of paths to reviewers
+   */
+  public SetMultimap<String, Account.Id> getReviewers() {
+    return reviewers;
+  }
+
   public Map<String, Matcher> getMatchers() {
     return matchers;
   }
 
   public Map<String, Set<Account.Id>> getFileOwners() {
+    return fileOwners;
+  }
+
+  public Map<String, Set<Account.Id>> getFileReviewers() {
     return fileOwners;
   }
 
@@ -102,12 +121,18 @@ public class PathOwners {
 
       PathOwnersEntry projectEntry =
           getOwnersConfig(rootPath, RefNames.REFS_CONFIG)
-              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .map(
+                  conf ->
+                      new PathOwnersEntry(
+                          rootPath, conf, accounts, Collections.emptySet(), Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       PathOwnersEntry rootEntry =
           getOwnersConfig(rootPath, branch)
-              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .map(
+                  conf ->
+                      new PathOwnersEntry(
+                          rootPath, conf, accounts, Collections.emptySet(), Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       Set<String> modifiedPaths = getModifiedPaths();
@@ -116,13 +141,15 @@ public class PathOwners {
       for (String path : modifiedPaths) {
         currentEntry = resolvePathEntry(path, branch, projectEntry, rootEntry, entries);
 
-        // add owners to file for matcher predicates
+        // add owners and reviewers to file for matcher predicates
         ownersMap.addFileOwners(path, currentEntry.getOwners());
+        ownersMap.addFileReviewers(path, currentEntry.getReviewers());
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
         if (currentEntry.getOwnersPath() != null) {
           ownersMap.addPathOwners(currentEntry.getOwnersPath(), currentEntry.getOwners());
+          ownersMap.addPathReviewers(currentEntry.getOwnersPath(), currentEntry.getReviewers());
         }
         ownersMap.addMatchers(currentEntry.getMatchers());
       }
@@ -200,8 +227,9 @@ public class PathOwners {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
         final Set<Id> owners = currentEntry.getOwners();
+        final Set<Id> reviewers = currentEntry.getReviewers();
         currentEntry =
-            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners))
+            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners, reviewers))
                 .orElse(currentEntry);
         if (conf.map(OwnersConfig::isInherited).orElse(false)) {
           for (Matcher m : currentEntry.getMatchers().values()) {

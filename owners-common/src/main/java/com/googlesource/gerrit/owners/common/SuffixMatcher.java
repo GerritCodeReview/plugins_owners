@@ -19,8 +19,8 @@ import com.google.gerrit.entities.Account;
 import java.util.Set;
 
 public class SuffixMatcher extends Matcher {
-  public SuffixMatcher(String path, Set<Account.Id> owners) {
-    super(path, owners);
+  public SuffixMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
+    super(path, owners, reviewers);
   }
 
   @Override

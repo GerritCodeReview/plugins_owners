@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 public class RegExMatcher extends Matcher {
   Pattern pattern;
 
-  public RegExMatcher(String path, Set<Account.Id> owners) {
-    super(path, owners);
+  public RegExMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
+    super(path, owners, reviewers);
     pattern = Pattern.compile(path);
   }
 

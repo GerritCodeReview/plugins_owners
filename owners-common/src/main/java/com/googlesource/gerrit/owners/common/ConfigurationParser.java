@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ConfigurationParser {
-
   private static final Logger log = LoggerFactory.getLogger(OwnersConfig.class);
   private Accounts accounts;
 
@@ -55,21 +54,14 @@ public class ConfigurationParser {
   }
 
   private void addClassicMatcher(JsonNode jsonNode, OwnersConfig ret) {
-    Optional<Stream<String>> owners =
-        Optional.ofNullable(jsonNode.get("owners")).map(ConfigurationParser::extractOwners);
-    ret.setOwners(flattenSet(owners));
-  }
-
-  private static <T> Set<T> flattenSet(Optional<Stream<T>> optionalStream) {
-    return flatten(optionalStream).collect(Collectors.toSet());
-  }
-
-  private static <T> Stream<T> flatten(Optional<Stream<T>> optionalStream) {
-    return optionalStream.orElse(Stream.empty());
+    ret.setOwners(toClassicOwnersList(jsonNode, "owners").collect(Collectors.toSet()));
+    ret.setReviewers(toClassicOwnersList(jsonNode, "reviewers").collect(Collectors.toSet()));
   }
 
   private void addMatchers(JsonNode jsonNode, OwnersConfig ret) {
-    getNode(jsonNode, "matchers").map(this::getMatchers).ifPresent(m -> m.forEach(ret::addMatcher));
+    getNode(jsonNode, "matchers")
+        .map(m -> getMatchers(m))
+        .ifPresent(m -> m.forEach(ret::addMatcher));
   }
 
   private Stream<Matcher> getMatchers(JsonNode node) {
@@ -86,22 +78,36 @@ public class ConfigurationParser {
     return iteratorStream(node.iterator()).map(JsonNode::asText);
   }
 
+  private Stream<String> toClassicOwnersList(JsonNode jsonNode, String sectionName) {
+    Stream<String> ownersStream =
+        Optional.ofNullable(jsonNode.get(sectionName))
+            .map(ConfigurationParser::extractOwners)
+            .orElse(Stream.empty());
+    return ownersStream;
+  }
+
   private Optional<Matcher> toMatcher(JsonNode node) {
     Set<Id> owners =
-        flatten(getNode(node, "owners").map(ConfigurationParser::extractOwners))
+        getNode(node, "owners")
+            .map(ConfigurationParser::extractOwners)
+            .orElse(Stream.empty())
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
-    if (owners.isEmpty()) {
-      log.warn("Matchers must contain a list of owners");
-      return Optional.empty();
-    }
+    Set<Id> reviewers =
+        getNode(node, "reviewers")
+            .map(ConfigurationParser::extractOwners)
+            .orElse(Stream.empty())
+            .flatMap(o -> accounts.find(o).stream())
+            .collect(Collectors.toSet());
 
     Optional<Matcher> suffixMatcher =
-        getText(node, "suffix").map(el -> new SuffixMatcher(el, owners));
-    Optional<Matcher> regexMatcher = getText(node, "regex").map(el -> new RegExMatcher(el, owners));
+        getText(node, "suffix").map(el -> new SuffixMatcher(el, owners, reviewers));
+    Optional<Matcher> regexMatcher =
+        getText(node, "regex").map(el -> new RegExMatcher(el, owners, reviewers));
     Optional<Matcher> partialRegexMatcher =
-        getText(node, "partial_regex").map(el -> new PartialRegExMatcher(el, owners));
-    Optional<Matcher> exactMatcher = getText(node, "exact").map(el -> new ExactMatcher(el, owners));
+        getText(node, "partial_regex").map(el -> new PartialRegExMatcher(el, owners, reviewers));
+    Optional<Matcher> exactMatcher =
+        getText(node, "exact").map(el -> new ExactMatcher(el, owners, reviewers));
 
     return Optional.ofNullable(
         suffixMatcher.orElseGet(

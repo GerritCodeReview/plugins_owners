@@ -40,6 +40,15 @@ public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldAutoassignOneOwner() throws Exception {
+    shouldAutoassignUser("owners", user.email());
+  }
+
+  @Test
+  public void shouldAutoassignOneReviewer() throws Exception {
+    shouldAutoassignUser("reviewers", user.email());
+  }
+
+  private void shouldAutoassignUser(String section, String autoAssignUser) throws Exception {
     String ownerEmail = user.email();
 
     pushFactory
@@ -48,13 +57,14 @@ public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
             testRepo,
             "Set OWNERS",
             "OWNERS",
-            "inherited: false\n" + "owners:\n" + "- " + ownerEmail)
+            "inherited: false\n" + section + ":\n" + "- " + autoAssignUser)
         .to("refs/heads/master")
         .assertOkStatus();
 
     ChangeApi changeApi = change(createChange());
     Collection<AccountInfo> reviewers = changeApi.get().reviewers.get(ReviewerState.REVIEWER);
 
+    assertThat(reviewers).isNotNull();
     assertThat(reviewers).hasSize(1);
     AccountInfo reviewer = reviewers.iterator().next();
     assertThat(reviewer.email).isEqualTo(ownerEmail);
