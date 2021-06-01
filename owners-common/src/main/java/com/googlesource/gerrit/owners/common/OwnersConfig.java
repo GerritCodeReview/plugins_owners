@@ -33,6 +33,9 @@ public class OwnersConfig {
   /** Set of OWNER email addresses. */
   private Set<String> owners = Sets.newHashSet();
 
+  /** Set of reviewers' email addresses. */
+  private Set<String> reviewers = Sets.newHashSet();
+
   /** Map name of matcher and Matcher (value + Set Owners) */
   private Map<String, Matcher> matchers = Maps.newHashMap();
 
@@ -61,6 +64,14 @@ public class OwnersConfig {
 
   public void setOwners(Set<String> owners) {
     this.owners = owners;
+  }
+
+  public Set<String> getReviewers() {
+    return reviewers;
+  }
+
+  public void setReviewers(Set<String> reviewers) {
+    this.reviewers = reviewers;
   }
 
   public Map<String, Matcher> getMatchers() {
