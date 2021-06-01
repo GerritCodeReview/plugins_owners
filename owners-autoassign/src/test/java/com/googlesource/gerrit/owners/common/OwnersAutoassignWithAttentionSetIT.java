@@ -20,7 +20,6 @@ import static java.util.stream.Collectors.toList;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -62,7 +61,6 @@ public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonT
     }
   }
 
-  @UseLocalDisk
   @Test
   public void shouldAutoassignTwoOwnersWithOneAttentionSet() throws Exception {
     String ownerEmail1 = user.email();
