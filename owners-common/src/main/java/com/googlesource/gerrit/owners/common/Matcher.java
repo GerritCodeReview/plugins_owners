@@ -19,16 +19,18 @@ import java.util.Set;
 
 public abstract class Matcher {
   private Set<Account.Id> owners;
+  private Set<Account.Id> reviewers;
   protected String path;
 
-  public Matcher(String key, Set<Account.Id> owners) {
+  public Matcher(String key, Set<Account.Id> owners, Set<Account.Id> reviewers) {
     this.path = key;
     this.owners = owners;
+    this.reviewers = reviewers;
   }
 
   @Override
   public String toString() {
-    return "Matcher [path=" + path + ", owners=" + owners + "]";
+    return "Matcher [path=" + path + ", owners=" + owners + ", reviewers=" + reviewers + "]";
   }
 
   public Set<Account.Id> getOwners() {
@@ -37,6 +39,14 @@ public abstract class Matcher {
 
   public void setOwners(Set<Account.Id> owners) {
     this.owners = owners;
+  }
+
+  public Set<Account.Id> getReviewers() {
+    return reviewers;
+  }
+
+  public void setReviewers(Set<Account.Id> reviewers) {
+    this.reviewers = reviewers;
   }
 
   public void setPath(String path) {

@@ -23,8 +23,8 @@ import java.util.regex.Pattern;
 public class PartialRegExMatcher extends Matcher {
   Pattern pattern;
 
-  public PartialRegExMatcher(String path, Set<Account.Id> owners) {
-    super(path, owners);
+  public PartialRegExMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
+    super(path, owners, reviewers);
     pattern = Pattern.compile(".*" + path + ".*");
   }
 
