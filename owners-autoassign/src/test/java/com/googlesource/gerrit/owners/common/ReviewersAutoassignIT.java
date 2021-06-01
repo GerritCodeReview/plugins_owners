@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,14 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.entities.Account;
-import java.util.Set;
-import java.util.regex.Pattern;
+import com.google.gerrit.acceptance.TestPlugin;
 
-public class RegExMatcher extends Matcher {
-  Pattern pattern;
+@TestPlugin(
+    name = "owners-api",
+    sysModule = "com.googlesource.gerrit.owners.common.AbstractAutoassignIT$TestModule")
+public class ReviewersAutoassignIT extends AbstractAutoassignIT {
 
-  public RegExMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
-    super(path, owners, reviewers);
-    pattern = Pattern.compile(path);
-  }
-
-  @Override
-  public boolean matches(String pathToMatch) {
-    return pattern.matcher(pathToMatch).matches();
+  public ReviewersAutoassignIT() {
+    super("reviewers");
   }
 }
