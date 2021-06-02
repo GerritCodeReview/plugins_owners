@@ -16,6 +16,7 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -30,5 +31,10 @@ public class RegExMatcher extends Matcher {
   @Override
   public boolean matches(String pathToMatch) {
     return pattern.matcher(pathToMatch).matches();
+  }
+
+  @Override
+  protected Matcher clone(Set<Id> owners, Set<Id> reviewers) {
+    return new RegExMatcher(path, owners, reviewers);
   }
 }
