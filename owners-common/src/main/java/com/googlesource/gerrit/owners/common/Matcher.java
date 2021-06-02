@@ -14,7 +14,9 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
 
 public abstract class Matcher {
@@ -58,4 +60,19 @@ public abstract class Matcher {
   }
 
   public abstract boolean matches(String pathToMatch);
+
+  public Matcher merge(Matcher currMatchers) {
+    if (currMatchers == null) {
+      return currMatchers;
+    }
+
+    return clone(merge(owners, currMatchers.owners), merge(reviewers, currMatchers.reviewers));
+  }
+
+  protected abstract Matcher clone(Set<Id> owners, Set<Id> reviewers);
+
+  private Set<Id> merge(Set<Id> set1, Set<Id> set2) {
+    ImmutableSet.Builder<Id> setBuilder = ImmutableSet.builder();
+    return setBuilder.addAll(set1).addAll(set2).build();
+  }
 }
