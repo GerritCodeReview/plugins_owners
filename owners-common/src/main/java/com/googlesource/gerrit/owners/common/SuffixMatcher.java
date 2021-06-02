@@ -16,6 +16,7 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
 
 public class SuffixMatcher extends Matcher {
@@ -26,5 +27,10 @@ public class SuffixMatcher extends Matcher {
   @Override
   public boolean matches(String pathToMatch) {
     return pathToMatch.endsWith(path);
+  }
+
+  @Override
+  protected Matcher clone(Set<Id> owners, Set<Id> reviewers) {
+    return new SuffixMatcher(path, owners, reviewers);
   }
 }
