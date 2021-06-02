@@ -31,6 +31,7 @@ import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -124,7 +125,12 @@ public class PathOwners {
               .map(
                   conf ->
                       new PathOwnersEntry(
-                          rootPath, conf, accounts, Collections.emptySet(), Collections.emptySet()))
+                          rootPath,
+                          conf,
+                          accounts,
+                          Collections.emptySet(),
+                          Collections.emptySet(),
+                          Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       PathOwnersEntry rootEntry =
@@ -132,7 +138,12 @@ public class PathOwners {
               .map(
                   conf ->
                       new PathOwnersEntry(
-                          rootPath, conf, accounts, Collections.emptySet(), Collections.emptySet()))
+                          rootPath,
+                          conf,
+                          accounts,
+                          Collections.emptySet(),
+                          Collections.emptySet(),
+                          Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       Set<String> modifiedPaths = getModifiedPaths();
@@ -229,14 +240,13 @@ public class PathOwners {
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
         final Set<Id> owners = currentEntry.getOwners();
         final Set<Id> reviewers = currentEntry.getReviewers();
+        Collection<Matcher> inheritedMatchers = currentEntry.getMatchers().values();
         currentEntry =
-            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners, reviewers))
+            conf.map(
+                    c ->
+                        new PathOwnersEntry(
+                            ownersPath, c, accounts, owners, reviewers, inheritedMatchers))
                 .orElse(currentEntry);
-        if (conf.map(OwnersConfig::isInherited).orElse(false)) {
-          for (Matcher m : currentEntry.getMatchers().values()) {
-            currentEntry.addMatcher(m);
-          }
-        }
         entries.put(partial, currentEntry);
       }
     }

@@ -33,6 +33,8 @@ class PathOwnersEntry {
   private final boolean inherited;
   private Set<Account.Id> owners = Sets.newHashSet();
   private Set<Account.Id> reviewers = Sets.newHashSet();
+  private String ownersPath;
+  private Map<String, Matcher> matchers = Maps.newHashMap();
 
   public PathOwnersEntry() {
     inherited = true;
@@ -43,7 +45,8 @@ class PathOwnersEntry {
       OwnersConfig config,
       Accounts accounts,
       Set<Account.Id> inheritedOwners,
-      Set<Account.Id> inheritedReviewers) {
+      Set<Account.Id> inheritedReviewers,
+      Collection<Matcher> inheritedMatchers) {
     this.ownersPath = path;
     this.owners =
         config.getOwners().stream()
@@ -53,11 +56,15 @@ class PathOwnersEntry {
         config.getReviewers().stream()
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
+    this.matchers = config.getMatchers();
+
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
       this.reviewers.addAll(inheritedReviewers);
+      for (Matcher matcher : inheritedMatchers) {
+        addMatcher(matcher);
+      }
     }
-    this.matchers = config.getMatchers();
     this.inherited = config.isInherited();
   }
 
@@ -72,12 +79,9 @@ class PathOwnersEntry {
         + "]";
   }
 
-  private String ownersPath;
-
-  private Map<String, Matcher> matchers = Maps.newHashMap();
-
   public void addMatcher(Matcher matcher) {
-    this.matchers.put(matcher.getPath(), matcher);
+    Matcher currMatchers = this.matchers.get(matcher.getPath());
+    this.matchers.put(matcher.getPath(), matcher.merge(currMatchers));
   }
 
   public Map<String, Matcher> getMatchers() {
