@@ -22,6 +22,29 @@
       },
       "revId": "8cd269443c15ce5d4bd60dc3423d9e96df3e209b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92febc64_cb7f7af0",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T20:54:18Z",
+      "side": 1,
+      "message": "nit: unneeded space",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 1
+      },
+      "revId": "8cd269443c15ce5d4bd60dc3423d9e96df3e209b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
