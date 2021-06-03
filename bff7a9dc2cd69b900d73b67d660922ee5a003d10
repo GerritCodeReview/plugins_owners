@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9f583e8_51ae4d7b",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/OwnersAutoassignIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T18:23:25Z",
+      "side": 1,
+      "message": "It is actually needed, otherwise the tests would fail.\nLet me decouple in another change.",
+      "parentUuid": "c38ca776_ba41c326",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 86
+      },
+      "revId": "bff7a9dc2cd69b900d73b67d660922ee5a003d10",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa8d2495_ee3f1421",
         "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/OwnersAutoassignWithAttentionSetIT.java",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-06-03T06:13:29Z",
       "side": 1,
       "message": "unrelated?",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 102
+      },
+      "revId": "bff7a9dc2cd69b900d73b67d660922ee5a003d10",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85504075_27b5a42b",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/OwnersAutoassignWithAttentionSetIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T18:23:25Z",
+      "side": 1,
+      "message": "It is actually needed, otherwise the tests would fail.\nLet me decouple in another change.",
+      "parentUuid": "aa8d2495_ee3f1421",
       "range": {
         "startLine": 37,
         "startChar": 4,
