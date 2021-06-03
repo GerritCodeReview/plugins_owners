@@ -29,7 +29,7 @@ import org.junit.Test;
 
 @TestPlugin(
     name = "owners-api",
-    sysModule = "com.vmware.gerrit.owners.common.OwnersAutoassignIT$TestModule")
+    sysModule = "com.googlesource.gerrit.owners.common.OwnersAutoassignIT$TestModule")
 public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
 
   public static class TestModule extends AbstractModule {
