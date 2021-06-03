@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f44c081d_04532d89",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T20:53:21Z",
+      "side": 1,
+      "message": "Does this translate to both owners and reviewers being added in the *Reviewers* section, but only the owners will be part of the Attention Set?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 6
+      },
+      "revId": "5c7d622571c83d5a232fd2bb2dc50a4f1d8af980",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "130c4470_617ea08f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T20:53:21Z",
+      "side": 1,
+      "message": "nit: This is now used for owners and reviewers...shall we rename it? Not sure how....something like extractAccounts, extractAccountsToAssign, extractOwnersOrReviewers ?",
+      "range": {
+        "startLine": 98,
+        "startChar": 38,
+        "endLine": 98,
+        "endChar": 51
+      },
+      "revId": "5c7d622571c83d5a232fd2bb2dc50a4f1d8af980",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7640e277_53f432fa",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T20:53:21Z",
+      "side": 1,
+      "message": "Are these only emails or they could also be group ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 24,
+        "endLine": 36,
+        "endChar": 29
+      },
+      "revId": "5c7d622571c83d5a232fd2bb2dc50a4f1d8af980",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "718681ce_8402aa84",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
         "patchSetId": 4
@@ -19,6 +88,29 @@
         "startChar": 0,
         "endLine": 66,
         "endChar": 45
+      },
+      "revId": "5c7d622571c83d5a232fd2bb2dc50a4f1d8af980",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68fcaeac_df2b69d0",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T20:53:21Z",
+      "side": 1,
+      "message": "fileReviewers ?",
+      "range": {
+        "startLine": 109,
+        "startChar": 11,
+        "endLine": 109,
+        "endChar": 21
       },
       "revId": "5c7d622571c83d5a232fd2bb2dc50a4f1d8af980",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
