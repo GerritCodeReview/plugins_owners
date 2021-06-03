@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b1de213_1cf1f8cc",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e034de58_09a3098e",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 22
+      },
+      "revId": "8cd269443c15ce5d4bd60dc3423d9e96df3e209b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89555ec7_c4cfa9c9",
@@ -70,6 +94,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7fd9a80_305350ab",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89555ec7_c4cfa9c9",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 1
+      },
+      "revId": "8cd269443c15ce5d4bd60dc3423d9e96df3e209b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73816644_ec9d9146",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92febc64_cb7f7af0",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 1
+      },
+      "revId": "8cd269443c15ce5d4bd60dc3423d9e96df3e209b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fbc7c221_48f79b78",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-06-03T20:57:34Z",
       "side": 1,
       "message": "What happens if the same user is specified in both, possibly my mistake?\n\nI guess owner should take priority?",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 104,
+        "endChar": 3
+      },
+      "revId": "8cd269443c15ce5d4bd60dc3423d9e96df3e209b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "212b7193_104c1aec",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T21:14:26Z",
+      "side": 1,
+      "message": "The owners are added as reviewers anyway, so having them also as reviewers is just redundant.",
+      "parentUuid": "fbc7c221_48f79b78",
       "range": {
         "startLine": 99,
         "startChar": 0,
