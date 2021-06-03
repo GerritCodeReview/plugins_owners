@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f417972_9dcdb2d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:46:58Z",
+      "side": 1,
+      "message": "Might be worth adding some tests",
+      "revId": "afa2d72e96578f725a01373552bc557db805b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fc2ebbe_5da70b9e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/Matcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:46:58Z",
+      "side": 1,
+      "message": "singular?",
+      "range": {
+        "startLine": 64,
+        "startChar": 31,
+        "endLine": 64,
+        "endChar": 43
+      },
+      "revId": "afa2d72e96578f725a01373552bc557db805b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f03b0d5_6da54b0b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/Matcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:46:58Z",
+      "side": 1,
+      "message": "what about renaming this to avoid confusion with the L64 merge? mergeSets ?",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "afa2d72e96578f725a01373552bc557db805b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
