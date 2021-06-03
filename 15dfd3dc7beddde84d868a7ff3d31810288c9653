@@ -46,6 +46,30 @@
       },
       "revId": "15dfd3dc7beddde84d868a7ff3d31810288c9653",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f972b634_253aee1d",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T18:58:35Z",
+      "side": 0,
+      "message": "This part was introduced in Change-Id: I4de7bac203047 and, my bad, I did not highlight the lack of testing of this code-path.\n\nI did debug this part and it is 100% a NOOP.",
+      "parentUuid": "dd80c6a2_cae59e61",
+      "range": {
+        "startLine": 235,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 9
+      },
+      "revId": "15dfd3dc7beddde84d868a7ff3d31810288c9653",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
