@@ -110,6 +110,30 @@
       },
       "revId": "afa2d72e96578f725a01373552bc557db805b4aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f65dee0d_bd48484e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/Matcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T21:00:39Z",
+      "side": 1,
+      "message": "Reopening, marked as done but not resolved.",
+      "parentUuid": "47d8a2e3_369580ad",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "afa2d72e96578f725a01373552bc557db805b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
