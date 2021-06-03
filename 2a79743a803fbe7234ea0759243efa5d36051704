@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19916ff2_63cdabb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T18:41:52Z",
+      "side": 1,
+      "message": "Thanks, Ponch, comments addressed.",
+      "revId": "2a79743a803fbe7234ea0759243efa5d36051704",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bcaf79f_c83eb14b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/Matcher.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T18:41:52Z",
+      "side": 1,
+      "message": "this",
+      "range": {
+        "startLine": 66,
+        "startChar": 13,
+        "endLine": 66,
+        "endChar": 25
+      },
+      "revId": "2a79743a803fbe7234ea0759243efa5d36051704",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

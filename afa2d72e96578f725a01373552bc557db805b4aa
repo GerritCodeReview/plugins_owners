@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67cf7802_28c991b9",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/Matcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T18:41:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fc2ebbe_5da70b9e",
+      "range": {
+        "startLine": 64,
+        "startChar": 31,
+        "endLine": 64,
+        "endChar": 43
+      },
+      "revId": "afa2d72e96578f725a01373552bc557db805b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f03b0d5_6da54b0b",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-06-03T09:46:58Z",
       "side": 1,
       "message": "what about renaming this to avoid confusion with the L64 merge? mergeSets ?",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "afa2d72e96578f725a01373552bc557db805b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47d8a2e3_369580ad",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/Matcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T18:41:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f03b0d5_6da54b0b",
       "range": {
         "startLine": 74,
         "startChar": 18,
