@@ -35,7 +35,7 @@ import org.junit.Test;
 
 @TestPlugin(
     name = "owners-autoassign",
-    sysModule = "com.vmware.gerrit.owners.common.OwnersAutoassignWithAttentionSetIT$TestModule")
+    sysModule = "com.googlesource.gerrit.owners.common.OwnersAutoassignWithAttentionSetIT$TestModule")
 public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonTest {
 
   @Override
