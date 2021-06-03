@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc59b564_3d5ecb7a",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T21:16:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89ccc65c_a405e668",
+      "range": {
+        "startLine": 98,
+        "startChar": 38,
+        "endLine": 98,
+        "endChar": 51
+      },
+      "revId": "5c7d622571c83d5a232fd2bb2dc50a4f1d8af980",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7640e277_53f432fa",
@@ -108,6 +132,30 @@
       "writtenOn": "2021-06-03T20:53:21Z",
       "side": 1,
       "message": "Are these only emails or they could also be group ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 24,
+        "endLine": 36,
+        "endChar": 29
+      },
+      "revId": "5c7d622571c83d5a232fd2bb2dc50a4f1d8af980",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82aa2515_434e8f5c",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-03T21:16:43Z",
+      "side": 1,
+      "message": "It can actually be anything:\n- e-mail\n- user name\n- account id\n- group\n\nI believe also the comment at L33 is stale.",
+      "parentUuid": "7640e277_53f432fa",
       "range": {
         "startLine": 36,
         "startChar": 24,
