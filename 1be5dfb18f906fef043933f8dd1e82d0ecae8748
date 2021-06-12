@@ -191,6 +191,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ffb34bd_2ee12ac2",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/DefaultOwnersAttentionSet.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-12T00:58:42Z",
+      "side": 1,
+      "message": "Gotcha, I would go for DefaultAddAllOwnersToAttentionSet() so that it is explicit what was the default when the method was implemented.",
+      "parentUuid": "3b1c2d8a_8ac7ec42",
+      "range": {
+        "startLine": 23,
+        "startChar": 6,
+        "endLine": 23,
+        "endChar": 31
+      },
+      "revId": "1be5dfb18f906fef043933f8dd1e82d0ecae8748",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2763da8a_f3169239",
