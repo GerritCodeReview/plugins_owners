@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2378a742_9f5e0f4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-12T00:38:59Z",
+      "side": 1,
+      "message": "\u003e \u003e The CI is already adapted. We *may* need to cut a stable-3.4 branch if we have further incompatibilities with master.\n\u003e \n\u003e Isn\u0027t this incompatibility already enough for requiring a stable-3.4?\n\nAck, let me cut stable-3.4.\n\n\u003e If any Gerrit installation is currently using the master version of this plugin, \n\u003e upgrading to this change would break it, right? or am I getting this wrong?\n\nYou are right, the owners plugin is quite popular, we can safely assume that it is used already on v3.4.0.",
+      "parentUuid": "c90974f2_378f0c3c",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "1be5dfb18f906fef043933f8dd1e82d0ecae8748",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02c9adbb_b7ed2dae",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/DefaultOwnersAttentionSet.java",
         "patchSetId": 6
