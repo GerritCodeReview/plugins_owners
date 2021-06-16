@@ -18,10 +18,12 @@ package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.annotations.Listen;
@@ -32,8 +34,10 @@ import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
@@ -46,6 +50,7 @@ import java.io.IOException;
 import java.util.Set;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +69,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private Provider<CurrentUser> currentUserProvider;
 
+  private ChangeNotes.Factory notesFactory;
+
   @Inject
   public GitRefListener(
       GerritApi api,
@@ -72,7 +79,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       Accounts accounts,
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
-      Provider<CurrentUser> currentUserProvider) {
+      Provider<CurrentUser> currentUserProvider,
+      ChangeNotes.Factory notesFactory) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -80,6 +88,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.reviewerManager = reviewerManager;
     this.oneOffReqCtx = oneOffReqCtx;
     this.currentUserProvider = currentUserProvider;
+    this.notesFactory = notesFactory;
   }
 
   @Override
@@ -120,11 +129,15 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     String projectName = event.getProjectName();
     Repository repository;
     try {
-      repository = repositoryManager.openRepository(Project.NameKey.parse(projectName));
+      NameKey projectNameKey = Project.NameKey.parse(projectName);
+      repository = repositoryManager.openRepository(projectNameKey);
       try {
         String refName = event.getRefName();
-        if (refName.startsWith(RefNames.REFS_CHANGES) && !RefNames.isNoteDbMetaRef(refName)) {
-          processEvent(repository, event);
+        Change.Id changeId = Change.Id.fromRef(refName);
+        if (refName.startsWith(RefNames.REFS_CHANGES)
+            && (!RefNames.isNoteDbMetaRef(refName)
+                || isChangeSetReadyForReview(projectNameKey, changeId))) {
+          processEvent(repository, event, changeId);
         }
       } finally {
         repository.close();
@@ -134,15 +147,26 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  public void processEvent(Repository repository, Event event) {
-    Change.Id cId = Change.Id.fromRef(event.getRefName());
+  private boolean isChangeSetReadyForReview(NameKey project, Change.Id changeId) {
+    if (changeId == null) {
+      return false;
+    }
+
+    ChangeNotes changeNotes = notesFactory.createChecked(project, changeId);
+    return !changeNotes.getChange().isWorkInProgress()
+        && Iterables.getLast(changeNotes.getChangeMessages())
+            .getTag()
+            .contains(ChangeMessagesUtil.TAG_SET_READY);
+  }
+
+  public void processEvent(Repository repository, Event event, Change.Id cId) {
     Changes changes = api.changes();
     // The provider injected by Gerrit is shared with other workers on the
     // same local thread and thus cannot be closed in this event listener.
     try {
       ChangeApi cApi = changes.id(cId.get());
       ChangeInfo change = cApi.get();
-      PatchList patchList = getPatchList(event, change);
+      PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
         PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
         Set<Account.Id> allReviewers = Sets.newHashSet();
@@ -160,17 +184,23 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  private PatchList getPatchList(Event event, ChangeInfo change) {
+  private PatchList getPatchList(Repository repository, Event event, ChangeInfo change) {
     ObjectId newId = null;
-    if (event.getNewObjectId() != null) {
-      newId = ObjectId.fromString(event.getNewObjectId());
-    }
-
-    PatchListKey plKey = PatchListKey.againstCommit(null, newId, IGNORE_NONE);
+    PatchListKey plKey;
     try {
+      if (RefNames.isNoteDbMetaRef(event.getRefName())) {
+        newId = ObjectId.fromString(change.currentRevision);
+        RevCommit revCommit = repository.parseCommit(newId);
+        plKey = PatchListKey.againstBase(newId, revCommit.getParentCount());
+      } else {
+        if (event.getNewObjectId() != null) {
+          newId = ObjectId.fromString(event.getNewObjectId());
+        }
+        plKey = PatchListKey.againstCommit(null, newId, IGNORE_NONE);
+      }
       return patchListCache.get(plKey, Project.nameKey(change.project));
-    } catch (PatchListNotAvailableException e) {
-      logger.warn("Could not load patch list: {}", plKey, e);
+    } catch (PatchListNotAvailableException | IOException e) {
+      logger.warn("Could not load patch list for change {}", change.id, e);
     }
     return null;
   }
