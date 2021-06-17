@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29b3b7d3_7b416700",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-17T17:04:48Z",
+      "side": 1,
+      "message": "the createChecked() at L155 is a method that returns this:\n      return new ChangeNotes(args, change, true, null).load();\n\nThat means changeNotes would never be null and therefore also changeNotes.getChange() would never be null because the change field is calculated as:\n    this.change \u003d new Change(change);",
+      "parentUuid": "47cd14ff_44c92691",
+      "range": {
+        "startLine": 156,
+        "startChar": 12,
+        "endLine": 156,
+        "endChar": 35
+      },
+      "revId": "b60ecb09c3a86d39350dd64b1c969f17d22fc0e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac974307_d00489c0",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-06-17T09:01:03Z",
       "side": 1,
       "message": "Isn\u0027t \"hasReviewStarted\" enough? \n\n    changeNotes.getChange().hasReviewStarted()",
+      "range": {
+        "startLine": 157,
+        "startChar": 11,
+        "endLine": 159,
+        "endChar": 56
+      },
+      "revId": "b60ecb09c3a86d39350dd64b1c969f17d22fc0e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed89d84_aa6ab9ce",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-17T17:04:48Z",
+      "side": 1,
+      "message": "Nope, because we do not want to know if the change has started the review *in the past* but if the last change message in NoteDb was the start of the review (switch from WIP to Ready for Review).\n\nExample of a change:\n1. Created in WIP\n2. Set ready for review\n3. Added comment foo\n4. Added comment bar\n\nThe \u0027hasReviewedStarted\u0027 flag in the instants 1. to 4. would be:\n1. false\n2. true\n3. true\n4. true\n\nWhat we need instead is to know is when the change has just been set for review:\n1. false\n2. true\n3. false\n4. false\n\nBy checking if the last message on note-db is the TAG_SET_READY, we achieve that.",
+      "parentUuid": "ac974307_d00489c0",
       "range": {
         "startLine": 157,
         "startChar": 11,
