@@ -84,6 +84,27 @@ contain the 'inherited: true' condition at the top of the file or if they are ab
 That means that in the absence of any OWNERS file in the target branch, the refs/meta/config
 OWNERS is used as global default.
 
+## Additional non-owners added as reviewers
+
+The OWNERS file can also contain a section called `reviewers` that allows
+to add extra people as reviewers to a change without having to make them
+owners and therefore without having any impact on the underlying validation
+rules.
+
+See for instance the example below, where `john@example.com` is added as an additional
+reviewer in addition to the owners.
+
+```yaml
+inherited: true
+owners:
+- some.email@example.com
+- User Name
+reviewers:
+- john@example.com
+```
+
+The `reviewers` optional section can be added in any place where `owners` is specified
+and can be also associated with matchers exactly in the same way that `owners` do.
 
 ## Example 1 - OWNERS file without matchers and default Gerrit submit rules
 

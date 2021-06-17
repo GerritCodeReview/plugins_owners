@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,14 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.entities.Account;
-import com.google.gerrit.entities.Account.Id;
-import java.util.Set;
+import com.google.gerrit.acceptance.TestPlugin;
 
-public class SuffixMatcher extends Matcher {
-  public SuffixMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
-    super(path, owners, reviewers);
-  }
+@TestPlugin(
+    name = "owners-api",
+    sysModule = "com.googlesource.gerrit.owners.common.AbstractAutoassignIT$TestModule")
+public class ReviewersAutoassignIT extends AbstractAutoassignIT {
 
-  @Override
-  public boolean matches(String pathToMatch) {
-    return pathToMatch.endsWith(path);
-  }
-
-  @Override
-  protected Matcher clone(Set<Id> owners, Set<Id> reviewers) {
-    return new SuffixMatcher(path, owners, reviewers);
+  public ReviewersAutoassignIT() {
+    super("reviewers");
   }
 }

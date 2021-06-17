@@ -25,8 +25,10 @@ import java.util.Set;
 
 public class OwnersMap {
   private SetMultimap<String, Account.Id> pathOwners = HashMultimap.create();
+  private SetMultimap<String, Account.Id> pathReviewers = HashMultimap.create();
   private Map<String, Matcher> matchers = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileOwners = Maps.newHashMap();
+  private Map<String, Set<Account.Id>> fileReviewers = Maps.newHashMap();
 
   @Override
   public String toString() {
@@ -45,6 +47,14 @@ public class OwnersMap {
     this.pathOwners = pathOwners;
   }
 
+  public SetMultimap<String, Account.Id> getPathReviewers() {
+    return pathReviewers;
+  }
+
+  public void setPathReviewers(SetMultimap<String, Account.Id> pathReviewers) {
+    this.pathReviewers = pathReviewers;
+  }
+
   public Map<String, Matcher> getMatchers() {
     return matchers;
   }
@@ -57,8 +67,16 @@ public class OwnersMap {
     pathOwners.putAll(ownersPath, owners);
   }
 
+  public void addPathReviewers(String ownersPath, Set<Id> reviewers) {
+    pathOwners.putAll(ownersPath, reviewers);
+  }
+
   public Map<String, Set<Id>> getFileOwners() {
     return fileOwners;
+  }
+
+  public Map<String, Set<Id>> getFileReviewers() {
+    return fileReviewers;
   }
 
   public void addFileOwners(String file, Set<Id> owners) {
@@ -72,6 +90,20 @@ public class OwnersMap {
       set.addAll(owners);
     } else {
       fileOwners.put(file, Sets.newHashSet(owners));
+    }
+  }
+
+  public void addFileReviewers(String file, Set<Id> reviewers) {
+    if (reviewers.isEmpty()) {
+      return;
+    }
+
+    Set<Id> set = fileReviewers.get(file);
+    if (set != null) {
+      // add new owners removing duplicates
+      set.addAll(reviewers);
+    } else {
+      fileReviewers.put(file, Sets.newHashSet(reviewers));
     }
   }
 }
