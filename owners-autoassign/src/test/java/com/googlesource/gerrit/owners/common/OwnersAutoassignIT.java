@@ -15,50 +15,14 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.gerrit.acceptance.UseLocalDisk;
-import com.google.gerrit.extensions.api.changes.ChangeApi;
-import com.google.gerrit.extensions.client.ReviewerState;
-import com.google.gerrit.extensions.common.AccountInfo;
-import com.google.inject.AbstractModule;
-import java.util.Collection;
-import org.junit.Test;
 
 @TestPlugin(
     name = "owners-api",
-    sysModule = "com.googlesource.gerrit.owners.common.OwnersAutoassignIT$TestModule")
-public class OwnersAutoassignIT extends LightweightPluginDaemonTest {
+    sysModule = "com.googlesource.gerrit.owners.common.AbstractAutoassignIT$TestModule")
+public class OwnersAutoassignIT extends AbstractAutoassignIT {
 
-  public static class TestModule extends AbstractModule {
-    @Override
-    protected void configure() {
-      install(new AutoassignModule());
-    }
-  }
-
-  @UseLocalDisk
-  @Test
-  public void shouldAutoassignOneOwner() throws Exception {
-    String ownerEmail = user.email();
-
-    pushFactory
-        .create(
-            admin.newIdent(),
-            testRepo,
-            "Set OWNERS",
-            "OWNERS",
-            "inherited: false\n" + "owners:\n" + "- " + ownerEmail)
-        .to("refs/heads/master")
-        .assertOkStatus();
-
-    ChangeApi changeApi = change(createChange());
-    Collection<AccountInfo> reviewers = changeApi.get().reviewers.get(ReviewerState.REVIEWER);
-
-    assertThat(reviewers).hasSize(1);
-    AccountInfo reviewer = reviewers.iterator().next();
-    assertThat(reviewer.email).isEqualTo(ownerEmail);
+  public OwnersAutoassignIT() {
+    super("owners");
   }
 }

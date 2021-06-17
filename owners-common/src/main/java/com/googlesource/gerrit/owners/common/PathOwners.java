@@ -31,6 +31,7 @@ import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,6 +49,8 @@ public class PathOwners {
   private static final Logger log = LoggerFactory.getLogger(PathOwners.class);
 
   private final SetMultimap<String, Account.Id> owners;
+
+  private final SetMultimap<String, Account.Id> reviewers;
 
   private final Repository repository;
 
@@ -69,6 +72,7 @@ public class PathOwners {
 
     OwnersMap map = fetchOwners(branch);
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
+    reviewers = Multimaps.unmodifiableSetMultimap(map.getPathReviewers());
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
   }
@@ -80,6 +84,15 @@ public class PathOwners {
    */
   public SetMultimap<String, Account.Id> get() {
     return owners;
+  }
+
+  /**
+   * Returns a read only view of the paths to reviewers mapping.
+   *
+   * @return multimap of paths to reviewers
+   */
+  public SetMultimap<String, Account.Id> getReviewers() {
+    return reviewers;
   }
 
   public Map<String, Matcher> getMatchers() {
@@ -102,12 +115,28 @@ public class PathOwners {
 
       PathOwnersEntry projectEntry =
           getOwnersConfig(rootPath, RefNames.REFS_CONFIG)
-              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .map(
+                  conf ->
+                      new PathOwnersEntry(
+                          rootPath,
+                          conf,
+                          accounts,
+                          Collections.emptySet(),
+                          Collections.emptySet(),
+                          Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       PathOwnersEntry rootEntry =
           getOwnersConfig(rootPath, branch)
-              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .map(
+                  conf ->
+                      new PathOwnersEntry(
+                          rootPath,
+                          conf,
+                          accounts,
+                          Collections.emptySet(),
+                          Collections.emptySet(),
+                          Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       Set<String> modifiedPaths = getModifiedPaths();
@@ -116,13 +145,15 @@ public class PathOwners {
       for (String path : modifiedPaths) {
         currentEntry = resolvePathEntry(path, branch, projectEntry, rootEntry, entries);
 
-        // add owners to file for matcher predicates
+        // add owners and reviewers to file for matcher predicates
         ownersMap.addFileOwners(path, currentEntry.getOwners());
+        ownersMap.addFileReviewers(path, currentEntry.getReviewers());
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
         if (currentEntry.getOwnersPath() != null) {
           ownersMap.addPathOwners(currentEntry.getOwnersPath(), currentEntry.getOwners());
+          ownersMap.addPathReviewers(currentEntry.getOwnersPath(), currentEntry.getReviewers());
         }
         ownersMap.addMatchers(currentEntry.getMatchers());
       }
@@ -157,6 +188,7 @@ public class PathOwners {
       if (matcher.matches(path)) {
         newMatchers.put(matcher.getPath(), matcher);
         ownersMap.addFileOwners(path, matcher.getOwners());
+        ownersMap.addFileReviewers(path, matcher.getReviewers());
       }
     }
   }
@@ -200,14 +232,14 @@ public class PathOwners {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
         final Set<Id> owners = currentEntry.getOwners();
+        final Set<Id> reviewers = currentEntry.getReviewers();
+        Collection<Matcher> inheritedMatchers = currentEntry.getMatchers().values();
         currentEntry =
-            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners))
+            conf.map(
+                    c ->
+                        new PathOwnersEntry(
+                            ownersPath, c, accounts, owners, reviewers, inheritedMatchers))
                 .orElse(currentEntry);
-        if (conf.map(OwnersConfig::isInherited).orElse(false)) {
-          for (Matcher m : currentEntry.getMatchers().values()) {
-            currentEntry.addMatcher(m);
-          }
-        }
         entries.put(partial, currentEntry);
       }
     }
