@@ -20,10 +20,10 @@ import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
-import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.AttentionSetInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.api.changes.ReviewerInput;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.restapi.RestApiException;
@@ -96,7 +96,7 @@ public class ReviewerManager {
         in.reviewers = new ArrayList<>(reviewers.size());
         for (Account.Id account : reviewers) {
           if (isVisibleTo(changeInfo, account)) {
-            AddReviewerInput addReviewerInput = new AddReviewerInput();
+            ReviewerInput addReviewerInput = new ReviewerInput();
             addReviewerInput.reviewer = account.toString();
             in.reviewers.add(addReviewerInput);
           } else {
