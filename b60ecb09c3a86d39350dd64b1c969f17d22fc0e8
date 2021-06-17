@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5306e526_143f0039",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-17T21:00:41Z",
+      "side": 1,
+      "message": "I found other issues. Removing my verification.",
+      "revId": "b60ecb09c3a86d39350dd64b1c969f17d22fc0e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47cd14ff_44c92691",
@@ -50,6 +67,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "583fa6e3_23f8387f",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-17T21:00:41Z",
+      "side": 1,
+      "message": "Tag can be null, therefore L159 can end up in NPE",
+      "range": {
+        "startLine": 158,
+        "startChar": 13,
+        "endLine": 158,
+        "endChar": 19
+      },
+      "revId": "b60ecb09c3a86d39350dd64b1c969f17d22fc0e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac974307_d00489c0",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 1
@@ -90,6 +130,29 @@
         "startChar": 11,
         "endLine": 159,
         "endChar": 56
+      },
+      "revId": "b60ecb09c3a86d39350dd64b1c969f17d22fc0e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dccc6f8_1b382906",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-17T21:00:41Z",
+      "side": 1,
+      "message": "Local disk isn\u0027t needed",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 15
       },
       "revId": "b60ecb09c3a86d39350dd64b1c969f17d22fc0e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
