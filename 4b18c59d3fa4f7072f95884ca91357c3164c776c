@@ -22,6 +22,30 @@
       },
       "revId": "4b18c59d3fa4f7072f95884ca91357c3164c776c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c282686_ed099381",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-17T22:41:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a7b0313_33d8ccb8",
+      "range": {
+        "startLine": 138,
+        "startChar": 12,
+        "endLine": 138,
+        "endChar": 56
+      },
+      "revId": "4b18c59d3fa4f7072f95884ca91357c3164c776c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
