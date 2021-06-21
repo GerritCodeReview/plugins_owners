@@ -24,5 +24,6 @@ public class AutoassignModule extends AbstractModule {
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
+    install(new AutoassignConfigModule());
   }
 }
