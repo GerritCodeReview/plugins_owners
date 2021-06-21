@@ -16,13 +16,24 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.gerrit.extensions.annotations.Exports;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.config.ProjectConfigEntry;
 import com.google.inject.AbstractModule;
 
 public class AutoassignModule extends AbstractModule {
+  public static final String PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES = "autoAssignWip";
+
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
+
+    bind(ProjectConfigEntry.class)
+        .annotatedWith(Exports.named(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES))
+        .toInstance(
+            new ProjectConfigEntry(
+                "Auto-assign WIP changes", InheritableBoolean.TRUE, InheritableBoolean.class));
   }
 }
