@@ -1,4 +1,14 @@
-## Configuration
+## Project configuration
+
+The project configuration `autoAssignWip` controls the automatic
+assignment of reviewers based on the OWNERS file on WIP changes.
+
+The setting can be injerited from the parent project by setting the value
+to `INHERIT`.
+
+By default, all changes are subject to auto-assignment.
+
+## OWNERS configuration
 
 Owner approval is determined based on OWNERS files located in the same
 repository on the target branch of the changes uploaded for review.
