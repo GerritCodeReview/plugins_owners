@@ -15,9 +15,11 @@
 
 package com.vmware.gerrit.owners.common;
 
+import static com.google.gerrit.entities.RefNames.REFS_CONFIG;
 import static org.junit.Assert.assertEquals;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
@@ -29,7 +31,9 @@ import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import java.util.stream.StreamSupport;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.transport.ReceiveCommand.Type;
+import org.eclipse.jgit.transport.RefSpec;
 import org.junit.Test;
 
 @TestPlugin(
@@ -77,6 +81,43 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
 
     gApi.changes().id(wipChangeNum).setReadyForReview();
     assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
+  }
+
+  @Test
+  public void shouldProcessWipChangesByDefault() throws Exception {
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    createChange("refs/for/master%wip").getChange().getId().get();
+
+    assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
+  }
+
+  @Test
+  public void shoulNotProcessWipChanges() throws Exception {
+    git().fetch().setRefSpecs(new RefSpec(REFS_CONFIG + ":" + REFS_CONFIG)).call();
+    testRepo.reset(REFS_CONFIG);
+    PushOneCommit push =
+        pushFactory.create(
+            admin.newIdent(),
+            testRepo,
+            "Disable WIP auto-assignment",
+            "project.config",
+            "[access]\n"
+                + "\tinheritFrom = All-Projects\n"
+                + "[plugin \"owners-autoassign\"]\n"
+                + "\tautoassign-wip-changes = FALSE");
+    push.to(REFS_CONFIG);
+
+    git()
+        .fetch()
+        .setRefSpecs(new RefSpec(Constants.R_HEADS + "*:" + Constants.R_HEADS + "*"))
+        .call();
+    testRepo.reset(Constants.R_HEADS + "master");
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    createChange("refs/for/master%wip").getChange().getId().get();
+
+    assertEquals(baselineProcessedEvents, gitRefListener().getProcessedEvents());
   }
 
   @Test

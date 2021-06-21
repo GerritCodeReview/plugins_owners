@@ -16,9 +16,10 @@
 package com.vmware.gerrit.owners.common;
 
 import com.google.gerrit.entities.Change;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
-import com.google.gerrit.extensions.events.GitReferenceUpdatedListener.Event;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.PatchListCache;
@@ -46,7 +47,9 @@ public class GitRefListenerTest extends GitRefListener {
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
-      ChangeNotes.Factory notesFactory) {
+      ChangeNotes.Factory notesFactory,
+      PluginConfigFactory cfgFactory,
+      @PluginName String pluginName) {
     super(
         api,
         patchListCache,
@@ -55,7 +58,9 @@ public class GitRefListenerTest extends GitRefListener {
         reviewerManager,
         oneOffReqCtx,
         currentUserProvider,
-        notesFactory);
+        notesFactory,
+        cfgFactory,
+        pluginName);
   }
 
   @Override
