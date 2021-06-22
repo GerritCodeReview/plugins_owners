@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af6cdc47_43841cc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-06-22T05:08:25Z",
+      "side": 1,
+      "message": "LGTM but I will let the others (that raised issues to give +2) ;)",
+      "revId": "d1e2f971bb2b37eda21338f6ad70e9c5e6c49cfe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
