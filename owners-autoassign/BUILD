@@ -15,8 +15,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/**/*"]),
     deps = [
+        "//owners-api",
         "//owners-common",
-        "//plugins/owners-api",
     ],
 )
 
@@ -28,7 +28,7 @@ java_library(
     visibility = ["//visibility:public"],
     deps = PLUGIN_DEPS_NEVERLINK + [
         "//owners-common",
-        "//plugins/owners-api",
+        "//owners-api",
     ],
 )
 
@@ -38,7 +38,7 @@ junit_tests(
     srcs = glob(["src/test/java/**/*.java"]),
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         "//owners-common",
-        "//plugins/owners-api",
+        "//owners-api",
         ":owners-autoassign_deps",
     ],
 )
