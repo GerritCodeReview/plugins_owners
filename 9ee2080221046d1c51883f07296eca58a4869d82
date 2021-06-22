@@ -16,6 +16,29 @@
       "message": "Tested E2E",
       "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a200a9eb_a3f0abbd",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-06-22T05:04:40Z",
+      "side": 1,
+      "message": "nit: s/injerited/inherited/",
+      "range": {
+        "startLine": 6,
+        "startChar": 19,
+        "endLine": 6,
+        "endChar": 28
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
