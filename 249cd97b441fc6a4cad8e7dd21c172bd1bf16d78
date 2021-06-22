@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4b118eb_d9dbad21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T19:11:37Z",
+      "side": 1,
+      "message": "Works in standalone build, breaks in in-tree build.\nb build plugins/owners-autoassign\nINFO: Invocation ID: bb869a06-b273-4233-81ad-dae0c69b8f7e\nERROR: /Users/lucamilanesio/gerrithub/gerrit/plugins/owners-autoassign/BUILD:4:14: no such package \u0027owners-api\u0027: BUILD file not found in any of the following directories. Add a BUILD file to a directory to mark it as a package.\n - /Users/lucamilanesio/gerrithub/gerrit/owners-api and referenced by \u0027//plugins/owners-autoassign:owners-autoassign__plugin\u0027\nERROR: Analysis of target \u0027//plugins/owners-autoassign:owners-autoassign\u0027 failed; build aborted: Analysis failed\nINFO: Elapsed time: 0.125s\nINFO: 0 processes.\nFAILED: Build did NOT complete successfully (1 packages loaded, 0 targets configured)\n",
+      "revId": "249cd97b441fc6a4cad8e7dd21c172bd1bf16d78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
