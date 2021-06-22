@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a93698_d1f5260d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:53:49Z",
+      "side": 1,
+      "message": "Thanks, @Tony, for the addition. I completely forgot about adding it :-(",
+      "revId": "61927508bff99cffcaef3e94ff74e7d9a6f4dabb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
