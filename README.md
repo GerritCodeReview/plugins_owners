@@ -57,6 +57,7 @@ The output is created in
 ```
   bazel-bin/owners/owners.jar
   bazel-bin/owners-autoassign/owners-autoassign.jar
+  bazel-bin/owners-api/owners-api.jar
 
 ```
 
@@ -94,6 +95,7 @@ Example:
    $ ln -sf ../../owners/external_plugin_deps.bzl .
    $ cd ..
    $ ln -s ../owners/owners-common .
+   $ ln -s ../owners/owners-api .
    $ bazel build plugins/owners plugins/owners-autoassign
 ```
 
