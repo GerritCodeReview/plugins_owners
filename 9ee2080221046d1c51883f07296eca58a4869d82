@@ -65,6 +65,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e9eacc_b251a87f",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68fbf085_33ef5c30",
+      "range": {
+        "startLine": 171,
+        "startChar": 7,
+        "endLine": 171,
+        "endChar": 81
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a200a9eb_a3f0abbd",
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "Default to true means that IF there isn\u0027t any configuration value in the project or any of its parent projects, then it is true.\n\nI\u0027ll double-check anyway and I\u0027ll clarify. The purpose of the default is to keep the existing behaviour for all the existing users that did not know about this settings before and upgraded unaware of it.",
       "parentUuid": "8fc6f1c6_3c53fa2c",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba33c5dd_55014f52",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d0339e0_163d31c3",
       "range": {
         "startLine": 9,
         "startChar": 0,
@@ -300,6 +348,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "471e0f47_5b960f69",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd8e6d7f_6e79deab",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 30
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e782cbf0_41e13083",
@@ -337,6 +409,30 @@
       "side": 1,
       "message": "This should all go by using the project config API",
       "parentUuid": "e782cbf0_41e13083",
+      "range": {
+        "startLine": 118,
+        "startChar": 39,
+        "endLine": 118,
+        "endChar": 47
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac948bd5_418979b9",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d8dcc01_b537f007",
       "range": {
         "startLine": 118,
         "startChar": 39,
