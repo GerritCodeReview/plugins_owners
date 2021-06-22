@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68fbf085_33ef5c30",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "Yes, it is done at L148.\n\nTesting that getFromProjectConfigWithInheritance() honour inheritance is not the focus of the owners-autoassign plugin test. I can do a manual test just in case.",
+      "parentUuid": "93024415_774f3c20",
+      "range": {
+        "startLine": 171,
+        "startChar": 7,
+        "endLine": 171,
+        "endChar": 81
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a200a9eb_a3f0abbd",
         "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
         "patchSetId": 5
@@ -54,6 +78,30 @@
       "writtenOn": "2021-06-22T05:04:40Z",
       "side": 1,
       "message": "nit: s/injerited/inherited/",
+      "range": {
+        "startLine": 6,
+        "startChar": 19,
+        "endLine": 6,
+        "endChar": 28
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "593ed0ea_6e8f99a8",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a200a9eb_a3f0abbd",
       "range": {
         "startLine": 6,
         "startChar": 19,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d0339e0_163d31c3",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "Default to true means that IF there isn\u0027t any configuration value in the project or any of its parent projects, then it is true.\n\nI\u0027ll double-check anyway and I\u0027ll clarify. The purpose of the default is to keep the existing behaviour for all the existing users that did not know about this settings before and upgraded unaware of it.",
+      "parentUuid": "8fc6f1c6_3c53fa2c",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "35547b04_4024e446",
         "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
         "patchSetId": 5
@@ -100,6 +172,30 @@
       "writtenOn": "2021-06-22T11:55:09Z",
       "side": 1,
       "message": "unnecessary get?",
+      "range": {
+        "startLine": 91,
+        "startChar": 39,
+        "endLine": 91,
+        "endChar": 66
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41c589d1_d0175c8f",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35547b04_4024e446",
       "range": {
         "startLine": 91,
         "startChar": 39,
@@ -123,6 +219,30 @@
       "writtenOn": "2021-06-22T11:55:09Z",
       "side": 1,
       "message": "nit: should",
+      "range": {
+        "startLine": 97,
+        "startChar": 14,
+        "endLine": 97,
+        "endChar": 19
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4515b091_c7b362ff",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86bc99f9_423a0668",
       "range": {
         "startLine": 97,
         "startChar": 14,
@@ -158,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd8e6d7f_6e79deab",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "You are right that this isn\u0027t readable at all :-(\nLet me rewrite it using the project config API and ConfigInput.",
+      "parentUuid": "f71eb4b5_8f508172",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 30
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e782cbf0_41e13083",
         "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
         "patchSetId": 5
@@ -181,6 +325,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d8dcc01_b537f007",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "This should all go by using the project config API",
+      "parentUuid": "e782cbf0_41e13083",
+      "range": {
+        "startLine": 118,
+        "startChar": 39,
+        "endLine": 118,
+        "endChar": 47
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c113e4a5_afd9ed38",
         "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
         "patchSetId": 5
@@ -192,6 +360,30 @@
       "writtenOn": "2021-06-22T11:55:09Z",
       "side": 1,
       "message": "unnecessary get?",
+      "range": {
+        "startLine": 121,
+        "startChar": 39,
+        "endLine": 121,
+        "endChar": 65
+      },
+      "revId": "9ee2080221046d1c51883f07296eca58a4869d82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8325a834_90c19a60",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T18:48:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c113e4a5_afd9ed38",
       "range": {
         "startLine": 121,
         "startChar": 39,
