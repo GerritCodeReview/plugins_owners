@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ccac839_7989b390",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-29T07:53:19Z",
+      "side": 1,
+      "message": "@luca, this should now work in both standalone an in-tree build.\nAny more feedback on this?",
+      "revId": "9a49deb4d9568feab7a45073a6bbdbcc968e2f19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
