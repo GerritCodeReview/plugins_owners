@@ -87,18 +87,15 @@ public class ReviewerManager {
         // TODO(davido): Switch back to using changes API again,
         // when it supports batch mode for adding reviewers
         ReviewInput in = new ReviewInput();
-        Collection<Account.Id> reviewersAccounts =
-            Optional.ofNullable(ownersForAttentionSet)
-                .map(DynamicItem::get)
-                .filter(Objects::nonNull)
-                .map(owners -> owners.addToAttentionSet(changeInfo, reviewers))
-                .orElse(reviewers);
+
         in.reviewers = new ArrayList<>(reviewers.size());
+        Collection<Account.Id> validOwnersForAttentionSet = new ArrayList<>(reviewers.size());
         for (Account.Id account : reviewers) {
           if (isVisibleTo(changeInfo, account)) {
             AddReviewerInput addReviewerInput = new AddReviewerInput();
             addReviewerInput.reviewer = account.toString();
             in.reviewers.add(addReviewerInput);
+            validOwnersForAttentionSet.add(account);
           } else {
             log.warn(
                 "Not adding account {} as reviewer to change {} because the associated ref is not visible",
@@ -106,6 +103,13 @@ public class ReviewerManager {
                 changeInfo._number);
           }
         }
+
+        Collection<Account.Id> reviewersAccounts =
+            Optional.ofNullable(ownersForAttentionSet)
+                .map(DynamicItem::get)
+                .filter(Objects::nonNull)
+                .map(owners -> owners.addToAttentionSet(changeInfo, validOwnersForAttentionSet))
+                .orElse(validOwnersForAttentionSet);
 
         in.ignoreAutomaticAttentionSetRules = true;
         in.addToAttentionSet =
