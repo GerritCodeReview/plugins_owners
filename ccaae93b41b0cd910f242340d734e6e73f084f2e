@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5624a354_306f3a95",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/OwnersAutoassignWithAttentionSetIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T07:38:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8672c29_c547daf4",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 94
+      },
+      "revId": "ccaae93b41b0cd910f242340d734e6e73f084f2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "129d028d_003dbac7",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-01T16:51:26Z",
       "side": 1,
       "message": "AddToAttentionSetOneUser",
+      "range": {
+        "startLine": 90,
+        "startChar": 20,
+        "endLine": 90,
+        "endChar": 34
+      },
+      "revId": "ccaae93b41b0cd910f242340d734e6e73f084f2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9003dda_09098016",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/OwnersAutoassignWithAttentionSetIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T07:38:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "129d028d_003dbac7",
       "range": {
         "startLine": 90,
         "startChar": 20,
