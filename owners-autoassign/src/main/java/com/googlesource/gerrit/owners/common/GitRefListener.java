@@ -43,6 +43,8 @@ import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
+import com.google.gerrit.server.notedb.ChangeNotesCommit;
+import com.google.gerrit.server.notedb.ChangeNotesCommit.ChangeNotesRevWalk;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
@@ -53,9 +55,13 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.FooterKey;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +69,8 @@ import org.slf4j.LoggerFactory;
 @Listen
 public class GitRefListener implements GitReferenceUpdatedListener {
   private static final Logger logger = LoggerFactory.getLogger(GitRefListener.class);
+
+  private static final FooterKey FOOTER_WORK_IN_PROGRESS = new FooterKey("Work-in-progress");
 
   private final GerritApi api;
 
@@ -154,7 +162,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
           ChangeNotes changeNotes = notesFactory.createChecked(projectNameKey, changeId);
           if ((!RefNames.isNoteDbMetaRef(refName)
                   && isChangeToBeProcessed(changeNotes.getChange(), cfg))
-              || isChangeSetReadyForReview(changeNotes, event.getNewObjectId())) {
+              || isChangeSetReadyForReview(repository, changeNotes, event.getNewObjectId())) {
             processEvent(repository, event, changeId);
           }
         }
@@ -171,13 +179,32 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         || cfg.getEnum(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, TRUE).equals(TRUE);
   }
 
-  private boolean isChangeSetReadyForReview(ChangeNotes changeNotes, String metaObjectId) {
-    return !changeNotes.getChange().isWorkInProgress()
-        && changeNotes.getChangeMessages().stream()
-            .filter(message -> message.getKey().uuid().equals(metaObjectId))
-            .map(message -> message.getTag())
-            .filter(Predicates.notNull())
-            .anyMatch(tag -> tag.contains(ChangeMessagesUtil.TAG_SET_READY));
+  private boolean isChangeSetReadyForReview(
+      Repository repository, ChangeNotes changeNotes, String metaObjectId)
+      throws MissingObjectException, IncorrectObjectTypeException, IOException {
+    if (changeNotes.getChange().isWorkInProgress()) {
+      return false;
+    }
+
+    if (changeNotes.getChangeMessages().stream()
+        .filter(message -> message.getKey().uuid().equals(metaObjectId))
+        .map(message -> message.getTag())
+        .filter(Predicates.notNull())
+        .anyMatch(tag -> tag.contains(ChangeMessagesUtil.TAG_SET_READY))) {
+      return true;
+    }
+
+    try (ChangeNotesRevWalk revWalk = ChangeNotesCommit.newRevWalk(repository)) {
+      ChangeNotesCommit metaCommit = revWalk.parseCommit(ObjectId.fromString(metaObjectId));
+      if (metaCommit.getParentCount() == 0) {
+        // The first commit cannot be a 'Set ready' operation
+        return false;
+      }
+      List<String> wipFooterLines = metaCommit.getFooterLines(FOOTER_WORK_IN_PROGRESS);
+      return wipFooterLines != null
+          && !wipFooterLines.isEmpty()
+          && Boolean.FALSE.toString().equalsIgnoreCase(wipFooterLines.get(0));
+    }
   }
 
   public void processEvent(Repository repository, Event event, Change.Id cId) {

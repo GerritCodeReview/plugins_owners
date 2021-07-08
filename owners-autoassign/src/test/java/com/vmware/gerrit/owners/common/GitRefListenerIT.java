@@ -19,9 +19,10 @@ import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJE
 import static org.junit.Assert.assertEquals;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.entities.Project;
-import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.api.projects.ConfigInput;
 import com.google.gerrit.extensions.api.projects.ConfigValue;
 import com.google.gerrit.extensions.client.InheritableBoolean;
@@ -63,19 +64,10 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldNotProcessNoteDbOnlyRefs() throws Exception {
-    String changeRefPrefix = createChange().getChange().getId().toRefPrefix();
+    int changeNum = createChange().getChange().getId().get();
     int baselineProcessedEvents = gitRefListener().getProcessedEvents();
 
-    ReferenceUpdatedEventTest refUpdatedEvent =
-        new ReferenceUpdatedEventTest(
-            project,
-            changeRefPrefix + RefNames.META_SUFFIX.substring(1),
-            anOldObjectId,
-            aNewObjectId,
-            Type.CREATE,
-            admin.id());
-
-    gitRefListener().onGitReferenceUpdated(refUpdatedEvent);
+    gApi.changes().id(changeNum).current().review(new ReviewInput().message("Foo comment"));
     assertEquals(baselineProcessedEvents, gitRefListener().getProcessedEvents());
   }
 
@@ -87,6 +79,23 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
     int baselineProcessedEvents = gitRefListener().getProcessedEvents();
 
     gApi.changes().id(wipChangeNum).setReadyForReview();
+    assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
+  }
+
+  @Test
+  public void shoulProcessSendAndStartReviewOnNoteDb() throws Exception {
+    int wipChangeNum = createChange().getChange().getId().get();
+    gApi.changes().id(wipChangeNum).setWorkInProgress();
+
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    ReviewInput input = new ReviewInput().message("Let's start the review");
+    input.setWorkInProgress(false);
+
+    RestResponse resp =
+        adminRestSession.post("/changes/" + wipChangeNum + "/revisions/1/review", input);
+    resp.assertOK();
+
     assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
   }
 
