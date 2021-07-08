@@ -17,6 +17,8 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
+import static com.google.gerrit.extensions.client.InheritableBoolean.TRUE;
+import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Sets;
@@ -27,6 +29,7 @@ import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.annotations.Listen;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.Changes;
@@ -36,20 +39,29 @@ import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.PluginConfig;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
+import com.google.gerrit.server.notedb.ChangeNotesCommit;
+import com.google.gerrit.server.notedb.ChangeNotesCommit.ChangeNotesRevWalk;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
+import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.FooterKey;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +69,8 @@ import org.slf4j.LoggerFactory;
 @Listen
 public class GitRefListener implements GitReferenceUpdatedListener {
   private static final Logger logger = LoggerFactory.getLogger(GitRefListener.class);
+
+  private static final FooterKey FOOTER_WORK_IN_PROGRESS = new FooterKey("Work-in-progress");
 
   private final GerritApi api;
 
@@ -71,6 +85,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private ChangeNotes.Factory notesFactory;
 
+  private final PluginConfigFactory cfgFactory;
+
+  private final String pluginName;
+
   @Inject
   public GitRefListener(
       GerritApi api,
@@ -80,7 +98,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
-      ChangeNotes.Factory notesFactory) {
+      ChangeNotes.Factory notesFactory,
+      PluginConfigFactory cfgFactory,
+      @PluginName String pluginName) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -89,6 +109,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.oneOffReqCtx = oneOffReqCtx;
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
+    this.cfgFactory = cfgFactory;
+    this.pluginName = pluginName;
   }
 
   @Override
@@ -98,46 +120,51 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       return;
     }
 
-    AccountInfo updaterAccountInfo = event.getUpdater();
-    CurrentUser currentUser = currentUserProvider.get();
-    if (currentUser.isIdentifiedUser()) {
-      handleGitReferenceUpdated(event);
-    } else if (updaterAccountInfo != null) {
-      handleGitReferenceUpdatedAsUser(event, Account.id(updaterAccountInfo._accountId));
-    } else {
-      handleGitReferenceUpdatedAsServer(event);
+    try {
+      AccountInfo updaterAccountInfo = event.getUpdater();
+      CurrentUser currentUser = currentUserProvider.get();
+      if (currentUser.isIdentifiedUser()) {
+        handleGitReferenceUpdated(event);
+      } else if (updaterAccountInfo != null) {
+        handleGitReferenceUpdatedAsUser(event, Account.id(updaterAccountInfo._accountId));
+      } else {
+        handleGitReferenceUpdatedAsServer(event);
+      }
+    } catch (StorageException | NoSuchProjectException e) {
+      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
     }
   }
 
-  private void handleGitReferenceUpdatedAsUser(Event event, Account.Id updaterAccountId) {
+  private void handleGitReferenceUpdatedAsUser(Event event, Account.Id updaterAccountId)
+      throws NoSuchProjectException {
     try (ManualRequestContext ctx = oneOffReqCtx.openAs(updaterAccountId)) {
       handleGitReferenceUpdated(event);
-    } catch (StorageException e) {
-      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
     }
   }
 
-  private void handleGitReferenceUpdatedAsServer(Event event) {
+  private void handleGitReferenceUpdatedAsServer(Event event) throws NoSuchProjectException {
     try (ManualRequestContext ctx = oneOffReqCtx.open()) {
       handleGitReferenceUpdated(event);
-    } catch (StorageException e) {
-      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
     }
   }
 
-  private void handleGitReferenceUpdated(Event event) {
+  private void handleGitReferenceUpdated(Event event) throws NoSuchProjectException {
     String projectName = event.getProjectName();
     Repository repository;
     try {
       NameKey projectNameKey = Project.NameKey.parse(projectName);
+      PluginConfig cfg = cfgFactory.getFromProjectConfigWithInheritance(projectNameKey, pluginName);
       repository = repositoryManager.openRepository(projectNameKey);
       try {
         String refName = event.getRefName();
         Change.Id changeId = Change.Id.fromRef(refName);
-        if (changeId != null
-            && (!RefNames.isNoteDbMetaRef(refName)
-                || isChangeSetReadyForReview(projectNameKey, changeId, event.getNewObjectId()))) {
-          processEvent(repository, event, changeId);
+        if (changeId != null) {
+          ChangeNotes changeNotes = notesFactory.createChecked(projectNameKey, changeId);
+          if ((!RefNames.isNoteDbMetaRef(refName)
+                  && isChangeToBeProcessed(changeNotes.getChange(), cfg))
+              || isChangeSetReadyForReview(repository, changeNotes, event.getNewObjectId())) {
+            processEvent(repository, event, changeId);
+          }
         }
       } finally {
         repository.close();
@@ -147,15 +174,37 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
+  private boolean isChangeToBeProcessed(Change change, PluginConfig cfg) {
+    return !change.isWorkInProgress()
+        || cfg.getEnum(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, TRUE).equals(TRUE);
+  }
+
   private boolean isChangeSetReadyForReview(
-      NameKey project, Change.Id changeId, String metaObjectId) {
-    ChangeNotes changeNotes = notesFactory.createChecked(project, changeId);
-    return !changeNotes.getChange().isWorkInProgress()
-        && changeNotes.getChangeMessages().stream()
-            .filter(message -> message.getKey().uuid().equals(metaObjectId))
-            .map(message -> message.getTag())
-            .filter(Predicates.notNull())
-            .anyMatch(tag -> tag.contains(ChangeMessagesUtil.TAG_SET_READY));
+      Repository repository, ChangeNotes changeNotes, String metaObjectId)
+      throws MissingObjectException, IncorrectObjectTypeException, IOException {
+    if (changeNotes.getChange().isWorkInProgress()) {
+      return false;
+    }
+
+    if (changeNotes.getChangeMessages().stream()
+        .filter(message -> message.getKey().uuid().equals(metaObjectId))
+        .map(message -> message.getTag())
+        .filter(Predicates.notNull())
+        .anyMatch(tag -> tag.contains(ChangeMessagesUtil.TAG_SET_READY))) {
+      return true;
+    }
+
+    try (ChangeNotesRevWalk revWalk = ChangeNotesCommit.newRevWalk(repository)) {
+      ChangeNotesCommit metaCommit = revWalk.parseCommit(ObjectId.fromString(metaObjectId));
+      if (metaCommit.getParentCount() == 0) {
+        // The first commit cannot be a 'Set ready' operation
+        return false;
+      }
+      List<String> wipFooterLines = metaCommit.getFooterLines(FOOTER_WORK_IN_PROGRESS);
+      return wipFooterLines != null
+          && !wipFooterLines.isEmpty()
+          && Boolean.FALSE.toString().equalsIgnoreCase(wipFooterLines.get(0));
+    }
   }
 
   public void processEvent(Repository repository, Event event, Change.Id cId) {

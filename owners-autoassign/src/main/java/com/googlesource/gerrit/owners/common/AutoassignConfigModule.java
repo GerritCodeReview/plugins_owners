@@ -1,5 +1,4 @@
-// Copyright (c) 2013 VMware, Inc. All Rights Reserved.
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,14 +15,20 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.extensions.annotations.Exports;
+import com.google.gerrit.extensions.client.InheritableBoolean;
+import com.google.gerrit.server.config.ProjectConfigEntry;
 import com.google.inject.AbstractModule;
 
-public class AutoassignModule extends AbstractModule {
+public class AutoassignConfigModule extends AbstractModule {
+  public static final String PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES = "autoAssignWip";
+
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
-    install(new AutoassignConfigModule());
+    bind(ProjectConfigEntry.class)
+        .annotatedWith(Exports.named(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES))
+        .toInstance(
+            new ProjectConfigEntry(
+                "Auto-assign WIP changes", InheritableBoolean.TRUE, InheritableBoolean.class));
   }
 }
