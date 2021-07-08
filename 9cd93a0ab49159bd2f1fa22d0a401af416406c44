@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24115652_161459c7",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-08T22:14:18Z",
+      "side": 1,
+      "message": "should",
+      "range": {
+        "startLine": 86,
+        "startChar": 18,
+        "endLine": 86,
+        "endChar": 20
+      },
+      "revId": "9cd93a0ab49159bd2f1fa22d0a401af416406c44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
