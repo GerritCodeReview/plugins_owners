@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90fa8b90_2d3a7d26",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AsyncReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-16T08:27:51Z",
+      "side": 1,
+      "message": "nit: this and the following files are in the same \u0027common\u0027 package hence all of them (including the interface) can be package protected (including constructors ;))",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 7
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "841354f8_298dafcd",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AsyncReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-16T08:27:51Z",
+      "side": 1,
+      "message": "nit: retryNum is a part of \u0027toString\u0027 hence it will be logged through \u0027this\u0027 and it doesn\u0027t have to be repeated",
+      "range": {
+        "startLine": 81,
+        "startChar": 56,
+        "endLine": 81,
+        "endChar": 65
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b2acfca_92ae910d",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AsyncReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-16T08:27:51Z",
+      "side": 1,
+      "message": "nit: retryNum is a part of \u0027toString\u0027 hence it will be logged through \u0027this\u0027 and it doesn\u0027t have to be repeated",
+      "range": {
+        "startLine": 84,
+        "startChar": 65,
+        "endLine": 84,
+        "endChar": 73
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f1116ee_4832350a",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AsyncReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-16T08:27:51Z",
+      "side": 1,
+      "message": "nit: have you consider using com.google.gerrit.server.update.RetryHelper from Gerrit core?",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 3
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf3649ad_125f263c",
+        "filename": "owners-autoassign/src/test/java/com/vmware/gerrit/owners/common/GitRefListenerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-16T08:27:51Z",
+      "side": 1,
+      "message": "Would it make sense to enable this test to see if nothing got broken?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 7
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
