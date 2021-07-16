@@ -21,8 +21,16 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
 
 public class AutoassignModule extends AbstractModule {
+  private final AutoAssignConfig config;
+
+  AutoassignModule(AutoAssignConfig config) {
+    this.config = config;
+  }
+
   @Override
   protected void configure() {
+    bind(ReviewerManager.class)
+        .to(config.isAsyncReviewers() ? AsyncReviewerManager.class : SyncReviewerManager.class);
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
   }
 }

@@ -61,7 +61,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private final Accounts accounts;
 
-  private final ReviewerManager reviewerManager;
+  private final SyncReviewerManager reviewerManager;
 
   private final OneOffRequestContext oneOffReqCtx;
 
@@ -73,7 +73,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
-      ReviewerManager reviewerManager,
+      SyncReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider) {
     this.api = api;
