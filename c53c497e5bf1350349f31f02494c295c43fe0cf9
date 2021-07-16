@@ -317,6 +317,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdac4d9b_327a7aaa",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoAssignConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-16T17:29:36Z",
+      "side": 1,
+      "message": "Yes, let me follow this up in the next commit.",
+      "parentUuid": "bf548ea5_29442222",
+      "range": {
+        "startLine": 28,
+        "startChar": 13,
+        "endLine": 28,
+        "endChar": 29
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "248d4ebc_aae2c470",
