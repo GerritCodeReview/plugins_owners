@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05dff8b4_b86dc006",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T14:03:27Z",
+      "side": 1,
+      "message": "@luca I have created a monorail issue to track this[1]\n\nI hope is detailed enough\n\nfeel free to add it to the commit message footer.\n\n[]https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d14796",
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90fa8b90_2d3a7d26",
@@ -26,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2fd7366b_c07bff4e",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AsyncReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T14:03:27Z",
+      "side": 1,
+      "message": "I tested the failure path and this causes the toString() (yes, the toString()) method to fail:\n\n```\n[2021-07-16 15:32:23,315] [AsyncReviewerManager-1] WARN  com.googlesource.gerrit.owners.common.AsyncReviewerManager : [FAILED toString()] *FAILED*: retry #2 after 3000 msec\ncom.googlesource.gerrit.owners.common.ReviewerManagerException: Explicit failure\n```\n\nNote the ```[FAILED toString()] ```\n\n\nThe reason the toString() fails is because the `changeNum` cannot be obtained outside a RequestScope (this is clear from the logs):\n\n```\ncom.google.inject.ProvisionException: Unable to provision, see the following errors:\n\n1) Automatic ReviewDb only available in request scope\n  at com.google.gerrit.server.util.ThreadLocalRequestContext$1.provideReviewDb(Unknown Source) (via modules: com.google.gerrit.server.config.GerritGlobalModule -\u003e com.google.gerrit.server.util.ThreadLocalRequestContext$1)\n  while locating com.google.gerrit.reviewdb.server.ReviewDb\n```\n\nGetting the change number immediately (in the constructor) fixes the problem (i.e. removing the supplier and run the REST-API call immediately), but I understand why you don\u0027t want that.\nPerhaps you can think of some other ways to work around this?\n\nFull stack trace here [1]\n\n[1] https://pastebin.com/JiFwvSEW",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 17
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "841354f8_298dafcd",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AsyncReviewerManager.java",
         "patchSetId": 2
@@ -37,6 +77,30 @@
       "writtenOn": "2021-07-16T08:27:51Z",
       "side": 1,
       "message": "nit: retryNum is a part of \u0027toString\u0027 hence it will be logged through \u0027this\u0027 and it doesn\u0027t have to be repeated",
+      "range": {
+        "startLine": 81,
+        "startChar": 56,
+        "endLine": 81,
+        "endChar": 65
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b0db4b1_cdcdbb47",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AsyncReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T14:03:27Z",
+      "side": 1,
+      "message": "+1\nI have actually tested retries and (when when fixing the toString() method, see my other comment), this get logged as:\n\n```\nauto-assign reviewers to change 121(retry #4) *FAILED*: retry #4 after 3000 msec\n```\n\nSo the redundancy should be removed.",
+      "parentUuid": "841354f8_298dafcd",
       "range": {
         "startLine": 81,
         "startChar": 56,
@@ -88,6 +152,52 @@
         "startChar": 4,
         "endLine": 89,
         "endChar": 3
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf548ea5_29442222",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoAssignConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T14:03:27Z",
+      "side": 1,
+      "message": "I think mentioning this in the config.md would be really useful (even in a follow up change):\n\netc/owners-autoassign.config\n\n```\n[reviewers]\n  async \u003d false\n  delay \u003d 1500 ms\n  retryCount \u003d 2\n  retryInterval \u003d 1500 ms\n  threads \u003d 1\n```",
+      "range": {
+        "startLine": 28,
+        "startChar": 13,
+        "endLine": 28,
+        "endChar": 29
+      },
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "248d4ebc_aae2c470",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T14:03:27Z",
+      "side": 1,
+      "message": "nit: \u0027public\u0027 is redundant for interface methods",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 8
       },
       "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
