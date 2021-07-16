@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2277520_ae1332ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T14:04:34Z",
+      "side": 1,
+      "message": "@luca, I have tested both sync and async path.\nWith the exception of the logging issue, I am happy with the results.",
+      "revId": "c53c497e5bf1350349f31f02494c295c43fe0cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90fa8b90_2d3a7d26",
