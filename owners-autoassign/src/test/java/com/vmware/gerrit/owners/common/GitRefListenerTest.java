@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.GitRefListener;
-import com.googlesource.gerrit.owners.common.ReviewerManager;
+import com.googlesource.gerrit.owners.common.SyncReviewerManager;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
 
@@ -38,7 +38,7 @@ public class GitRefListenerTest extends GitRefListener {
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
-      ReviewerManager reviewerManager,
+      SyncReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider) {
     super(
