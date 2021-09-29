@@ -22,6 +22,12 @@ import com.google.inject.AbstractModule;
 
 public class AutoassignConfigModule extends AbstractModule {
   public static final String PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES = "autoAssignWip";
+  public static final String PROJECT_CONFIG_AUTOASSIGN_FIELD = "autoAssignField";
+
+  public enum AutoassignedReviewerState {
+    CC,
+    REVIEWER
+  }
 
   @Override
   protected void configure() {
@@ -30,5 +36,12 @@ public class AutoassignConfigModule extends AbstractModule {
         .toInstance(
             new ProjectConfigEntry(
                 "Auto-assign WIP changes", InheritableBoolean.TRUE, InheritableBoolean.class));
+    bind(ProjectConfigEntry.class)
+        .annotatedWith(Exports.named(PROJECT_CONFIG_AUTOASSIGN_FIELD))
+        .toInstance(
+            new ProjectConfigEntry(
+                "Auto-assign field",
+                AutoassignedReviewerState.REVIEWER,
+                AutoassignedReviewerState.class));
   }
 }

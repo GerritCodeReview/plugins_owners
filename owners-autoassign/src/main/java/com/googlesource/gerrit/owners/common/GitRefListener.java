@@ -17,8 +17,6 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
-import static com.google.gerrit.extensions.client.InheritableBoolean.TRUE;
-import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Sets;
@@ -29,7 +27,6 @@ import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.annotations.Listen;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.Changes;
@@ -39,8 +36,6 @@ import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
-import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.notedb.ChangeNotesCommit;
@@ -85,9 +80,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private ChangeNotes.Factory notesFactory;
 
-  private final PluginConfigFactory cfgFactory;
-
-  private final String pluginName;
+  private final AutoassignConfig cfg;
 
   @Inject
   public GitRefListener(
@@ -99,8 +92,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName) {
+      AutoassignConfig cfg) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -109,8 +101,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.oneOffReqCtx = oneOffReqCtx;
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
-    this.cfgFactory = cfgFactory;
-    this.pluginName = pluginName;
+    this.cfg = cfg;
   }
 
   @Override
@@ -153,7 +144,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     Repository repository;
     try {
       NameKey projectNameKey = Project.NameKey.parse(projectName);
-      PluginConfig cfg = cfgFactory.getFromProjectConfigWithInheritance(projectNameKey, pluginName);
+      boolean autoAssignWip = cfg.autoAssignWip(projectNameKey);
       repository = repositoryManager.openRepository(projectNameKey);
       try {
         String refName = event.getRefName();
@@ -161,9 +152,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         if (changeId != null) {
           ChangeNotes changeNotes = notesFactory.createChecked(projectNameKey, changeId);
           if ((!RefNames.isNoteDbMetaRef(refName)
-                  && isChangeToBeProcessed(changeNotes.getChange(), cfg))
+                  && isChangeToBeProcessed(changeNotes.getChange(), autoAssignWip))
               || isChangeSetReadyForReview(repository, changeNotes, event.getNewObjectId())) {
-            processEvent(repository, event, changeId);
+            processEvent(projectNameKey, repository, event, changeId);
           }
         }
       } finally {
@@ -174,9 +165,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  private boolean isChangeToBeProcessed(Change change, PluginConfig cfg) {
-    return !change.isWorkInProgress()
-        || cfg.getEnum(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, TRUE).equals(TRUE);
+  private boolean isChangeToBeProcessed(Change change, boolean autoAssignWip) {
+    return !change.isWorkInProgress() || autoAssignWip;
   }
 
   private boolean isChangeSetReadyForReview(
@@ -207,7 +197,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  public void processEvent(Repository repository, Event event, Change.Id cId) {
+  public void processEvent(
+      Project.NameKey projectNameKey, Repository repository, Event event, Change.Id cId)
+      throws NoSuchProjectException {
     Changes changes = api.changes();
     // The provider injected by Gerrit is shared with other workers on the
     // same local thread and thus cannot be closed in this event listener.
@@ -225,7 +217,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
           allReviewers.addAll(matcher.getReviewers());
         }
         logger.debug("Autoassigned reviewers are: {}", allReviewers.toString());
-        reviewerManager.addReviewers(cApi, allReviewers);
+        reviewerManager.addReviewers(projectNameKey, cApi, allReviewers);
       }
     } catch (RestApiException e) {
       logger.warn("Could not open change: {}", cId, e);
