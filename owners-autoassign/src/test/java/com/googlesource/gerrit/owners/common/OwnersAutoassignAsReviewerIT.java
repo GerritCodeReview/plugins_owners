@@ -16,13 +16,14 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.extensions.client.ReviewerState;
 
 @TestPlugin(
     name = "owners-api",
     sysModule = "com.googlesource.gerrit.owners.common.AbstractAutoassignIT$TestModule")
-public class ReviewersAutoassignIT extends AbstractAutoassignIT {
+public class OwnersAutoassignAsReviewerIT extends AbstractAutoassignIT {
 
-  public ReviewersAutoassignIT() {
-    super("reviewers");
+  public OwnersAutoassignAsReviewerIT() {
+    super("owners", ReviewerState.REVIEWER);
   }
 }
