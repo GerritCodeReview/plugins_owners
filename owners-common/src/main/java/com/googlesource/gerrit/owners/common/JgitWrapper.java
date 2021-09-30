@@ -40,8 +40,7 @@ public class JgitWrapper {
     }
 
     try (final TreeWalk w =
-        TreeWalk.forPath(
-            repository, path, parseCommit(repository, objectId).getTree())) {
+        TreeWalk.forPath(repository, path, parseCommit(repository, objectId).getTree())) {
 
       return Optional.ofNullable(w)
           .filter(walk -> (walk.getRawMode(0) & TYPE_MASK) == TYPE_FILE)

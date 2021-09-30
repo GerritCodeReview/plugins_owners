@@ -19,17 +19,20 @@ package com.googlesource.gerrit.owners.common;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.AttentionSetInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.permissions.ChangePermission;
 import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
@@ -38,6 +41,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,47 +68,65 @@ public class ReviewerManager {
   @Inject(optional = true)
   private DynamicItem<OwnersAttentionSet> ownersForAttentionSet;
 
+  private final AutoassignConfig cfg;
+
   @Inject
   public ReviewerManager(
       OneOffRequestContext requestContext,
       GerritApi gApi,
       IdentifiedUser.GenericFactory userFactory,
       ChangeData.Factory changeDataFactory,
-      PermissionBackend permissionBackend) {
+      PermissionBackend permissionBackend,
+      AutoassignConfig cfg) {
     this.requestContext = requestContext;
     this.gApi = gApi;
     this.userFactory = userFactory;
     this.changeDataFactory = changeDataFactory;
     this.permissionBackend = permissionBackend;
+    this.cfg = cfg;
   }
 
-  public void addReviewers(ChangeApi cApi, Collection<Account.Id> reviewers)
-      throws ReviewerManagerException {
+  public void addReviewers(
+      NameKey projectNameKey, ChangeApi cApi, Collection<Account.Id> accountsIds)
+      throws ReviewerManagerException, NoSuchProjectException {
     try {
       ChangeInfo changeInfo = cApi.get();
+      ReviewerState reviewerState = cfg.autoassignedReviewerState(projectNameKey);
       try (ManualRequestContext ctx =
           requestContext.openAs(Account.id(changeInfo.owner._accountId))) {
         // TODO(davido): Switch back to using changes API again,
         // when it supports batch mode for adding reviewers
         ReviewInput in = new ReviewInput();
-        Collection<Account.Id> reviewersAccounts =
-            Optional.ofNullable(ownersForAttentionSet)
-                .map(DynamicItem::get)
-                .filter(Objects::nonNull)
-                .map(owners -> owners.addToAttentionSet(changeInfo, reviewers))
-                .orElse(reviewers);
-        in.reviewers = new ArrayList<>(reviewers.size());
-        for (Account.Id account : reviewers) {
+        in.reviewers = new ArrayList<>(accountsIds.size());
+        Collection<Account.Id> validOwnersForAttentionSet = new ArrayList<>(accountsIds.size());
+        for (Account.Id account : accountsIds) {
           if (isVisibleTo(changeInfo, account)) {
             AddReviewerInput addReviewerInput = new AddReviewerInput();
             addReviewerInput.reviewer = account.toString();
+            addReviewerInput.state = reviewerState;
             in.reviewers.add(addReviewerInput);
+
+            if (reviewerState == ReviewerState.REVIEWER) {
+              validOwnersForAttentionSet.add(account);
+            }
           } else {
             log.warn(
                 "Not adding account {} as reviewer to change {} because the associated ref is not visible",
                 account,
                 changeInfo._number);
           }
+        }
+
+        Collection<Account.Id> reviewersAccounts;
+        if (validOwnersForAttentionSet.isEmpty()) {
+          reviewersAccounts = Collections.emptyList();
+        } else {
+          reviewersAccounts =
+              Optional.ofNullable(ownersForAttentionSet)
+                  .map(DynamicItem::get)
+                  .filter(Objects::nonNull)
+                  .map(owners -> owners.addToAttentionSet(changeInfo, validOwnersForAttentionSet))
+                  .orElse(validOwnersForAttentionSet);
         }
 
         in.ignoreAutomaticAttentionSetRules = true;

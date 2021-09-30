@@ -16,8 +16,8 @@
 package com.vmware.gerrit.owners.common;
 
 import com.google.gerrit.entities.Change;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
-import com.google.gerrit.extensions.events.GitReferenceUpdatedListener.Event;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
+import com.googlesource.gerrit.owners.common.AutoassignConfig;
 import com.googlesource.gerrit.owners.common.GitRefListener;
 import com.googlesource.gerrit.owners.common.ReviewerManager;
 import org.eclipse.jgit.lib.Repository;
@@ -46,7 +47,8 @@ public class GitRefListenerTest extends GitRefListener {
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
-      ChangeNotes.Factory notesFactory) {
+      ChangeNotes.Factory notesFactory,
+      AutoassignConfig cfg) {
     super(
         api,
         patchListCache,
@@ -55,11 +57,13 @@ public class GitRefListenerTest extends GitRefListener {
         reviewerManager,
         oneOffReqCtx,
         currentUserProvider,
-        notesFactory);
+        notesFactory,
+        cfg);
   }
 
   @Override
-  public void processEvent(Repository repository, Event event, Change.Id cId) {
+  public void processEvent(
+      Project.NameKey projectKey, Repository repository, Event event, Change.Id cId) {
     processedEvents++;
   }
 

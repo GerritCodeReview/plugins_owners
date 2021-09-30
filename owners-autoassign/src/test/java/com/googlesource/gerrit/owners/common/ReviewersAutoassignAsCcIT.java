@@ -1,5 +1,4 @@
-// Copyright (c) 2013 VMware, Inc. All Rights Reserved.
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,14 +15,15 @@
 
 package com.googlesource.gerrit.owners.common;
 
-import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.inject.AbstractModule;
+import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.extensions.client.ReviewerState;
 
-public class AutoassignModule extends AbstractModule {
-  @Override
-  protected void configure() {
-    DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
-    install(new AutoassignConfigModule());
+@TestPlugin(
+    name = "owners-api",
+    sysModule = "com.googlesource.gerrit.owners.common.AbstractAutoassignIT$TestModule")
+public class ReviewersAutoassignAsCcIT extends AbstractAutoassignIT {
+
+  public ReviewersAutoassignAsCcIT() {
+    super("reviewers", ReviewerState.CC);
   }
 }
