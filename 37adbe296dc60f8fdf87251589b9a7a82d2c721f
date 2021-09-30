@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb4d4f6d_60b69cd9",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfigModule.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-09-30T20:37:33Z",
+      "side": 1,
+      "message": "nit: PROJECT_CONFIG_AUTOASSIGNED_REVIEWER_STATE",
+      "range": {
+        "startLine": 28,
+        "startChar": 29,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "37adbe296dc60f8fdf87251589b9a7a82d2c721f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1fdf969_0e1e4f5b",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfigModule.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-09-30T20:37:33Z",
+      "side": 1,
+      "message": "nit: autoassignedReviewerState",
+      "range": {
+        "startLine": 28,
+        "startChar": 64,
+        "endLine": 28,
+        "endChar": 79
+      },
+      "revId": "37adbe296dc60f8fdf87251589b9a7a82d2c721f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
