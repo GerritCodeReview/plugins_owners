@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "305dbda9_4f235ba2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:19:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7461b015_e341e065",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e37759d_5124c6d8",
@@ -89,6 +113,30 @@
       "writtenOn": "2021-09-30T18:41:38Z",
       "side": 1,
       "message": "nit: add requireNonNull(projectKey)?",
+      "range": {
+        "startLine": 43,
+        "startChar": 47,
+        "endLine": 43,
+        "endChar": 57
+      },
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9269ad38_5ca6ce16",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:19:44Z",
+      "side": 1,
+      "message": "Not needed because cfg(projectKey) would already raise an exception in that case.",
+      "parentUuid": "cf5c20e3_6c90fde2",
       "range": {
         "startLine": 43,
         "startChar": 47,
@@ -288,6 +336,30 @@
       "writtenOn": "2021-09-30T18:41:38Z",
       "side": 1,
       "message": "If we use ReviewerState as suggested before we won\u0027t need this.\nHowever if we don\u0027t go with ReviewerState, I think we could move this bit of login in the AutoassignConfig class.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 39
+      },
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c670d75_550a90f7",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:19:44Z",
+      "side": 1,
+      "message": "See the comments on why we can\u0027t use the ReviewerState.",
+      "parentUuid": "6a24f746_eba31942",
       "range": {
         "startLine": 95,
         "startChar": 0,
