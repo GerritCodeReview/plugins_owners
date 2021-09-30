@@ -45,6 +45,54 @@
       },
       "revId": "37adbe296dc60f8fdf87251589b9a7a82d2c721f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11071881_87892da5",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfigModule.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:48:34Z",
+      "side": 1,
+      "message": "Reviewer state is more a developer-centric view of what it represents. I would stay with autoAssignField.",
+      "parentUuid": "c1fdf969_0e1e4f5b",
+      "range": {
+        "startLine": 28,
+        "startChar": 64,
+        "endLine": 28,
+        "endChar": 79
+      },
+      "revId": "37adbe296dc60f8fdf87251589b9a7a82d2c721f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0783853_664f7f9f",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfigModule.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:48:34Z",
+      "side": 1,
+      "message": "I would prefer to align the constant with the value, which is auto-assign field.",
+      "parentUuid": "bb4d4f6d_60b69cd9",
+      "range": {
+        "startLine": 28,
+        "startChar": 29,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "37adbe296dc60f8fdf87251589b9a7a82d2c721f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
