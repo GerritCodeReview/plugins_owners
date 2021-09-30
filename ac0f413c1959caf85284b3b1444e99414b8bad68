@@ -43,6 +43,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8fbb4f2f_84ea793d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:17:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e37759d_5124c6d8",
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e09e00fc_6daaddcf",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -127,6 +145,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37794e03_a9a01d9c",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:17:29Z",
+      "side": 1,
+      "message": "That isn\u0027t needed because it would throw NoSuchProjectException in that case.",
+      "parentUuid": "2ddd7d99_82b511f4",
+      "range": {
+        "startLine": 47,
+        "startChar": 57,
+        "endLine": 47,
+        "endChar": 67
+      },
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e456d4a7_1951bd99",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:17:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12de4fa0_676b45a1",
+      "range": {
+        "startLine": 47,
+        "startChar": 25,
+        "endLine": 47,
+        "endChar": 40
+      },
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e35a993a_97791d1e",
@@ -144,6 +210,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ee63dc2_66b6a23c",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:17:29Z",
+      "side": 1,
+      "message": "That would be misleading, because of the ReviewerState.REMOVED which doesn\u0027t make sense in this case.\n\nThe values of the enum are used to populate the GUI: that must be relevant to the valid options to use rather than the easy of our coding.",
+      "parentUuid": "e35a993a_97791d1e",
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09212b75_aebaf0f1",
@@ -157,6 +241,30 @@
       "writtenOn": "2021-09-30T18:41:38Z",
       "side": 1,
       "message": "AutoassignedReviewerState ?",
+      "range": {
+        "startLine": 27,
+        "startChar": 14,
+        "endLine": 27,
+        "endChar": 29
+      },
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f937d52_3433618a",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfigModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:17:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09212b75_aebaf0f1",
       "range": {
         "startLine": 27,
         "startChar": 14,
