@@ -15,13 +15,14 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import java.util.Arrays;
+
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.api.projects.ProjectConfigEntryType;
 import com.google.gerrit.extensions.client.InheritableBoolean;
-import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.server.config.ProjectConfigEntry;
 import com.google.inject.AbstractModule;
-import java.util.Arrays;
+import com.google.gerrit.extensions.client.ReviewerState;
 
 public class AutoassignConfigModule extends AbstractModule {
   public static final String PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES = "autoAssignWip";
@@ -40,7 +41,7 @@ public class AutoassignConfigModule extends AbstractModule {
             new ProjectConfigEntry(
                 "Auto-assign field",
                 ReviewerState.REVIEWER.name(),
-                ProjectConfigEntryType.STRING,
+                ProjectConfigEntryType.LIST,
                 Arrays.asList(ReviewerState.CC.name(), ReviewerState.REVIEWER.name()),
                 true,
                 "Change field to use for the assigned accounts"));
