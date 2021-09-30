@@ -16,13 +16,17 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.git.meta.MetaDataUpdate;
+import com.google.gerrit.server.project.ProjectConfig;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.googlesource.gerrit.owners.api.OwnersApiModule;
 import java.util.Collection;
@@ -33,12 +37,20 @@ import org.junit.Test;
 
 @Ignore
 public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
+  private static final String PLUGIN_NAME = "owners-api";
+
   private final String section;
   private final boolean INHERITED = true;
   private final boolean NOT_INHERITED = false;
+  private final ReviewerState assignedUserState;
 
-  AbstractAutoassignIT(String section) {
+  @SuppressWarnings("hiding")
+  @Inject
+  private ProjectConfig.Factory projectConfigFactory;
+
+  AbstractAutoassignIT(String section, ReviewerState assignedUserState) {
     this.section = section;
+    this.assignedUserState = assignedUserState;
   }
 
   public static class TestModule extends AbstractModule {
@@ -51,6 +63,21 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
   @Override
   public Module createModule() {
     return new OwnersApiModule();
+  }
+
+  @Override
+  public void setUpTestPlugin() throws Exception {
+    super.setUpTestPlugin();
+
+    try (MetaDataUpdate md = metaDataUpdateFactory.create(project)) {
+      ProjectConfig projectConfig = projectConfigFactory.create(project);
+      projectConfig.load(md);
+      projectConfig.updatePluginConfig(
+          PLUGIN_NAME,
+          cfg -> cfg.setString(PROJECT_CONFIG_AUTOASSIGN_FIELD, assignedUserState.name()));
+      projectConfig.commit(md);
+      projectCache.evict(project);
+    }
   }
 
   @Test
@@ -77,7 +104,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
 
     addOwnersToRepo("", ownerEmail, NOT_INHERITED);
 
-    Collection<AccountInfo> reviewers = getChangeReviewers(change(createChange()));
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(change(createChange()));
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewers).hasSize(1);
@@ -94,7 +121,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, childOwnersEmail, INHERITED);
 
     Collection<AccountInfo> reviewers =
-        getChangeReviewers(change(createChange("test change", childpath + "foo.txt", "foo")));
+        getAutoassignedAccounts(change(createChange("test change", childpath + "foo.txt", "foo")));
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(parentOwnersEmail, childOwnersEmail);
@@ -110,7 +137,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, childOwnersEmail, NOT_INHERITED);
 
     Collection<AccountInfo> reviewers =
-        getChangeReviewers(change(createChange("test change", childpath + "foo.txt", "foo")));
+        getAutoassignedAccounts(change(createChange("test change", childpath + "foo.txt", "foo")));
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(childOwnersEmail);
@@ -123,7 +150,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo("", "suffix", ".java", ownerEmail, NOT_INHERITED);
 
     Collection<AccountInfo> reviewers =
-        getChangeReviewers(change(createChange("test change", "foo.java", "foo")));
+        getAutoassignedAccounts(change(createChange("test change", "foo.java", "foo")));
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(ownerEmail);
@@ -136,7 +163,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo("", "suffix", ".java", ownerEmail, NOT_INHERITED);
 
     ChangeApi changeApi = change(createChange("test change", "foo.bar", "foo"));
-    Collection<AccountInfo> reviewers = getChangeReviewers(changeApi);
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi);
 
     assertThat(reviewers).isNull();
   }
@@ -151,7 +178,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, "suffix", ".java", childOwnersEmail, INHERITED);
 
     ChangeApi changeApi = change(createChange("test change", childpath + "foo.java", "foo"));
-    Collection<AccountInfo> reviewers = getChangeReviewers(changeApi);
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi);
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(parentOwnersEmail, childOwnersEmail);
@@ -167,14 +194,15 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, "suffix", ".java", childOwnersEmail, NOT_INHERITED);
 
     ChangeApi changeApi = change(createChange("test change", childpath + "foo.java", "foo"));
-    Collection<AccountInfo> reviewers = getChangeReviewers(changeApi);
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi);
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(childOwnersEmail);
   }
 
-  private Collection<AccountInfo> getChangeReviewers(ChangeApi changeApi) throws RestApiException {
-    Collection<AccountInfo> reviewers = changeApi.get().reviewers.get(ReviewerState.REVIEWER);
+  private Collection<AccountInfo> getAutoassignedAccounts(ChangeApi changeApi)
+      throws RestApiException {
+    Collection<AccountInfo> reviewers = changeApi.get().reviewers.get(assignedUserState);
     return reviewers;
   }
 

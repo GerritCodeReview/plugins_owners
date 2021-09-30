@@ -15,14 +15,21 @@
 
 package com.vmware.gerrit.owners.common;
 
+import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
 import static org.junit.Assert.assertEquals;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.api.projects.ConfigInput;
+import com.google.gerrit.extensions.api.projects.ConfigValue;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.registration.Extension;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.AnonymousUser;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
@@ -30,6 +37,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.googlesource.gerrit.owners.api.OwnersApiModule;
+import com.googlesource.gerrit.owners.common.AutoassignConfigModule;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.StreamSupport;
 import org.eclipse.jgit.transport.ReceiveCommand.Type;
 import org.junit.Test;
@@ -38,6 +48,7 @@ import org.junit.Test;
     name = "owners-autoassign",
     sysModule = "com.vmware.gerrit.owners.common.GitRefListenerIT$TestModule")
 public class GitRefListenerIT extends LightweightPluginDaemonTest {
+  private static final String PLUGIN_NAME = "owners-autoassign";
 
   @Inject DynamicSet<GitReferenceUpdatedListener> allRefUpdateListeners;
   @Inject ThreadLocalRequestContext requestContext;
@@ -54,24 +65,16 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
     @Override
     protected void configure() {
       DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListenerTest.class);
+      install(new AutoassignConfigModule());
     }
   }
 
   @Test
   public void shouldNotProcessNoteDbOnlyRefs() throws Exception {
-    String changeRefPrefix = createChange().getChange().getId().toRefPrefix();
+    int changeNum = createChange().getChange().getId().get();
     int baselineProcessedEvents = gitRefListener().getProcessedEvents();
 
-    ReferenceUpdatedEventTest refUpdatedEvent =
-        new ReferenceUpdatedEventTest(
-            project,
-            changeRefPrefix + RefNames.META_SUFFIX.substring(1),
-            anOldObjectId,
-            aNewObjectId,
-            Type.CREATE,
-            admin.id());
-
-    gitRefListener().onGitReferenceUpdated(refUpdatedEvent);
+    gApi.changes().id(changeNum).current().review(new ReviewInput().message("Foo comment"));
     assertEquals(baselineProcessedEvents, gitRefListener().getProcessedEvents());
   }
 
@@ -83,6 +86,69 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
     int baselineProcessedEvents = gitRefListener().getProcessedEvents();
 
     gApi.changes().id(wipChangeNum).setReadyForReview();
+    assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
+  }
+
+  @Test
+  public void shouldProcessSendAndStartReviewOnNoteDb() throws Exception {
+    int wipChangeNum = createChange().getChange().getId().get();
+    gApi.changes().id(wipChangeNum).setWorkInProgress();
+
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    ReviewInput input = new ReviewInput().message("Let's start the review");
+    input.setWorkInProgress(false);
+
+    RestResponse resp =
+        adminRestSession.post("/changes/" + wipChangeNum + "/revisions/1/review", input);
+    resp.assertOK();
+
+    assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
+  }
+
+  @Test
+  public void shouldProcessWipChangesByDefault() throws Exception {
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    createChange("refs/for/master%wip");
+
+    assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
+  }
+
+  @Test
+  public void shouldNotProcessWipChanges() throws Exception {
+    setProjectPluginConfig(
+        project, PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, InheritableBoolean.FALSE.name());
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    createChange("refs/for/master%wip");
+
+    assertEquals(baselineProcessedEvents, gitRefListener().getProcessedEvents());
+  }
+
+  @Test
+  public void shouldNotProcessWipChangesWhenAutoAssignWipChangesIsInherited() throws Exception {
+    setProjectPluginConfig(
+        allProjects, PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, InheritableBoolean.FALSE.name());
+    setProjectPluginConfig(
+        project, PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, InheritableBoolean.INHERIT.name());
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    createChange("refs/for/master%wip");
+
+    assertEquals(baselineProcessedEvents, gitRefListener().getProcessedEvents());
+  }
+
+  @Test
+  public void shouldProcessWipChangesWhenAutoAssignWipChangesIsOverridden() throws Exception {
+    setProjectPluginConfig(
+        allProjects, PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, InheritableBoolean.FALSE.name());
+    setProjectPluginConfig(
+        project, PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, InheritableBoolean.TRUE.name());
+    int baselineProcessedEvents = gitRefListener().getProcessedEvents();
+
+    createChange("refs/for/master%wip");
+
     assertEquals(1, gitRefListener().getProcessedEvents() - baselineProcessedEvents);
   }
 
@@ -121,6 +187,19 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
       gitRefListener().onGitReferenceUpdated(refUpdateWithoutAccountId);
       assertEquals(1, gitRefListener().getProcessedEvents());
     }
+  }
+
+  private void setProjectPluginConfig(Project.NameKey projectName, String configKey, String value)
+      throws RestApiException {
+    ConfigInput projectConfig = new ConfigInput();
+    Map<String, ConfigValue> ownerAutoassignConfig = new HashMap<>();
+    ConfigValue configValue = new ConfigValue();
+    configValue.value = value;
+    ownerAutoassignConfig.put(configKey, configValue);
+    projectConfig.pluginConfigValues = new HashMap<>();
+    projectConfig.pluginConfigValues.put(PLUGIN_NAME, ownerAutoassignConfig);
+
+    gApi.projects().name(projectName.get()).config(projectConfig);
   }
 
   private GitRefListenerTest gitRefListener() {

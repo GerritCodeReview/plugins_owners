@@ -45,5 +45,6 @@ public class AutoassignModule extends AbstractModule {
     DynamicItem.bind(binder(), OwnersAttentionSet.class)
         .to(ownersAttentionSetImpl)
         .in(Scopes.SINGLETON);
+    install(new AutoassignConfigModule());
   }
 }

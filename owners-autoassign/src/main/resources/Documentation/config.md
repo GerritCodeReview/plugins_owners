@@ -8,7 +8,18 @@ Once the `owners-api.jar` is loaded at Gerrit startup, the `owners-autoassign.ja
 file can be installed like a regular Gerrit plugin, by being dropped to the
 `GRRIT_SITE/plugins` directory or installed through the plugin manager.
 
-## Configuration
+## Project configuration
+
+The project configuration `autoAssignWip` controls the automatic
+assignment of reviewers based on the OWNERS file on WIP changes.
+
+The setting can be inherited from the parent project by setting the value
+to `INHERIT`.
+
+By default, all changes are subject to auto-assignment, unless the project
+or one of its parent projects has the `autoAssignWip` set to `FALSE`.
+
+## OWNERS configuration
 
 Owner approval is determined based on OWNERS files located in the same
 repository on the target branch of the changes uploaded for review.

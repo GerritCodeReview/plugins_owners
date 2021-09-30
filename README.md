@@ -57,6 +57,7 @@ The output is created in
 ```
   bazel-bin/owners/owners.jar
   bazel-bin/owners-autoassign/owners-autoassign.jar
+  bazel-bin/owners-api/owners-api.jar
 
 ```
 
@@ -91,6 +92,7 @@ Example:
    $ cd gerrit/plugins
    $ ln -s ../../owners/owners .
    $ ln -s ../../owners/owners-autoassign .
+   $ ln -s ../../owners/owners-api .
    $ ln -sf ../../owners/external_plugin_deps.bzl .
    $ cd ..
    $ ln -s ../owners/owners-common .

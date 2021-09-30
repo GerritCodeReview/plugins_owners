@@ -38,18 +38,25 @@ import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
+import com.google.gerrit.server.notedb.ChangeNotesCommit;
+import com.google.gerrit.server.notedb.ChangeNotesCommit.ChangeNotesRevWalk;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
+import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.FooterKey;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +64,8 @@ import org.slf4j.LoggerFactory;
 @Listen
 public class GitRefListener implements GitReferenceUpdatedListener {
   private static final Logger logger = LoggerFactory.getLogger(GitRefListener.class);
+
+  private static final FooterKey FOOTER_WORK_IN_PROGRESS = new FooterKey("Work-in-progress");
 
   private final GerritApi api;
 
@@ -71,6 +80,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private ChangeNotes.Factory notesFactory;
 
+  private final AutoassignConfig cfg;
+
   @Inject
   public GitRefListener(
       GerritApi api,
@@ -80,7 +91,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
-      ChangeNotes.Factory notesFactory) {
+      ChangeNotes.Factory notesFactory,
+      AutoassignConfig cfg) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -89,6 +101,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.oneOffReqCtx = oneOffReqCtx;
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
+    this.cfg = cfg;
   }
 
   @Override
@@ -98,46 +111,51 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       return;
     }
 
-    AccountInfo updaterAccountInfo = event.getUpdater();
-    CurrentUser currentUser = currentUserProvider.get();
-    if (currentUser.isIdentifiedUser()) {
-      handleGitReferenceUpdated(event);
-    } else if (updaterAccountInfo != null) {
-      handleGitReferenceUpdatedAsUser(event, Account.id(updaterAccountInfo._accountId));
-    } else {
-      handleGitReferenceUpdatedAsServer(event);
+    try {
+      AccountInfo updaterAccountInfo = event.getUpdater();
+      CurrentUser currentUser = currentUserProvider.get();
+      if (currentUser.isIdentifiedUser()) {
+        handleGitReferenceUpdated(event);
+      } else if (updaterAccountInfo != null) {
+        handleGitReferenceUpdatedAsUser(event, Account.id(updaterAccountInfo._accountId));
+      } else {
+        handleGitReferenceUpdatedAsServer(event);
+      }
+    } catch (StorageException | NoSuchProjectException e) {
+      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
     }
   }
 
-  private void handleGitReferenceUpdatedAsUser(Event event, Account.Id updaterAccountId) {
+  private void handleGitReferenceUpdatedAsUser(Event event, Account.Id updaterAccountId)
+      throws NoSuchProjectException {
     try (ManualRequestContext ctx = oneOffReqCtx.openAs(updaterAccountId)) {
       handleGitReferenceUpdated(event);
-    } catch (StorageException e) {
-      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
     }
   }
 
-  private void handleGitReferenceUpdatedAsServer(Event event) {
+  private void handleGitReferenceUpdatedAsServer(Event event) throws NoSuchProjectException {
     try (ManualRequestContext ctx = oneOffReqCtx.open()) {
       handleGitReferenceUpdated(event);
-    } catch (StorageException e) {
-      logger.warn("Unable to process event {} on project {}", event, event.getProjectName(), e);
     }
   }
 
-  private void handleGitReferenceUpdated(Event event) {
+  private void handleGitReferenceUpdated(Event event) throws NoSuchProjectException {
     String projectName = event.getProjectName();
     Repository repository;
     try {
       NameKey projectNameKey = Project.NameKey.parse(projectName);
+      boolean autoAssignWip = cfg.autoAssignWip(projectNameKey);
       repository = repositoryManager.openRepository(projectNameKey);
       try {
         String refName = event.getRefName();
         Change.Id changeId = Change.Id.fromRef(refName);
-        if (changeId != null
-            && (!RefNames.isNoteDbMetaRef(refName)
-                || isChangeSetReadyForReview(projectNameKey, changeId, event.getNewObjectId()))) {
-          processEvent(repository, event, changeId);
+        if (changeId != null) {
+          ChangeNotes changeNotes = notesFactory.createChecked(projectNameKey, changeId);
+          if ((!RefNames.isNoteDbMetaRef(refName)
+                  && isChangeToBeProcessed(changeNotes.getChange(), autoAssignWip))
+              || isChangeSetReadyForReview(repository, changeNotes, event.getNewObjectId())) {
+            processEvent(projectNameKey, repository, event, changeId);
+          }
         }
       } finally {
         repository.close();
@@ -147,18 +165,41 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  private boolean isChangeSetReadyForReview(
-      NameKey project, Change.Id changeId, String metaObjectId) {
-    ChangeNotes changeNotes = notesFactory.createChecked(project, changeId);
-    return !changeNotes.getChange().isWorkInProgress()
-        && changeNotes.getChangeMessages().stream()
-            .filter(message -> message.getKey().uuid().equals(metaObjectId))
-            .map(message -> message.getTag())
-            .filter(Predicates.notNull())
-            .anyMatch(tag -> tag.contains(ChangeMessagesUtil.TAG_SET_READY));
+  private boolean isChangeToBeProcessed(Change change, boolean autoAssignWip) {
+    return !change.isWorkInProgress() || autoAssignWip;
   }
 
-  public void processEvent(Repository repository, Event event, Change.Id cId) {
+  private boolean isChangeSetReadyForReview(
+      Repository repository, ChangeNotes changeNotes, String metaObjectId)
+      throws MissingObjectException, IncorrectObjectTypeException, IOException {
+    if (changeNotes.getChange().isWorkInProgress()) {
+      return false;
+    }
+
+    if (changeNotes.getChangeMessages().stream()
+        .filter(message -> message.getKey().uuid().equals(metaObjectId))
+        .map(message -> message.getTag())
+        .filter(Predicates.notNull())
+        .anyMatch(tag -> tag.contains(ChangeMessagesUtil.TAG_SET_READY))) {
+      return true;
+    }
+
+    try (ChangeNotesRevWalk revWalk = ChangeNotesCommit.newRevWalk(repository)) {
+      ChangeNotesCommit metaCommit = revWalk.parseCommit(ObjectId.fromString(metaObjectId));
+      if (metaCommit.getParentCount() == 0) {
+        // The first commit cannot be a 'Set ready' operation
+        return false;
+      }
+      List<String> wipFooterLines = metaCommit.getFooterLines(FOOTER_WORK_IN_PROGRESS);
+      return wipFooterLines != null
+          && !wipFooterLines.isEmpty()
+          && Boolean.FALSE.toString().equalsIgnoreCase(wipFooterLines.get(0));
+    }
+  }
+
+  public void processEvent(
+      Project.NameKey projectNameKey, Repository repository, Event event, Change.Id cId)
+      throws NoSuchProjectException {
     Changes changes = api.changes();
     // The provider injected by Gerrit is shared with other workers on the
     // same local thread and thus cannot be closed in this event listener.
@@ -176,7 +217,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
           allReviewers.addAll(matcher.getReviewers());
         }
         logger.debug("Autoassigned reviewers are: {}", allReviewers.toString());
-        reviewerManager.addReviewers(cApi, allReviewers);
+        reviewerManager.addReviewers(projectNameKey, cApi, allReviewers);
       }
     } catch (RestApiException e) {
       logger.warn("Could not open change: {}", cId, e);
