@@ -276,6 +276,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27a7fc46_9eb56fba",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T20:32:26Z",
+      "side": 1,
+      "message": "I managed to pass the list of valid options, so that I can reuse the ReviewState. Thanks for the suggestion.",
+      "parentUuid": "1ee63dc2_66b6a23c",
+      "revId": "ac0f413c1959caf85284b3b1444e99414b8bad68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09212b75_aebaf0f1",
