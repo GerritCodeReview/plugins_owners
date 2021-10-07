@@ -22,6 +22,30 @@
       },
       "revId": "693f35f67de897d16b5935aa398972be81583285",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8bda6c_2ea98634",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-10-07T21:19:45Z",
+      "side": 1,
+      "message": "Good point, let me reuse changeInfo instead. Good catch.",
+      "parentUuid": "8c438633_55dd8ee4",
+      "range": {
+        "startLine": 95,
+        "startChar": 5,
+        "endLine": 95,
+        "endChar": 37
+      },
+      "revId": "693f35f67de897d16b5935aa398972be81583285",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
