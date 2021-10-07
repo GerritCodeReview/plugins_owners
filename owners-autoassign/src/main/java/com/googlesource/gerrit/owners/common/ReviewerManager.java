@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +92,8 @@ public class ReviewerManager {
       throws ReviewerManagerException, NoSuchProjectException {
     try {
       ChangeInfo changeInfo = cApi.get();
+      Set<Integer> currentReviewers =
+          cApi.reviewers().stream().map(ri -> ri._accountId).collect(Collectors.toSet());
       ReviewerState reviewerState = cfg.autoassignedReviewerState(projectNameKey);
       try (ManualRequestContext ctx =
           requestContext.openAs(Account.id(changeInfo.owner._accountId))) {
@@ -100,7 +103,7 @@ public class ReviewerManager {
         in.reviewers = new ArrayList<>(accountsIds.size());
         Collection<Account.Id> validOwnersForAttentionSet = new ArrayList<>(accountsIds.size());
         for (Account.Id account : accountsIds) {
-          if (isVisibleTo(changeInfo, account)) {
+          if (!currentReviewers.contains(account.get()) && isVisibleTo(changeInfo, account)) {
             AddReviewerInput addReviewerInput = new AddReviewerInput();
             addReviewerInput.reviewer = account.toString();
             addReviewerInput.state = reviewerState;
