@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c438633_55dd8ee4",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-10-07T21:13:13Z",
+      "side": 1,
+      "message": "Is there any reason to calculate reviewers again? It looks like changeInfo already contains reviewers",
+      "range": {
+        "startLine": 95,
+        "startChar": 5,
+        "endLine": 95,
+        "endChar": 37
+      },
+      "revId": "693f35f67de897d16b5935aa398972be81583285",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
