@@ -40,7 +40,7 @@ public class AutoassignConfigModule extends AbstractModule {
             new ProjectConfigEntry(
                 "Auto-assign field",
                 ReviewerState.REVIEWER.name(),
-                ProjectConfigEntryType.STRING,
+                ProjectConfigEntryType.LIST,
                 Arrays.asList(ReviewerState.CC.name(), ReviewerState.REVIEWER.name()),
                 true,
                 "Change field to use for the assigned accounts"));
