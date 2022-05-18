@@ -20,6 +20,7 @@ import static com.google.gerrit.entities.Patch.COMMIT_MSG;
 import static com.google.gerrit.entities.Patch.MERGE_LIST;
 import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -28,8 +29,8 @@ import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Patch;
 import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.server.patch.PatchList;
-import com.google.gerrit.server.patch.PatchListEntry;
+import com.google.gerrit.server.patch.DiffSummary;
+import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,9 +55,9 @@ public class PathOwners {
 
   private final Repository repository;
 
-  private final PatchList patchList;
-
   private final ConfigurationParser parser;
+
+  private final Set<String> modifiedPaths;
 
   private final Accounts accounts;
 
@@ -64,9 +65,24 @@ public class PathOwners {
 
   private Map<String, Set<Id>> fileOwners;
 
-  public PathOwners(Accounts accounts, Repository repository, String branch, PatchList patchList) {
+  public PathOwners(
+      Accounts accounts,
+      Repository repository,
+      String branch,
+      Map<String, FileDiffOutput> patchList) {
+    this(accounts, repository, branch, getModifiedPaths(patchList));
+  }
+
+  public PathOwners(
+      Accounts accounts, Repository repository, String branch, DiffSummary patchList) {
+    this(accounts, repository, branch, ImmutableSet.copyOf(patchList.getPaths()));
+  }
+
+  private PathOwners(
+      Accounts accounts, Repository repository, String branch, Set<String> modifiedPaths) {
     this.repository = repository;
-    this.patchList = patchList;
+    this.modifiedPaths = modifiedPaths;
+
     this.parser = new ConfigurationParser(accounts);
     this.accounts = accounts;
 
@@ -76,7 +92,6 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
   }
-
   /**
    * Returns a read only view of the paths to owners mapping.
    *
@@ -139,7 +154,6 @@ public class PathOwners {
                           Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
-      Set<String> modifiedPaths = getModifiedPaths();
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
@@ -247,22 +261,22 @@ public class PathOwners {
   }
 
   /**
-   * Parses the patch list for any paths that were modified.
+   * Parses the diff list for any paths that were modified.
    *
    * @return set of modified paths.
    */
-  private Set<String> getModifiedPaths() {
+  private static Set<String> getModifiedPaths(Map<String, FileDiffOutput> patchList) {
     Set<String> paths = Sets.newHashSet();
-    for (PatchListEntry patch : patchList.getPatches()) {
+    for (Map.Entry<String, FileDiffOutput> patch : patchList.entrySet()) {
       // Ignore commit message and Merge List
-      String newName = patch.getNewName();
+      String newName = patch.getKey();
       if (!COMMIT_MSG.equals(newName) && !MERGE_LIST.equals(newName)) {
         paths.add(newName);
 
         // If a file was moved then we need approvals for old and new
         // path
-        if (patch.getChangeType() == Patch.ChangeType.RENAMED) {
-          paths.add(patch.getOldName());
+        if (patch.getValue().changeType() == Patch.ChangeType.RENAMED) {
+          paths.add(patch.getValue().oldPath().get());
         }
       }
     }

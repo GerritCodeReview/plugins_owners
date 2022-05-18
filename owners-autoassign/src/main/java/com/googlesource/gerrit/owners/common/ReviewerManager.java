@@ -68,7 +68,6 @@ public class ReviewerManager {
       GerritApi gApi,
       IdentifiedUser.GenericFactory userFactory,
       ChangeData.Factory changeDataFactory,
-      PermissionBackend permissionBackend,
       DynamicItem<OwnersAttentionSet> ownersForAttentionSet,
       PermissionBackend permissionBackend,
       AutoassignConfig cfg) {
@@ -111,7 +110,8 @@ public class ReviewerManager {
             }
           } else {
             log.warn(
-                "Not adding account {} as reviewer to change {} because the associated ref is not visible",
+                "Not adding account {} as reviewer to change {} because the associated ref is not"
+                    + " visible",
                 account,
                 changeInfo._number);
           }
@@ -131,7 +131,7 @@ public class ReviewerManager {
 
         in.ignoreAutomaticAttentionSetRules = true;
         in.addToAttentionSet =
-            ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewers).stream()
+            ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewersAccounts).stream()
                 .map(
                     (reviewer) ->
                         new AttentionSetInput(

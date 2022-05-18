@@ -2,7 +2,7 @@ load("//tools/bzl:maven_jar.bzl", "maven_jar")
 
 JACKSON_VER = "2.9.7"
 
-def external_plugin_deps(omit_jackson_core = True):
+def external_plugin_deps(omit_jackson_core = False):
     if not omit_jackson_core:
         maven_jar(
             name = "jackson-core",
