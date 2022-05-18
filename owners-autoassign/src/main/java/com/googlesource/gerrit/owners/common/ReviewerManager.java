@@ -68,7 +68,6 @@ public class ReviewerManager {
       GerritApi gApi,
       IdentifiedUser.GenericFactory userFactory,
       ChangeData.Factory changeDataFactory,
-      PermissionBackend permissionBackend,
       DynamicItem<OwnersAttentionSet> ownersForAttentionSet,
       PermissionBackend permissionBackend,
       AutoassignConfig cfg) {
@@ -131,7 +130,7 @@ public class ReviewerManager {
 
         in.ignoreAutomaticAttentionSetRules = true;
         in.addToAttentionSet =
-            ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewers).stream()
+            ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewersAccounts).stream()
                 .map(
                     (reviewer) ->
                         new AttentionSetInput(

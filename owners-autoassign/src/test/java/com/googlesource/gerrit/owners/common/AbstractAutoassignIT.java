@@ -20,9 +20,9 @@ import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJE
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.common.RawInputUtil;
-import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ChangeEditApi;
+import com.google.gerrit.extensions.api.changes.ReviewerInput;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.AccountInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -127,7 +127,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     assertThat(reviewers).hasSize(1);
 
     // Switch user from CC to Reviewer or the other way around
-    AddReviewerInput switchReviewerInput = new AddReviewerInput();
+    ReviewerInput switchReviewerInput = new ReviewerInput();
     switchReviewerInput.reviewer = ownerEmail;
     switchReviewerInput.state =
         assignedUserState == ReviewerState.REVIEWER ? ReviewerState.CC : ReviewerState.REVIEWER;

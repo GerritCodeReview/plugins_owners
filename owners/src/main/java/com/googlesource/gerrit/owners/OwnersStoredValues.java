@@ -16,12 +16,13 @@
 
 package com.googlesource.gerrit.owners;
 
-import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import java.util.Map;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class OwnersStoredValues {
         new StoredValue<PathOwners>() {
           @Override
           protected PathOwners createValue(Prolog engine) {
-            PatchList patchList = StoredValues.PATCH_LIST.get(engine);
+            Map<String, FileDiffOutput> patchList = StoredValues.DIFF_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
             String branch = StoredValues.getChange(engine).getDest().branch();
             return new PathOwners(accounts, repository, branch, patchList);

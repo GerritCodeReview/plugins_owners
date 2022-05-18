@@ -82,7 +82,7 @@ public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonT
 
   @Test
   public void shouldAddToAttentionSetOneUserIfAnotherUserHasNoPermission() throws Exception {
-    TestAccount userWithAccessToProject = accountCreator.user();
+    TestAccount userWithAccessToProject = accountCreator.user1();
     TestAccount userWithNoAccessToProject = accountCreator.user2();
 
     AccountGroup.UUID groupWithNoAccessToProject =
