@@ -40,7 +40,8 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.notedb.ChangeNotesCommit;
 import com.google.gerrit.server.notedb.ChangeNotesCommit.ChangeNotesRevWalk;
-import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.patch.DiffSummary;
+import com.google.gerrit.server.patch.DiffSummaryKey;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
@@ -206,7 +207,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     try {
       ChangeApi cApi = changes.id(cId.get());
       ChangeInfo change = cApi.get();
-      PatchList patchList = getPatchList(repository, event, change);
+      DiffSummary patchList = getDiffSummary(repository, event, change);
       if (patchList != null) {
         PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
         Set<Account.Id> allReviewers = Sets.newHashSet();
@@ -226,7 +227,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  private PatchList getPatchList(Repository repository, Event event, ChangeInfo change) {
+  private DiffSummary getDiffSummary(Repository repository, Event event, ChangeInfo change) {
     ObjectId newId = null;
     PatchListKey plKey;
     try {
@@ -240,7 +241,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         }
         plKey = PatchListKey.againstCommit(null, newId, IGNORE_NONE);
       }
-      return patchListCache.get(plKey, Project.nameKey(change.project));
+      return patchListCache.getDiffSummary(
+          DiffSummaryKey.fromPatchListKey(plKey), Project.nameKey(change.project));
     } catch (PatchListNotAvailableException | IOException e) {
       logger.warn("Could not load patch list for change {}", change.id, e);
     }
