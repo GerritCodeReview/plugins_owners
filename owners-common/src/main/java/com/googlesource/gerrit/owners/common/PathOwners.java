@@ -28,8 +28,7 @@ import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Patch;
 import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.server.patch.PatchList;
-import com.google.gerrit.server.patch.PatchListEntry;
+import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,7 +53,7 @@ public class PathOwners {
 
   private final Repository repository;
 
-  private final PatchList patchList;
+  private final Map<String, FileDiffOutput> patchList;
 
   private final ConfigurationParser parser;
 
@@ -64,7 +63,11 @@ public class PathOwners {
 
   private Map<String, Set<Id>> fileOwners;
 
-  public PathOwners(Accounts accounts, Repository repository, String branch, PatchList patchList) {
+  public PathOwners(
+      Accounts accounts,
+      Repository repository,
+      String branch,
+      Map<String, FileDiffOutput> patchList) {
     this.repository = repository;
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
@@ -253,16 +256,16 @@ public class PathOwners {
    */
   private Set<String> getModifiedPaths() {
     Set<String> paths = Sets.newHashSet();
-    for (PatchListEntry patch : patchList.getPatches()) {
+    for (Map.Entry<String, FileDiffOutput> patch : patchList.entrySet()) {
       // Ignore commit message and Merge List
-      String newName = patch.getNewName();
+      String newName = patch.getKey();
       if (!COMMIT_MSG.equals(newName) && !MERGE_LIST.equals(newName)) {
         paths.add(newName);
 
         // If a file was moved then we need approvals for old and new
         // path
-        if (patch.getChangeType() == Patch.ChangeType.RENAMED) {
-          paths.add(patch.getOldName());
+        if (patch.getValue().changeType() == Patch.ChangeType.RENAMED) {
+          paths.add(patch.getValue().oldPath().get());
         }
       }
     }
