@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f7a40bc_6fa92e49",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-05-19T10:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec824cb5_973662c4",
+      "range": {
+        "startLine": 5,
+        "startChar": 25,
+        "endLine": 5,
+        "endChar": 50
+      },
+      "revId": "c6e6324bbdee9c57dbbc91c825d03e91a959fb98",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33e9ca2f_6d851012",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-19T10:13:51Z",
       "side": 1,
       "message": "Remove this line, so that the setting order (below) is the same as the list of parameters.",
+      "range": {
+        "startLine": 72,
+        "startChar": 6,
+        "endLine": 72,
+        "endChar": 42
+      },
+      "revId": "c6e6324bbdee9c57dbbc91c825d03e91a959fb98",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dda738c_ec021f81",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-05-19T10:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33e9ca2f_6d851012",
       "range": {
         "startLine": 72,
         "startChar": 6,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f7051e0_1875191e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-05-19T10:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5d134d9_13bcf1df",
+      "range": {
+        "startLine": 72,
+        "startChar": 34,
+        "endLine": 72,
+        "endChar": 43
+      },
+      "revId": "c6e6324bbdee9c57dbbc91c825d03e91a959fb98",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ae5a89f_c0e68bb3",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-05-19T10:13:51Z",
       "side": 1,
       "message": "Rename it to better reflect that this is Diff summary?",
+      "range": {
+        "startLine": 86,
+        "startChar": 75,
+        "endLine": 86,
+        "endChar": 84
+      },
+      "revId": "c6e6324bbdee9c57dbbc91c825d03e91a959fb98",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62d051b7_ed4cdaef",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-05-19T10:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ae5a89f_c0e68bb3",
       "range": {
         "startLine": 86,
         "startChar": 75,
