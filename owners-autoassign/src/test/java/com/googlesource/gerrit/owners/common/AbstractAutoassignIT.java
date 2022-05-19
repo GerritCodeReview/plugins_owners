@@ -19,9 +19,13 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.common.RawInputUtil;
+import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
+import com.google.gerrit.extensions.api.changes.ChangeEditApi;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.extensions.common.AccountInfo;
+import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.git.meta.MetaDataUpdate;
 import com.google.gerrit.server.project.ProjectConfig;
@@ -104,11 +108,38 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
 
     addOwnersToRepo("", ownerEmail, NOT_INHERITED);
 
-    Collection<AccountInfo> reviewers = getAutoassignedAccounts(change(createChange()));
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(change(createChange()).get());
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewers).hasSize(1);
     assertThat(reviewersEmail(reviewers).get(0)).isEqualTo(ownerEmail);
+  }
+
+  @Test
+  public void shouldNotReAutoassignUserInPath() throws Exception {
+    String ownerEmail = user.email();
+
+    addOwnersToRepo("", ownerEmail, NOT_INHERITED);
+
+    ChangeApi changeApi = change(createChange());
+    ChangeInfo changeInfo = changeApi.get();
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeInfo);
+    assertThat(reviewers).hasSize(1);
+
+    // Switch user from CC to Reviewer or the other way around
+    AddReviewerInput switchReviewerInput = new AddReviewerInput();
+    switchReviewerInput.reviewer = ownerEmail;
+    switchReviewerInput.state =
+        assignedUserState == ReviewerState.REVIEWER ? ReviewerState.CC : ReviewerState.REVIEWER;
+    changeApi.addReviewer(switchReviewerInput);
+
+    ChangeEditApi changeEdit = changeApi.edit();
+    changeEdit.create();
+    changeEdit.modifyFile("foo", RawInputUtil.create("foo content"));
+    changeEdit.publish();
+
+    // It should not re-assign any user
+    assertThat(getAutoassignedAccounts(changeInfo)).isNull();
   }
 
   @Test
@@ -121,7 +152,8 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, childOwnersEmail, INHERITED);
 
     Collection<AccountInfo> reviewers =
-        getAutoassignedAccounts(change(createChange("test change", childpath + "foo.txt", "foo")));
+        getAutoassignedAccounts(
+            change(createChange("test change", childpath + "foo.txt", "foo")).get());
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(parentOwnersEmail, childOwnersEmail);
@@ -137,7 +169,8 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, childOwnersEmail, NOT_INHERITED);
 
     Collection<AccountInfo> reviewers =
-        getAutoassignedAccounts(change(createChange("test change", childpath + "foo.txt", "foo")));
+        getAutoassignedAccounts(
+            change(createChange("test change", childpath + "foo.txt", "foo")).get());
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(childOwnersEmail);
@@ -150,7 +183,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo("", "suffix", ".java", ownerEmail, NOT_INHERITED);
 
     Collection<AccountInfo> reviewers =
-        getAutoassignedAccounts(change(createChange("test change", "foo.java", "foo")));
+        getAutoassignedAccounts(change(createChange("test change", "foo.java", "foo")).get());
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(ownerEmail);
@@ -163,7 +196,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo("", "suffix", ".java", ownerEmail, NOT_INHERITED);
 
     ChangeApi changeApi = change(createChange("test change", "foo.bar", "foo"));
-    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi);
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
 
     assertThat(reviewers).isNull();
   }
@@ -178,7 +211,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, "suffix", ".java", childOwnersEmail, INHERITED);
 
     ChangeApi changeApi = change(createChange("test change", childpath + "foo.java", "foo"));
-    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi);
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(parentOwnersEmail, childOwnersEmail);
@@ -194,15 +227,16 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     addOwnersToRepo(childpath, "suffix", ".java", childOwnersEmail, NOT_INHERITED);
 
     ChangeApi changeApi = change(createChange("test change", childpath + "foo.java", "foo"));
-    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi);
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(childOwnersEmail);
   }
 
-  private Collection<AccountInfo> getAutoassignedAccounts(ChangeApi changeApi)
+  private Collection<AccountInfo> getAutoassignedAccounts(ChangeInfo changeInfo)
       throws RestApiException {
-    Collection<AccountInfo> reviewers = changeApi.get().reviewers.get(assignedUserState);
+    Collection<AccountInfo> reviewers =
+        gApi.changes().id(changeInfo._number).get().reviewers.get(assignedUserState);
     return reviewers;
   }
 
