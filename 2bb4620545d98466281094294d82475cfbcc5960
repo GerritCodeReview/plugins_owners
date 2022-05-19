@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "533d8bd9_8a70118c",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-05-19T10:13:51Z",
+      "side": 0,
+      "message": "Could be removed, right? Jackson-core was removed from gerrit core, as consequence from extracting ES as lib index module.",
+      "range": {
+        "startLine": 5,
+        "startChar": 25,
+        "endLine": 5,
+        "endChar": 49
+      },
+      "revId": "2bb4620545d98466281094294d82475cfbcc5960",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
