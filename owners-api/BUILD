@@ -11,7 +11,7 @@ gerrit_plugin(
         "Implementation-Title: Gerrit OWNERS api plugin",
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
         "Gerrit-PluginName: owners-api",
-        "Gerrit-Module: com.googlesource.gerrit.owners.common.AutoassignModule",
+        "Gerrit-Module: com.googlesource.gerrit.owners.api.OwnersApiModule",
     ],
     resources = glob(["src/main/**/*"]),
     deps = [],
