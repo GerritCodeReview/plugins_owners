@@ -37,7 +37,7 @@ public abstract class Config {
   protected PatchList patchList;
   protected ConfigurationParser parser;
   protected TestAccounts accounts = new TestAccounts();
-  protected String branch = "master";
+  protected Optional<String> branch = Optional.of("master");
 
   public void setup() throws Exception {
     PowerMock.mockStatic(JgitWrapper.class);

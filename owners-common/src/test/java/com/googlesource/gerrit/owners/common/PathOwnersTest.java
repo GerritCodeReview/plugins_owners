@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
 import com.google.gerrit.entities.Account;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -34,6 +35,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(JgitWrapper.class)
 public class PathOwnersTest extends ClassicConfig {
 
+  private static final String CLASSIC_OWNERS = "classic/OWNERS";
+
   @Override
   @Before
   public void setup() throws Exception {
@@ -42,29 +45,34 @@ public class PathOwnersTest extends ClassicConfig {
 
   @Test
   public void testClassic() throws Exception {
-    expectNoConfig("OWNERS");
-    expectConfig("classic/OWNERS", createConfig(false, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
-
-    creatingPatchList(Arrays.asList("classic/file.txt"));
-    replayAll();
+    mockOwners(USER_A_EMAIL_COM, USER_B_EMAIL_COM);
 
     PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
-    Set<Account.Id> ownersSet = owners.get().get("classic/OWNERS");
+    Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
     assertTrue(ownersSet.contains(USER_B_ID));
   }
 
   @Test
+  public void testDisabledBranch() throws Exception {
+    mockOwners(USER_A_EMAIL_COM);
+
+    PathOwners owners = new PathOwners(accounts, repository, Optional.empty(), patchList);
+    Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
+    assertEquals(0, ownersSet.size());
+  }
+
+  @Test
   public void testClassicWithInheritance() throws Exception {
     expectConfig("OWNERS", createConfig(true, owners(USER_C_EMAIL_COM)));
-    expectConfig("classic/OWNERS", createConfig(true, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+    expectConfig(CLASSIC_OWNERS, createConfig(true, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
 
     PathOwners owners2 = new PathOwners(accounts, repository, branch, patchList);
-    Set<Account.Id> ownersSet2 = owners2.get().get("classic/OWNERS");
+    Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
     assertEquals(3, ownersSet2.size());
@@ -99,5 +107,13 @@ public class PathOwnersTest extends ClassicConfig {
     assertTrue(config.get().isInherited());
     assertEquals(1, config.get().getOwners().size());
     assertTrue(config.get().getOwners().contains(USER_C_EMAIL_COM));
+  }
+
+  private void mockOwners(String... owners) throws IOException {
+    expectNoConfig("OWNERS");
+    expectConfig(CLASSIC_OWNERS, createConfig(false, owners(owners)));
+
+    creatingPatchList(Arrays.asList("classic/file.txt"));
+    replayAll();
   }
 }

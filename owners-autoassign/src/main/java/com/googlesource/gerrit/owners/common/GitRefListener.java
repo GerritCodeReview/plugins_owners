@@ -51,6 +51,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
@@ -208,7 +209,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       ChangeInfo change = cApi.get();
       PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
-        PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
+        PathOwners owners = new PathOwners(accounts, repository, Optional.of(change.branch), patchList);
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());
