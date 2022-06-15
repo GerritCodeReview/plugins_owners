@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "936dc2cb_b9bbdbd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-06-15T20:39:57Z",
+      "side": 1,
+      "message": "Those are the improvements made on stable-2.16 that I am looking now to open-source and breakdown in individual changes.\n\nP.S. Can you double-check that I\u0027ve not missed anything? This change is not meant to be merged but just kept as a private reference.",
+      "revId": "ed430a1914cdc65065a97f18bc3062e7275d9f32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
