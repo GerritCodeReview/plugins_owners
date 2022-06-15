@@ -36,6 +36,8 @@ import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.AllProjectsName;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.notedb.ChangeNotesCommit;
@@ -54,6 +56,7 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.FooterKey;
@@ -74,6 +77,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private final Accounts accounts;
   private final ReviewerManager reviewerManager;
 
+  private final Config config;
+
+  private final String[] disablePatterns;
+
   private final OneOffRequestContext oneOffReqCtx;
 
   private Provider<CurrentUser> currentUserProvider;
@@ -82,17 +89,21 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private final AutoassignConfig cfg;
 
+  private final Project.NameKey allProjectsName;
+
   @Inject
   public GitRefListener(
       GerritApi api,
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
+      PluginConfigFactory configFactory,
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoassignConfig cfg) {
+      AutoassignConfig cfg,
+      AllProjectsName allProjectsName) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -102,6 +113,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
     this.cfg = cfg;
+    this.allProjectsName = allProjectsName;
+    config = configFactory.getGlobalPluginConfig("owners");
+    disablePatterns = config.getStringList("owners", "disable", "branch");
   }
 
   @Override
@@ -142,8 +156,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private void handleGitReferenceUpdated(Event event) throws NoSuchProjectException {
     String projectName = event.getProjectName();
     Repository repository;
+    Repository allProjectsRepository;
     try {
       NameKey projectNameKey = Project.NameKey.parse(projectName);
+      allProjectsRepository = repositoryManager.openRepository(allProjectsName);
       boolean autoAssignWip = cfg.autoAssignWip(projectNameKey);
       repository = repositoryManager.openRepository(projectNameKey);
       try {
@@ -154,7 +170,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
           if ((!RefNames.isNoteDbMetaRef(refName)
                   && isChangeToBeProcessed(changeNotes.getChange(), autoAssignWip))
               || isChangeSetReadyForReview(repository, changeNotes, event.getNewObjectId())) {
-            processEvent(projectNameKey, repository, event, changeId);
+            processEvent(allProjectsRepository, projectNameKey, repository, event, changeId);
           }
         }
       } finally {
@@ -198,7 +214,11 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   }
 
   public void processEvent(
-      Project.NameKey projectNameKey, Repository repository, Event event, Change.Id cId)
+      Repository allprojrepository,
+      Project.NameKey projectNameKey,
+      Repository repository,
+      Event event,
+      Change.Id cId)
       throws NoSuchProjectException {
     Changes changes = api.changes();
     // The provider injected by Gerrit is shared with other workers on the
@@ -208,7 +228,14 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       ChangeInfo change = cApi.get();
       PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
-        PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
+        PathOwners owners =
+            new PathOwners(accounts, allprojrepository, repository, change.branch, patchList);
+        for (String pattern : disablePatterns) {
+          if (change.branch.matches(pattern)) {
+            owners = new PathOwners(accounts, allprojrepository, repository, patchList);
+            break;
+          }
+        }
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());
