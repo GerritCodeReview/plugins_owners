@@ -19,6 +19,7 @@ import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.PatchListCache;
@@ -45,6 +46,7 @@ public class GitRefListenerTest extends GitRefListener {
       GitRepositoryManager repositoryManager,
       Accounts accounts,
       ReviewerManager reviewerManager,
+      PluginConfigFactory configFactory,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
@@ -54,6 +56,7 @@ public class GitRefListenerTest extends GitRefListener {
         patchListCache,
         repositoryManager,
         accounts,
+        configFactory,
         reviewerManager,
         oneOffReqCtx,
         currentUserProvider,
@@ -63,7 +66,11 @@ public class GitRefListenerTest extends GitRefListener {
 
   @Override
   public void processEvent(
-      Project.NameKey projectKey, Repository repository, Event event, Change.Id cId) {
+      Repository allprojrepository,
+      Project.NameKey projectKey,
+      Repository repository,
+      Event event,
+      Change.Id cId) {
     processedEvents++;
   }
 

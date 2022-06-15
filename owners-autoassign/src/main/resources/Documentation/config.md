@@ -1,3 +1,19 @@
+## Global configuration
+
+The global plugin configuration is read from the `$GERRIT_SITE/etc/owners.config`
+and is applied to the processing of all OWNERS files in all projects.
+
+owners.disable.branch
+:	List of branches regex where the processing of the OWNERS file is disabled.
+
+Example:
+
+```
+[owners "disable"]
+  branch = refs/meta/config
+  branch = refs/heads/sandboxes.*
+```
+
 ## Project configuration
 
 The project configuration `autoAssignWip` controls the automatic
