@@ -77,6 +77,20 @@ public class PathOwners {
     fileOwners = map.getFileOwners();
   }
 
+  // This is constructor to be called when a particular is configured to disable "owners". So return
+  // empty OwnersMap
+  public PathOwners(Accounts accounts, Repository repository, PatchList patchList) {
+    this.repository = repository;
+    this.patchList = patchList;
+    this.parser = new ConfigurationParser(accounts);
+    this.accounts = accounts;
+    OwnersMap map = new OwnersMap();
+    owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
+    reviewers = Multimaps.unmodifiableSetMultimap(map.getPathReviewers());
+    matchers = map.getMatchers();
+    fileOwners = map.getFileOwners();
+  }
+
   /**
    * Returns a read only view of the paths to owners mapping.
    *

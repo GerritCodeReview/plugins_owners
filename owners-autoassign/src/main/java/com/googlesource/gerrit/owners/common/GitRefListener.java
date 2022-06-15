@@ -27,6 +27,7 @@ import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.annotations.Listen;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.Changes;
@@ -36,6 +37,7 @@ import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.notedb.ChangeNotesCommit;
@@ -54,6 +56,7 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.FooterKey;
@@ -74,6 +77,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private final Accounts accounts;
   private final ReviewerManager reviewerManager;
 
+  private final Config config;
+
+  private final String[] disabledBranchPatterns;
+
   private final OneOffRequestContext oneOffReqCtx;
 
   private Provider<CurrentUser> currentUserProvider;
@@ -88,11 +95,13 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
+      PluginConfigFactory configFactory,
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoassignConfig cfg) {
+      AutoassignConfig cfg,
+      @PluginName String pluginName) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -102,6 +111,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
     this.cfg = cfg;
+    config = configFactory.getGlobalPluginConfig(pluginName);
+    disabledBranchPatterns = config.getStringList("owners", "disable", "branch");
   }
 
   @Override
@@ -209,6 +220,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
         PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
+        for (String pattern : disabledBranchPatterns) {
+          if (change.branch.matches(pattern)) {
+            owners = new PathOwners(accounts, repository, patchList);
+            break;
+          }
+        }
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());
