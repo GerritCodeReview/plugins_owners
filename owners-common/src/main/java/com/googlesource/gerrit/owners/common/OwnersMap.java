@@ -29,6 +29,7 @@ public class OwnersMap {
   private Map<String, Matcher> matchers = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileOwners = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileReviewers = Maps.newHashMap();
+  private Map<String, Set<String>> group_fileOwners = Maps.newHashMap();
 
   @Override
   public String toString() {
@@ -79,6 +80,10 @@ public class OwnersMap {
     return fileReviewers;
   }
 
+  public Map<String, Set<String>> group_getFileOwners() {
+    return group_fileOwners;
+  }
+
   public void addFileOwners(String file, Set<Id> owners) {
     if (owners.isEmpty()) {
       return;
@@ -104,6 +109,20 @@ public class OwnersMap {
       set.addAll(reviewers);
     } else {
       fileReviewers.put(file, Sets.newHashSet(reviewers));
+    }
+  }
+
+  public void group_addFileOwners(String file, Set<String> group_owners) {
+    if (group_owners.isEmpty()) {
+      return;
+    }
+
+    Set<String> set = group_fileOwners.get(file);
+    if (set != null) {
+      // add new owners removing duplicates
+      set.addAll(group_owners);
+    } else {
+      group_fileOwners.put(file, Sets.newHashSet(group_owners));
     }
   }
 }

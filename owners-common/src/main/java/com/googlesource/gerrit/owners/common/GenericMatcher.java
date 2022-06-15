@@ -18,20 +18,25 @@ package com.googlesource.gerrit.owners.common;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
+import java.util.regex.Pattern;
 
-public class ExactMatcher extends Matcher {
-  public ExactMatcher(
+public class GenericMatcher extends Matcher {
+
+  Pattern pattern;
+
+  public GenericMatcher(
       String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> group_owners) {
     super(path, owners, reviewers, group_owners);
+    pattern = Pattern.compile(path);
   }
 
   @Override
   public boolean matches(String pathToMatch) {
-    return pathToMatch.equals(path);
+    return pattern.matcher(pathToMatch).matches();
   }
 
   @Override
   protected Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> group_owners) {
-    return new ExactMatcher(path, owners, reviewers, group_owners);
+    return new GenericMatcher(path, owners, reviewers, group_owners);
   }
 }

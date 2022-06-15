@@ -14,8 +14,6 @@
 
 package gerrit_owners;
 
-import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
-
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.rules.PrologEnvironment;
@@ -30,6 +28,7 @@ import com.googlecode.prolog_cafe.lang.Term;
 import com.googlecode.prolog_cafe.lang.VariableTerm;
 import com.googlesource.gerrit.owners.OwnersStoredValues;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.common.StreamUtils;
 import java.io.File;
 import java.util.Map;
 import java.util.Set;
@@ -83,9 +82,9 @@ class PRED_file_owners_2 extends Predicate.P2 {
     String path = key.toString();
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
     Set<String> ownersNames =
-        iteratorStream(owners.getFileOwners().get(path).iterator())
-            .map(id -> getFullNameFromId(engine, id))
-            .collect(Collectors.toSet());
+        (Set)
+            StreamUtils.iteratorStream(((Set) owners.group_getFileOwners().get(path)).iterator())
+                .collect(Collectors.toSet());
     String ownVerb = ownersNames.size() > 1 ? "-own-" : "-owns-";
     String userNames = ownersNames.stream().collect(Collectors.joining("-"));
     return SymbolTerm.create(userNames + ownVerb + sanitizeAsSubmitLabel(new File(path).getName()));
