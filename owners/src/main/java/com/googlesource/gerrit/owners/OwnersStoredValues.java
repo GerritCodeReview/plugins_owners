@@ -16,12 +16,20 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.config.AllProjectsName;
+import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.rules.PrologEnvironment;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
+import com.google.inject.Inject;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import java.io.IOException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +40,11 @@ public class OwnersStoredValues {
 
   public static StoredValue<PathOwners> PATH_OWNERS;
 
-  public static synchronized void initialize(Accounts accounts) {
+  @Inject static GitRepositoryManager repositoryManager;
+  static AllProjectsName allProjectsName;
+  @Inject private static PluginConfigFactory configFactory;
+
+  public static synchronized void initialize(Accounts accounts, String[] disablePatterns) {
     if (PATH_OWNERS != null) {
       return;
     }
@@ -43,8 +55,27 @@ public class OwnersStoredValues {
           protected PathOwners createValue(Prolog engine) {
             PatchList patchList = StoredValues.PATCH_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
-            String branch = StoredValues.getChange(engine).getDest().get();
-            return new PathOwners(accounts, repository, branch, patchList);
+            PrologEnvironment env = (PrologEnvironment) engine.control;
+            GitRepositoryManager gitMgr = env.getArgs().getGitRepositoryManager();
+            // Config config = configFactory.getGlobalPluginConfig("owners");
+            // String noWebLinks = config.getString("owners", "evo/pvt", "enabled");
+            try {
+              Repository allprojrepository =
+                  gitMgr.openRepository(Project.NameKey.parse("All-Projects"));
+              String branch = StoredValues.getChange(engine).getDest().get();
+              for (String pattern : disablePatterns) {
+                if (branch.trim().matches(pattern)) {
+                  log.info("Branch pattern matches");
+                  return new PathOwners(accounts, allprojrepository, repository, patchList);
+                }
+              }
+              return new PathOwners(accounts, allprojrepository, repository, branch, patchList);
+            } catch (RepositoryNotFoundException e) {
+              log.info("RepositoryNotFoundException: " + e);
+            } catch (IOException e) {
+              log.info("IOException: " + e);
+            }
+            return null;
           }
         };
   }

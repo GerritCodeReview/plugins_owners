@@ -91,17 +91,24 @@ public class ConfigurationParser {
         flatten(getNode(node, "owners").map(ConfigurationParser::extractOwners))
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
+    Set<String> group_owners =
+        flatten(getNode(node, "owners").map(ConfigurationParser::extractOwners))
+            .collect(Collectors.toSet());
     if (owners.isEmpty()) {
       log.warn("Matchers must contain a list of owners");
       return Optional.empty();
     }
 
     Optional<Matcher> suffixMatcher =
-        getText(node, "suffix").map(el -> new SuffixMatcher(el, owners));
-    Optional<Matcher> regexMatcher = getText(node, "regex").map(el -> new RegExMatcher(el, owners));
+        getText(node, "suffix").map(el -> new SuffixMatcher(el, owners, group_owners));
+    Optional<Matcher> regexMatcher =
+        getText(node, "regex").map(el -> new RegExMatcher(el, owners, group_owners));
     Optional<Matcher> partialRegexMatcher =
-        getText(node, "partial_regex").map(el -> new PartialRegExMatcher(el, owners));
-    Optional<Matcher> exactMatcher = getText(node, "exact").map(el -> new ExactMatcher(el, owners));
+        getText(node, "partial_regex").map(el -> new PartialRegExMatcher(el, owners, group_owners));
+    Optional<Matcher> exactMatcher =
+        getText(node, "exact").map(el -> new ExactMatcher(el, owners, group_owners));
+    Optional<Matcher> genericMatcher =
+        getText(node, "generic").map(el -> new GenericMatcher(el, owners, group_owners));
 
     return Optional.ofNullable(
         suffixMatcher.orElseGet(
@@ -111,10 +118,13 @@ public class ConfigurationParser {
                         partialRegexMatcher.orElseGet(
                             () ->
                                 exactMatcher.orElseGet(
-                                    () -> {
-                                      log.warn("Ignoring invalid element " + node.toString());
-                                      return null;
-                                    })))));
+                                    () ->
+                                        genericMatcher.orElseGet(
+                                            () -> {
+                                              log.warn(
+                                                  "Ignoring invalid element " + node.toString());
+                                              return null;
+                                            }))))));
   }
 
   private static Optional<String> getText(JsonNode node, String field) {

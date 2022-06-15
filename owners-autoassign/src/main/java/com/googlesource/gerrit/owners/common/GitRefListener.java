@@ -32,6 +32,7 @@ import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
@@ -44,6 +45,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
 import java.util.Set;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -63,6 +65,10 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private final ReviewerManager reviewerManager;
 
+  private final Config config;
+
+  private final String[] disablePatterns;
+
   private final OneOffRequestContext oneOffReqCtx;
 
   private Provider<CurrentUser> currentUserProvider;
@@ -73,6 +79,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
+      PluginConfigFactory configFactory,
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider) {
@@ -83,6 +90,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.reviewerManager = reviewerManager;
     this.oneOffReqCtx = oneOffReqCtx;
     this.currentUserProvider = currentUserProvider;
+    config = configFactory.getGlobalPluginConfig("owners");
+    disablePatterns = config.getStringList("owners", "disable", "branch");
   }
 
   @Override
@@ -122,12 +131,14 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private void handleGitReferenceUpdated(Event event) {
     String projectName = event.getProjectName();
     Repository repository;
+    Repository allprojrepository;
     try {
       repository = repositoryManager.openRepository(Project.NameKey.parse(projectName));
+      allprojrepository = repositoryManager.openRepository(Project.NameKey.parse("All-Projects"));
       try {
         String refName = event.getRefName();
         if (refName.startsWith(RefNames.REFS_CHANGES) && !RefNames.isNoteDbMetaRef(refName)) {
-          processEvent(repository, event);
+          processEvent(allprojrepository, repository, event);
         }
       } finally {
         repository.close();
@@ -137,7 +148,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     }
   }
 
-  public void processEvent(Repository repository, Event event) {
+  public void processEvent(Repository allprojrepository, Repository repository, Event event) {
     Change.Id cId = Change.Id.fromRef(event.getRefName());
     Changes changes = api.changes();
     // The provider injected by Gerrit is shared with other workers on the
@@ -147,7 +158,15 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       ChangeInfo change = cApi.get();
       PatchList patchList = getPatchList(event, change);
       if (patchList != null) {
-        PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
+        boolean flag = false;
+        PathOwners owners =
+            new PathOwners(accounts, allprojrepository, repository, change.branch, patchList);
+        for (String pattern : disablePatterns) {
+          if (change.branch.trim().matches(pattern)) {
+            owners = new PathOwners(accounts, allprojrepository, repository, patchList);
+            break;
+          }
+        }
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         for (Matcher matcher : owners.getMatchers().values()) {

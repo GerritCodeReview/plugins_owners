@@ -17,14 +17,12 @@ package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.googlesource.gerrit.owners.common.Accounts;
-import com.googlesource.gerrit.owners.common.GitRefListener;
-import com.googlesource.gerrit.owners.common.ReviewerManager;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
 
@@ -38,6 +36,7 @@ public class GitRefListenerTest extends GitRefListener {
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
+      PluginConfigFactory configFactory,
       SyncReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider) {
@@ -46,13 +45,14 @@ public class GitRefListenerTest extends GitRefListener {
         patchListCache,
         repositoryManager,
         accounts,
+        configFactory,
         reviewerManager,
         oneOffReqCtx,
         currentUserProvider);
   }
 
   @Override
-  public void processEvent(Repository repository, Event event) {
+  public void processEvent(Repository allprojrepository, Repository repository, Event event) {
     processedEvents++;
   }
 

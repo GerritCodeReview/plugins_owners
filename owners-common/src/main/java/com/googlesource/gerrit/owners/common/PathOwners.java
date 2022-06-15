@@ -27,9 +27,10 @@ import com.google.common.collect.Sets;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.reviewdb.client.Patch;
-import com.google.gerrit.reviewdb.client.RefNames;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
+import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,6 +52,8 @@ public class PathOwners {
 
   private final Repository repository;
 
+  private final Repository allprojrepository;
+
   private final PatchList patchList;
 
   private final ConfigurationParser parser;
@@ -61,8 +64,18 @@ public class PathOwners {
 
   private Map<String, Set<Id>> fileOwners;
 
-  public PathOwners(Accounts accounts, Repository repository, String branch, PatchList patchList) {
+  private Map<String, Set<String>> group_fileOwners;
+
+  @Inject private PluginConfigFactory cfg;
+
+  public PathOwners(
+      Accounts accounts,
+      Repository allprojrepository,
+      Repository repository,
+      String branch,
+      PatchList patchList) {
     this.repository = repository;
+    this.allprojrepository = allprojrepository;
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
     this.accounts = accounts;
@@ -71,6 +84,23 @@ public class PathOwners {
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
+    group_fileOwners = map.group_getFileOwners();
+  }
+
+  // This is constructor to be called when a particular is configured to disable "owners". So return
+  // empty OwnersMap
+  public PathOwners(
+      Accounts accounts, Repository allprojrepository, Repository repository, PatchList patchList) {
+    this.repository = repository;
+    this.allprojrepository = allprojrepository;
+    this.patchList = patchList;
+    this.parser = new ConfigurationParser(accounts);
+    this.accounts = accounts;
+    OwnersMap map = new OwnersMap();
+    owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
+    matchers = map.getMatchers();
+    fileOwners = map.getFileOwners();
+    group_fileOwners = map.group_getFileOwners();
   }
 
   /**
@@ -90,6 +120,10 @@ public class PathOwners {
     return fileOwners;
   }
 
+  public Map<String, Set<String>> group_getFileOwners() {
+    return group_fileOwners;
+  }
+
   /**
    * Fetched the owners for the associated patch list.
    *
@@ -101,23 +135,38 @@ public class PathOwners {
       String rootPath = "OWNERS";
 
       PathOwnersEntry projectEntry =
-          getOwnersConfig(rootPath, RefNames.REFS_CONFIG)
-              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+          getAllProjOwnersConfig(rootPath, "refs/meta/config")
+              .map(
+                  conf ->
+                      new PathOwnersEntry(
+                          rootPath, conf, accounts, Collections.emptySet(), Collections.emptySet()))
+              .orElse(new PathOwnersEntry());
+
+      PathOwnersEntry rootProjectEntry =
+          getOwnersConfig(rootPath, "refs/meta/config")
+              .map(
+                  conf ->
+                      new PathOwnersEntry(
+                          rootPath, conf, accounts, Collections.emptySet(), Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       PathOwnersEntry rootEntry =
           getOwnersConfig(rootPath, branch)
-              .map(conf -> new PathOwnersEntry(rootPath, conf, accounts, Collections.emptySet()))
+              .map(
+                  conf ->
+                      new PathOwnersEntry(
+                          rootPath, conf, accounts, Collections.emptySet(), Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
       Set<String> modifiedPaths = getModifiedPaths();
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
-        currentEntry = resolvePathEntry(path, branch, projectEntry, rootEntry, entries);
+        currentEntry =
+            resolvePathEntry(path, branch, projectEntry, rootProjectEntry, rootEntry, entries);
 
         // add owners to file for matcher predicates
-        ownersMap.addFileOwners(path, currentEntry.getOwners());
+        ownersMap.group_addFileOwners(path, currentEntry.group_getOwners());
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -152,11 +201,42 @@ public class PathOwners {
       String path,
       OwnersMap ownersMap) {
     Iterator<Matcher> it = fullMatchers.values().iterator();
+    boolean flag = false;
     while (it.hasNext()) {
       Matcher matcher = it.next();
-      if (matcher.matches(path)) {
-        newMatchers.put(matcher.getPath(), matcher);
-        ownersMap.addFileOwners(path, matcher.getOwners());
+      if (!matcher.matches(path) || matcher instanceof GenericMatcher) {
+        continue;
+      }
+      newMatchers.put(matcher.getPath(), matcher);
+      ownersMap.addFileOwners(path, matcher.getOwners());
+      ownersMap.group_addFileOwners(path, matcher.group_getOwners());
+      flag = true;
+    }
+    if (!flag) {
+      Iterator<Matcher> it1 = fullMatchers.values().iterator();
+      while (it1.hasNext()) {
+        Matcher matcher = (Matcher) it1.next();
+        if (matcher.matches(path)
+            && matcher instanceof GenericMatcher
+            && !matcher.path.equals(".*")) {
+          newMatchers.put(matcher.getPath(), matcher);
+          ownersMap.addFileOwners(path, matcher.getOwners());
+          ownersMap.group_addFileOwners(path, matcher.group_getOwners());
+          flag = true;
+        }
+      }
+    }
+    if (!flag) {
+      Iterator<Matcher> it2 = fullMatchers.values().iterator();
+      while (it2.hasNext()) {
+        Matcher matcher = (Matcher) it2.next();
+        if (matcher.matches(path)
+            && matcher instanceof GenericMatcher
+            && matcher.path.equals(".*")) {
+          newMatchers.put(matcher.getPath(), matcher);
+          ownersMap.addFileOwners(path, matcher.getOwners());
+          ownersMap.group_addFileOwners(path, matcher.group_getOwners());
+        }
       }
     }
   }
@@ -165,6 +245,7 @@ public class PathOwners {
       String path,
       String branch,
       PathOwnersEntry projectEntry,
+      PathOwnersEntry rootProjectEntry,
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries)
       throws IOException {
@@ -173,13 +254,27 @@ public class PathOwners {
     StringBuilder builder = new StringBuilder();
 
     if (rootEntry.isInherited()) {
+      for (Matcher matcher : rootProjectEntry.getMatchers().values()) {
+        if (!currentEntry.hasMatcher(matcher.getPath())) {
+          currentEntry.addMatcher(matcher);
+        }
+      }
+      if (currentEntry.getOwners().isEmpty()) {
+        currentEntry.setOwners(rootProjectEntry.getOwners());
+      }
+      if (currentEntry.getOwnersPath() == null) {
+        currentEntry.setOwnersPath(projectEntry.getOwnersPath());
+      }
+    }
+
+    if (rootProjectEntry.isInherited()) {
       for (Matcher matcher : projectEntry.getMatchers().values()) {
         if (!currentEntry.hasMatcher(matcher.getPath())) {
           currentEntry.addMatcher(matcher);
         }
       }
       if (currentEntry.getOwners().isEmpty()) {
-        currentEntry.setOwners(projectEntry.getOwners());
+        currentEntry.setOwners(rootProjectEntry.getOwners());
       }
       if (currentEntry.getOwnersPath() == null) {
         currentEntry.setOwnersPath(projectEntry.getOwnersPath());
@@ -200,8 +295,9 @@ public class PathOwners {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
         final Set<Id> owners = currentEntry.getOwners();
+        final Set<String> group_owners = currentEntry.group_getOwners();
         currentEntry =
-            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners))
+            conf.map(c -> new PathOwnersEntry(ownersPath, c, accounts, owners, group_owners))
                 .orElse(currentEntry);
         if (conf.map(OwnersConfig::isInherited).orElse(false)) {
           for (Matcher m : currentEntry.getMatchers().values()) {
@@ -247,6 +343,12 @@ public class PathOwners {
   private Optional<OwnersConfig> getOwnersConfig(String ownersPath, String branch)
       throws IOException {
     return getBlobAsBytes(repository, branch, ownersPath)
+        .flatMap(bytes -> parser.getOwnersConfig(bytes));
+  }
+
+  private Optional<OwnersConfig> getAllProjOwnersConfig(String ownersPath, String branch)
+      throws IOException {
+    return getBlobAsBytes(allprojrepository, branch, ownersPath)
         .flatMap(bytes -> parser.getOwnersConfig(bytes));
   }
 }

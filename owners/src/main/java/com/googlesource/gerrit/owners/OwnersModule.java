@@ -16,14 +16,36 @@
 package com.googlesource.gerrit.owners;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.extensions.restapi.RestApiModule;
+import com.google.gerrit.server.change.RevisionResource;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import org.eclipse.jgit.lib.Config;
 
 public class OwnersModule extends AbstractModule {
+
+  private final String noWebLinks;
+
+  @Inject
+  OwnersModule(PluginConfigFactory configFactory) {
+    Config config = configFactory.getGlobalPluginConfig("owners");
+    this.noWebLinks = config.getString("owners", "evo/pvt", "enabled");
+  }
+
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), PredicateProvider.class)
         .to(OwnerPredicateProvider.class)
         .asEagerSingleton();
+
+    install(
+        new RestApiModule() {
+          protected void configure() {
+            get(RevisionResource.REVISION_KIND, "getreview").to(GetReview.class);
+            get(RevisionResource.REVISION_KIND, "pendingreview").to(PendingReview.class);
+          }
+        });
   }
 }

@@ -19,8 +19,8 @@ import com.google.gerrit.reviewdb.client.Account;
 import java.util.Set;
 
 public class ExactMatcher extends Matcher {
-  public ExactMatcher(String path, Set<Account.Id> owners) {
-    super(path, owners);
+  public ExactMatcher(String path, Set<Account.Id> owners, Set<String> group_owners) {
+    super(path, owners, group_owners);
   }
 
   @Override

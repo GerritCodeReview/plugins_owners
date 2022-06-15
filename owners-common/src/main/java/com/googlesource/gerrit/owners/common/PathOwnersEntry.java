@@ -37,12 +37,17 @@ class PathOwnersEntry {
   }
 
   public PathOwnersEntry(
-      String path, OwnersConfig config, Accounts accounts, Set<Account.Id> inheritedOwners) {
+      String path,
+      OwnersConfig config,
+      Accounts accounts,
+      Set<Account.Id> inheritedOwners,
+      Set<String> group_inheritedOwners) {
     this.ownersPath = path;
     this.owners =
         config.getOwners().stream()
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
+    this.group_owners = config.getOwners().stream().collect(Collectors.toSet());
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
     }
@@ -63,6 +68,7 @@ class PathOwnersEntry {
 
   private String ownersPath;
   private Set<Account.Id> owners = Sets.newHashSet();
+  private Set<String> group_owners = Sets.newHashSet();
 
   private Map<String, Matcher> matchers = Maps.newHashMap();
 
@@ -78,8 +84,16 @@ class PathOwnersEntry {
     return owners;
   }
 
+  public Set<String> group_getOwners() {
+    return group_owners;
+  }
+
   public void setOwners(Set<Account.Id> owners) {
     this.owners = owners;
+  }
+
+  public void group_setOwners(Set<String> group_owners) {
+    this.group_owners = group_owners;
   }
 
   public String getOwnersPath() {

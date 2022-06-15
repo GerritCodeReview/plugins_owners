@@ -19,10 +19,11 @@ import com.google.gerrit.reviewdb.client.Account;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class RegExMatcher extends Matcher {
+public class GenericMatcher extends Matcher {
+
   Pattern pattern;
 
-  public RegExMatcher(String path, Set<Account.Id> owners, Set<String> group_owners) {
+  public GenericMatcher(String path, Set<Account.Id> owners, Set<String> group_owners) {
     super(path, owners, group_owners);
     pattern = Pattern.compile(path);
   }
