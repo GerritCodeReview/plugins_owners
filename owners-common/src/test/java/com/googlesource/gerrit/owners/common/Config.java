@@ -34,6 +34,7 @@ import org.powermock.api.easymock.PowerMock;
 @Ignore
 public abstract class Config {
   protected Repository repository;
+  protected Repository allprojectsrepository;
   protected PatchList patchList;
   protected ConfigurationParser parser;
   protected TestAccounts accounts = new TestAccounts();
