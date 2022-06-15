@@ -22,6 +22,7 @@ import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class OwnersStoredValues {
 
   public static StoredValue<PathOwners> PATH_OWNERS;
 
-  public static synchronized void initialize(Accounts accounts) {
+  public static synchronized void initialize(Accounts accounts, String[] disablePatterns) {
     if (PATH_OWNERS != null) {
       return;
     }
@@ -44,7 +45,12 @@ public class OwnersStoredValues {
             PatchList patchList = StoredValues.PATCH_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
             String branch = StoredValues.getChange(engine).getDest().branch();
-            return new PathOwners(accounts, repository, branch, patchList);
+            for (String pattern : disablePatterns) {
+              if (branch.trim().matches(pattern)) {
+                return new PathOwners(accounts, repository, Optional.empty(), patchList);
+              }
+            }
+            return new PathOwners(accounts, repository, Optional.of(branch), patchList);
           }
         };
   }
