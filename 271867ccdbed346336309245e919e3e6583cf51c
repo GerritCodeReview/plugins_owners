@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c12e86af_9062cc97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-06-16T20:13:21Z",
+      "side": 1,
+      "message": "This does not work for me on 3.4:\n\nStack trace: https://pastebin.com/raw/QVRAACk4\n\nrules.pl:\n\n```\nsubmit_rule(S) :-\n  gerrit:default_submit(D),\n  D \u003d.. [submit | Ds],\n  findall(U, gerrit:commit_label(label(\u0027Code-Review\u0027, 2), U), Approvers),\n  gerrit_owners:add_owner_approval(Approvers, Ds, A),\n  S \u003d.. [submit | A].\n ```\n \n OWNERS file (in root dir):\n ```\ninherited: true\nmatchers:\n- exact: file1\n  owners:\n  - usera\n- exact: file2\n  owners:\n  - userb\n- suffix: .java\n  owners:\n  - group/group1\n ```\n",
+      "revId": "271867ccdbed346336309245e919e3e6583cf51c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
