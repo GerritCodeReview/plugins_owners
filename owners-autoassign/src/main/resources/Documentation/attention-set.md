@@ -11,7 +11,7 @@ The `owners-api.jar` libModule included in the owners' plugin project contains
 a generic interface that can be used to customize Gerrit's default
 attention-set behaviour.
 
-## owner-api setup
+## owners-api setup
 
 Copy the `owners-api.jar` libModule into the $GERRIT_SITE/lib directory
 and add the following entry to `gerrit.config`:
