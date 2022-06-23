@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b889573_07fdcaeb",
+        "filename": "owners-autoassign/src/main/resources/Documentation/attention-set.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-06-23T10:45:22Z",
+      "side": 1,
+      "message": "nit: unrelated change?",
+      "revId": "40e1f9581ce02f3b6be068b2e801e56de31961e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
