@@ -16,6 +16,7 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
@@ -33,7 +34,8 @@ public class OwnersStoredValues {
 
   public static StoredValue<PathOwners> PATH_OWNERS;
 
-  public static synchronized void initialize(Accounts accounts, String[] disablePatterns) {
+  public static synchronized void initialize(
+      Accounts accounts, ImmutableSet<String> disablePatterns) {
     if (PATH_OWNERS != null) {
       return;
     }
