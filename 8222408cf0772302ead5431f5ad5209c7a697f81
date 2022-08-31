@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "924710dd_674bc570",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-31T15:01:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57b6ad1d_d433199c",
+      "range": {
+        "startLine": 157,
+        "startChar": 81,
+        "endLine": 157,
+        "endChar": 95
+      },
+      "revId": "8222408cf0772302ead5431f5ad5209c7a697f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0a7a47a_89d7d132",
@@ -159,6 +183,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "499e3510_1c15f72d",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-31T15:01:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89b27408_f7837b52",
+      "revId": "8222408cf0772302ead5431f5ad5209c7a697f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8913169_a254392c",
@@ -172,6 +214,30 @@
       "writtenOn": "2022-07-17T05:13:18Z",
       "side": 1,
       "message": "Is this trim() necessary?\nHave you seen that branch name can have leading and trailing whitespaces?",
+      "range": {
+        "startLine": 229,
+        "startChar": 28,
+        "endLine": 229,
+        "endChar": 34
+      },
+      "revId": "8222408cf0772302ead5431f5ad5209c7a697f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02c3acbb_f3f0575b",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-31T15:01:09Z",
+      "side": 1,
+      "message": "True, no need to trim.",
+      "parentUuid": "f8913169_a254392c",
       "range": {
         "startLine": 229,
         "startChar": 28,
