@@ -20,36 +20,31 @@ import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJE
 import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
 
 import com.google.gerrit.entities.Project;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.client.ReviewerState;
-import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class AutoassignConfig {
-
-  private final PluginConfigFactory cfgFactory;
-  private final String pluginName;
+  private final PluginSettings config;
 
   @Inject
-  AutoassignConfig(@PluginName String pluginName, PluginConfigFactory cfgFactory) {
-    this.pluginName = pluginName;
-    this.cfgFactory = cfgFactory;
+  AutoassignConfig(PluginSettings config) {
+    this.config = config;
   }
 
   public boolean autoAssignWip(Project.NameKey projectKey) throws NoSuchProjectException {
-    return cfg(projectKey).getEnum(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, TRUE).equals(TRUE);
+    return config
+        .projectSpecificConfig(projectKey)
+        .getEnum(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES, TRUE)
+        .equals(TRUE);
   }
 
   public ReviewerState autoassignedReviewerState(Project.NameKey projectKey)
       throws NoSuchProjectException {
-    return cfg(projectKey).getEnum(PROJECT_CONFIG_AUTOASSIGN_FIELD, ReviewerState.REVIEWER);
-  }
-
-  private PluginConfig cfg(Project.NameKey projectKey) throws NoSuchProjectException {
-    return cfgFactory.getFromProjectConfigWithInheritance(projectKey, pluginName);
+    return config
+        .projectSpecificConfig(projectKey)
+        .getEnum(PROJECT_CONFIG_AUTOASSIGN_FIELD, ReviewerState.REVIEWER);
   }
 }

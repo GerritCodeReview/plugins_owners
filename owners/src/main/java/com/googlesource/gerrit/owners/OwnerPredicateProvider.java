@@ -18,20 +18,17 @@ package com.googlesource.gerrit.owners;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.Listen;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.Accounts;
-import org.eclipse.jgit.lib.Config;
+import com.googlesource.gerrit.owners.common.PluginSettings;
 
 /** Gerrit OWNERS Prolog Predicate Provider. */
 @Listen
 public class OwnerPredicateProvider implements PredicateProvider {
   @Inject
-  public OwnerPredicateProvider(Accounts accounts, PluginConfigFactory configFactory) {
-    Config config = configFactory.getGlobalPluginConfig("owners");
-    String[] disablePatterns = config.getStringList("owners", "disable", "branch");
-    OwnersStoredValues.initialize(accounts, disablePatterns);
+  public OwnerPredicateProvider(Accounts accounts, PluginSettings config) {
+    OwnersStoredValues.initialize(accounts, config.disabledBranchesPatterns());
   }
 
   @Override

@@ -20,7 +20,6 @@ import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.config.AllProjectsName;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.PatchListCache;
@@ -31,6 +30,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.AutoassignConfig;
 import com.googlesource.gerrit.owners.common.GitRefListener;
+import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.common.ReviewerManager;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
@@ -47,7 +47,7 @@ public class GitRefListenerTest extends GitRefListener {
       GitRepositoryManager repositoryManager,
       Accounts accounts,
       ReviewerManager reviewerManager,
-      PluginConfigFactory configFactory,
+      PluginSettings config,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
@@ -58,14 +58,13 @@ public class GitRefListenerTest extends GitRefListener {
         patchListCache,
         repositoryManager,
         accounts,
-        configFactory,
+        config,
         reviewerManager,
         oneOffReqCtx,
         currentUserProvider,
         notesFactory,
         cfg,
-        allProjectsName,
-        "owners");
+        allProjectsName);
   }
 
   @Override
