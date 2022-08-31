@@ -16,9 +16,9 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.config.AllProjectsName;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.rules.PrologEnvironment;
@@ -42,9 +42,9 @@ public class OwnersStoredValues {
 
   @Inject static GitRepositoryManager repositoryManager;
   static AllProjectsName allProjectsName;
-  @Inject private static PluginConfigFactory configFactory;
 
-  public static synchronized void initialize(Accounts accounts, String[] disablePatterns) {
+  public static synchronized void initialize(
+      Accounts accounts, ImmutableSet<String> disablePatterns) {
     if (PATH_OWNERS != null) {
       return;
     }
