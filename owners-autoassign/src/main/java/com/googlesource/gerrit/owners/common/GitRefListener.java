@@ -19,6 +19,7 @@ package com.googlesource.gerrit.owners.common;
 import static com.google.gerrit.extensions.client.DiffPreferencesInfo.Whitespace.IGNORE_NONE;
 
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
@@ -27,7 +28,6 @@ import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.annotations.Listen;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.Changes;
@@ -37,7 +37,6 @@ import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.notedb.ChangeNotesCommit;
@@ -57,7 +56,6 @@ import java.util.Optional;
 import java.util.Set;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
-import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.FooterKey;
@@ -78,9 +76,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private final Accounts accounts;
   private final ReviewerManager reviewerManager;
 
-  private final Config config;
-
-  private final String[] disabledBranchPatterns;
+  private final ImmutableSet<String> disabledBranchPatterns;
 
   private final OneOffRequestContext oneOffReqCtx;
 
@@ -96,13 +92,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
-      PluginConfigFactory configFactory,
+      PluginSettings config,
       ReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoassignConfig cfg,
-      @PluginName String pluginName) {
+      AutoassignConfig cfg) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -112,8 +107,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
     this.cfg = cfg;
-    config = configFactory.getGlobalPluginConfig(pluginName);
-    disabledBranchPatterns = config.getStringList("owners", "disable", "branch");
+    this.disabledBranchPatterns = config.disabledBranchPatterns();
   }
 
   @Override
