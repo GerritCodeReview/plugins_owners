@@ -272,6 +272,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f84a9a86_b0edc448",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T12:43:09Z",
+      "side": 1,
+      "message": "True, I got confused. It took me a while to figure it out. I think the 2 `PathOwners` constructors make the logic a bit unclear IMO.\n\nThe way it works is that, depending on the way `PathOwners` is instantiated, with or without `branch` parameter, you might try to find `owners` or not.\n\nWhat about having a `PathOwners` and a `PathOwnersAndReviewers` class inheriting from the same abstract class? One will only have owners, the other one both owners and reviewers. WDYT?",
+      "parentUuid": "cbe5df40_723e6b02",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 9
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "592bc3f0_a8b59a3e",
         "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
         "patchSetId": 6
