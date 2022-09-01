@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bea3778_396e7f6d",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T10:23:50Z",
+      "side": 1,
+      "message": "not part of this change",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 24
+      },
+      "revId": "9996c8626c17823bafa008d70b1d82c8d193bd8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e884d5a0_f06a728f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PluginSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T10:23:50Z",
+      "side": 1,
+      "message": "this should be a singleton, right ?",
+      "revId": "9996c8626c17823bafa008d70b1d82c8d193bd8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
