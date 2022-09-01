@@ -383,6 +383,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37b86eca_35b7e841",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T10:05:06Z",
+      "side": 1,
+      "message": "Either way, it needs to be added to the documentation.",
+      "parentUuid": "6ea17366_d69d74a0",
+      "range": {
+        "startLine": 338,
+        "startChar": 2,
+        "endLine": 342,
+        "endChar": 3
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54f4e2b1_b8d7fcac",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
         "patchSetId": 6
