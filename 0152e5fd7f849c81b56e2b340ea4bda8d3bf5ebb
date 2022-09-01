@@ -18,6 +18,46 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2412f056_dc8ea82e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T09:27:48Z",
+      "side": 1,
+      "message": "Seems like we don\u0027t have test to check this new behaviour. I think it is worth testing at least some basic scenarios.",
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cc8c150_2a11bb66",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T09:27:48Z",
+      "side": 1,
+      "message": "Here we are breaking out from the branch matching, but we are still adding reviewers later on. Is that correct? I was expecting to just break out from any owner/reviewer computation as soon as a branch was matched.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 9
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "592bc3f0_a8b59a3e",
