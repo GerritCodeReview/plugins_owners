@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a229239_7f099254",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T10:03:35Z",
+      "side": 1,
+      "message": "Maybe `disabledBranchPatterns` is more descriptive?",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 19
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5af981b7_97a549fd",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 6
@@ -330,6 +353,29 @@
         "startChar": 0,
         "endLine": 257,
         "endChar": 7
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ea17366_d69d74a0",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-01T10:03:35Z",
+      "side": 1,
+      "message": "Is this strictly related to this change ? I think the possibility of reading OWNER file configuration from the All-projects could be extracted in a separate change or am I getting it wrong?",
+      "range": {
+        "startLine": 338,
+        "startChar": 2,
+        "endLine": 342,
+        "endChar": 3
       },
       "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
