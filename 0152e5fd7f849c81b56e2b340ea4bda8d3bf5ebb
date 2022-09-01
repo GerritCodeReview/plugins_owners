@@ -58,6 +58,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffea3aa1_5a29c0ce",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-01T11:12:26Z",
+      "side": 1,
+      "message": "True, but the config returns String[] which are mutable :-(",
+      "parentUuid": "f8cf9ec1_45209e9b",
+      "range": {
+        "startLine": 83,
+        "startChar": 16,
+        "endLine": 83,
+        "endChar": 22
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a229239_7f099254",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-09-01T10:03:35Z",
       "side": 1,
       "message": "Maybe `disabledBranchPatterns` is more descriptive?",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 19
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "046d5d14_829a2e18",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-01T11:12:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a229239_7f099254",
       "range": {
         "startLine": 120,
         "startChar": 4,
@@ -104,6 +152,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43b33bea_2a060666",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-01T11:12:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5af981b7_97a549fd",
+      "range": {
+        "startLine": 219,
+        "startChar": 17,
+        "endLine": 219,
+        "endChar": 34
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4f23be5_4f3c3bc9",
@@ -127,6 +199,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "008982f1_2d8f6aea",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-01T11:12:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4f23be5_4f3c3bc9",
+      "range": {
+        "startLine": 237,
+        "startChar": 46,
+        "endLine": 237,
+        "endChar": 63
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cc8c150_2a11bb66",
@@ -140,6 +236,30 @@
       "writtenOn": "2022-09-01T09:27:48Z",
       "side": 1,
       "message": "Here we are breaking out from the branch matching, but we are still adding reviewers later on. Is that correct? I was expecting to just break out from any owner/reviewer computation as soon as a branch was matched.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 9
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbe5df40_723e6b02",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-01T11:12:26Z",
+      "side": 1,
+      "message": "This change is for disabling the owners, not the reviewers.",
+      "parentUuid": "6cc8c150_2a11bb66",
       "range": {
         "startLine": 235,
         "startChar": 0,
@@ -186,6 +306,30 @@
       "writtenOn": "2022-09-01T07:32:22Z",
       "side": 1,
       "message": "I find this a bit confusing, possibly because of some lack of knowledge from my side:\n\nDoes this mean that only the processing of the OWNERS file in \u0027All-Projects\u0027 is disabled?\nor, rather, that the processing of all OWNERS files is disabled across all projects in gerrit?",
+      "range": {
+        "startLine": 4,
+        "startChar": 36,
+        "endLine": 4,
+        "endChar": 69
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32b3beff_c35fc3f2",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-01T11:12:26Z",
+      "side": 1,
+      "message": "Is disabled across all projects, not in All-Projects project.\n\nBy looking at the config file, this is in the wrong place. The auto-assign logic doesn\u0027t change but the owners behaviour changes. Hence, only the owners plugin is impacted.",
+      "parentUuid": "d435714d_108b0453",
       "range": {
         "startLine": 4,
         "startChar": 36,
