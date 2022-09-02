@@ -16,8 +16,11 @@
 package com.googlesource.gerrit.owners;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.extensions.restapi.RestApiModule;
+import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.AbstractModule;
+import com.googlesource.gerrit.owners.restapi.GetFilesOwners;
 
 public class OwnersModule extends AbstractModule {
   @Override
@@ -25,5 +28,12 @@ public class OwnersModule extends AbstractModule {
     DynamicSet.bind(binder(), PredicateProvider.class)
         .to(OwnerPredicateProvider.class)
         .asEagerSingleton();
+
+    install(
+        new RestApiModule() {
+          protected void configure() {
+            get(RevisionResource.REVISION_KIND, "getFilesOwners").to(GetFilesOwners.class);
+          }
+        });
   }
 }
