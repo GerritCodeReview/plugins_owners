@@ -294,6 +294,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "693799cf_3a74c465",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:19:53Z",
+      "side": 1,
+      "message": "Marking this as resolved. @Ponch let me know if you have any other doubts.",
+      "parentUuid": "cbe5df40_723e6b02",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 9
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "592bc3f0_a8b59a3e",
@@ -586,6 +610,30 @@
       "side": 1,
       "message": "Either way, it needs to be added to the documentation.",
       "parentUuid": "6ea17366_d69d74a0",
+      "range": {
+        "startLine": 338,
+        "startChar": 2,
+        "endLine": 342,
+        "endChar": 3
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db05035c_f9f934b7",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:19:53Z",
+      "side": 1,
+      "message": "You are right, let me pull that out in a separate change.",
+      "parentUuid": "37b86eca_35b7e841",
       "range": {
         "startLine": 338,
         "startChar": 2,
