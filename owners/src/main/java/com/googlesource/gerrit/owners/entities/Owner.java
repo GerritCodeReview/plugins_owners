@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2022 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,18 +13,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.owners;
+package com.googlesource.gerrit.owners.entities;
 
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.rules.PredicateProvider;
-import com.google.inject.AbstractModule;
+public class Owner {
+  private String name;
+  private String id;
 
-public class OwnersModule extends AbstractModule {
-  @Override
-  protected void configure() {
-    DynamicSet.bind(binder(), PredicateProvider.class)
-        .to(OwnerPredicateProvider.class)
-        .asEagerSingleton();
-    install(new OwnersRestApiModule());
+  public Owner(String name, String id) {
+    this.name = name;
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getId() {
+    return id;
   }
 }
