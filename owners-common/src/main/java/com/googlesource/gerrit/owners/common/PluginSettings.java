@@ -17,7 +17,6 @@ package com.googlesource.gerrit.owners.common;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.entities.Project;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.project.NoSuchProjectException;
@@ -35,9 +34,9 @@ public class PluginSettings {
   private final Config globalPluginConfig;
 
   @Inject
-  public PluginSettings(PluginConfigFactory configFactory, @PluginName String ownersPluginName) {
+  public PluginSettings(PluginConfigFactory configFactory) {
     this.configFactory = configFactory;
-    this.ownersPluginName = ownersPluginName;
+    this.ownersPluginName = "owners"; // TODO: This should be injected with @PluginName annotation
 
     this.globalPluginConfig = configFactory.getGlobalPluginConfig(ownersPluginName);
     disabledBranchesPatterns =
