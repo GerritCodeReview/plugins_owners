@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2022 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,13 @@
 
 package com.googlesource.gerrit.owners;
 
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.rules.PredicateProvider;
-import com.google.inject.AbstractModule;
+import com.google.gerrit.extensions.restapi.RestApiModule;
+import com.google.gerrit.server.change.RevisionResource;
+import com.googlesource.gerrit.owners.restapi.GetFilesOwners;
 
-public class OwnersModule extends AbstractModule {
+public class OwnersRestApiModule extends RestApiModule {
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), PredicateProvider.class)
-        .to(OwnerPredicateProvider.class)
-        .asEagerSingleton();
-    install(new OwnersRestApiModule());
+    get(RevisionResource.REVISION_KIND, "files-owners").to(GetFilesOwners.class);
   }
 }
