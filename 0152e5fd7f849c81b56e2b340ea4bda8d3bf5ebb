@@ -388,6 +388,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db9bd1c1_074c4ca1",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "I\u0027ve removed the docs here, as it doesn\u0027t impact the auto-assign.",
+      "parentUuid": "32b3beff_c35fc3f2",
+      "range": {
+        "startLine": 4,
+        "startChar": 36,
+        "endLine": 4,
+        "endChar": 69
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e9cb89_14cbfa35",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Removed this doc.",
+      "parentUuid": "592bc3f0_a8b59a3e",
+      "range": {
+        "startLine": 4,
+        "startChar": 4,
+        "endLine": 4,
+        "endChar": 6
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38d9c5b8_4fdb99f1",
@@ -401,6 +449,30 @@
       "writtenOn": "2022-09-01T09:57:35Z",
       "side": 1,
       "message": "camelCase for consistency",
+      "range": {
+        "startLine": 57,
+        "startChar": 27,
+        "endLine": 57,
+        "endChar": 44
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "397f7a40_73837436",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "All-Projects has been descoped from this change.",
+      "parentUuid": "38d9c5b8_4fdb99f1",
       "range": {
         "startLine": 57,
         "startChar": 27,
@@ -434,6 +506,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "679259f1_7a29f783",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "All-Projects has been descoped from this change.",
+      "parentUuid": "af94d35e_a6bdb05e",
+      "range": {
+        "startLine": 71,
+        "startChar": 17,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "963e265e_36e33e54",
@@ -447,6 +543,30 @@
       "writtenOn": "2022-09-01T09:57:35Z",
       "side": 1,
       "message": "camelCase for consistency",
+      "range": {
+        "startLine": 76,
+        "startChar": 29,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2890ecc_bcd41e38",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "All-Projects has been descoped from this change.",
+      "parentUuid": "963e265e_36e33e54",
       "range": {
         "startLine": 76,
         "startChar": 29,
@@ -503,6 +623,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8086527c_b4e555a5",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Constructor removed.",
+      "parentUuid": "e69e425f_e7c9b1a6",
+      "range": {
+        "startLine": 88,
+        "startChar": 5,
+        "endLine": 88,
+        "endChar": 24
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69ae4055_7b5df092",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Constructor removed.",
+      "parentUuid": "3e56fd61_ec225993",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 38
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1f4c4d6_cf65adeb",
@@ -550,6 +718,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9277d169_2a018c2a",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Agreed, I\u0027ve removed.",
+      "parentUuid": "256ceaad_d709354a",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 20
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78dac41c_6fe632e9",
@@ -563,6 +755,30 @@
       "writtenOn": "2022-09-01T09:57:35Z",
       "side": 1,
       "message": "nit: this could maybe be factored out in a method to avoid the code repetition at line #261",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 7
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "059a2cab_0f3e8d4f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "It wasn\u0027t part of this change, I\u0027ve removed it.",
+      "parentUuid": "78dac41c_6fe632e9",
       "range": {
         "startLine": 247,
         "startChar": 0,
@@ -644,6 +860,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f34e97bb_e1cfaf2b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db05035c_f9f934b7",
+      "range": {
+        "startLine": 338,
+        "startChar": 2,
+        "endLine": 342,
+        "endChar": 3
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54f4e2b1_b8d7fcac",
@@ -657,6 +897,30 @@
       "writtenOn": "2022-09-01T09:57:35Z",
       "side": 1,
       "message": "These are not used",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 59
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85856389_4f144b56",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54f4e2b1_b8d7fcac",
       "range": {
         "startLine": 43,
         "startChar": 0,
@@ -690,6 +954,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b1a45bb_5bc14924",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4478af68_de6875ce",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 84
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e648cc3_39bcf696",
@@ -703,6 +991,30 @@
       "writtenOn": "2022-09-01T09:57:35Z",
       "side": 1,
       "message": "camelCase for consistencty",
+      "range": {
+        "startLine": 63,
+        "startChar": 25,
+        "endLine": 63,
+        "endChar": 42
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1941e450_13f6dd3a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "All-Projects has been now descoped from this change.",
+      "parentUuid": "1e648cc3_39bcf696",
       "range": {
         "startLine": 63,
         "startChar": 25,
@@ -736,6 +1048,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e2b4c6f_f4bac654",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "All-Projects has been now descoped from this change.",
+      "parentUuid": "f4149cbc_33a4cfe8",
+      "range": {
+        "startLine": 64,
+        "startChar": 62,
+        "endLine": 64,
+        "endChar": 76
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b77bcec9_ac591abc",
@@ -749,6 +1085,30 @@
       "writtenOn": "2022-09-01T07:32:22Z",
       "side": 1,
       "message": "should this be logged at a finer level? info could cause to spam the log, if disable branch is used extensively.",
+      "range": {
+        "startLine": 68,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 26
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c8c27a3_91dac539",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b77bcec9_ac591abc",
       "range": {
         "startLine": 68,
         "startChar": 22,
@@ -782,6 +1142,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c3b3b6_6f280890",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Not used anymore.",
+      "parentUuid": "96f4c712_b901b82f",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 22
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b41210b8_cb209b64",
@@ -795,6 +1179,30 @@
       "writtenOn": "2022-09-01T07:32:22Z",
       "side": 1,
       "message": "consider logging at `warn` level",
+      "range": {
+        "startLine": 76,
+        "startChar": 18,
+        "endLine": 76,
+        "endChar": 22
+      },
+      "revId": "0152e5fd7f849c81b56e2b340ea4bda8d3bf5ebb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a290221e_48e64109",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:44:58Z",
+      "side": 1,
+      "message": "Not used anymore.",
+      "parentUuid": "b41210b8_cb209b64",
       "range": {
         "startLine": 76,
         "startChar": 18,
