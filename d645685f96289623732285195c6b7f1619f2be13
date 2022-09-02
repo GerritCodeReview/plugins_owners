@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "034e9d2c_7b92283d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:48:08Z",
+      "side": 1,
+      "message": "Thanks everyone for the feedback: the finding of the All-Users.git management out of scope has been very beneficial.\n\nNow the change is smaller and more focused.",
+      "revId": "d645685f96289623732285195c6b7f1619f2be13",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aebb7df_1172dad8",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-02T23:48:08Z",
+      "side": 1,
+      "message": "This isn\u0027t needed.",
+      "range": {
+        "startLine": 49,
+        "startChar": 25,
+        "endLine": 49,
+        "endChar": 31
+      },
+      "revId": "d645685f96289623732285195c6b7f1619f2be13",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
