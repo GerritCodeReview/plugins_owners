@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66e1b8ba_4411f474",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-03T22:15:39Z",
+      "side": 1,
+      "message": "Added one test: I have to say that overall the test coverage of the plugin remains very low. It would make sense to have a dedicated change to increase the coverage overall.",
+      "parentUuid": "0a03e6af_b2dfcc36",
+      "revId": "73927b8cf9171fcdcf907f3a09c3b3cbd73f87f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36c8225c_6c4de89f",
