@@ -209,7 +209,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       ChangeInfo change = cApi.get();
       PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
-        PathOwners owners = new PathOwners(accounts, repository, Optional.of(change.branch), patchList);
+        PathOwners owners =
+            new PathOwners(
+                accounts,
+                repository,
+                cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
+                patchList);
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());

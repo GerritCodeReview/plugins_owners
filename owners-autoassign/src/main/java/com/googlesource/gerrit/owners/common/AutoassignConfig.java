@@ -47,4 +47,8 @@ public class AutoassignConfig {
         .projectSpecificConfig(projectKey)
         .getEnum(PROJECT_CONFIG_AUTOASSIGN_FIELD, ReviewerState.REVIEWER);
   }
+
+  public boolean isBranchDisabled(String branch) {
+    return config.isBranchDisabled(branch);
+  }
 }

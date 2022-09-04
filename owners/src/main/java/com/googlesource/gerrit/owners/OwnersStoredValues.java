@@ -16,13 +16,13 @@
 
 package com.googlesource.gerrit.owners;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.common.PluginSettings;
 import java.util.Optional;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -34,8 +34,7 @@ public class OwnersStoredValues {
 
   public static StoredValue<PathOwners> PATH_OWNERS;
 
-  public static synchronized void initialize(
-      Accounts accounts, ImmutableSet<String> disablePatterns) {
+  public static synchronized void initialize(Accounts accounts, PluginSettings settings) {
     if (PATH_OWNERS != null) {
       return;
     }
@@ -47,12 +46,11 @@ public class OwnersStoredValues {
             PatchList patchList = StoredValues.PATCH_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
             String branch = StoredValues.getChange(engine).getDest().branch();
-            for (String pattern : disablePatterns) {
-              if (branch.matches(pattern)) {
-                return new PathOwners(accounts, repository, Optional.empty(), patchList);
-              }
-            }
-            return new PathOwners(accounts, repository, Optional.of(branch), patchList);
+            return new PathOwners(
+                accounts,
+                repository,
+                settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
+                patchList);
           }
         };
   }

@@ -24,6 +24,7 @@ import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.Constants;
 
 /** Global owners plugin's settings defined globally or on a per-project basis. */
 @Singleton
@@ -53,6 +54,20 @@ public class PluginSettings {
   }
 
   /**
+   * Check if the branch or ref is enabled for processing.
+   *
+   * <p>NOTE: If the branch does not start with 'refs/heads' it will then normalized into a
+   * ref-name.
+   *
+   * @param branch or ref name
+   * @return true if the branch or ref is disabled for processing.
+   */
+  public boolean isBranchDisabled(String branch) {
+    String normalizedRef = normalizeRef(branch);
+    return disabledBranchesPatterns.stream().anyMatch(normalizedRef::matches);
+  }
+
+  /**
    * Project-specific config of the owners plugin.
    *
    * @param projectKey project name
@@ -62,5 +77,19 @@ public class PluginSettings {
   public PluginConfig projectSpecificConfig(Project.NameKey projectKey)
       throws NoSuchProjectException {
     return configFactory.getFromProjectConfigWithInheritance(projectKey, ownersPluginName);
+  }
+
+  // Logic copied from JGit's TestRepository
+  private static String normalizeRef(String ref) {
+    if (Constants.HEAD.equals(ref)) {
+      // nothing
+    } else if ("FETCH_HEAD".equals(ref)) {
+      // nothing
+    } else if ("MERGE_HEAD".equals(ref)) {
+      // nothing
+    } else if (ref.startsWith(Constants.R_REFS)) {
+      // nothing
+    } else ref = Constants.R_HEADS + ref;
+    return ref;
   }
 }
