@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58085dc7_06892d83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-04T22:17:17Z",
+      "side": 1,
+      "message": "I\u0027ve descoped the owners-autoassign part of the change which wasn\u0027t working anyway.",
+      "revId": "94ccdaba73161c513c358a3217d3824c74ae5e45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
