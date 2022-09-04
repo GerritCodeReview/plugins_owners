@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc89175d_087e1219",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-04T22:15:58Z",
+      "side": 1,
+      "message": "Works with the owners plugin, but it doesn\u0027t with the owners-autoassign.\nI\u0027ll de-scope the owners-autoassign and address in a separate change.",
+      "revId": "e770bcf7cd4b3a25fd4366ddf974884276024d7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b806e45_d88dd2cf",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-04T22:15:58Z",
+      "side": 1,
+      "message": "`change.branch` may not start with `refs/heads` and therefore this matching check would fail.\n\nThis has to be normalised as to `refs/heads` if it doesn\u0027t start with `refs/`.",
+      "range": {
+        "startLine": 226,
+        "startChar": 14,
+        "endLine": 226,
+        "endChar": 27
+      },
+      "revId": "e770bcf7cd4b3a25fd4366ddf974884276024d7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
