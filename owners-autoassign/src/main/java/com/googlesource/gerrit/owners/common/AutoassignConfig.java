@@ -19,19 +19,23 @@ import static com.google.gerrit.extensions.client.InheritableBoolean.TRUE;
 import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
 import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.client.ReviewerState;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.eclipse.jgit.lib.Constants;
 
 @Singleton
 public class AutoassignConfig {
   private final PluginSettings config;
+  private final ImmutableSet<String> disabledBranchPatterns;
 
   @Inject
   AutoassignConfig(PluginSettings config) {
     this.config = config;
+    this.disabledBranchPatterns = config.disabledBranchPatterns();
   }
 
   public boolean autoAssignWip(Project.NameKey projectKey) throws NoSuchProjectException {
@@ -46,5 +50,24 @@ public class AutoassignConfig {
     return config
         .projectSpecificConfig(projectKey)
         .getEnum(PROJECT_CONFIG_AUTOASSIGN_FIELD, ReviewerState.REVIEWER);
+  }
+
+  public boolean isBranchDisabled(String branch) {
+    String normalizedRef = normalizeRef(branch);
+    return disabledBranchPatterns.stream().anyMatch(normalizedRef::matches);
+  }
+
+  // Logic copied from JGit's TestRepository
+  private static String normalizeRef(String ref) {
+    if (Constants.HEAD.equals(ref)) {
+      // nothing
+    } else if ("FETCH_HEAD".equals(ref)) {
+      // nothing
+    } else if ("MERGE_HEAD".equals(ref)) {
+      // nothing
+    } else if (ref.startsWith(Constants.R_REFS)) {
+      // nothing
+    } else ref = Constants.R_HEADS + ref;
+    return ref;
   }
 }

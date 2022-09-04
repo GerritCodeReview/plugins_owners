@@ -19,6 +19,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.UseLocalDisk;
+import com.google.gerrit.acceptance.config.GlobalPluginConfig;
 import com.google.gerrit.common.RawInputUtil;
 import com.google.gerrit.extensions.api.changes.AddReviewerInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
@@ -106,6 +108,18 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     assertThat(reviewers).isNotNull();
     assertThat(reviewers).hasSize(1);
     assertThat(reviewersEmail(reviewers).get(0)).isEqualTo(ownerEmail);
+  }
+
+  @Test
+  @UseLocalDisk // Required when using @GlobalPluginConfig
+  @GlobalPluginConfig(
+      pluginName = "owners-api",
+      name = "owners.disable.branch",
+      value = "refs/heads/master")
+  public void shouldNotAutoassignUserInPathWhenBranchIsDisabled() throws Exception {
+    addOwnersToRepo("", user.email(), NOT_INHERITED);
+
+    assertThat(getAutoassignedAccounts(change(createChange()).get())).isNull();
   }
 
   @Test

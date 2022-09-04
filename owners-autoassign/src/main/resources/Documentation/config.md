@@ -1,3 +1,19 @@
+## Global configuration
+
+The global plugin configuration is read from the `$GERRIT_SITE/etc/owners-autoassign.config`
+and is applied across all projects in Gerrit.
+
+owners.disable.branch
+:	List of branches regex where the resolution and auto-assignment of owners is disabled.
+
+Example:
+
+```
+[owners "disable"]
+  branch = refs/meta/config
+  branch = refs/heads/sandboxes.*
+```
+
 ## Project configuration
 
 The project configuration `autoAssignWip` controls the automatic
