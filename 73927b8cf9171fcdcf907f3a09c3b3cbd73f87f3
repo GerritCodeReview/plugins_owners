@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf1d8a26_3ae5db40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-05T07:02:01Z",
+      "side": 1,
+      "message": "You are right. I didn\u0027t notice it when I have added the comment.",
+      "parentUuid": "66e1b8ba_4411f474",
+      "revId": "73927b8cf9171fcdcf907f3a09c3b3cbd73f87f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36c8225c_6c4de89f",
