@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9619341_2a7b1996",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/AutoassignConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-05T07:34:43Z",
+      "side": 1,
+      "message": "this makes sense, but I was wondering why this check was not required in the `owners` plugin change at [1]\n\n[1]https://gerrit-review.googlesource.com/c/plugins/owners/+/340097",
+      "revId": "afe110d63ea8c7268d4d1de05870847eb29cb5c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b144cae_c9d32917",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-05T07:34:43Z",
+      "side": 1,
+      "message": "Since `owners-autoassign` depends on the `owners` plugin, I was wondering what the relationship between branch disabled for `owners` and branch disabled for `owners-autoassign` is?\n\nIf the branch is disabled for `owners`, `owners-autoassign` would be inherently disabled too right?\n\nWould it make sense to highlight any of these dependencies in the docs?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 45
+      },
+      "revId": "afe110d63ea8c7268d4d1de05870847eb29cb5c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
