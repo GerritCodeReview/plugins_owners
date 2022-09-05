@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3eab7cd2_f2ba35f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-05T22:46:17Z",
+      "side": 1,
+      "message": "`files-owners` because:\n- the `get` is implied already by the HTTP method `GET`\n- avoid the use of camel-case in URLs as they may be incompatible with some browsers on case-insensitive systems",
+      "range": {
+        "startLine": 15,
+        "startChar": 56,
+        "endLine": 15,
+        "endChar": 70
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e82f104_d57175af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-05T22:46:17Z",
+      "side": 1,
+      "message": "Why not returning both?\n\nExample:\n```\n)]}\u0027\n{\n  \"AJavaFile.java\":[ { \"name\":\"John\", \"id\": 1 }, { \"name\":\"Bob\", \"id\": 2 }],\n  \"Aptyhonfileroot.py\":[{ \"name\":\"John\", \"id\": 1 }, { \"name\":\"Bob\", \"id\": 2 }, { \"name\":\"John\", \"id\": 3 }]}\n}\n```",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 27
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21035e53_788ca6ee",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-05T22:46:17Z",
+      "side": 1,
+      "message": "`files-owners`",
+      "range": {
+        "startLine": 35,
+        "startChar": 49,
+        "endLine": 35,
+        "endChar": 63
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f01756d1_47d12561",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-05T22:46:17Z",
+      "side": 1,
+      "message": "Not needed",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 87
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f62ec3_53b5e1b1",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-05T22:46:17Z",
+      "side": 1,
+      "message": "Just pass the branch as conditional at L74:\n\n```\npluginSettings.isBranchDisabled(branch) ? Optional.empty(): Optional.of(branch)\n```",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 7
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8894254f_ec4a0486",
+        "filename": "owners/src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-05T22:46:17Z",
+      "side": 1,
+      "message": "Update according to the account (name + id) JSON format.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 1
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
