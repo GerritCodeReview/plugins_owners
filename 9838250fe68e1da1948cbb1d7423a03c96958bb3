@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c48d93e_30522632",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-06T22:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3eab7cd2_f2ba35f5",
+      "range": {
+        "startLine": 15,
+        "startChar": 56,
+        "endLine": 15,
+        "endChar": 70
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e82f104_d57175af",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-05T22:46:17Z",
       "side": 1,
       "message": "Why not returning both?\n\nExample:\n```\n)]}\u0027\n{\n  \"AJavaFile.java\":[ { \"name\":\"John\", \"id\": 1 }, { \"name\":\"Bob\", \"id\": 2 }],\n  \"Aptyhonfileroot.py\":[{ \"name\":\"John\", \"id\": 1 }, { \"name\":\"Bob\", \"id\": 2 }, { \"name\":\"John\", \"id\": 3 }]}\n}\n```",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 27
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a1589e_e62e2cfb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-06T22:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e82f104_d57175af",
       "range": {
         "startLine": 24,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "522d11cb_21f58ce9",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-06T22:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21035e53_788ca6ee",
+      "range": {
+        "startLine": 35,
+        "startChar": 49,
+        "endLine": 35,
+        "endChar": 63
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f01756d1_47d12561",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-09-05T22:46:17Z",
       "side": 1,
       "message": "Not needed",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 87
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b376a16b_f33fe760",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-06T22:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f01756d1_47d12561",
       "range": {
         "startLine": 64,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e724df2_e34bfce1",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-06T22:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3f62ec3_53b5e1b1",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 7
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8894254f_ec4a0486",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-09-05T22:46:17Z",
       "side": 1,
       "message": "Update according to the account (name + id) JSON format.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 1
+      },
+      "revId": "9838250fe68e1da1948cbb1d7423a03c96958bb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b30e29e7_06f412a6",
+        "filename": "owners/src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-06T22:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8894254f_ec4a0486",
       "range": {
         "startLine": 9,
         "startChar": 0,
