@@ -99,6 +99,30 @@
       },
       "revId": "afe110d63ea8c7268d4d1de05870847eb29cb5c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "264f1d87_73eaa4af",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-06T08:07:16Z",
+      "side": 1,
+      "message": "Thanks luca",
+      "parentUuid": "49771c4b_00caa0a4",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 45
+      },
+      "revId": "afe110d63ea8c7268d4d1de05870847eb29cb5c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
