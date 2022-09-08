@@ -1,0 +1,492 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca051488_69ff2c42",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "nit: wrap long line",
+      "range": {
+        "startLine": 18,
+        "startChar": 72,
+        "endLine": 18,
+        "endChar": 76
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c93cefe4_f5d6c969",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "nit: wrap long line",
+      "range": {
+        "startLine": 19,
+        "startChar": 72,
+        "endLine": 19,
+        "endChar": 107
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9933303_ca32e182",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "nit: wrap long line",
+      "range": {
+        "startLine": 23,
+        "startChar": 70,
+        "endLine": 23,
+        "endChar": 77
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e626a600_dcd27340",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/Owner.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "+ Javadoc (it\u0027s a public class)",
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abe223a4_7b06e816",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/Owner.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "int",
+      "range": {
+        "startLine": 20,
+        "startChar": 16,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace2d5ba_24fc775c",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/Owner.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "int",
+      "range": {
+        "startLine": 22,
+        "startChar": 28,
+        "endLine": 22,
+        "endChar": 34
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8219688e_5eb9d85d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/Owner.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "int",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 15
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17825299_ea3fca47",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "+ `@Singleton`",
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf39c64_e1dbff7c",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "The returned repository is AutoCloseable: you should enclose it in a try with resources.\n\nExample:\n\n```\ntry (Repository repository \u003d this.repositoryManager.openRepository(change.getProject())) {\n  ...\n}\n```",
+      "range": {
+        "startLine": 76,
+        "startChar": 51,
+        "endLine": 76,
+        "endChar": 86
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e935485b_10524946",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "unneeded",
+      "range": {
+        "startLine": 77,
+        "startChar": 26,
+        "endLine": 77,
+        "endChar": 31
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d53e2c64_d7f7de50",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "unneeded",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 17
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1759d22e_d6a7bf4d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "If the plugin is disabled, I believe we can avoid lots of this logic and return a fixed response isn\u0027t it?",
+      "range": {
+        "startLine": 84,
+        "startChar": 12,
+        "endLine": 84,
+        "endChar": 51
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f6ddf2_66cb0c93",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "Why not keeping as a `Set` instead?",
+      "range": {
+        "startLine": 87,
+        "startChar": 16,
+        "endLine": 87,
+        "endChar": 20
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4beee1c1_e776f2b1",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "This can be simplified by using Guava\u0027s `Maps.transformValues()`",
+      "range": {
+        "startLine": 88,
+        "startChar": 30,
+        "endLine": 92,
+        "endChar": 25
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8529cf84_51bb87c9",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "What\u0027s the rationale of using `getEvenIfMissing` and not a simple `get`?",
+      "range": {
+        "startLine": 101,
+        "startChar": 45,
+        "endLine": 101,
+        "endChar": 61
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a297ea6c_4274c981",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "The value returned should have a numeric account id, therefore this should be:\n`accountState.account().id().get()`",
+      "range": {
+        "startLine": 102,
+        "startChar": 83,
+        "endLine": 102,
+        "endChar": 94
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22eb38d8_adad4471",
+        "filename": "owners/src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 9,
+        "startChar": 20,
+        "endLine": 9,
+        "endChar": 21
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d81287c3_0e6697d6",
+        "filename": "owners/src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "remove the extra `}`",
+      "range": {
+        "startLine": 10,
+        "startChar": 106,
+        "endLine": 10,
+        "endChar": 107
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "704558d4_6787594a",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "private",
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0166a713_fcd166d2",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "Extract into `owners` variable",
+      "range": {
+        "startLine": 79,
+        "startChar": 15,
+        "endLine": 79,
+        "endChar": 37
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf10440_ab107c7a",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "Why not simply asserting that the `owners` contains the expected one?",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 95
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06c08769_0bd0330f",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T00:25:19Z",
+      "side": 1,
+      "message": "This looks way too complex to me: why not simply inline the OWNERS file content as a String?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 47
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
