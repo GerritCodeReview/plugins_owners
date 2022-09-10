@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96f1ca86_f5978df8",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-10T20:47:36Z",
+      "side": 1,
+      "message": "`final` isn\u0027t needed on scoped variables",
+      "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d2e4d6_94fe90df",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-10T20:47:36Z",
+      "side": 1,
+      "message": "`final` isn\u0027t needed on scoped variables",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 9
+      },
+      "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

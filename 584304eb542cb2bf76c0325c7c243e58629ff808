@@ -684,6 +684,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "06d494b4_442ebf46",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-10T20:47:36Z",
+      "side": 1,
+      "message": "If the account id doesn\u0027t exist, what\u0027s the point of returning it? I would rather omit it from the results.",
+      "parentUuid": "6dc5f280_161fe880",
+      "range": {
+        "startLine": 101,
+        "startChar": 45,
+        "endLine": 101,
+        "endChar": 61
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a297ea6c_4274c981",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
         "patchSetId": 16
@@ -954,6 +978,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f886398_64da7f00",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-10T20:47:36Z",
+      "side": 1,
+      "message": "I believe that Google Truth can assert elements inside a collection.\n`assertThat(response.values()).containsExactly(...)`",
+      "parentUuid": "d8d8d5da_65aa9be7",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 95
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "06c08769_0bd0330f",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
         "patchSetId": 16
@@ -989,6 +1037,30 @@
       "side": 1,
       "message": "That was my first attempt.\n\nHowever, I ended up spending some time investigating a test failure I couldn\u0027t explain which was due to the wrong formatting of the OWNERS file (the YAML wasn\u0027t correctly formatted).\n\nFor this reason, I preferred adding method to properly serialize the YAML.",
       "parentUuid": "06c08769_0bd0330f",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 47
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5763ff7a_1807d311",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-10T20:47:36Z",
+      "side": 1,
+      "message": "\u003e That was my first attempt.\n\u003e \n\u003e However, I ended up spending some time investigating a test failure I couldn\u0027t explain which was due to the wrong formatting of the OWNERS file (the YAML wasn\u0027t correctly formatted).\n\u003e \n\u003e For this reason, I preferred adding method to properly serialize the YAML.\n\nI believe that is the cause of pulling unneeded dependencies in the tests. Let me try to just inline the text.",
+      "parentUuid": "9313bb8b_eea6f1f0",
       "range": {
         "startLine": 87,
         "startChar": 0,
