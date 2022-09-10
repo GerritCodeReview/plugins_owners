@@ -16,15 +16,24 @@
 package com.googlesource.gerrit.owners.entities;
 
 import com.google.gerrit.entities.Account;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /** Class representing a file Owner * */
 public class Owner {
   private final String name;
   private final int id;
+  private final List<Map<String, Integer>> labels;
 
-  public Owner(String name, int id) {
+  public Owner(String name, int id, List<Map<String, Integer>> labels) {
     this.name = name;
     this.id = id;
+    this.labels = labels;
+  }
+
+  public Owner(String name, int id) {
+    this(name, id, new ArrayList<Map<String, Integer>>());
   }
 
   /**
@@ -43,5 +52,9 @@ public class Owner {
    */
   public int getId() {
     return id;
+  }
+
+  public List<Map<String, Integer>> getLabels() {
+    return labels;
   }
 }

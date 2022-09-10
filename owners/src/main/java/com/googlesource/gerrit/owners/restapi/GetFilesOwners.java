@@ -20,6 +20,11 @@ import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.PatchSet;
+import com.google.gerrit.extensions.api.GerritApi;
+import com.google.gerrit.extensions.client.ListChangesOption;
+import com.google.gerrit.extensions.common.ApprovalInfo;
+import com.google.gerrit.extensions.common.ChangeInfo;
+import com.google.gerrit.extensions.common.LabelInfo;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
@@ -37,6 +42,10 @@ import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.Owner;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -55,6 +64,8 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final AccountCache accountCache;
   private final GitRepositoryManager repositoryManager;
   private final PluginSettings pluginSettings;
+
+  @Inject GerritApi gApi;
 
   @Inject
   GetFilesOwners(
@@ -75,6 +86,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
     PatchSet ps = revision.getPatchSet();
     Change change = revision.getChange();
+    int id = revision.getChangeResource().getChange().getChangeId();
 
     try (Repository repository = repositoryManager.openRepository(change.getProject())) {
       PatchList patchList = patchListCache.get(change, ps);
@@ -87,17 +99,37 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
               patchList);
 
+      ChangeInfo ci = gApi.changes().id(id).get(EnumSet.of(ListChangesOption.DETAILED_LABELS));
+      Map<String, LabelInfo> allLabels = ci.labels;
+      List<ApprovalInfo> allApprovals = allLabels.get("Code-Review").all;
+      Map<Integer, ApprovalInfo> approvedIdsToVote =
+          Maps.uniqueIndex(allApprovals, x -> x._accountId);
+
       Map<String, Set<Owner>> fileToOwners =
           Maps.transformValues(
               owners.getFileOwners(),
-              ids -> ids.stream().map(this::getOwnerFromAccountId).collect(Collectors.toSet()));
+              ids ->
+                  ids.stream()
+                      .map(o -> getOwnerFromAccountId(o, approvedIdsToVote))
+                      .collect(Collectors.toSet()));
 
       return Response.ok(fileToOwners);
     }
   }
 
-  private Owner getOwnerFromAccountId(Account.Id accountId) {
+  private Owner getOwnerFromAccountId(
+      Account.Id accountId, Map<Integer, ApprovalInfo> approvedIdsToVote) {
     AccountState accountState = accountCache.getEvenIfMissing(accountId);
-    return new Owner(accountState.account().fullName(), accountState.account().id().get());
+    ApprovalInfo approvalInfo = approvedIdsToVote.get(accountId.get());
+    Map<String, Integer> labelToVote =
+        new HashMap<String, Integer>() {
+          {
+            put("Code-Review", approvalInfo.value);
+          }
+        };
+    List<Map<String, Integer>> labelToVotes = new ArrayList<Map<String, Integer>>();
+    labelToVotes.add(labelToVote);
+    return new Owner(
+        accountState.account().fullName(), accountState.account().id().get(), labelToVotes);
   }
 }
