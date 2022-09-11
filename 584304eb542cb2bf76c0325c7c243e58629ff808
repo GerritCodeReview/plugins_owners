@@ -1069,6 +1069,30 @@
       },
       "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e4cc44f_68c7c37f",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-11T22:40:58Z",
+      "side": 1,
+      "message": "It works if replaced with:\n```\n  private String getOwnerFileContent() {\n\t  return \"owners:\\n\" +\n             \"- \" + admin.email() + \"\\n\";\n  }\n```",
+      "parentUuid": "5763ff7a_1807d311",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 47
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

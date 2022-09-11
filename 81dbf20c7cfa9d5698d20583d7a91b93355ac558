@@ -3,6 +3,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26dca619_b972db47",
+        "filename": "owners/BUILD",
+        "patchSetId": 17
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-11T22:40:58Z",
+      "side": 1,
+      "message": "Not needed: the test can just include YAML text as String",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 43
+      },
+      "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f52c466_af56a915",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-11T22:40:58Z",
+      "side": 1,
+      "message": "Not used",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 82
+      },
+      "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c0dc0bf_22ac8ba7",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-11T22:40:58Z",
+      "side": 1,
+      "message": "Not needed",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 63
+      },
+      "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18303f58_d8afd0ef",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-11T22:40:58Z",
+      "side": 1,
+      "message": "Not needed if composing the YAML text as a string",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 63
+      },
+      "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96f1ca86_f5978df8",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
         "patchSetId": 17
@@ -36,6 +128,29 @@
         "startChar": 4,
         "endLine": 83,
         "endChar": 9
+      },
+      "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "030e4704_04a71f9e",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-11T22:40:58Z",
+      "side": 1,
+      "message": "This isn\u0027t needed anymore if returning just a string",
+      "range": {
+        "startLine": 91,
+        "startChar": 39,
+        "endLine": 91,
+        "endChar": 69
       },
       "revId": "81dbf20c7cfa9d5698d20583d7a91b93355ac558",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
