@@ -19,10 +19,14 @@ import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.PatchSet;
+import com.google.gerrit.extensions.api.GerritApi;
+import com.google.gerrit.extensions.client.ListChangesOption;
+import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.change.RevisionResource;
@@ -34,7 +38,10 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PluginSettings;
+import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.Owner;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -49,6 +56,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final AccountCache accountCache;
   private final GitRepositoryManager repositoryManager;
   private final PluginSettings pluginSettings;
+  private final GerritApi gerritApi;
 
   @Inject
   GetFilesOwners(
@@ -56,12 +64,14 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       Accounts accounts,
       AccountCache accountCache,
       GitRepositoryManager repositoryManager,
-      PluginSettings pluginSettings) {
+      PluginSettings pluginSettings,
+      GerritApi gerritApi) {
     this.patchListCache = patchListCache;
     this.accounts = accounts;
     this.accountCache = accountCache;
     this.repositoryManager = repositoryManager;
     this.pluginSettings = pluginSettings;
+    this.gerritApi = gerritApi;
   }
 
   @Override
@@ -69,6 +79,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
     PatchSet ps = revision.getPatchSet();
     Change change = revision.getChange();
+    int id = revision.getChangeResource().getChange().getChangeId();
 
     try (Repository repository = repositoryManager.openRepository(change.getProject())) {
       PatchList patchList = patchListCache.get(change, ps);
@@ -90,8 +101,49 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                       .flatMap(Optional::stream)
                       .collect(Collectors.toSet()));
 
-      return Response.ok(fileToOwners);
+      return Response.ok(new FilesOwnersResponse(getLabels(id), fileToOwners));
     }
+  }
+
+  /**
+   * This method returns the "labels" object of the response. It has to build the objets to return
+   * the following JSON:
+   *
+   * <pre>
+   * {
+   *   10001 : {
+   *    "Code-Review" : 1,
+   *    "Verified" : 0
+   *   },
+   *   10003 : {
+   *    "Code-Review" : 2,
+   *    "Verified" : 1
+   *  }
+   * }
+   *
+   * </pre>
+   */
+  private Map<Integer, Map<String, Integer>> getLabels(int id) throws RestApiException {
+    ChangeInfo changeInfo =
+        gerritApi.changes().id(id).get(EnumSet.of(ListChangesOption.DETAILED_LABELS));
+
+    Map<Integer, Map<String, Integer>> ownerToLabels = new HashMap<>();
+
+    changeInfo.labels.forEach(
+        (label, approvalInfos) -> {
+          if (approvalInfos.all != null) {
+            approvalInfos.all.forEach(
+                approvalInfo -> {
+                  int currentOwnerId = approvalInfo._accountId;
+                  Map<String, Integer> currentOwnerLabels =
+                      ownerToLabels.getOrDefault(currentOwnerId, new HashMap<>());
+                  currentOwnerLabels.put(label, approvalInfo.value);
+                  ownerToLabels.put(currentOwnerId, currentOwnerLabels);
+                });
+          }
+        });
+
+    return ownerToLabels;
   }
 
   private Optional<Owner> getOwnerFromAccountId(Account.Id accountId) {
