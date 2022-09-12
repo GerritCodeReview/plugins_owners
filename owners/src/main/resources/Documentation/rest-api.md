@@ -1,13 +1,32 @@
 # Rest API
 
-The @PLUGIN@ exposes a Rest API endpoint to list the owners associated to each file:
+The @PLUGIN@ exposes a Rest API endpoint to list the owners associated to each file and, for each owner,
+its associated labels and votes:
 
 ```bash
 GET /changes/{change-id}/revisions/{revision-id}/owners~getFilesOwners
 
 {
-  "AJavaFile.java":[{ "name":"John", "id": 1 }, { "name":"Bob", "id": 2 }],
-  "Aptyhonfileroot.py":[{ "name":"John", "id": 1 }, { "name":"Bob", "id": 2 }, { "name":"John", "id": 3 }]
+  "files": {
+    "AJavaFile.java":[
+      { "name":"John", "id": 1000002 },
+      { "name":"Bob", "id": 1000001 }
+    ],
+    "Aptyhonfileroot.py":[
+      { "name":"John", "id": 1000002 },
+      { "name":"Bob", "id": 1000001 },
+      { "name":"Jack", "id": 1000003 }
+    ]
+  },
+  "owners_labels" : {
+    "1000002": {
+      "Verified": 1,
+      "Code-Review": 0
+    },
+    "1000001": {
+      "Code-Review": -2
+    }
+  }
 }
 
 ```
