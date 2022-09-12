@@ -706,6 +706,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac9c7c2b_f5b62ea0",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-12T10:36:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06d494b4_442ebf46",
+      "range": {
+        "startLine": 101,
+        "startChar": 45,
+        "endLine": 101,
+        "endChar": 61
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a297ea6c_4274c981",
@@ -1000,6 +1024,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9dc74a5_7df369a0",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-12T10:36:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f886398_64da7f00",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 95
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06c08769_0bd0330f",
@@ -1085,6 +1133,30 @@
       "side": 1,
       "message": "It works if replaced with:\n```\n  private String getOwnerFileContent() {\n\t  return \"owners:\\n\" +\n             \"- \" + admin.email() + \"\\n\";\n  }\n```",
       "parentUuid": "5763ff7a_1807d311",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 47
+      },
+      "revId": "584304eb542cb2bf76c0325c7c243e58629ff808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc132975_fe906cdd",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-12T10:36:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e4cc44f_68c7c37f",
       "range": {
         "startLine": 87,
         "startChar": 0,
