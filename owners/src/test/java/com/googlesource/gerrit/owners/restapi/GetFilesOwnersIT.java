@@ -23,6 +23,7 @@ import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.change.RevisionResource;
+import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.Owner;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,21 +55,37 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
     merge(createChange(testRepo, "master", "Add OWNER file", "OWNERS", getOwnerFileContent(), ""));
 
     PushOneCommit.Result result = createChange();
+
+    approve(result.getChangeId());
+
     RevisionResource revisionResource = parseCurrentRevisionResource(result.getChangeId());
 
     Response<?> resp = ownersApi.apply(revisionResource);
 
     assertThat(resp.statusCode()).isEqualTo(HttpServletResponse.SC_OK);
 
-    Map<String, Set<Owner>> responseValue = (Map<String, Set<Owner>>) resp.value();
-    HashMap<String, Set<Owner>> expectedResponseValue =
-        new HashMap<String, Set<Owner>>() {
-          {
-            put("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
-          }
-        };
+    FilesOwnersResponse responseValue = (FilesOwnersResponse) resp.value();
 
-    assertThat(responseValue).containsExactlyEntriesIn(expectedResponseValue);
+    FilesOwnersResponse expectedFilesOwnerResponse =
+        new FilesOwnersResponse(
+            new HashMap<Integer, Map<String, Integer>>() {
+              {
+                put(
+                    admin.id().get(),
+                    new HashMap<String, Integer>() {
+                      {
+                        put("Code-Review", 2);
+                      }
+                    });
+              }
+            },
+            new HashMap<String, Set<Owner>>() {
+              {
+                put("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+              }
+            });
+
+    assertThat(responseValue).isEqualTo(expectedFilesOwnerResponse);
   }
 
   private String getOwnerFileContent() {
