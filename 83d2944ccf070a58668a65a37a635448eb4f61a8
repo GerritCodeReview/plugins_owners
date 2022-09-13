@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcd37fbf_7459fea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:40:24Z",
+      "side": 1,
+      "message": "Good stuff @Ponch, just one nit. Can you also verify this E2E?",
+      "revId": "83d2944ccf070a58668a65a37a635448eb4f61a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3c906aa_17b416b2",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:40:24Z",
+      "side": 1,
+      "message": "`maybeAccountState` can be inlined.\n\nExample:\n```\nreturn accountCache.get(accountId)\n                   .map(as -\u003e ...);\n```",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 28
+      },
+      "revId": "83d2944ccf070a58668a65a37a635448eb4f61a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
