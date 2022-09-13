@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace55525_44f9e7a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:49:15Z",
+      "side": 1,
+      "message": "`permitted_labels`?",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd1e3b75_50bec4bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:49:15Z",
+      "side": 1,
+      "message": "`\"1000002\"`",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 11
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d686cb_67fb59ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:49:15Z",
+      "side": 1,
+      "message": "\u0027\"1000001\"\u0027",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 11
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1b9bd99_7a815a2e",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:49:15Z",
+      "side": 1,
+      "message": "It does not return JSON but a Map",
+      "range": {
+        "startLine": 111,
+        "startChar": 19,
+        "endLine": 111,
+        "endChar": 23
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f7f7eac_799da6d0",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:49:15Z",
+      "side": 1,
+      "message": "You could use an `Optional.ofNullable()` and then transform with a `map`",
+      "range": {
+        "startLine": 135,
+        "startChar": 9,
+        "endLine": 136,
+        "endChar": 29
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e50bfa19_b2d4eb91",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:49:15Z",
+      "side": 1,
+      "message": "You can transform the values with a `map`",
+      "range": {
+        "startLine": 136,
+        "startChar": 30,
+        "endLine": 136,
+        "endChar": 37
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
