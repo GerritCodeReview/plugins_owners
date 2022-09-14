@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d71e91c6_c64bb09d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-14T05:45:19Z",
+      "side": 1,
+      "message": "They are not the `permitted_labels`, but, for each owner, the current values of the labels in a specific patchset. Maybe `owners_labels` ?",
+      "parentUuid": "ace55525_44f9e7a0",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd1e3b75_50bec4bd",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-13T23:49:15Z",
       "side": 1,
       "message": "`\"1000002\"`",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 11
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c667a2bf_1a200965",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-14T05:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd1e3b75_50bec4bd",
       "range": {
         "startLine": 30,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a236af07_bc921d4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-14T05:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9d686cb_67fb59ce",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 11
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1b9bd99_7a815a2e",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-09-13T23:49:15Z",
       "side": 1,
       "message": "It does not return JSON but a Map",
+      "range": {
+        "startLine": 111,
+        "startChar": 19,
+        "endLine": 111,
+        "endChar": 23
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eccfd7f_1463bb2b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-14T05:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1b9bd99_7a815a2e",
       "range": {
         "startLine": 111,
         "startChar": 19,
@@ -134,6 +230,54 @@
         "startChar": 30,
         "endLine": 136,
         "endChar": 37
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9fceaf_d7ab256b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-14T05:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e50bfa19_b2d4eb91",
+      "range": {
+        "startLine": 136,
+        "startChar": 30,
+        "endLine": 136,
+        "endChar": 37
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "613e5bbf_2396e95f",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-14T05:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f7f7eac_799da6d0",
+      "range": {
+        "startLine": 135,
+        "startChar": 9,
+        "endLine": 136,
+        "endChar": 29
       },
       "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
