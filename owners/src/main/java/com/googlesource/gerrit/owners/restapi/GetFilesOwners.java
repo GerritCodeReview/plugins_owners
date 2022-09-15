@@ -19,6 +19,7 @@ import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.PatchSet;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -82,12 +83,15 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     int id = revision.getChangeResource().getChange().getChangeId();
 
     try (Repository repository = repositoryManager.openRepository(change.getProject())) {
+      Repository allProjectRepository =
+          repositoryManager.openRepository(Project.NameKey.parse("All-Projects"));
       PatchList patchList = patchListCache.get(change, ps);
 
       String branch = change.getDest().branch();
       PathOwners owners =
           new PathOwners(
               accounts,
+              Optional.of(allProjectRepository),
               repository,
               pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
               patchList);

@@ -16,6 +16,8 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
@@ -23,6 +25,7 @@ import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PluginSettings;
+import java.io.IOException;
 import java.util.Optional;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -45,9 +48,23 @@ public class OwnersStoredValues {
           protected PathOwners createValue(Prolog engine) {
             PatchList patchList = StoredValues.PATCH_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
+            GitRepositoryManager repositoryManager = StoredValues.REPO_MANAGER.get(engine);
             String branch = StoredValues.getChange(engine).getDest().branch();
+            try (Repository allProjectRepository =
+                repositoryManager.openRepository(Project.NameKey.parse("All-Projects"))) {
+
+              return new PathOwners(
+                  accounts,
+                  Optional.of(allProjectRepository),
+                  repository,
+                  settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
+                  patchList);
+            } catch (IOException ioe) {
+
+            }
             return new PathOwners(
                 accounts,
+                Optional.empty(),
                 repository,
                 settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
                 patchList);
