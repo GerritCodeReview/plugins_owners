@@ -18,6 +18,7 @@ package com.googlesource.gerrit.owners;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.Listen;
+import com.google.gerrit.server.config.AllProjectsName;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.Accounts;
@@ -27,8 +28,9 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 @Listen
 public class OwnerPredicateProvider implements PredicateProvider {
   @Inject
-  public OwnerPredicateProvider(Accounts accounts, PluginSettings config) {
-    OwnersStoredValues.initialize(accounts, config);
+  public OwnerPredicateProvider(
+      Accounts accounts, PluginSettings config, AllProjectsName allProjectsName) {
+    OwnersStoredValues.initialize(accounts, config, allProjectsName);
   }
 
   @Override
