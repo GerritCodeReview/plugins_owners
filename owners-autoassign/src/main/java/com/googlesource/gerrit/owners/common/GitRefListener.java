@@ -36,6 +36,7 @@ import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.ChangeMessagesUtil;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.config.AllProjectsName;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.notedb.ChangeNotesCommit;
@@ -82,6 +83,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private ChangeNotes.Factory notesFactory;
 
   private final AutoassignConfig cfg;
+  private final AllProjectsName allProjectsName;
 
   @Inject
   public GitRefListener(
@@ -93,7 +95,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoassignConfig cfg) {
+      AutoassignConfig cfg,
+      AllProjectsName allProjectsName) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
@@ -103,6 +106,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
     this.cfg = cfg;
+    this.allProjectsName = allProjectsName;
   }
 
   @Override
@@ -143,10 +147,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private void handleGitReferenceUpdated(Event event) throws NoSuchProjectException {
     String projectName = event.getProjectName();
     Repository repository;
+    Repository allProjectsRepository;
     try {
       NameKey projectNameKey = Project.NameKey.parse(projectName);
       boolean autoAssignWip = cfg.autoAssignWip(projectNameKey);
       repository = repositoryManager.openRepository(projectNameKey);
+      allProjectsRepository = repositoryManager.openRepository(allProjectsName);
       try {
         String refName = event.getRefName();
         Change.Id changeId = Change.Id.fromRef(refName);
@@ -155,11 +161,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
           if ((!RefNames.isNoteDbMetaRef(refName)
                   && isChangeToBeProcessed(changeNotes.getChange(), autoAssignWip))
               || isChangeSetReadyForReview(repository, changeNotes, event.getNewObjectId())) {
-            processEvent(projectNameKey, repository, event, changeId);
+            processEvent(allProjectsRepository, projectNameKey, repository, event, changeId);
           }
         }
       } finally {
         repository.close();
+        allProjectsRepository.close();
       }
     } catch (IOException e) {
       logger.warn("Couldn't open repository: {}", projectName, e);
@@ -199,7 +206,11 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   }
 
   public void processEvent(
-      Project.NameKey projectNameKey, Repository repository, Event event, Change.Id cId)
+      Repository allProjectsRepository,
+      Project.NameKey projectNameKey,
+      Repository repository,
+      Event event,
+      Change.Id cId)
       throws NoSuchProjectException {
     Changes changes = api.changes();
     // The provider injected by Gerrit is shared with other workers on the
@@ -212,6 +223,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         PathOwners owners =
             new PathOwners(
                 accounts,
+                Optional.of(allProjectsRepository),
                 repository,
                 cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
                 patchList);
