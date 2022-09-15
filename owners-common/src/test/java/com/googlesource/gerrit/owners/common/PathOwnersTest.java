@@ -47,7 +47,8 @@ public class PathOwnersTest extends ClassicConfig {
   public void testClassic() throws Exception {
     mockOwners(USER_A_EMAIL_COM, USER_B_EMAIL_COM);
 
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
+    PathOwners owners =
+        new PathOwners(accounts, allProjectsRepository, repository, branch, patchList);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
@@ -58,7 +59,8 @@ public class PathOwnersTest extends ClassicConfig {
   public void testDisabledBranch() throws Exception {
     mockOwners(USER_A_EMAIL_COM);
 
-    PathOwners owners = new PathOwners(accounts, repository, Optional.empty(), patchList);
+    PathOwners owners =
+        new PathOwners(accounts, allProjectsRepository, repository, Optional.empty(), patchList);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(0, ownersSet.size());
   }
@@ -71,7 +73,8 @@ public class PathOwnersTest extends ClassicConfig {
     creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
 
-    PathOwners owners2 = new PathOwners(accounts, repository, branch, patchList);
+    PathOwners owners2 =
+        new PathOwners(accounts, allProjectsRepository, repository, branch, patchList);
     Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
@@ -90,7 +93,8 @@ public class PathOwnersTest extends ClassicConfig {
     creatingPatchList(Arrays.asList("dir/subdir/file.txt"));
     replayAll();
 
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
+    PathOwners owners =
+        new PathOwners(accounts, allProjectsRepository, repository, branch, patchList);
     Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
 
     assertEquals(3, ownersSet.size());
