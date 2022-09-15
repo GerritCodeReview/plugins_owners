@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8f54db4_27670cd1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-15T11:39:27Z",
+      "side": 1,
+      "message": "I am just returning the changes API as it is. Why do you think we should filter out information from the response?",
+      "parentUuid": "8a25978b_bea413df",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "23e8a43d02c4abd53610cb74a8269dd7e59c9e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd1e3b75_50bec4bd",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
