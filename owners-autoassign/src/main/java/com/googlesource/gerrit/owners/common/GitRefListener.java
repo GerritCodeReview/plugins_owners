@@ -143,10 +143,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private void handleGitReferenceUpdated(Event event) throws NoSuchProjectException {
     String projectName = event.getProjectName();
     Repository repository;
+    Repository allProjectsRepository;
     try {
       NameKey projectNameKey = Project.NameKey.parse(projectName);
       boolean autoAssignWip = cfg.autoAssignWip(projectNameKey);
       repository = repositoryManager.openRepository(projectNameKey);
+      allProjectsRepository = repositoryManager.openRepository(Project.NameKey.parse("All-Projects"));
       try {
         String refName = event.getRefName();
         Change.Id changeId = Change.Id.fromRef(refName);
@@ -155,11 +157,12 @@ public class GitRefListener implements GitReferenceUpdatedListener {
           if ((!RefNames.isNoteDbMetaRef(refName)
                   && isChangeToBeProcessed(changeNotes.getChange(), autoAssignWip))
               || isChangeSetReadyForReview(repository, changeNotes, event.getNewObjectId())) {
-            processEvent(projectNameKey, repository, event, changeId);
+            processEvent(allProjectsRepository, projectNameKey, repository, event, changeId);
           }
         }
       } finally {
         repository.close();
+        allProjectsRepository.close();
       }
     } catch (IOException e) {
       logger.warn("Couldn't open repository: {}", projectName, e);
@@ -199,6 +202,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   }
 
   public void processEvent(
+      Repository allProjectsRepository,
       Project.NameKey projectNameKey, Repository repository, Event event, Change.Id cId)
       throws NoSuchProjectException {
     Changes changes = api.changes();
@@ -212,6 +216,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
         PathOwners owners =
             new PathOwners(
                 accounts,
+                Optional.of(allProjectsRepository),
                 repository,
                 cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
                 patchList);
