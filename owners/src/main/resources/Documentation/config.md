@@ -100,6 +100,18 @@ contain the 'inherited: true' condition at the top of the file or if they are ab
 That means that in the absence of any OWNERS file in the target branch, the refs/meta/config
 OWNERS is used as global default.
 
+## Global OWNERS across all projects
+
+Set a OWNERS file into the All-Projects refs/meta/config to define a global set of
+rules applied to every change pushed, regardless of the folder or target branch, following the same
+behaviour of the global project OWNERS.
+
+Global refs/meta/config OWNERS configuration is inherited only when the OWNERS file in the root directory
+and the one in the project config, contain the 'inherited: true' condition at the top of the file
+or if they are absent.
+
+That means that in the absence of any OWNERS file in the target branch and in the project config,
+the refs/meta/config OWNERS of the All-projects is used as default.
 
 ## Example 1 - OWNERS file without matchers and default Gerrit submit rules
 
