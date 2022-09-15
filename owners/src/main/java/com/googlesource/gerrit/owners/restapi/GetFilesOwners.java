@@ -30,6 +30,7 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.change.RevisionResource;
+import com.google.gerrit.server.config.AllProjectsName;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
@@ -57,6 +58,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final GitRepositoryManager repositoryManager;
   private final PluginSettings pluginSettings;
   private final GerritApi gerritApi;
+  private final AllProjectsName allProjectsName;
 
   @Inject
   GetFilesOwners(
@@ -65,13 +67,15 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       AccountCache accountCache,
       GitRepositoryManager repositoryManager,
       PluginSettings pluginSettings,
-      GerritApi gerritApi) {
+      GerritApi gerritApi,
+      AllProjectsName allProjectsName) {
     this.patchListCache = patchListCache;
     this.accounts = accounts;
     this.accountCache = accountCache;
     this.repositoryManager = repositoryManager;
     this.pluginSettings = pluginSettings;
     this.gerritApi = gerritApi;
+    this.allProjectsName = allProjectsName;
   }
 
   @Override
@@ -81,13 +85,15 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     Change change = revision.getChange();
     int id = revision.getChangeResource().getChange().getChangeId();
 
-    try (Repository repository = repositoryManager.openRepository(change.getProject())) {
+    try (Repository repository = repositoryManager.openRepository(change.getProject());
+        Repository allProjectRepository = repositoryManager.openRepository(allProjectsName)) {
       PatchList patchList = patchListCache.get(change, ps);
 
       String branch = change.getDest().branch();
       PathOwners owners =
           new PathOwners(
               accounts,
+              allProjectRepository,
               repository,
               pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
               patchList);
