@@ -34,6 +34,7 @@ import org.powermock.api.easymock.PowerMock;
 @Ignore
 public abstract class Config {
   protected Repository repository;
+  protected Repository allProjectsRepository;
   protected PatchList patchList;
   protected ConfigurationParser parser;
   protected TestAccounts accounts = new TestAccounts();
@@ -43,6 +44,7 @@ public abstract class Config {
     PowerMock.mockStatic(JgitWrapper.class);
 
     repository = PowerMock.createMock(Repository.class);
+    allProjectsRepository = PowerMock.createMock(Repository.class);
     parser = new ConfigurationParser(accounts);
   }
 
