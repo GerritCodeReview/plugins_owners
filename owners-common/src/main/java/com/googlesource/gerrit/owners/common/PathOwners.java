@@ -52,6 +52,8 @@ public class PathOwners {
 
   private final SetMultimap<String, Account.Id> reviewers;
 
+  private final Optional<Repository> maybeAllProjectRepository;
+
   private final Repository repository;
 
   private final PatchList patchList;
@@ -66,9 +68,11 @@ public class PathOwners {
 
   public PathOwners(
       Accounts accounts,
+      Optional<Repository> allProjectRepository,
       Repository repository,
       Optional<String> branchWhenEnabled,
       PatchList patchList) {
+    this.maybeAllProjectRepository = allProjectRepository;
     this.repository = repository;
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
@@ -117,8 +121,27 @@ public class PathOwners {
     try {
       String rootPath = "OWNERS";
 
+      PathOwnersEntry allProjectsEntry = maybeAllProjectRepository.map(allProjectRepo -> {
+        try {
+          return getOwnersConfig(allProjectRepo, rootPath, RefNames.REFS_CONFIG)
+                  .map(
+                          conf ->
+                                  new PathOwnersEntry(
+                                          rootPath,
+                                          conf,
+                                          accounts,
+                                          Collections.emptySet(),
+                                          Collections.emptySet(),
+                                          Collections.emptySet()))
+                  .orElse(new PathOwnersEntry());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        return new PathOwnersEntry();
+      }).orElse(new PathOwnersEntry());
+
       PathOwnersEntry projectEntry =
-          getOwnersConfig(rootPath, RefNames.REFS_CONFIG)
+          getOwnersConfig(repository, rootPath, RefNames.REFS_CONFIG)
               .map(
                   conf ->
                       new PathOwnersEntry(
@@ -131,7 +154,7 @@ public class PathOwners {
               .orElse(new PathOwnersEntry());
 
       PathOwnersEntry rootEntry =
-          getOwnersConfig(rootPath, branch)
+          getOwnersConfig(repository, rootPath, branch)
               .map(
                   conf ->
                       new PathOwnersEntry(
@@ -147,7 +170,7 @@ public class PathOwners {
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
-        currentEntry = resolvePathEntry(path, branch, projectEntry, rootEntry, entries);
+        currentEntry = resolvePathEntry(path, branch, allProjectsEntry, projectEntry, rootEntry, entries);
 
         // add owners and reviewers to file for matcher predicates
         ownersMap.addFileOwners(path, currentEntry.getOwners());
@@ -200,6 +223,7 @@ public class PathOwners {
   private PathOwnersEntry resolvePathEntry(
       String path,
       String branch,
+      PathOwnersEntry allProjectEntry,
       PathOwnersEntry projectEntry,
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries)
@@ -208,6 +232,7 @@ public class PathOwners {
     PathOwnersEntry currentEntry = rootEntry;
     StringBuilder builder = new StringBuilder();
 
+    // Inherit from Project if OWNER in root enables inheritance
     if (rootEntry.isInherited()) {
       for (Matcher matcher : projectEntry.getMatchers().values()) {
         if (!currentEntry.hasMatcher(matcher.getPath())) {
@@ -219,6 +244,21 @@ public class PathOwners {
       }
       if (currentEntry.getOwnersPath() == null) {
         currentEntry.setOwnersPath(projectEntry.getOwnersPath());
+      }
+    }
+
+    // Inherit from AllProjecta if OWNER in Project enables inheritance
+    if (projectEntry.isInherited()) {
+      for (Matcher matcher : allProjectEntry.getMatchers().values()) {
+        if (!currentEntry.hasMatcher(matcher.getPath())) {
+          currentEntry.addMatcher(matcher);
+        }
+      }
+      if (currentEntry.getOwners().isEmpty()) {
+        currentEntry.setOwners(allProjectEntry.getOwners());
+      }
+      if (currentEntry.getOwnersPath() == null) {
+        currentEntry.setOwnersPath(allProjectEntry.getOwnersPath());
       }
     }
 
@@ -234,7 +274,7 @@ public class PathOwners {
         currentEntry = entries.get(partial);
       } else {
         String ownersPath = partial + "OWNERS";
-        Optional<OwnersConfig> conf = getOwnersConfig(ownersPath, branch);
+        Optional<OwnersConfig> conf = getOwnersConfig(repository, ownersPath, branch);
         final Set<Id> owners = currentEntry.getOwners();
         final Set<Id> reviewers = currentEntry.getReviewers();
         Collection<Matcher> inheritedMatchers = currentEntry.getMatchers().values();
@@ -280,9 +320,9 @@ public class PathOwners {
    * @return config or null if it doesn't exist
    * @throws IOException
    */
-  private Optional<OwnersConfig> getOwnersConfig(String ownersPath, String branch)
+  private Optional<OwnersConfig> getOwnersConfig(Repository repo, String ownersPath, String branch)
       throws IOException {
-    return getBlobAsBytes(repository, branch, ownersPath)
+    return getBlobAsBytes(repo, branch, ownersPath)
         .flatMap(bytes -> parser.getOwnersConfig(bytes));
   }
 }
