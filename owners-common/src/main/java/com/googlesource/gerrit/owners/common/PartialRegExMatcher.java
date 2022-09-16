@@ -24,8 +24,9 @@ import java.util.regex.Pattern;
 public class PartialRegExMatcher extends Matcher {
   Pattern pattern;
 
-  public PartialRegExMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
-    super(path, owners, reviewers);
+  public PartialRegExMatcher(
+      String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> group_owners) {
+    super(path, owners, reviewers, group_owners);
     pattern = Pattern.compile(".*" + path + ".*");
   }
 
@@ -35,7 +36,7 @@ public class PartialRegExMatcher extends Matcher {
   }
 
   @Override
-  protected Matcher clone(Set<Id> owners, Set<Id> reviewers) {
-    return new PartialRegExMatcher(path, owners, reviewers);
+  protected Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> group_owners) {
+    return new PartialRegExMatcher(path, owners, reviewers, group_owners);
   }
 }

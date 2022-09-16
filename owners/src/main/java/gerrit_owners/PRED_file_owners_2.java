@@ -83,9 +83,12 @@ class PRED_file_owners_2 extends Predicate.P2 {
     String path = key.toString();
     PathOwners owners = OwnersStoredValues.PATH_OWNERS.get(engine);
     Set<String> ownersNames =
-        iteratorStream(owners.getFileOwners().get(path).iterator())
-            .map(id -> getFullNameFromId(engine, id))
-            .collect(Collectors.toSet());
+        owners.expandGroups()
+            ? iteratorStream(owners.getFileOwners().get(path).iterator())
+                .map(id -> getFullNameFromId(engine, id))
+                .collect(Collectors.toSet())
+            : iteratorStream((owners.group_getFileOwners().get(path)).iterator())
+                .collect(Collectors.toSet());
     String ownVerb = ownersNames.size() > 1 ? "-own-" : "-owns-";
     String userNames = ownersNames.stream().collect(Collectors.joining("-"));
     return SymbolTerm.create(userNames + ownVerb + sanitizeAsSubmitLabel(new File(path).getName()));

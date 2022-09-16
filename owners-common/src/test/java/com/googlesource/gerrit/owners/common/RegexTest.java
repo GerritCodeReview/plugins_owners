@@ -57,6 +57,7 @@ public class RegexTest extends Config {
   private static final Account.Id ACCOUNT_D_ID = Account.id(4);
   private static final Account.Id ACCOUNT_E_ID = Account.id(5);
   private static final Account.Id ACCOUNT_F_ID = Account.id(6);
+  private static final boolean EXPAND_GROUPS = true;
 
   @Override
   @Before
@@ -150,7 +151,7 @@ public class RegexTest extends Config {
     replayAll();
 
     // function under test
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
+    PathOwners owners = new PathOwners(accounts, repository, branch, patchList, EXPAND_GROUPS);
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -246,7 +247,7 @@ public class RegexTest extends Config {
     creatingPatch("project/file.sql", "another.txt");
     replayAll();
 
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
+    PathOwners owners = new PathOwners(accounts, repository, branch, patchList, EXPAND_GROUPS);
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");

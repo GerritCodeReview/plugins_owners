@@ -64,21 +64,28 @@ public class PathOwners {
 
   private Map<String, Set<Id>> fileOwners;
 
+  private Map<String, Set<String>> group_fileOwners;
+
+  private final boolean expandGroups;
+
   public PathOwners(
       Accounts accounts,
       Repository repository,
       Optional<String> branchWhenEnabled,
-      PatchList patchList) {
+      PatchList patchList,
+      boolean expandGroups) {
     this.repository = repository;
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
     this.accounts = accounts;
+    this.expandGroups = expandGroups;
 
     OwnersMap map = branchWhenEnabled.map(branch -> fetchOwners(branch)).orElse(new OwnersMap());
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     reviewers = Multimaps.unmodifiableSetMultimap(map.getPathReviewers());
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
+    group_fileOwners = map.group_getFileOwners();
   }
 
   /**
@@ -107,6 +114,14 @@ public class PathOwners {
     return fileOwners;
   }
 
+  public Map<String, Set<String>> group_getFileOwners() {
+    return group_fileOwners;
+  }
+
+  public boolean expandGroups() {
+    return expandGroups;
+  }
+
   /**
    * Fetched the owners for the associated patch list.
    *
@@ -127,6 +142,7 @@ public class PathOwners {
                           accounts,
                           Collections.emptySet(),
                           Collections.emptySet(),
+                          Collections.emptySet(),
                           Collections.emptySet()))
               .orElse(new PathOwnersEntry());
 
@@ -138,6 +154,7 @@ public class PathOwners {
                           rootPath,
                           conf,
                           accounts,
+                          Collections.emptySet(),
                           Collections.emptySet(),
                           Collections.emptySet(),
                           Collections.emptySet()))
@@ -152,6 +169,7 @@ public class PathOwners {
         // add owners and reviewers to file for matcher predicates
         ownersMap.addFileOwners(path, currentEntry.getOwners());
         ownersMap.addFileReviewers(path, currentEntry.getReviewers());
+        ownersMap.group_addFileOwners(path, currentEntry.group_getOwners());
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -238,11 +256,18 @@ public class PathOwners {
         final Set<Id> owners = currentEntry.getOwners();
         final Set<Id> reviewers = currentEntry.getReviewers();
         Collection<Matcher> inheritedMatchers = currentEntry.getMatchers().values();
+        Set<String> group_owners = currentEntry.group_getOwners();
         currentEntry =
             conf.map(
                     c ->
                         new PathOwnersEntry(
-                            ownersPath, c, accounts, owners, reviewers, inheritedMatchers))
+                            ownersPath,
+                            c,
+                            accounts,
+                            owners,
+                            reviewers,
+                            inheritedMatchers,
+                            group_owners))
                 .orElse(currentEntry);
         entries.put(partial, currentEntry);
       }
