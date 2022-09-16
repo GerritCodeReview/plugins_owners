@@ -14,6 +14,17 @@ Example:
   branch = refs/heads/sandboxes.*
 ```
 
+owners.expandGroups
+:   Expand owners and groups into account ids. If set to `false` all owners are left untouched, apart from e-mail
+    addresses which have the domain dropped. Defaults to `true`.
+
+Example:
+
+```
+[owners]
+  expandGroups = false
+```
+
 ## Configuration
 
 Owner approval is determined based on OWNERS files located in the same

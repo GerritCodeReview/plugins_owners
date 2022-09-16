@@ -24,6 +24,7 @@ import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.change.RevisionResource;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
+import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
                     });
               }
             },
-            new HashMap<String, Set<Owner>>() {
+            new HashMap<String, Set<GroupOwner>>() {
               {
                 put("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
               }

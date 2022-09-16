@@ -16,36 +16,34 @@
 package com.googlesource.gerrit.owners.entities;
 
 import com.google.common.base.Objects;
-import com.google.gerrit.entities.Account;
 
-/** Class representing a file Owner * */
-public class Owner extends GroupOwner {
-  private final int id;
+/** Class representing a file group owner * */
+public class GroupOwner {
+  private final String name;
 
-  public Owner(String name, int id) {
-    super(name);
-    this.id = id;
+  public GroupOwner(String name) {
+    this.name = name;
   }
 
   /**
-   * Get the {@link Owner} account id.
+   * Get the {@link GroupOwner} name.
    *
-   * @return an {@code int} representation of the Owner {@link Account.Id}.
+   * @return the group owner name.
    */
-  public int getId() {
-    return id;
+  public String getName() {
+    return name;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Owner owner = (Owner) o;
-    return Objects.equal(id, owner.id) && Objects.equal(getName(), owner.getName());
+    GroupOwner owner = (GroupOwner) o;
+    return Objects.equal(name, owner.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(getName(), id);
+    return Objects.hashCode(name);
   }
 }
