@@ -20,8 +20,9 @@ import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
 
 public class SuffixMatcher extends Matcher {
-  public SuffixMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
-    super(path, owners, reviewers);
+  public SuffixMatcher(
+      String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners) {
+    super(path, owners, reviewers, groupOwners);
   }
 
   @Override
@@ -30,7 +31,7 @@ public class SuffixMatcher extends Matcher {
   }
 
   @Override
-  protected Matcher clone(Set<Id> owners, Set<Id> reviewers) {
-    return new SuffixMatcher(path, owners, reviewers);
+  protected Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> groupOwners) {
+    return new SuffixMatcher(path, owners, reviewers, groupOwners);
   }
 }

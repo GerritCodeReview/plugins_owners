@@ -78,6 +78,10 @@ public class ConfigurationParser {
     return iteratorStream(node.iterator()).map(JsonNode::asText);
   }
 
+  private static <T> Stream<T> flatten(Optional<Stream<T>> optionalStream) {
+    return optionalStream.orElse(Stream.empty());
+  }
+
   private Stream<String> toClassicOwnersList(JsonNode jsonNode, String sectionName) {
     Stream<String> ownersStream =
         Optional.ofNullable(jsonNode.get(sectionName))
@@ -93,6 +97,9 @@ public class ConfigurationParser {
             .orElse(Stream.empty())
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
+    Set<String> groupOwners =
+        flatten(getNode(node, "owners").map(ConfigurationParser::extractAsText))
+            .collect(Collectors.toSet());
     Set<Id> reviewers =
         getNode(node, "reviewers")
             .map(ConfigurationParser::extractAsText)
@@ -101,13 +108,14 @@ public class ConfigurationParser {
             .collect(Collectors.toSet());
 
     Optional<Matcher> suffixMatcher =
-        getText(node, "suffix").map(el -> new SuffixMatcher(el, owners, reviewers));
+        getText(node, "suffix").map(el -> new SuffixMatcher(el, owners, reviewers, groupOwners));
     Optional<Matcher> regexMatcher =
-        getText(node, "regex").map(el -> new RegExMatcher(el, owners, reviewers));
+        getText(node, "regex").map(el -> new RegExMatcher(el, owners, reviewers, groupOwners));
     Optional<Matcher> partialRegexMatcher =
-        getText(node, "partial_regex").map(el -> new PartialRegExMatcher(el, owners, reviewers));
+        getText(node, "partial_regex")
+            .map(el -> new PartialRegExMatcher(el, owners, reviewers, groupOwners));
     Optional<Matcher> exactMatcher =
-        getText(node, "exact").map(el -> new ExactMatcher(el, owners, reviewers));
+        getText(node, "exact").map(el -> new ExactMatcher(el, owners, reviewers, groupOwners));
 
     return Optional.ofNullable(
         suffixMatcher.orElseGet(

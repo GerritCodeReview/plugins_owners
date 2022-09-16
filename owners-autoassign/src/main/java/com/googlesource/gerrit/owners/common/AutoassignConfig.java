@@ -51,4 +51,8 @@ public class AutoassignConfig {
   public boolean isBranchDisabled(String branch) {
     return config.isBranchDisabled(branch);
   }
+
+  public boolean expandGroups() {
+    return config.expandGroups();
+  }
 }

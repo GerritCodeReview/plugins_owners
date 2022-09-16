@@ -23,8 +23,9 @@ import java.util.regex.Pattern;
 public class RegExMatcher extends Matcher {
   Pattern pattern;
 
-  public RegExMatcher(String path, Set<Account.Id> owners, Set<Account.Id> reviewers) {
-    super(path, owners, reviewers);
+  public RegExMatcher(
+      String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> group_owners) {
+    super(path, owners, reviewers, group_owners);
     pattern = Pattern.compile(path);
   }
 
@@ -34,7 +35,7 @@ public class RegExMatcher extends Matcher {
   }
 
   @Override
-  protected Matcher clone(Set<Id> owners, Set<Id> reviewers) {
-    return new RegExMatcher(path, owners, reviewers);
+  protected Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> groupOwners) {
+    return new RegExMatcher(path, owners, reviewers, groupOwners);
   }
 }

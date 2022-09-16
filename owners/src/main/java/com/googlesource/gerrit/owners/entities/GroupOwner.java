@@ -16,36 +16,39 @@
 package com.googlesource.gerrit.owners.entities;
 
 import com.google.common.base.Objects;
-import java.util.Map;
-import java.util.Set;
 
-/* Files to Owners response API representation */
-public class FilesOwnersResponse {
+/** Class representing a file group owner * */
+public class GroupOwner {
+  private final String name;
 
-  private final Map<String, Set<GroupOwner>> files;
-  private final Map<Integer, Map<String, Integer>> ownersLabels;
+  public GroupOwner(String name) {
+    this.name = name;
+  }
 
-  public FilesOwnersResponse(
-      Map<Integer, Map<String, Integer>> ownersLabels, Map<String, Set<GroupOwner>> files) {
-    this.ownersLabels = ownersLabels;
-    this.files = files;
+  /**
+   * Get the {@link GroupOwner} name.
+   *
+   * @return the group owner name.
+   */
+  public String getName() {
+    return name;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    FilesOwnersResponse that = (FilesOwnersResponse) o;
-    return Objects.equal(files, that.files) && Objects.equal(ownersLabels, that.ownersLabels);
+    GroupOwner owner = (GroupOwner) o;
+    return Objects.equal(name, owner.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(files, ownersLabels);
+    return Objects.hashCode(name);
   }
 
   @Override
   public String toString() {
-    return "FilesOwnersResponse{" + "files=" + files + ", ownersLabels=" + ownersLabels + '}';
+    return "GroupOwner{" + "name='" + name + '\'' + '}';
   }
 }
