@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44e635a7_c19a6926",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-16T14:23:40Z",
+      "side": 1,
+      "message": "Can you also add the new config in the documentation?",
+      "revId": "b9b4e512c323c13c3d2fe7a62fa7e6a2f162e8a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44cc4a80_1f3b48f7",
