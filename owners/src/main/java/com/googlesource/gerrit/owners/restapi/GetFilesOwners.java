@@ -39,6 +39,7 @@ import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
+import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -90,16 +91,22 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               accounts,
               repository,
               pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
-              patchList);
+              patchList,
+              pluginSettings.expandGroups());
 
-      Map<String, Set<Owner>> fileToOwners =
-          Maps.transformValues(
-              owners.getFileOwners(),
-              ids ->
-                  ids.stream()
-                      .map(this::getOwnerFromAccountId)
-                      .flatMap(Optional::stream)
-                      .collect(Collectors.toSet()));
+      Map<String, Set<GroupOwner>> fileToOwners =
+          pluginSettings.expandGroups()
+              ? Maps.transformValues(
+                  owners.getFileOwners(),
+                  ids ->
+                      ids.stream()
+                          .map(this::getOwnerFromAccountId)
+                          .flatMap(Optional::stream)
+                          .collect(Collectors.toSet()))
+              : Maps.transformValues(
+                  owners.getFileGroupOwners(),
+                  groupNames ->
+                      groupNames.stream().map(GroupOwner::new).collect(Collectors.toSet()));
 
       return Response.ok(new FilesOwnersResponse(getLabels(id), fileToOwners));
     }

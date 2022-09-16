@@ -19,9 +19,13 @@ import org.junit.Ignore;
 
 @Ignore
 public class ClassicConfig extends Config {
-  public static final String USER_A_EMAIL_COM = "user-a@email.com";
-  public static final String USER_B_EMAIL_COM = "user-b@email.com";
-  public static final String USER_C_EMAIL_COM = "user-c@email.com";
+  public static final String USER_A = "user-a";
+  public static final String USER_B = "user-b";
+  public static final String USER_C = "user-c";
+  public static final String EMAIL_DOMAIN = "@email.com";
+  public static final String USER_A_EMAIL_COM = USER_A + EMAIL_DOMAIN;
+  public static final String USER_B_EMAIL_COM = USER_B + EMAIL_DOMAIN;
+  public static final String USER_C_EMAIL_COM = USER_C + EMAIL_DOMAIN;
   public static final Account.Id USER_A_ID = Account.id(1);
   public static final Account.Id USER_B_ID = Account.id(2);
   public static final Account.Id USER_C_ID = Account.id(3);

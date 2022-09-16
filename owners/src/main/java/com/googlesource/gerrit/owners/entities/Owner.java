@@ -19,22 +19,12 @@ import com.google.common.base.Objects;
 import com.google.gerrit.entities.Account;
 
 /** Class representing a file Owner * */
-public class Owner {
-  private final String name;
+public class Owner extends GroupOwner {
   private final int id;
 
   public Owner(String name, int id) {
-    this.name = name;
+    super(name);
     this.id = id;
-  }
-
-  /**
-   * Get the {@link Owner} name.
-   *
-   * @return the Owner name.
-   */
-  public String getName() {
-    return name;
   }
 
   /**
@@ -51,11 +41,16 @@ public class Owner {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Owner owner = (Owner) o;
-    return Objects.equal(id, owner.id) && Objects.equal(name, owner.name);
+    return Objects.equal(id, owner.id) && Objects.equal(getName(), owner.getName());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(name, id);
+    return Objects.hashCode(getName(), id);
+  }
+
+  @Override
+  public String toString() {
+    return "Owner{id=" + id + '}';
   }
 }

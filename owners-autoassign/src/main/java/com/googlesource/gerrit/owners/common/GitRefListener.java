@@ -214,7 +214,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
                 accounts,
                 repository,
                 cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
-                patchList);
+                patchList,
+                cfg.expandGroups());
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());

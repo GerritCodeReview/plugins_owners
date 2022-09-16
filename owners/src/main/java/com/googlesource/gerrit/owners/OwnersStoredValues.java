@@ -50,7 +50,8 @@ public class OwnersStoredValues {
                 accounts,
                 repository,
                 settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
-                patchList);
+                patchList,
+                settings.expandGroups());
           }
         };
   }

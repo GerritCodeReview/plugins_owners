@@ -22,12 +22,15 @@ import java.util.Set;
 public abstract class Matcher {
   private Set<Account.Id> owners;
   private Set<Account.Id> reviewers;
+  private Set<String> groupOwners;
   protected String path;
 
-  public Matcher(String key, Set<Account.Id> owners, Set<Account.Id> reviewers) {
+  public Matcher(
+      String key, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners) {
     this.path = key;
     this.owners = owners;
     this.reviewers = reviewers;
+    this.groupOwners = groupOwners;
   }
 
   @Override
@@ -66,13 +69,16 @@ public abstract class Matcher {
       return this;
     }
 
-    return clone(mergeSet(owners, other.owners), mergeSet(reviewers, other.reviewers));
+    return clone(
+        mergeSet(owners, other.owners),
+        mergeSet(reviewers, other.reviewers),
+        mergeSet(groupOwners, other.groupOwners));
   }
 
-  protected abstract Matcher clone(Set<Id> owners, Set<Id> reviewers);
+  protected abstract Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> groupOwners);
 
-  private Set<Id> mergeSet(Set<Id> set1, Set<Id> set2) {
-    ImmutableSet.Builder<Id> setBuilder = ImmutableSet.builder();
+  private <T> Set<T> mergeSet(Set<T> set1, Set<T> set2) {
+    ImmutableSet.Builder<T> setBuilder = ImmutableSet.builder();
     return setBuilder.addAll(set1).addAll(set2).build();
   }
 }

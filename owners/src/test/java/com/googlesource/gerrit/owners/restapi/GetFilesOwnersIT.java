@@ -21,9 +21,11 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
+import com.google.gerrit.acceptance.config.GlobalPluginConfig;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.change.RevisionResource;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
+import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +81,7 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
                     });
               }
             },
-            new HashMap<String, Set<Owner>>() {
+            new HashMap<String, Set<GroupOwner>>() {
               {
                 put("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
               }
@@ -88,7 +90,52 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
     assertThat(responseValue).isEqualTo(expectedFilesOwnerResponse);
   }
 
+  @Test
+  @UseLocalDisk
+  @GlobalPluginConfig(pluginName = "owners", name = "owners.expandGroups", value = "false")
+  public void shouldReturnResponseWithUnexpandedOwners() throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // owners:
+    // - Administrator
+    merge(createChange(testRepo, "master", "Add OWNER file", "OWNERS", getOwnerFileContent(), ""));
+
+    PushOneCommit.Result result = createChange();
+
+    approve(result.getChangeId());
+
+    RevisionResource revisionResource = parseCurrentRevisionResource(result.getChangeId());
+
+    Response<?> resp = ownersApi.apply(revisionResource);
+
+    assertThat(resp.statusCode()).isEqualTo(HttpServletResponse.SC_OK);
+
+    FilesOwnersResponse responseValue = (FilesOwnersResponse) resp.value();
+
+    FilesOwnersResponse expectedFilesOwnerResponse =
+        new FilesOwnersResponse(
+            new HashMap<Integer, Map<String, Integer>>() {
+              {
+                put(
+                    admin.id().get(),
+                    new HashMap<String, Integer>() {
+                      {
+                        put("Code-Review", 2);
+                      }
+                    });
+              }
+            },
+            new HashMap<String, Set<GroupOwner>>() {
+              {
+                put("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
+              }
+            });
+
+    assertThat(responseValue).isEqualTo(expectedFilesOwnerResponse);
+  }
+
   private String getOwnerFileContent() {
-    return "owners:\n" + "- " + admin.email() + "\n";
+    return "owners:\n" + "- " + admin.username() + "\n";
   }
 }
