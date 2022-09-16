@@ -33,6 +33,7 @@ public class PluginSettings {
   private final PluginConfigFactory configFactory;
   private final String ownersPluginName;
   private final Config globalPluginConfig;
+  private final boolean expandGroups;
 
   @Inject
   public PluginSettings(PluginConfigFactory configFactory, @PluginName String ownersPluginName) {
@@ -42,6 +43,8 @@ public class PluginSettings {
     this.globalPluginConfig = configFactory.getGlobalPluginConfig(ownersPluginName);
     disabledBranchesPatterns =
         ImmutableSet.copyOf(globalPluginConfig.getStringList("owners", "disable", "branch"));
+
+    this.expandGroups = globalPluginConfig.getBoolean("owners", "expandGroups", true);
   }
 
   /**
@@ -65,6 +68,12 @@ public class PluginSettings {
   public boolean isBranchDisabled(String branch) {
     String normalizedRef = normalizeRef(branch);
     return disabledBranchesPatterns.stream().anyMatch(normalizedRef::matches);
+  }
+
+  /** Returns true if the groups in the OWNERS file should be expanded in a list
+   *  of account ids. */
+  public boolean expandGroups() {
+    return expandGroups;
   }
 
   /**

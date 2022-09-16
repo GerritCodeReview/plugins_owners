@@ -22,11 +22,11 @@ import java.util.Set;
 /* Files to Owners response API representation */
 public class FilesOwnersResponse {
 
-  private final Map<String, Set<Owner>> files;
+  private final Map<String, Set<GroupOwner>> files;
   private final Map<Integer, Map<String, Integer>> ownersLabels;
 
   public FilesOwnersResponse(
-      Map<Integer, Map<String, Integer>> ownersLabels, Map<String, Set<Owner>> files) {
+      Map<Integer, Map<String, Integer>> ownersLabels, Map<String, Set<GroupOwner>> files) {
     this.ownersLabels = ownersLabels;
     this.files = files;
   }
