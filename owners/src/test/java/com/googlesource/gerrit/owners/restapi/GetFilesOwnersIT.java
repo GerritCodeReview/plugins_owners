@@ -17,24 +17,21 @@ package com.googlesource.gerrit.owners.restapi;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
-import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
 import com.google.gerrit.extensions.restapi.Response;
-import com.google.gerrit.server.change.RevisionResource;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.Sets;
 import org.junit.Test;
 
 @TestPlugin(name = "owners", httpModule = "com.googlesource.gerrit.owners.OwnersRestApiModule")
+@UseLocalDisk
 public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 
   private GetFilesOwners ownersApi;
@@ -44,98 +41,59 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
     super.setUpTestPlugin();
 
     ownersApi = plugin.getSysInjector().getInstance(GetFilesOwners.class);
-  }
 
-  @Test
-  @UseLocalDisk
-  public void shouldReturnACorrectResponse() throws Exception {
     // Add OWNERS file to root:
     //
     // inherited: true
     // owners:
-    // - Administrator
-    merge(createChange(testRepo, "master", "Add OWNER file", "OWNERS", getOwnerFileContent(), ""));
-
-    PushOneCommit.Result result = createChange();
-
-    approve(result.getChangeId());
-
-    RevisionResource revisionResource = parseCurrentRevisionResource(result.getChangeId());
-
-    Response<?> resp = ownersApi.apply(revisionResource);
-
-    assertThat(resp.statusCode()).isEqualTo(HttpServletResponse.SC_OK);
-
-    FilesOwnersResponse responseValue = (FilesOwnersResponse) resp.value();
-
-    FilesOwnersResponse expectedFilesOwnerResponse =
-        new FilesOwnersResponse(
-            new HashMap<Integer, Map<String, Integer>>() {
-              {
-                put(
-                    admin.id().get(),
-                    new HashMap<String, Integer>() {
-                      {
-                        put("Code-Review", 2);
-                      }
-                    });
-              }
-            },
-            new HashMap<String, Set<GroupOwner>>() {
-              {
-                put("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
-              }
-            });
-
-    assertThat(responseValue).isEqualTo(expectedFilesOwnerResponse);
+    // - admin
+    merge(
+        createChange(
+            testRepo,
+            "master",
+            "Add OWNER file",
+            "OWNERS",
+            "owners:\n" + "- " + admin.username() + "\n",
+            ""));
   }
 
   @Test
-  @UseLocalDisk
+  public void shouldReturnExactFileOwners() throws Exception {
+    String changeId = createChange().getChangeId();
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+  }
+
+  @Test
+  public void shouldReturnOwnersLabels() throws Exception {
+    String changeId = createChange().getChangeId();
+    approve(changeId);
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().ownersLabels)
+        .containsExactly(admin.id().get(), ImmutableMap.builder().put("Code-Review", 2).build());
+  }
+
+  @Test
   @GlobalPluginConfig(pluginName = "owners", name = "owners.expandGroups", value = "false")
-  public void shouldReturnResponseWithUnexpandedOwners() throws Exception {
-    // Add OWNERS file to root:
-    //
-    // inherited: true
-    // owners:
-    // - Administrator
-    merge(createChange(testRepo, "master", "Add OWNER file", "OWNERS", getOwnerFileContent(), ""));
+  public void shouldReturnResponseWithUnexpandedFileOwners() throws Exception {
+    String changeId = createChange().getChangeId();
 
-    PushOneCommit.Result result = createChange();
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    approve(result.getChangeId());
-
-    RevisionResource revisionResource = parseCurrentRevisionResource(result.getChangeId());
-
-    Response<?> resp = ownersApi.apply(revisionResource);
-
-    assertThat(resp.statusCode()).isEqualTo(HttpServletResponse.SC_OK);
-
-    FilesOwnersResponse responseValue = (FilesOwnersResponse) resp.value();
-
-    FilesOwnersResponse expectedFilesOwnerResponse =
-        new FilesOwnersResponse(
-            new HashMap<Integer, Map<String, Integer>>() {
-              {
-                put(
-                    admin.id().get(),
-                    new HashMap<String, Integer>() {
-                      {
-                        put("Code-Review", 2);
-                      }
-                    });
-              }
-            },
-            new HashMap<String, Set<GroupOwner>>() {
-              {
-                put("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
-              }
-            });
-
-    assertThat(responseValue).isEqualTo(expectedFilesOwnerResponse);
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
   }
 
-  private String getOwnerFileContent() {
-    return "owners:\n" + "- " + admin.username() + "\n";
+  private static <T> Response<T> assertResponseOk(Response<T> response) {
+    assertThat(response.statusCode()).isEqualTo(HttpServletResponse.SC_OK);
+    return response;
   }
 }

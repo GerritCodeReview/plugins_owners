@@ -22,8 +22,8 @@ import java.util.Set;
 /* Files to Owners response API representation */
 public class FilesOwnersResponse {
 
-  private final Map<String, Set<GroupOwner>> files;
-  private final Map<Integer, Map<String, Integer>> ownersLabels;
+  public final Map<String, Set<GroupOwner>> files;
+  public final Map<Integer, Map<String, Integer>> ownersLabels;
 
   public FilesOwnersResponse(
       Map<Integer, Map<String, Integer>> ownersLabels, Map<String, Set<GroupOwner>> files) {
