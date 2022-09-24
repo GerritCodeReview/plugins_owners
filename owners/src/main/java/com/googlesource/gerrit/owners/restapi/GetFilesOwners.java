@@ -76,7 +76,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   }
 
   @Override
-  public Response<?> apply(RevisionResource revision)
+  public Response<FilesOwnersResponse> apply(RevisionResource revision)
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
     PatchSet ps = revision.getPatchSet();
     Change change = revision.getChange();
