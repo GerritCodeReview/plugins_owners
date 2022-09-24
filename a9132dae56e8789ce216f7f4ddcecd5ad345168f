@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11459701_9362ffe9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-24T01:12:31Z",
+      "side": 1,
+      "message": "Why only All-Projects? It should be following the project\u0027s hierarchy.",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 52
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc43680b_98b0b620",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-24T01:12:31Z",
+      "side": 1,
+      "message": "handled",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aa78a19_4c9c4fbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-24T01:12:31Z",
+      "side": 1,
+      "message": "All throughout the code, we should not assume that All-Projects is the parent project containing the OWNERS file but instead we should follow the parent chain until we find an OWNERS in refs/meta/config.",
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "744301fb_e7b7293d",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-24T01:12:31Z",
+      "side": 1,
+      "message": "project\u0027s hierarchy",
+      "range": {
+        "startLine": 125,
+        "startChar": 35,
+        "endLine": 125,
+        "endChar": 47
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0b45ee4_b279fc4f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-24T01:12:31Z",
+      "side": 1,
+      "message": "This should be coming from the parent projects of repository",
+      "range": {
+        "startLine": 123,
+        "startChar": 29,
+        "endLine": 123,
+        "endChar": 49
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
