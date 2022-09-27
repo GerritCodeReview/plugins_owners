@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23034412_406c5c31",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-27T21:16:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11459701_9362ffe9",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 52
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc43680b_98b0b620",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-24T01:12:31Z",
       "side": 1,
       "message": "handled",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87ec9c16_b3350071",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-27T21:16:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc43680b_98b0b620",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b3d0a1_081a3a0b",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-27T21:16:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "744301fb_e7b7293d",
+      "range": {
+        "startLine": 125,
+        "startChar": 35,
+        "endLine": 125,
+        "endChar": 47
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0b45ee4_b279fc4f",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-09-24T01:12:31Z",
       "side": 1,
       "message": "This should be coming from the parent projects of repository",
+      "range": {
+        "startLine": 123,
+        "startChar": 29,
+        "endLine": 123,
+        "endChar": 49
+      },
+      "revId": "a9132dae56e8789ce216f7f4ddcecd5ad345168f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aee9938_2e4fb058",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-27T21:16:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0b45ee4_b279fc4f",
       "range": {
         "startLine": 123,
         "startChar": 29,
