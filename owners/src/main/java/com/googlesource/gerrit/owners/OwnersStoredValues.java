@@ -16,7 +16,10 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
@@ -45,10 +48,18 @@ public class OwnersStoredValues {
           protected PathOwners createValue(Prolog engine) {
             PatchList patchList = StoredValues.PATCH_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
+            ProjectState projectState = StoredValues.PROJECT_STATE.get(engine);
+            GitRepositoryManager gitRepositoryManager = StoredValues.REPO_MANAGER.get(engine);
+
+            Optional<Project.NameKey> maybeParentProjectNameKey =
+                Optional.ofNullable(projectState.getProject().getParent());
+
             String branch = StoredValues.getChange(engine).getDest().branch();
             return new PathOwners(
                 accounts,
+                gitRepositoryManager,
                 repository,
+                maybeParentProjectNameKey,
                 settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
                 patchList,
                 settings.expandGroups());

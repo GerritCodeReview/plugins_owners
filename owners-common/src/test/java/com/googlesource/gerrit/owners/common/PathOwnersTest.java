@@ -14,12 +14,20 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.*;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.RefNames;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.Before;
@@ -38,6 +46,8 @@ public class PathOwnersTest extends ClassicConfig {
   private static final boolean EXPAND_GROUPS = true;
   private static final boolean DO_NOT_EXPAND_GROUPS = false;
   public static final String CLASSIC_FILE_TXT = "classic/file.txt";
+  public static final Project.NameKey parentRepositoryNameKey =
+      Project.NameKey.parse("parentRepository");
 
   @Override
   @Before
@@ -49,7 +59,15 @@ public class PathOwnersTest extends ClassicConfig {
   public void testClassic() throws Exception {
     mockOwners(USER_A_EMAIL_COM, USER_B_EMAIL_COM);
 
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList, EXPAND_GROUPS);
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Optional.empty(),
+            branch,
+            patchList,
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
@@ -62,7 +80,14 @@ public class PathOwnersTest extends ClassicConfig {
     mockOwners(USER_A_EMAIL_COM, USER_B_EMAIL_COM);
 
     PathOwners owners =
-        new PathOwners(accounts, repository, branch, patchList, DO_NOT_EXPAND_GROUPS);
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Optional.empty(),
+            branch,
+            patchList,
+            DO_NOT_EXPAND_GROUPS);
     Set<String> ownersSet = owners.getFileGroupOwners().get(CLASSIC_FILE_TXT);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A));
@@ -75,7 +100,14 @@ public class PathOwnersTest extends ClassicConfig {
     mockOwners(USER_A_EMAIL_COM);
 
     PathOwners owners =
-        new PathOwners(accounts, repository, Optional.empty(), patchList, EXPAND_GROUPS);
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Optional.empty(),
+            Optional.empty(),
+            patchList,
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(0, ownersSet.size());
   }
@@ -88,7 +120,15 @@ public class PathOwnersTest extends ClassicConfig {
     creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
 
-    PathOwners owners2 = new PathOwners(accounts, repository, branch, patchList, EXPAND_GROUPS);
+    PathOwners owners2 =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Optional.empty(),
+            branch,
+            patchList,
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
@@ -96,6 +136,80 @@ public class PathOwnersTest extends ClassicConfig {
     assertTrue(ownersSet2.contains(USER_A_ID));
     assertTrue(ownersSet2.contains(USER_B_ID));
     assertTrue(ownersSet2.contains(USER_C_ID));
+  }
+
+  @Test
+  public void testRootInheritFromProject() throws Exception {
+    expectConfig("OWNERS", "master", createConfig(true, owners()));
+    expectConfig(
+        "OWNERS",
+        RefNames.REFS_CONFIG,
+        createConfig(true, owners(), suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+
+    String fileName = "file.sql";
+    creatingPatchList(Collections.singletonList(fileName));
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Optional.empty(),
+            branch,
+            patchList,
+            EXPAND_GROUPS);
+
+    Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
+    assertEquals(1, fileOwners.size());
+
+    Set<Account.Id> ownersSet = fileOwners.get(fileName);
+    assertEquals(2, ownersSet.size());
+    assertTrue(ownersSet.contains(USER_A_ID));
+    assertTrue(ownersSet.contains(USER_B_ID));
+  }
+
+  @Test
+  public void testProjectInheritFromParentProject() throws Exception {
+    expectConfig("OWNERS", "master", createConfig(true, owners()));
+    expectConfig("OWNERS", RefNames.REFS_CONFIG, repository, createConfig(true, owners()));
+    expectConfig(
+        "OWNERS",
+        RefNames.REFS_CONFIG,
+        parentRepository,
+        createConfig(true, owners(), suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+
+    String fileName = "file.sql";
+    creatingPatchList(Collections.singletonList(fileName));
+
+    mockParentRepository();
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Optional.of(parentRepositoryNameKey),
+            branch,
+            patchList,
+            EXPAND_GROUPS);
+
+    Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
+    assertEquals(fileOwners.size(), 1);
+
+    Set<Account.Id> ownersSet = fileOwners.get(fileName);
+    assertEquals(2, ownersSet.size());
+    assertTrue(ownersSet.contains(USER_A_ID));
+    assertTrue(ownersSet.contains(USER_B_ID));
+  }
+
+  private void mockParentRepository() throws IOException {
+    expect(repositoryManager.openRepository(eq(parentRepositoryNameKey)))
+        .andReturn(parentRepository)
+        .anyTimes();
+    parentRepository.close();
+    expectLastCall();
   }
 
   @Test
@@ -107,7 +221,15 @@ public class PathOwnersTest extends ClassicConfig {
     creatingPatchList(Arrays.asList("dir/subdir/file.txt"));
     replayAll();
 
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList, EXPAND_GROUPS);
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Optional.empty(),
+            branch,
+            patchList,
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
 
     assertEquals(3, ownersSet.size());
