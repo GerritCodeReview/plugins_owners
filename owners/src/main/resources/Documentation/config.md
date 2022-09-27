@@ -111,6 +111,8 @@ contain the 'inherited: true' condition at the top of the file or if they are ab
 That means that in the absence of any OWNERS file in the target branch, the refs/meta/config
 OWNERS is used as global default.
 
+If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
+in the parent project.
 
 ## Example 1 - OWNERS file without matchers and default Gerrit submit rules
 

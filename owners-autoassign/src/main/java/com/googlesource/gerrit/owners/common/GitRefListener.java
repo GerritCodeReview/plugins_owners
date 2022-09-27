@@ -207,12 +207,16 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     try {
       ChangeApi cApi = changes.id(cId.get());
       ChangeInfo change = cApi.get();
+      Optional<Repository> maybeParentRepo =
+          Optional.of(repositoryManager.openRepository(Project.NameKey.parse(change.project)));
+
       PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
         PathOwners owners =
             new PathOwners(
                 accounts,
                 repository,
+                maybeParentRepo,
                 cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
                 patchList,
                 cfg.expandGroups());
@@ -230,6 +234,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       logger.warn("Could not open change: {}", cId, e);
     } catch (ReviewerManagerException e) {
       logger.warn("Could not add reviewers for change: {}", cId, e);
+    } catch (IOException e) {
+      logger.error(String.format("Could not open parent repository: %s", e.getMessage()));
     }
   }
 
