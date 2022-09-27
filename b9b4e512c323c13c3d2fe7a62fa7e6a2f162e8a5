@@ -429,6 +429,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "add56b3e_b979724f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-27T10:16:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "28439a63_6612c208",
+      "revId": "b9b4e512c323c13c3d2fe7a62fa7e6a2f162e8a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18a0d675_6672a6f5",
