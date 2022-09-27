@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.expect;
 
 import com.google.common.base.Charsets;
 import com.google.gerrit.entities.Patch;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import org.powermock.api.easymock.PowerMock;
 
 @Ignore
 public abstract class Config {
+  protected GitRepositoryManager repositoryManager;
   protected Repository repository;
   protected PatchList patchList;
   protected ConfigurationParser parser;
@@ -42,6 +44,7 @@ public abstract class Config {
   public void setup() throws Exception {
     PowerMock.mockStatic(JgitWrapper.class);
 
+    repositoryManager = PowerMock.createMock(GitRepositoryManager.class);
     repository = PowerMock.createMock(Repository.class);
     parser = new ConfigurationParser(accounts);
   }

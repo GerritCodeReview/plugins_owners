@@ -45,6 +45,7 @@ import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
 import com.google.gerrit.server.project.NoSuchProjectException;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
@@ -71,6 +72,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private final GerritApi api;
 
   private final PatchListCache patchListCache;
+  private final ProjectCache projectCache;
   private final GitRepositoryManager repositoryManager;
   private final Accounts accounts;
   private final ReviewerManager reviewerManager;
@@ -87,6 +89,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   public GitRefListener(
       GerritApi api,
       PatchListCache patchListCache,
+      ProjectCache projectCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
       ReviewerManager reviewerManager,
@@ -96,6 +99,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       AutoassignConfig cfg) {
     this.api = api;
     this.patchListCache = patchListCache;
+    this.projectCache = projectCache;
     this.repositoryManager = repositoryManager;
     this.accounts = accounts;
     this.reviewerManager = reviewerManager;
@@ -207,12 +211,19 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     try {
       ChangeApi cApi = changes.id(cId.get());
       ChangeInfo change = cApi.get();
+      Optional<Project.NameKey> maybeParentProjectNameKey =
+          projectCache
+              .get(Project.NameKey.parse(change.project))
+              .map(p -> p.getProject().getParent());
+
       PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
         PathOwners owners =
             new PathOwners(
                 accounts,
+                repositoryManager,
                 repository,
+                maybeParentProjectNameKey,
                 cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
                 patchList,
                 cfg.expandGroups());
