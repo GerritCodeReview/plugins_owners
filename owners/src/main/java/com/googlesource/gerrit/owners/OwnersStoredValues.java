@@ -16,13 +16,17 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PluginSettings;
+import java.io.IOException;
 import java.util.Optional;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -45,10 +49,30 @@ public class OwnersStoredValues {
           protected PathOwners createValue(Prolog engine) {
             PatchList patchList = StoredValues.PATCH_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
+            ProjectState projectState = StoredValues.PROJECT_STATE.get(engine);
+            GitRepositoryManager gitRepositoryManager = StoredValues.REPO_MANAGER.get(engine);
+
+            Optional<Project.NameKey> maybeParentProjectNameKey =
+                Optional.ofNullable(projectState.getProject().getParent());
+            Optional<Repository> maybeParentRepo =
+                maybeParentProjectNameKey.map(
+                    p -> {
+                      try (Repository repo = gitRepositoryManager.openRepository(p)) {
+                        return repo;
+                      } catch (IOException e) {
+                        log.error(
+                            String.format(
+                                "Could not open repository %s: %s",
+                                projectState.getNameKey().get(), e.getMessage()));
+                      }
+                      return null;
+                    });
+
             String branch = StoredValues.getChange(engine).getDest().branch();
             return new PathOwners(
                 accounts,
                 repository,
+                maybeParentRepo,
                 settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
                 patchList,
                 settings.expandGroups());
