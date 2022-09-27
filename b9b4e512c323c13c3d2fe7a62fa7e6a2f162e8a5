@@ -605,6 +605,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "730a11c2_1019f56c",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/GroupOwner.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-27T09:55:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d69aea03_e089512d",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 23
+      },
+      "revId": "b9b4e512c323c13c3d2fe7a62fa7e6a2f162e8a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2013f26_5ebd5fc0",
@@ -642,6 +666,30 @@
       "side": 1,
       "message": "It isn\u0027t a good idea to load the plugin config every time the predicate is evaluated.",
       "parentUuid": "b2013f26_5ebd5fc0",
+      "range": {
+        "startLine": 86,
+        "startChar": 15,
+        "endLine": 86,
+        "endChar": 27
+      },
+      "revId": "b9b4e512c323c13c3d2fe7a62fa7e6a2f162e8a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da1b99ef_eafba519",
+        "filename": "owners/src/main/java/gerrit_owners/PRED_file_owners_2.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-27T09:55:14Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0b1c5908_00c08756",
       "range": {
         "startLine": 86,
         "startChar": 15,
