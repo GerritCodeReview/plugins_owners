@@ -19,6 +19,7 @@ import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.PatchSet;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -33,6 +34,7 @@ import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListCache;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
@@ -41,6 +43,7 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,13 +51,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class GetFilesOwners implements RestReadView<RevisionResource> {
+  private static final Logger log = LoggerFactory.getLogger(GetFilesOwners.class);
 
   private final PatchListCache patchListCache;
   private final Accounts accounts;
   private final AccountCache accountCache;
+  private final ProjectCache projectCache;
   private final GitRepositoryManager repositoryManager;
   private final PluginSettings pluginSettings;
   private final GerritApi gerritApi;
@@ -64,12 +71,14 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       PatchListCache patchListCache,
       Accounts accounts,
       AccountCache accountCache,
+      ProjectCache projectCache,
       GitRepositoryManager repositoryManager,
       PluginSettings pluginSettings,
       GerritApi gerritApi) {
     this.patchListCache = patchListCache;
     this.accounts = accounts;
     this.accountCache = accountCache;
+    this.projectCache = projectCache;
     this.repositoryManager = repositoryManager;
     this.pluginSettings = pluginSettings;
     this.gerritApi = gerritApi;
@@ -82,7 +91,23 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     Change change = revision.getChange();
     int id = revision.getChangeResource().getChange().getChangeId();
 
+    Optional<Project.NameKey> maybeParentProjectNameKey =
+        projectCache.get(change.getProject()).map(p -> p.getProject().getParent());
+
     try (Repository repository = repositoryManager.openRepository(change.getProject())) {
+
+      Optional<Repository> maybeParentRepo =
+          maybeParentProjectNameKey.map(
+              p -> {
+                try {
+                  return repositoryManager.openRepository(p);
+                } catch (IOException e) {
+                  log.error(
+                      String.format("Could not open repository %s: %s", p.get(), e.getMessage()));
+                }
+                return null;
+              });
+
       PatchList patchList = patchListCache.get(change, ps);
 
       String branch = change.getDest().branch();
@@ -90,6 +115,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
           new PathOwners(
               accounts,
               repository,
+              maybeParentRepo,
               pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
               patchList,
               pluginSettings.expandGroups());
