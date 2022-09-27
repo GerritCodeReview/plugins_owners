@@ -22,6 +22,7 @@ import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.PatchListCache;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -42,6 +43,7 @@ public class GitRefListenerTest extends GitRefListener {
   public GitRefListenerTest(
       GerritApi api,
       PatchListCache patchListCache,
+      ProjectCache projectCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
       ReviewerManager reviewerManager,
@@ -52,6 +54,7 @@ public class GitRefListenerTest extends GitRefListener {
     super(
         api,
         patchListCache,
+        projectCache,
         repositoryManager,
         accounts,
         reviewerManager,
