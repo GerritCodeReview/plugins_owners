@@ -18,16 +18,21 @@ package com.googlesource.gerrit.owners.restapi;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.restapi.Response;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.Sets;
+import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
+import org.eclipse.jgit.junit.TestRepository;
 import org.junit.Test;
 
 @TestPlugin(name = "owners", httpModule = "com.googlesource.gerrit.owners.OwnersRestApiModule")
@@ -41,24 +46,11 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
     super.setUpTestPlugin();
 
     ownersApi = plugin.getSysInjector().getInstance(GetFilesOwners.class);
-
-    // Add OWNERS file to root:
-    //
-    // inherited: true
-    // owners:
-    // - admin
-    merge(
-        createChange(
-            testRepo,
-            "master",
-            "Add OWNER file",
-            "OWNERS",
-            "owners:\n" + "- " + admin.username() + "\n",
-            ""));
   }
 
   @Test
   public void shouldReturnExactFileOwners() throws Exception {
+    addOwnerFileToProjectRoot(true);
     String changeId = createChange().getChangeId();
 
     Response<FilesOwnersResponse> resp =
@@ -70,6 +62,7 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldReturnOwnersLabels() throws Exception {
+    addOwnerFileToProjectRoot(true);
     String changeId = createChange().getChangeId();
     approve(changeId);
 
@@ -83,6 +76,7 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
   @Test
   @GlobalPluginConfig(pluginName = "owners", name = "owners.expandGroups", value = "false")
   public void shouldReturnResponseWithUnexpandedFileOwners() throws Exception {
+    addOwnerFileToProjectRoot(true);
     String changeId = createChange().getChangeId();
 
     Response<FilesOwnersResponse> resp =
@@ -92,8 +86,86 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
   }
 
+  @Test
+  @UseLocalDisk
+  public void shouldReturnInheritedOwnersFromProjectsOwners() throws Exception {
+    assertInheritFromProject(project);
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldReturnInheritedOwnersFromParentProjectsOwners() throws Exception {
+    assertInheritFromProject(allProjects);
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldNotReturnInheritedOwnersFromProjectsOwners() throws Exception {
+    assertNotInheritFromProject(project);
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldNotReturnInheritedOwnersFromParentProjectsOwners() throws Exception {
+    assertNotInheritFromProject(allProjects);
+  }
+
   private static <T> Response<T> assertResponseOk(Response<T> response) {
     assertThat(response.statusCode()).isEqualTo(HttpServletResponse.SC_OK);
     return response;
+  }
+
+  private void assertNotInheritFromProject(Project.NameKey projectNameKey) throws Exception {
+    addOwnerFileToProjectRoot(false);
+    addOwnerFileToProjectConfig(projectNameKey);
+
+    String changeId = createChange().getChangeId();
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+  }
+
+  private void assertInheritFromProject(Project.NameKey projectNameKey) throws Exception {
+    addOwnerFileToProjectRoot(true);
+    addOwnerFileToProjectConfig(projectNameKey);
+
+    String changeId = createChange().getChangeId();
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+  }
+
+  private void addOwnerFileToProjectConfig(Project.NameKey projectNameKey) throws Exception {
+    TestRepository<InMemoryRepository> project = cloneProject(projectNameKey);
+    GitUtil.fetch(project, RefNames.REFS_CONFIG + ":" + RefNames.REFS_CONFIG);
+    project.reset(RefNames.REFS_CONFIG);
+    pushFactory
+        .create(
+            admin.newIdent(),
+            project,
+            "Add OWNER file",
+            "OWNERS",
+            "owners:\n" + "- " + user.username() + "\n")
+        .to(RefNames.REFS_CONFIG);
+  }
+
+  private void addOwnerFileToProjectRoot(boolean inherit) throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // owners:
+    // - admin
+    merge(
+        createChange(
+            testRepo,
+            "master",
+            "Add OWNER file",
+            "OWNERS",
+            String.format("inherited: %s\nowners:\n- %s\n", inherit, admin.email()),
+            ""));
   }
 }
