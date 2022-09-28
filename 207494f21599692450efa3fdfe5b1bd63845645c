@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89fbf745_ab85bfe1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-28T15:18:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7f7d2f8_fc6280e3",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 53
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "930676ed_95afe53d",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-28T14:11:32Z",
       "side": 1,
       "message": "`handled`",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bf68e88_1dc4efba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-28T15:18:04Z",
+      "side": 1,
+      "message": "Why `handled`? What I am trying to say is that the flag needs to be `enabled` in order for the inheritance to happen.",
+      "parentUuid": "930676ed_95afe53d",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -117,6 +165,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34550d4c_ac427a53",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-28T15:18:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c5a158b_a5fb0a7c",
+      "range": {
+        "startLine": 248,
+        "startChar": 13,
+        "endLine": 248,
+        "endChar": 24
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5029f500_a55ade04",
@@ -140,6 +212,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73cd959c_38b03cbf",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-28T15:18:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5029f500_a55ade04",
+      "range": {
+        "startLine": 57,
+        "startChar": 33,
+        "endLine": 57,
+        "endChar": 48
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81a29e9b_e5d2b653",
@@ -153,6 +249,30 @@
       "writtenOn": "2022-09-28T14:11:32Z",
       "side": 1,
       "message": "Where is this `Repository` going to be closed?",
+      "range": {
+        "startLine": 99,
+        "startChar": 27,
+        "endLine": 99,
+        "endChar": 42
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55c0ba5b_0bf4b85a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-28T15:18:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81a29e9b_e5d2b653",
       "range": {
         "startLine": 99,
         "startChar": 27,
