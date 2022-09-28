@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b7f7d2f8_fc6280e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-28T14:11:32Z",
+      "side": 1,
+      "message": "`the parent project`.",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 53
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "930676ed_95afe53d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-28T14:11:32Z",
+      "side": 1,
+      "message": "`handled`",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07867502_e212b4f2",
         "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
         "patchSetId": 17
@@ -19,6 +65,99 @@
         "startChar": 6,
         "endLine": 222,
         "endChar": 33
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28ed9ce8_b069a0f4",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-28T14:11:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "07867502_e212b4f2",
+      "range": {
+        "startLine": 218,
+        "startChar": 6,
+        "endLine": 222,
+        "endChar": 33
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5a158b_a5fb0a7c",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-28T14:11:32Z",
+      "side": 1,
+      "message": "How do you know that this is specific to open the parent repository at L221? Would it be worth adding a small `try/catch` around L221 instead?",
+      "range": {
+        "startLine": 248,
+        "startChar": 13,
+        "endLine": 248,
+        "endChar": 24
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5029f500_a55ade04",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-28T14:11:32Z",
+      "side": 1,
+      "message": "Where is this going to be closed?",
+      "range": {
+        "startLine": 57,
+        "startChar": 33,
+        "endLine": 57,
+        "endChar": 48
+      },
+      "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81a29e9b_e5d2b653",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-28T14:11:32Z",
+      "side": 1,
+      "message": "Where is this `Repository` going to be closed?",
+      "range": {
+        "startLine": 99,
+        "startChar": 27,
+        "endLine": 99,
+        "endChar": 42
       },
       "revId": "207494f21599692450efa3fdfe5b1bd63845645c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
