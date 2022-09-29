@@ -26,6 +26,9 @@ import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PluginSettings;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -51,8 +54,10 @@ public class OwnersStoredValues {
             ProjectState projectState = StoredValues.PROJECT_STATE.get(engine);
             GitRepositoryManager gitRepositoryManager = StoredValues.REPO_MANAGER.get(engine);
 
-            Optional<Project.NameKey> maybeParentProjectNameKey =
-                Optional.ofNullable(projectState.getProject().getParent());
+            List<Project.NameKey> maybeParentProjectNameKey =
+                Optional.ofNullable(projectState.getProject().getParent())
+                    .map(Arrays::asList)
+                    .orElse(Collections.emptyList());
 
             String branch = StoredValues.getChange(engine).getDest().branch();
             return new PathOwners(

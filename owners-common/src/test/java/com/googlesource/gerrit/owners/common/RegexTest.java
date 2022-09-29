@@ -21,6 +21,7 @@ import static com.googlesource.gerrit.owners.common.MatcherConfig.partialRegexMa
 import static com.googlesource.gerrit.owners.common.MatcherConfig.regexMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
 import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
+import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
@@ -153,13 +154,7 @@ public class RegexTest extends Config {
     // function under test
     PathOwners owners =
         new PathOwners(
-            accounts,
-            repositoryManager,
-            repository,
-            Optional.empty(),
-            branch,
-            patchList,
-            EXPAND_GROUPS);
+            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -257,13 +252,7 @@ public class RegexTest extends Config {
 
     PathOwners owners =
         new PathOwners(
-            accounts,
-            repositoryManager,
-            repository,
-            Optional.empty(),
-            branch,
-            patchList,
-            EXPAND_GROUPS);
+            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");
