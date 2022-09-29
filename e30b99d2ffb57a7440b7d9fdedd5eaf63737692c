@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9155c696_648c8252",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-29T15:07:32Z",
+      "side": 1,
+      "message": "This isn\u0027t going to work: the `repo` is closed by the `try` at L221 and therefore who is trying to use it in maybeParentRepo would then fail because the repository cannot be used anymore.",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 30
+      },
+      "revId": "e30b99d2ffb57a7440b7d9fdedd5eaf63737692c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66338000_b91730e1",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-29T15:07:32Z",
+      "side": 1,
+      "message": "This isn\u0027t going to work, for the same reason of the same pattern used in GitRefListener.java.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 35
+      },
+      "revId": "e30b99d2ffb57a7440b7d9fdedd5eaf63737692c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
