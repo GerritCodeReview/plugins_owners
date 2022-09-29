@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b503c294_becc5344",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/Config.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-29T19:05:51Z",
+      "side": 1,
+      "message": "I believe you should also pass the repository and then do two different expectations of configs from a project and its parent.",
+      "range": {
+        "startLine": 61,
+        "startChar": 39,
+        "endLine": 61,
+        "endChar": 65
+      },
+      "revId": "a8fc03d11c49b0bf15d2a947ea6ba2cb79aed5b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
