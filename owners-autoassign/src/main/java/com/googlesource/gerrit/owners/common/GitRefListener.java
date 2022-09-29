@@ -46,14 +46,14 @@ import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
@@ -211,10 +211,15 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     try {
       ChangeApi cApi = changes.id(cId.get());
       ChangeInfo change = cApi.get();
-      Optional<Project.NameKey> maybeParentProjectNameKey =
+      List<NameKey> parentProjectsNameKeys =
           projectCache
-              .get(Project.NameKey.parse(change.project))
-              .map(p -> p.getProject().getParent());
+              .get(NameKey.parse(change.project))
+              .map(
+                  p ->
+                      p.parents().stream()
+                          .map(ProjectState::getNameKey)
+                          .collect(Collectors.toList()))
+              .orElse(Collections.emptyList());
 
       PatchList patchList = getPatchList(repository, event, change);
       if (patchList != null) {
@@ -223,7 +228,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
                 accounts,
                 repositoryManager,
                 repository,
-                maybeParentProjectNameKey,
+                parentProjectsNameKeys,
                 cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
                 patchList,
                 cfg.expandGroups());

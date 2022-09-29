@@ -20,10 +20,7 @@ import static com.google.gerrit.entities.Patch.COMMIT_MSG;
 import static com.google.gerrit.entities.Patch.MERGE_LIST;
 import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Patch;
@@ -33,13 +30,7 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +47,7 @@ public class PathOwners {
 
   private final Repository repository;
 
-  private final Optional<Project.NameKey> maybeParentRepo;
+  private final List<Project.NameKey> parentProjectsNames;
 
   private final PatchList patchList;
 
@@ -78,13 +69,13 @@ public class PathOwners {
       Accounts accounts,
       GitRepositoryManager repositoryManager,
       Repository repository,
-      Optional<Project.NameKey> maybeParentRepo,
+      List<Project.NameKey> parentProjectsNames,
       Optional<String> branchWhenEnabled,
       PatchList patchList,
       boolean expandGroups) {
     this.repositoryManager = repositoryManager;
     this.repository = repository;
-    this.maybeParentRepo = maybeParentRepo;
+    this.parentProjectsNames = parentProjectsNames;
     this.patchList = patchList;
     this.parser = new ConfigurationParser(accounts);
     this.accounts = accounts;
@@ -141,10 +132,8 @@ public class PathOwners {
     OwnersMap ownersMap = new OwnersMap();
     try {
       // Using a `map` would have needed a try/catch inside the lamba, resulting in more code
-      Optional<PathOwnersEntry> maybeParentPathOwnersEntry =
-          maybeParentRepo.isPresent()
-              ? Optional.of(getPathOwnersEntry(maybeParentRepo.get(), RefNames.REFS_CONFIG))
-              : Optional.empty();
+      List<PathOwnersEntry> parentsPathOwnersEntries =
+          getPathOwnersEntries(parentProjectsNames, RefNames.REFS_CONFIG);
       PathOwnersEntry projectEntry = getPathOwnersEntry(repository, RefNames.REFS_CONFIG);
       PathOwnersEntry rootEntry = getPathOwnersEntry(repository, branch);
 
@@ -154,7 +143,7 @@ public class PathOwners {
       for (String path : modifiedPaths) {
         currentEntry =
             resolvePathEntry(
-                path, branch, projectEntry, maybeParentPathOwnersEntry, rootEntry, entries);
+                path, branch, projectEntry, parentsPathOwnersEntries, rootEntry, entries);
 
         // add owners and reviewers to file for matcher predicates
         ownersMap.addFileOwners(path, currentEntry.getOwners());
@@ -189,11 +178,15 @@ public class PathOwners {
     }
   }
 
-  private PathOwnersEntry getPathOwnersEntry(Project.NameKey projectName, String branch)
-      throws IOException {
-    try (Repository repo = repositoryManager.openRepository(projectName)) {
-      return getPathOwnersEntry(repo, branch);
+  private List<PathOwnersEntry> getPathOwnersEntries(
+      List<Project.NameKey> projectNames, String branch) throws IOException {
+    ImmutableList.Builder<PathOwnersEntry> pathOwnersEntries = ImmutableList.builder();
+    for (Project.NameKey projectName : projectNames) {
+      try (Repository repo = repositoryManager.openRepository(projectName)) {
+        pathOwnersEntries = pathOwnersEntries.add(getPathOwnersEntry(repo, branch));
+      }
     }
+    return pathOwnersEntries.build();
   }
 
   private PathOwnersEntry getPathOwnersEntry(Repository repo, String branch) throws IOException {
@@ -232,7 +225,7 @@ public class PathOwners {
       String path,
       String branch,
       PathOwnersEntry projectEntry,
-      Optional<PathOwnersEntry> maybeParentPathOwnersEntry,
+      List<PathOwnersEntry> parentsPathOwnersEntries,
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries)
       throws IOException {
@@ -244,8 +237,8 @@ public class PathOwners {
     calculateCurrentEntry(rootEntry, projectEntry, currentEntry);
 
     // Inherit from Parent Project if OWNER in Project enables inheritance
-    if (maybeParentPathOwnersEntry.isPresent()) {
-      calculateCurrentEntry(projectEntry, maybeParentPathOwnersEntry.get(), currentEntry);
+    for (PathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {
+      calculateCurrentEntry(projectEntry, parentPathOwnersEntry, currentEntry);
     }
 
     // Iterate through the parent paths, not including the file name
