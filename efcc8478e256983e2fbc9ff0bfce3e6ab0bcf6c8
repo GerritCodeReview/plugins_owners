@@ -16,6 +16,24 @@
       "message": "All tests need to be adapted to the different parameters introduced.",
       "revId": "efcc8478e256983e2fbc9ff0bfce3e6ab0bcf6c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4708ed62_724604ae",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-29T18:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e345292_cf7bc9eb",
+      "revId": "efcc8478e256983e2fbc9ff0bfce3e6ab0bcf6c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
