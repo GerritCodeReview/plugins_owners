@@ -83,6 +83,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9166c491_35abdbae",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-29T19:41:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1de6ee75_51ef0d12",
+      "revId": "e30b99d2ffb57a7440b7d9fdedd5eaf63737692c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66338000_b91730e1",
