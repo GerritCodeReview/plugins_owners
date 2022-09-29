@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4233dc6_a18eb9b4",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-29T15:32:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9155c696_648c8252",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 30
+      },
+      "revId": "e30b99d2ffb57a7440b7d9fdedd5eaf63737692c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66338000_b91730e1",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-29T15:07:32Z",
       "side": 1,
       "message": "This isn\u0027t going to work, for the same reason of the same pattern used in GitRefListener.java.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 35
+      },
+      "revId": "e30b99d2ffb57a7440b7d9fdedd5eaf63737692c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "182fcd8a_346d5cbb",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-29T15:32:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66338000_b91730e1",
       "range": {
         "startLine": 60,
         "startChar": 0,
