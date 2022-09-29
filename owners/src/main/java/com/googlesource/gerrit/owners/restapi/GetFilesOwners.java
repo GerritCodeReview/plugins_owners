@@ -43,11 +43,7 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -90,8 +86,11 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     Change change = revision.getChange();
     int id = revision.getChangeResource().getChange().getChangeId();
 
-    Optional<Project.NameKey> maybeParentProjectNameKey =
-        projectCache.get(change.getProject()).map(p -> p.getProject().getParent());
+    List<Project.NameKey> maybeParentProjectNameKey =
+        projectCache
+            .get(change.getProject())
+            .map(p -> Arrays.asList(p.getProject().getParent()))
+            .orElse(Collections.emptyList());
 
     try (Repository repository = repositoryManager.openRepository(change.getProject())) {
       PatchList patchList = patchListCache.get(change, ps);

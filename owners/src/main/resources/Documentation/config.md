@@ -112,7 +112,7 @@ That means that in the absence of any OWNERS file in the target branch, the refs
 OWNERS is used as global default.
 
 If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
-in the parent project.
+in all parent projects up to All-Projects.
 
 ## Example 1 - OWNERS file without matchers and default Gerrit submit rules
 

@@ -36,7 +36,8 @@ import org.powermock.api.easymock.PowerMock;
 public abstract class Config {
   protected GitRepositoryManager repositoryManager;
   protected Repository repository;
-  protected Repository parentRepository;
+  protected Repository parentRepository1;
+  protected Repository parentRepository2;
   protected PatchList patchList;
   protected ConfigurationParser parser;
   protected TestAccounts accounts = new TestAccounts();
@@ -47,7 +48,8 @@ public abstract class Config {
 
     repositoryManager = PowerMock.createMock(GitRepositoryManager.class);
     repository = PowerMock.createMock(Repository.class);
-    parentRepository = PowerMock.createMock(Repository.class);
+    parentRepository1 = PowerMock.createMock(Repository.class);
+    parentRepository2 = PowerMock.createMock(Repository.class);
     parser = new ConfigurationParser(accounts);
   }
 
