@@ -227,6 +227,7 @@ public class PathOwners {
       if (matcher.matches(path)) {
         newMatchers.put(matcher.getPath(), matcher);
         ownersMap.addFileOwners(path, matcher.getOwners());
+        ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
       }
     }
