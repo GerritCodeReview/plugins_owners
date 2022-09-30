@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9414a062_1645afc6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-30T16:10:47Z",
+      "side": 1,
+      "message": "applied",
+      "range": {
+        "startLine": 10,
+        "startChar": 26,
+        "endLine": 10,
+        "endChar": 33
+      },
+      "revId": "fbfd82d0414018705fc2a62fe10f60aa6b1f6fe5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95b8b059_baaca3c8",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-30T16:10:47Z",
+      "side": 1,
+      "message": "nit\n```\ninherited: true\nmatchers:\n - suffix: .txt\n   owners:\n     - admin@mail.com\n```",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 14
+      },
+      "revId": "fbfd82d0414018705fc2a62fe10f60aa6b1f6fe5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
