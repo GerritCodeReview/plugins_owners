@@ -98,7 +98,10 @@ public class ConfigurationParser {
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
     Set<String> groupOwners =
-        flatten(getNode(node, "owners").map(ConfigurationParser::extractAsText))
+        flatten(
+                getNode(node, "owners")
+                    .map(ConfigurationParser::extractAsText)
+                    .map(owns -> owns.map(PathOwnersEntry::stripOwnerDomain)))
             .collect(Collectors.toSet());
     Set<Id> reviewers =
         getNode(node, "reviewers")

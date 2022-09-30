@@ -142,7 +142,7 @@ class PathOwnersEntry {
     return this.matchers.containsKey(path);
   }
 
-  private static String stripOwnerDomain(String owner) {
+  public static String stripOwnerDomain(String owner) {
     return Splitter.on('@').split(owner).iterator().next();
   }
 }

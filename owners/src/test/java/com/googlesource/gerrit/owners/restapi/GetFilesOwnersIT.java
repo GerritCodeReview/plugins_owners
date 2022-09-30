@@ -90,6 +90,19 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GlobalPluginConfig(pluginName = "owners", name = "owners.expandGroups", value = "false")
+  public void shouldReturnResponseWithUnexpandedFileMatchersOwners() throws Exception {
+    addOwnerFileWithMatchersToRoot(true);
+    String changeId = createChange().getChangeId();
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
+  }
+
+  @Test
   @UseLocalDisk
   public void shouldReturnInheritedOwnersFromProjectsOwners() throws Exception {
     assertInheritFromProject(project);
@@ -172,6 +185,26 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
             "Add OWNER file",
             "OWNERS",
             String.format("inherited: %s\nowners:\n- %s\n", inherit, admin.email()),
+            ""));
+  }
+
+  private void addOwnerFileWithMatchersToRoot(boolean inherit) throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // matchers:
+    // - suffix: .txt
+    //   owners:
+    //   - admin@mail.com
+    merge(
+        createChange(
+            testRepo,
+            "master",
+            "Add OWNER file",
+            "OWNERS",
+            String.format(
+                "inherited: %s\nmatchers:\n" + "- suffix: .txt\n  owners:\n   - %s\n",
+                inherit, admin.email()),
             ""));
   }
 }
