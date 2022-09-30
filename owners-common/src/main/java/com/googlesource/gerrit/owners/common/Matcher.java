@@ -35,11 +35,23 @@ public abstract class Matcher {
 
   @Override
   public String toString() {
-    return "Matcher [path=" + path + ", owners=" + owners + ", reviewers=" + reviewers + "]";
+    return "Matcher [path="
+        + path
+        + ", owners="
+        + owners
+        + ", groupOwners="
+        + groupOwners
+        + ", reviewers="
+        + reviewers
+        + "]";
   }
 
   public Set<Account.Id> getOwners() {
     return owners;
+  }
+
+  public Set<String> getGroupOwners() {
+    return groupOwners;
   }
 
   public void setOwners(Set<Account.Id> owners) {
