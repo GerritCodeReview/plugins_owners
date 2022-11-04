@@ -15,6 +15,7 @@
 
 package com.googlesource.gerrit.owners.restapi;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
@@ -90,6 +91,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
         projectCache
             .get(change.getProject())
             .map(p -> Arrays.asList(p.getProject().getParent()))
+            .filter(Predicates.notNull())
             .orElse(Collections.emptyList());
 
     try (Repository repository = repositoryManager.openRepository(change.getProject())) {
