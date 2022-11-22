@@ -21,7 +21,9 @@ import static org.eclipse.jgit.lib.FileMode.TYPE_MASK;
 
 import java.io.IOException;
 import java.util.Optional;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -34,13 +36,15 @@ public class JgitWrapper {
 
   public static Optional<byte[]> getBlobAsBytes(Repository repository, String revision, String path)
       throws IOException {
-    ObjectId objectId = repository.resolve(revision);
-    if (objectId == null) {
+    String refName =
+        revision.startsWith(Constants.R_REFS) ? revision : Constants.R_HEADS + revision;
+    Ref ref = repository.getRefDatabase().exactRef(refName);
+    if (ref == null) {
       return Optional.empty();
     }
 
     try (final TreeWalk w =
-        TreeWalk.forPath(repository, path, parseCommit(repository, objectId).getTree())) {
+        TreeWalk.forPath(repository, path, parseCommit(repository, ref.getLeaf().getObjectId()).getTree())) {
 
       return Optional.ofNullable(w)
           .filter(walk -> (walk.getRawMode(0) & TYPE_MASK) == TYPE_FILE)
