@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf629d3c_05e56344",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-11-23T08:53:19Z",
+      "side": 1,
+      "message": "For me looks good but we should resolve the comments before merge",
+      "revId": "e46529488ef61ea3914974f4a83fdbc98f699233",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72ef8862_a6f1c541",
