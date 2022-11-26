@@ -69,6 +69,11 @@ conditions (matchers section). Matching can be done by file suffix, regex
 (partial or full) and exact string comparison. For exact match, path is
 relative to the root of the repo.
 
+> **NOTE:** The `generic` matcher is a special type of regex matching that
+> is applied only when none of the other sections are matching. It is
+> used to define fallback rules. The `generic: .*` is the top-level fallback
+> and can be used with other more specific `generic` matchers.
+
 The plugin analyzes the latest patch set by looking at each file directory and
 building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
 “inherited” set to false (by default it’s true.)
