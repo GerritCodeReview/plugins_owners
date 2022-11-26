@@ -119,6 +119,8 @@ public class ConfigurationParser {
             .map(el -> new PartialRegExMatcher(el, owners, reviewers, groupOwners));
     Optional<Matcher> exactMatcher =
         getText(node, "exact").map(el -> new ExactMatcher(el, owners, reviewers, groupOwners));
+    Optional<Matcher> genericMatcher =
+        getText(node, "generic").map(el -> new GenericMatcher(el, owners, reviewers, groupOwners));
 
     return Optional.ofNullable(
         suffixMatcher.orElseGet(
@@ -128,10 +130,13 @@ public class ConfigurationParser {
                         partialRegexMatcher.orElseGet(
                             () ->
                                 exactMatcher.orElseGet(
-                                    () -> {
-                                      log.warn("Ignoring invalid element " + node.toString());
-                                      return null;
-                                    })))));
+                                    () ->
+                                        genericMatcher.orElseGet(
+                                            () -> {
+                                              log.warn(
+                                                  "Ignoring invalid element " + node.toString());
+                                              return null;
+                                            }))))));
   }
 
   private static Optional<String> getText(JsonNode node, String field) {

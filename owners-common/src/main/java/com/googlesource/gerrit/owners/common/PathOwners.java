@@ -25,6 +25,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Patch;
@@ -37,11 +38,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,18 @@ import org.slf4j.LoggerFactory;
 public class PathOwners {
 
   private static final Logger log = LoggerFactory.getLogger(PathOwners.class);
+
+  private enum MatcherLevel {
+    Regular,
+    Fallback,
+    CatchAll;
+
+    static MatcherLevel forMatcher(Matcher matcher) {
+      return matcher instanceof GenericMatcher
+          ? (matcher.path.equals(".*") ? CatchAll : Fallback)
+          : Regular;
+    }
+  }
 
   private final SetMultimap<String, Account.Id> owners;
 
@@ -221,16 +234,43 @@ public class PathOwners {
       HashMap<String, Matcher> newMatchers,
       String path,
       OwnersMap ownersMap) {
-    Iterator<Matcher> it = fullMatchers.values().iterator();
-    while (it.hasNext()) {
-      Matcher matcher = it.next();
+
+    Map<MatcherLevel, List<Matcher>> matchersByLevel =
+        fullMatchers.values().stream().collect(Collectors.groupingBy(MatcherLevel::forMatcher));
+    if (findAndAddMatchers(
+        newMatchers, path, ownersMap, matchersByLevel.get(MatcherLevel.Regular))) {
+      return;
+    }
+
+    if (findAndAddMatchers(
+        newMatchers, path, ownersMap, matchersByLevel.get(MatcherLevel.Fallback))) {
+      return;
+    }
+
+    findAndAddMatchers(newMatchers, path, ownersMap, matchersByLevel.get(MatcherLevel.CatchAll));
+  }
+
+  private boolean findAndAddMatchers(
+      HashMap<String, Matcher> newMatchers,
+      String path,
+      OwnersMap ownersMap,
+      @Nullable List<Matcher> matchers) {
+    if (matchers == null) {
+      return false;
+    }
+
+    boolean matchingFound = false;
+
+    for (Matcher matcher : matchers) {
       if (matcher.matches(path)) {
         newMatchers.put(matcher.getPath(), matcher);
         ownersMap.addFileOwners(path, matcher.getOwners());
         ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
+        matchingFound = true;
       }
     }
+    return matchingFound;
   }
 
   private PathOwnersEntry resolvePathEntry(
