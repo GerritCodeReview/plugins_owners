@@ -17,6 +17,7 @@ package com.googlesource.gerrit.owners.common;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.exactMatcher;
+import static com.googlesource.gerrit.owners.common.MatcherConfig.genericMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.partialRegexMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.regexMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
@@ -232,7 +233,12 @@ public class RegexTest extends Config {
     replayAll();
 
     Optional<OwnersConfig> ownersConfigOpt =
-        getOwnersConfig(createConfig(false, new String[0], suffixMatcher(".txt", ACCOUNT_B)));
+        getOwnersConfig(
+            createConfig(
+                false,
+                new String[0],
+                suffixMatcher(".txt", ACCOUNT_B),
+                genericMatcher(".*", ACCOUNT_A)));
 
     assertThat(ownersConfigOpt).isPresent();
     OwnersConfig ownersConfig = ownersConfigOpt.get();

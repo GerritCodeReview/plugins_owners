@@ -37,11 +37,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -221,16 +221,53 @@ public class PathOwners {
       HashMap<String, Matcher> newMatchers,
       String path,
       OwnersMap ownersMap) {
-    Iterator<Matcher> it = fullMatchers.values().iterator();
-    while (it.hasNext()) {
-      Matcher matcher = it.next();
+
+    List<Matcher> regularMatchers =
+        fullMatchers.values().stream()
+            .filter(matcher -> !(matcher instanceof GenericMatcher))
+            .collect(Collectors.toList());
+    if (findAndAddMatchers(newMatchers, path, ownersMap, regularMatchers)) {
+      return;
+    }
+
+    List<Matcher> genericMatchers =
+        fullMatchers.values().stream()
+            .filter(matcher -> matcher instanceof GenericMatcher)
+            .collect(Collectors.toList());
+    if (findAndAddMatchers(newMatchers, path, ownersMap, genericMatchers)) {
+      return;
+    }
+
+    List<Matcher> genericCatchAllMatchers =
+        genericMatchers.stream()
+            .filter(PathOwners::isCatchallGenericMatcher)
+            .collect(Collectors.toList());
+    if (findAndAddMatchers(newMatchers, path, ownersMap, genericCatchAllMatchers)) {
+      return;
+    }
+  }
+
+  private boolean findAndAddMatchers(
+      HashMap<String, Matcher> newMatchers,
+      String path,
+      OwnersMap ownersMap,
+      List<Matcher> matchers) {
+    boolean matchingFound = false;
+
+    for (Matcher matcher : matchers) {
       if (matcher.matches(path)) {
         newMatchers.put(matcher.getPath(), matcher);
         ownersMap.addFileOwners(path, matcher.getOwners());
         ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
+        matchingFound = true;
       }
     }
+    return matchingFound;
+  }
+
+  private static boolean isCatchallGenericMatcher(Matcher matcher) {
+    return matcher instanceof GenericMatcher && matcher.path.equals(".*");
   }
 
   private PathOwnersEntry resolvePathEntry(
