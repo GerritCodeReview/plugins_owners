@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a28e45f8_6f82596b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:33:35Z",
+      "side": 1,
+      "message": "I am always amazed by the obscure phrases I can write at \"Nov 26 4:09 AM\" 😂\nDone.",
+      "parentUuid": "f5efe5ed_5aa3bef1",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 58
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46f68235_f0168c83",
@@ -41,6 +65,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edacd6d4_8262249f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:33:35Z",
+      "side": 1,
+      "message": "Done, created Issue 16480",
+      "parentUuid": "46f68235_f0168c83",
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff15239e_7e937e07",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-11-28T20:44:21Z",
       "side": 1,
       "message": "What about adding a test showing that if the fallback doesn\u0027t match anything then no reviewers will be added? WDYT?",
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "680588f1_998eee74",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/AbstractAutoassignIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:33:35Z",
+      "side": 1,
+      "message": "Sure, let me add that as well.",
+      "parentUuid": "ff15239e_7e937e07",
       "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -81,6 +141,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bdf7de8_6c4aa0d6",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/AbstractAutoassignIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:33:35Z",
+      "side": 1,
+      "message": "True, done.",
+      "parentUuid": "79e5a1ff_36164f2c",
+      "range": {
+        "startLine": 342,
+        "startChar": 1,
+        "endLine": 353,
+        "endChar": 22
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9707674f_781ba117",
@@ -94,6 +178,30 @@
       "writtenOn": "2022-11-28T20:47:08Z",
       "side": 1,
       "message": "nit: consider renaming `ownersString` to `ownersStringBuilder`",
+      "range": {
+        "startLine": 361,
+        "startChar": 12,
+        "endLine": 361,
+        "endChar": 35
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4127bf77_5b992055",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/AbstractAutoassignIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:33:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9707674f_781ba117",
       "range": {
         "startLine": 361,
         "startChar": 12,
