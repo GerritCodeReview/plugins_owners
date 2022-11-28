@@ -43,6 +43,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79e5a1ff_36164f2c",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/AbstractAutoassignIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-11-28T20:47:08Z",
+      "side": 1,
+      "message": "nit: consider chaining append calls\n\n```\n      ownersString\n          .append(\"- \")\n          .append(matchingType)\n          .append(\": \")\n          .append(patternMatch)\n          .append(\"\\n\")\n          .append(\"  \")\n          .append(section)\n          .append(\":\\n\")\n          .append(\"  - \")\n          .append(ownerEmail)\n          .append(\"\\n\");\n```",
+      "range": {
+        "startLine": 342,
+        "startChar": 1,
+        "endLine": 353,
+        "endChar": 22
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9707674f_781ba117",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/AbstractAutoassignIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-11-28T20:47:08Z",
+      "side": 1,
+      "message": "nit: consider renaming `ownersString` to `ownersStringBuilder`",
+      "range": {
+        "startLine": 361,
+        "startChar": 12,
+        "endLine": 361,
+        "endChar": 35
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f19b836_245211db",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/GenericMatcher.java",
         "patchSetId": 1
@@ -60,6 +106,23 @@
         "endLine": 1,
         "endChar": 21
       },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dd91427_db0e22c4",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-11-28T20:47:08Z",
+      "side": 1,
+      "message": "nit: instead of having two passes to separate regular and generic matchers, consider using partitioning the list.\n\n```\nfullMatchers.values().stream().collect(Collectors.partitioningBy(m -\u003e m instanceof GenericMatcher));\n```",
       "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
