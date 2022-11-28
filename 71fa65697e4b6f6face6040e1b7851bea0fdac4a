@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30dcd639_6d3d64e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-11-28T21:44:04Z",
+      "side": 1,
+      "message": "Gosh! I didn\u0027t notice the time 😮",
+      "parentUuid": "a28e45f8_6f82596b",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 58
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46f68235_f0168c83",
