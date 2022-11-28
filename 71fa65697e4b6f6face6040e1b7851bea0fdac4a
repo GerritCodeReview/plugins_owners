@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46f68235_f0168c83",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-11-28T20:48:38Z",
+      "side": 1,
+      "message": "Missing Issue id",
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff15239e_7e937e07",
         "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/AbstractAutoassignIT.java",
         "patchSetId": 1
