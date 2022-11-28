@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5efe5ed_5aa3bef1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-11-28T20:44:21Z",
+      "side": 1,
+      "message": "What did you mean with this sentence? Can you rephrase?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 58
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff15239e_7e937e07",
+        "filename": "owners-autoassign/src/test/java/com/googlesource/gerrit/owners/common/AbstractAutoassignIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-11-28T20:44:21Z",
+      "side": 1,
+      "message": "What about adding a test showing that if the fallback doesn\u0027t match anything then no reviewers will be added? WDYT?",
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f19b836_245211db",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/GenericMatcher.java",
         "patchSetId": 1
@@ -19,6 +59,29 @@
         "startChar": 17,
         "endLine": 1,
         "endChar": 21
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ec1ad85_20bdd51c",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-11-28T20:44:21Z",
+      "side": 1,
+      "message": "You could probably use `Collectors.partitioningBy` to partition this list and avoid processing it twice.\n\nSomething like:\n\n```\nMap\u003cBoolean, List\u003cMatcher\u003e\u003e matchersGroups \u003d fullMatchers.values().stream()\n    .collect(Collectors.partitioningBy(matcher -\u003e (matcher instanceof GenericMatcher)));\n    \nList\u003cMatcher\u003e generic \u003d matchersGroups.get(true);\nList\u003cMatcher\u003e nonGeneric \u003d matchersGroups.get(false);\n\n```",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 42
       },
       "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
@@ -66,6 +129,23 @@
         "endLine": 247,
         "endChar": 5
       },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be6bfd0e_eaabe01a",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-11-28T20:44:21Z",
+      "side": 1,
+      "message": "Here you could return `!newMatchers.isEmpty()` and avoid having the extra variable `matchingFound`.",
       "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
