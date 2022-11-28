@@ -277,6 +277,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13f19f90_a43c8731",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:41:54Z",
+      "side": 1,
+      "message": "This is wrong: it should be `matcher instanceof GenericMatcher \u0026\u0026 !matcher.path.equals(\".*\")`",
+      "range": {
+        "startLine": 235,
+        "startChar": 31,
+        "endLine": 235,
+        "endChar": 64
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca9303e1_4ae7292e",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
         "patchSetId": 1
@@ -288,6 +311,30 @@
       "writtenOn": "2022-11-28T20:10:06Z",
       "side": 1,
       "message": "unreachable code? `isCatchallGenericMatcher` is a subset of `matcher instanceof GenericMatcher` condition IOW AFAIU in will be examined in line #237 already...",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 244,
+        "endChar": 42
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc189fbb_f8796afc",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:41:54Z",
+      "side": 1,
+      "message": "Good catch, that means I am missing on test-case.",
+      "parentUuid": "ca9303e1_4ae7292e",
       "range": {
         "startLine": 241,
         "startChar": 4,
@@ -334,6 +381,24 @@
       "writtenOn": "2022-11-28T20:44:21Z",
       "side": 1,
       "message": "Here you could return `!newMatchers.isEmpty()` and avoid having the extra variable `matchingFound`.",
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32e2152a_13ba89e4",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T21:41:54Z",
+      "side": 1,
+      "message": "Not really, because `newMatchers` is passed as a parameter and could be already not empty at the beginning.",
+      "parentUuid": "be6bfd0e_eaabe01a",
       "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
