@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f19b836_245211db",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/GenericMatcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-28T20:10:06Z",
+      "side": 1,
+      "message": "nit: s/2017/2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca9303e1_4ae7292e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-28T20:10:06Z",
+      "side": 1,
+      "message": "unreachable code? `isCatchallGenericMatcher` is a subset of `matcher instanceof GenericMatcher` condition IOW AFAIU in will be examined in line #237 already...",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 244,
+        "endChar": 42
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "577f4da7_130589b3",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-28T20:10:06Z",
+      "side": 1,
+      "message": "condition not needed, this is the end of the processing in this function",
+      "range": {
+        "startLine": 245,
+        "startChar": 4,
+        "endLine": 247,
+        "endChar": 5
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
