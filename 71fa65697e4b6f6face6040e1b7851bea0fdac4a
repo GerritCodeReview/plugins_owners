@@ -259,6 +259,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbed59f5_6fb7682d",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/GenericMatcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T22:33:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f19b836_245211db",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3dd91427_db0e22c4",
@@ -272,6 +296,24 @@
       "writtenOn": "2022-11-28T20:47:08Z",
       "side": 1,
       "message": "nit: instead of having two passes to separate regular and generic matchers, consider using partitioning the list.\n\n```\nfullMatchers.values().stream().collect(Collectors.partitioningBy(m -\u003e m instanceof GenericMatcher));\n```",
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec93bef2_52955697",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T22:33:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3dd91427_db0e22c4",
       "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -299,6 +341,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a10fe6_54205430",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T22:33:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ec1ad85_20bdd51c",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 42
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13f19f90_a43c8731",
@@ -312,6 +378,30 @@
       "writtenOn": "2022-11-28T21:41:54Z",
       "side": 1,
       "message": "This is wrong: it should be `matcher instanceof GenericMatcher \u0026\u0026 !matcher.path.equals(\".*\")`",
+      "range": {
+        "startLine": 235,
+        "startChar": 31,
+        "endLine": 235,
+        "endChar": 64
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d5c2082_95a6304f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T22:33:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13f19f90_a43c8731",
       "range": {
         "startLine": 235,
         "startChar": 31,
@@ -369,6 +459,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a72bb834_53acf044",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T22:33:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc189fbb_f8796afc",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 244,
+        "endChar": 42
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "577f4da7_130589b3",
@@ -382,6 +496,30 @@
       "writtenOn": "2022-11-28T20:10:06Z",
       "side": 1,
       "message": "condition not needed, this is the end of the processing in this function",
+      "range": {
+        "startLine": 245,
+        "startChar": 4,
+        "endLine": 247,
+        "endChar": 5
+      },
+      "revId": "71fa65697e4b6f6face6040e1b7851bea0fdac4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5dec5f1_eaac84d8",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-28T22:33:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "577f4da7_130589b3",
       "range": {
         "startLine": 245,
         "startChar": 4,
