@@ -26,5 +26,6 @@ public class OwnersModule extends AbstractModule {
         .to(OwnerPredicateProvider.class)
         .asEagerSingleton();
     install(new OwnersRestApiModule());
+    install(new OwnersSubmitRule.CodeOwnerSubmitRuleModule());
   }
 }
