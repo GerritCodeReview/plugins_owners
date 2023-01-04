@@ -4,7 +4,7 @@ The @PLUGIN@ exposes a Rest API endpoint to list the owners associated to each f
 its associated labels and votes:
 
 ```bash
-GET /changes/{change-id}/revisions/{revision-id}/owners~getFilesOwners
+GET /changes/{change-id}/revisions/{revision-id}/owners~files-owners
 
 {
   "files": {
