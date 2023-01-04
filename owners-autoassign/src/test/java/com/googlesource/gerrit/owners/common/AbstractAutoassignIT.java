@@ -19,6 +19,10 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.PushOneCommit;
+import com.google.gerrit.acceptance.TestAccount;
+import com.google.gerrit.acceptance.UseLocalDisk;
+import com.google.gerrit.acceptance.config.GlobalPluginConfig;
 import com.google.gerrit.common.RawInputUtil;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ChangeEditApi;
@@ -34,7 +38,9 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.googlesource.gerrit.owners.api.OwnersApiModule;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -51,6 +57,10 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
   @SuppressWarnings("hiding")
   @Inject
   private ProjectConfig.Factory projectConfigFactory;
+
+  private TestAccount user2;
+
+  private TestAccount admin2;
 
   AbstractAutoassignIT(String section, ReviewerState assignedUserState) {
     this.section = section;
@@ -82,6 +92,9 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
       projectConfig.commit(md);
       projectCache.evict(project);
     }
+
+    user2 = accountCreator.user2();
+    admin2 = accountCreator.admin2();
   }
 
   @Test
@@ -113,6 +126,18 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     assertThat(reviewers).isNotNull();
     assertThat(reviewers).hasSize(1);
     assertThat(reviewersEmail(reviewers).get(0)).isEqualTo(ownerEmail);
+  }
+
+  @Test
+  @UseLocalDisk // Required when using @GlobalPluginConfig
+  @GlobalPluginConfig(
+      pluginName = "owners-api",
+      name = "owners.disable.branch",
+      value = "refs/heads/master")
+  public void shouldNotAutoassignUserInPathWhenBranchIsDisabled() throws Exception {
+    addOwnersToRepo("", user.email(), NOT_INHERITED);
+
+    assertThat(getAutoassignedAccounts(change(createChange()).get())).isNull();
   }
 
   @Test
@@ -180,7 +205,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
   public void shouldAutoassignUserMatchingPath() throws Exception {
     String ownerEmail = user.email();
 
-    addOwnersToRepo("", "suffix", ".java", ownerEmail, NOT_INHERITED);
+    addOwnersToRepo("", NOT_INHERITED, "suffix", ".java", ownerEmail);
 
     Collection<AccountInfo> reviewers =
         getAutoassignedAccounts(change(createChange("test change", "foo.java", "foo")).get());
@@ -193,7 +218,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
   public void shouldNotAutoassignUserNotMatchingPath() throws Exception {
     String ownerEmail = user.email();
 
-    addOwnersToRepo("", "suffix", ".java", ownerEmail, NOT_INHERITED);
+    addOwnersToRepo("", NOT_INHERITED, "suffix", ".java", ownerEmail);
 
     ChangeApi changeApi = change(createChange("test change", "foo.bar", "foo"));
     Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
@@ -202,13 +227,109 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void shouldAutoassignUserWithGenericTopLevelFallback() throws Exception {
+    String ownerEmail = user.email();
+    String owner2Email = user2.email();
+    String admin2Email = admin2.email();
+
+    addOwnersToRepo(
+        "",
+        NOT_INHERITED,
+        "suffix",
+        ".java",
+        ownerEmail,
+        "generic",
+        ".*\\.c",
+        admin2Email,
+        "generic",
+        ".*",
+        owner2Email);
+
+    ChangeApi changeApi =
+        change(createChangeWithFiles("test change", "foo.bar", "foo", "foo.java", "Java code"));
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
+
+    assertThat(reviewers).isNotNull();
+    assertThat(reviewersEmail(reviewers)).containsExactly(ownerEmail, owner2Email);
+  }
+
+  @Test
+  public void shouldAutoassignUserWithGenericMidLevelFallback() throws Exception {
+    String ownerEmail = user.email();
+    String owner2Email = user2.email();
+    String admin2Email = admin2.email();
+
+    addOwnersToRepo(
+        "",
+        NOT_INHERITED,
+        "suffix",
+        ".java",
+        ownerEmail,
+        "generic",
+        ".*\\.c",
+        admin2Email,
+        "generic",
+        ".*",
+        owner2Email);
+
+    ChangeApi changeApi =
+        change(createChangeWithFiles("test change", "foo.c", "foo", "foo.java", "Java code"));
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
+
+    assertThat(reviewers).isNotNull();
+    assertThat(reviewersEmail(reviewers)).containsExactly(ownerEmail, admin2Email);
+  }
+
+  @Test
+  public void shouldNotAutoassignUserWithNonMatchingGenericFallback() throws Exception {
+    String ownerEmail = user.email();
+    String owner2Email = user2.email();
+
+    addOwnersToRepo(
+        "", NOT_INHERITED, "suffix", ".java", ownerEmail, "generic", "\\.c", owner2Email);
+
+    ChangeApi changeApi =
+        change(createChangeWithFiles("test change", "foo.bar", "foo", "foo.groovy", "Groovy code"));
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
+
+    assertThat(reviewers).isNull();
+  }
+
+  @Test
+  public void shouldAutoassignUserWithMultipleGenericFallback() throws Exception {
+    String admin2Email = admin2.email();
+    String ownerEmail = user.email();
+    String owner2Email = user2.email();
+
+    addOwnersToRepo(
+        "",
+        NOT_INHERITED,
+        "suffix",
+        ".java",
+        admin2Email,
+        "generic",
+        ".*\\.c",
+        ownerEmail,
+        "generic",
+        ".*",
+        owner2Email);
+
+    ChangeApi changeApi =
+        change(createChangeWithFiles("test change", "foo.bar", "foo", "foo.c", "C code"));
+    Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
+
+    assertThat(reviewers).isNotNull();
+    assertThat(reviewersEmail(reviewers)).containsExactly(ownerEmail, owner2Email);
+  }
+
+  @Test
   public void shouldAutoassignUserMatchingPathWithInheritance() throws Exception {
     String childOwnersEmail = accountCreator.user2().email();
     String parentOwnersEmail = user.email();
     String childpath = "childpath/";
 
-    addOwnersToRepo("", "suffix", ".java", parentOwnersEmail, NOT_INHERITED);
-    addOwnersToRepo(childpath, "suffix", ".java", childOwnersEmail, INHERITED);
+    addOwnersToRepo("", NOT_INHERITED, "suffix", ".java", parentOwnersEmail);
+    addOwnersToRepo(childpath, INHERITED, "suffix", ".java", childOwnersEmail);
 
     ChangeApi changeApi = change(createChange("test change", childpath + "foo.java", "foo"));
     Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
@@ -224,13 +345,25 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
     String childpath = "childpath/";
 
     addOwnersToRepo("", parentOwnersEmail, NOT_INHERITED);
-    addOwnersToRepo(childpath, "suffix", ".java", childOwnersEmail, NOT_INHERITED);
+    addOwnersToRepo(childpath, NOT_INHERITED, "suffix", ".java", childOwnersEmail);
 
     ChangeApi changeApi = change(createChange("test change", childpath + "foo.java", "foo"));
     Collection<AccountInfo> reviewers = getAutoassignedAccounts(changeApi.get());
 
     assertThat(reviewers).isNotNull();
     assertThat(reviewersEmail(reviewers)).containsExactly(childOwnersEmail);
+  }
+
+  protected PushOneCommit.Result createChangeWithFiles(String subject, String... filesWithContent)
+      throws Exception {
+    Map<String, String> files = new HashMap<>();
+    for (int i = 0; i < filesWithContent.length; ) {
+      String fileName = filesWithContent[i++];
+      String fileContent = filesWithContent[i++];
+      files.put(fileName, fileContent);
+    }
+    PushOneCommit push = pushFactory.create(admin.newIdent(), testRepo, subject, files);
+    return push.to("refs/for/master");
   }
 
   private Collection<AccountInfo> getAutoassignedAccounts(ChangeInfo changeInfo)
@@ -258,33 +391,35 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
         .assertOkStatus();
   }
 
-  private void addOwnersToRepo(
-      String parentPath,
-      String matchingType,
-      String patternMatch,
-      String ownerEmail,
-      boolean inherited)
+  private void addOwnersToRepo(String parentPath, boolean inherited, String... matchingRules)
       throws Exception {
+    StringBuilder ownersStringBuilder =
+        new StringBuilder("inherited: " + inherited + "\n" + "matchers:\n");
+    for (int i = 0; i < matchingRules.length; ) {
+      String matchingType = matchingRules[i++];
+      String patternMatch = matchingRules[i++];
+      String ownerEmail = matchingRules[i++];
+
+      ownersStringBuilder
+          .append("- ")
+          .append(matchingType)
+          .append(": ")
+          .append(patternMatch)
+          .append("\n")
+          .append("  ")
+          .append(section)
+          .append(":\n")
+          .append("  - ")
+          .append(ownerEmail)
+          .append("\n");
+    }
     pushFactory
         .create(
             admin.newIdent(),
             testRepo,
             "Set OWNERS",
             parentPath + "OWNERS",
-            "inherited: "
-                + inherited
-                + "\n"
-                + "matchers:\n"
-                + "- "
-                + matchingType
-                + ": "
-                + patternMatch
-                + "\n"
-                + "  "
-                + section
-                + ":\n"
-                + "  - "
-                + ownerEmail)
+            ownersStringBuilder.toString())
         .to("refs/heads/master")
         .assertOkStatus();
   }

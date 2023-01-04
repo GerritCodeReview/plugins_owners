@@ -22,6 +22,7 @@ public class MatcherConfig {
   public static final String MATCH_REGEX = "regex";
   public static final String MATCH_SUFFIX = "suffix";
   public static final String MATCH_PARTIAL_REGEX = "partial_regex";
+  public static final String MATCH_GENERIC = "generic";
 
   private final String matchType;
   private final String matchExpr;
@@ -41,6 +42,10 @@ public class MatcherConfig {
 
   public static MatcherConfig partialRegexMatcher(String expr, String... owners) {
     return new MatcherConfig(MATCH_PARTIAL_REGEX, expr, owners);
+  }
+
+  public static MatcherConfig genericMatcher(String expr, String... owners) {
+    return new MatcherConfig(MATCH_GENERIC, expr, owners);
   }
 
   public MatcherConfig(String matchType, String matchExpr, String[] owners) {

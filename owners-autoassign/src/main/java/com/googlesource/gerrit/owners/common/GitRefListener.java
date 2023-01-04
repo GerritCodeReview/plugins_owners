@@ -46,13 +46,18 @@ import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.patch.PatchListNotAvailableException;
 import com.google.gerrit.server.project.NoSuchProjectException;
+import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
@@ -71,6 +76,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private final GerritApi api;
 
   private final PatchListCache patchListCache;
+  private final ProjectCache projectCache;
   private final GitRepositoryManager repositoryManager;
   private final Accounts accounts;
   private final ReviewerManager reviewerManager;
@@ -87,6 +93,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   public GitRefListener(
       GerritApi api,
       PatchListCache patchListCache,
+      ProjectCache projectCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
       ReviewerManager reviewerManager,
@@ -96,6 +103,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       AutoassignConfig cfg) {
     this.api = api;
     this.patchListCache = patchListCache;
+    this.projectCache = projectCache;
     this.repositoryManager = repositoryManager;
     this.accounts = accounts;
     this.reviewerManager = reviewerManager;
@@ -207,9 +215,27 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     try {
       ChangeApi cApi = changes.id(cId.get());
       ChangeInfo change = cApi.get();
+      List<NameKey> parentProjectsNameKeys =
+          projectCache
+              .get(NameKey.parse(change.project))
+              .map(
+                  p ->
+                      p.parents().stream()
+                          .map(ProjectState::getNameKey)
+                          .collect(Collectors.toList()))
+              .orElse(Collections.emptyList());
+
       DiffSummary patchList = getDiffSummary(repository, event, change);
       if (patchList != null) {
-        PathOwners owners = new PathOwners(accounts, repository, change.branch, patchList);
+        PathOwners owners =
+            new PathOwners(
+                accounts,
+                repositoryManager,
+                repository,
+                parentProjectsNameKeys,
+                cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
+                patchList,
+                cfg.expandGroups());
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());

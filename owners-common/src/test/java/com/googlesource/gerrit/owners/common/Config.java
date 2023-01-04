@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.expect;
 
 import com.google.common.base.Charsets;
 import com.google.gerrit.entities.Patch;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
@@ -33,16 +34,22 @@ import org.powermock.api.easymock.PowerMock;
 
 @Ignore
 public abstract class Config {
+  protected GitRepositoryManager repositoryManager;
   protected Repository repository;
+  protected Repository parentRepository1;
+  protected Repository parentRepository2;
   protected PatchList patchList;
   protected ConfigurationParser parser;
   protected TestAccounts accounts = new TestAccounts();
-  protected String branch = "master";
+  protected Optional<String> branch = Optional.of("master");
 
   public void setup() throws Exception {
     PowerMock.mockStatic(JgitWrapper.class);
 
+    repositoryManager = PowerMock.createMock(GitRepositoryManager.class);
     repository = PowerMock.createMock(Repository.class);
+    parentRepository1 = PowerMock.createMock(Repository.class);
+    parentRepository2 = PowerMock.createMock(Repository.class);
     parser = new ConfigurationParser(accounts);
   }
 
@@ -50,6 +57,18 @@ public abstract class Config {
     expect(
             JgitWrapper.getBlobAsBytes(
                 anyObject(Repository.class), anyObject(String.class), eq(path)))
+        .andReturn(Optional.of(config.getBytes()))
+        .anyTimes();
+  }
+
+  void expectConfig(String path, String branch, String config) throws IOException {
+    expect(JgitWrapper.getBlobAsBytes(anyObject(Repository.class), eq(branch), eq(path)))
+        .andReturn(Optional.of(config.getBytes()))
+        .anyTimes();
+  }
+
+  void expectConfig(String path, String branch, Repository repo, String config) throws IOException {
+    expect(JgitWrapper.getBlobAsBytes(eq(repo), eq(branch), eq(path)))
         .andReturn(Optional.of(config.getBytes()))
         .anyTimes();
   }
