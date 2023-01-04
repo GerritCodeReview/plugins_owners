@@ -16,13 +16,21 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.rules.StoredValue;
 import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.common.PluginSettings;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +41,7 @@ public class OwnersStoredValues {
 
   public static StoredValue<PathOwners> PATH_OWNERS;
 
-  public static synchronized void initialize(Accounts accounts) {
+  public static synchronized void initialize(Accounts accounts, PluginSettings settings) {
     if (PATH_OWNERS != null) {
       return;
     }
@@ -44,8 +52,23 @@ public class OwnersStoredValues {
           protected PathOwners createValue(Prolog engine) {
             Map<String, FileDiffOutput> patchList = StoredValues.DIFF_LIST.get(engine);
             Repository repository = StoredValues.REPOSITORY.get(engine);
+            ProjectState projectState = StoredValues.PROJECT_STATE.get(engine);
+            GitRepositoryManager gitRepositoryManager = StoredValues.REPO_MANAGER.get(engine);
+
+            List<Project.NameKey> maybeParentProjectNameKey =
+                Optional.ofNullable(projectState.getProject().getParent())
+                    .map(Arrays::asList)
+                    .orElse(Collections.emptyList());
+
             String branch = StoredValues.getChange(engine).getDest().branch();
-            return new PathOwners(accounts, repository, branch, patchList);
+            return new PathOwners(
+                accounts,
+                gitRepositoryManager,
+                repository,
+                maybeParentProjectNameKey,
+                settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
+                patchList,
+                settings.expandGroups());
           }
         };
   }

@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2022 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,27 +16,12 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.entities.Account;
-import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
-import java.util.regex.Pattern;
 
-// Javascript like regular expression matching substring
-public class PartialRegExMatcher extends Matcher {
-  Pattern pattern;
+public class GenericMatcher extends RegExMatcher {
 
-  public PartialRegExMatcher(
+  public GenericMatcher(
       String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners) {
     super(path, owners, reviewers, groupOwners);
-    pattern = Pattern.compile(".*" + path + ".*");
-  }
-
-  @Override
-  public boolean matches(String pathToMatch) {
-    return pattern.matcher(pathToMatch).matches();
-  }
-
-  @Override
-  protected Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> groupOwners) {
-    return new PartialRegExMatcher(path, owners, reviewers, groupOwners);
   }
 }

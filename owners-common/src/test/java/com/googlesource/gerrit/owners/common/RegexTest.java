@@ -17,10 +17,12 @@ package com.googlesource.gerrit.owners.common;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.exactMatcher;
+import static com.googlesource.gerrit.owners.common.MatcherConfig.genericMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.partialRegexMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.regexMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
 import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
+import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
@@ -57,6 +59,7 @@ public class RegexTest extends Config {
   private static final Account.Id ACCOUNT_D_ID = Account.id(4);
   private static final Account.Id ACCOUNT_E_ID = Account.id(5);
   private static final Account.Id ACCOUNT_F_ID = Account.id(6);
+  private static final boolean EXPAND_GROUPS = true;
 
   @Override
   @Before
@@ -150,7 +153,9 @@ public class RegexTest extends Config {
     replayAll();
 
     // function under test
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
+    PathOwners owners =
+        new PathOwners(
+            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -228,7 +233,12 @@ public class RegexTest extends Config {
     replayAll();
 
     Optional<OwnersConfig> ownersConfigOpt =
-        getOwnersConfig(createConfig(false, new String[0], suffixMatcher(".txt", ACCOUNT_B)));
+        getOwnersConfig(
+            createConfig(
+                false,
+                new String[0],
+                suffixMatcher(".txt", ACCOUNT_B),
+                genericMatcher(".*", ACCOUNT_A)));
 
     assertThat(ownersConfigOpt).isPresent();
     OwnersConfig ownersConfig = ownersConfigOpt.get();
@@ -246,7 +256,9 @@ public class RegexTest extends Config {
     creatingPatch("project/file.sql", "another.txt");
     replayAll();
 
-    PathOwners owners = new PathOwners(accounts, repository, branch, patchList);
+    PathOwners owners =
+        new PathOwners(
+            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");

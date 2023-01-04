@@ -16,6 +16,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
@@ -35,6 +36,7 @@ class PathOwnersEntry {
   private Set<Account.Id> reviewers = Sets.newHashSet();
   private String ownersPath;
   private Map<String, Matcher> matchers = Maps.newHashMap();
+  private Set<String> groupOwners = Sets.newHashSet();
 
   public PathOwnersEntry() {
     inherited = true;
@@ -46,7 +48,8 @@ class PathOwnersEntry {
       Accounts accounts,
       Set<Account.Id> inheritedOwners,
       Set<Account.Id> inheritedReviewers,
-      Collection<Matcher> inheritedMatchers) {
+      Collection<Matcher> inheritedMatchers,
+      Set<String> inheritedGroupOwners) {
     this.ownersPath = path;
     this.owners =
         config.getOwners().stream()
@@ -56,10 +59,15 @@ class PathOwnersEntry {
         config.getReviewers().stream()
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
+    this.groupOwners =
+        config.getOwners().stream()
+            .map(PathOwnersEntry::stripOwnerDomain)
+            .collect(Collectors.toSet());
     this.matchers = config.getMatchers();
 
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
+      this.groupOwners.addAll(inheritedGroupOwners);
       this.reviewers.addAll(inheritedReviewers);
       for (Matcher matcher : inheritedMatchers) {
         addMatcher(matcher);
@@ -90,6 +98,10 @@ class PathOwnersEntry {
 
   public Set<Account.Id> getOwners() {
     return owners;
+  }
+
+  public Set<String> getGroupOwners() {
+    return groupOwners;
   }
 
   public void setOwners(Set<Account.Id> owners) {
@@ -128,5 +140,9 @@ class PathOwnersEntry {
 
   public boolean hasMatcher(String path) {
     return this.matchers.containsKey(path);
+  }
+
+  public static String stripOwnerDomain(String owner) {
+    return Splitter.on('@').split(owner).iterator().next();
   }
 }

@@ -8,6 +8,22 @@ Once the `owners-api.jar` is loaded at Gerrit startup, the `owners-autoassign.ja
 file can be installed like a regular Gerrit plugin, by being dropped to the
 `GRRIT_SITE/plugins` directory or installed through the plugin manager.
 
+## Global configuration
+
+The global plugin configuration is read from the `$GERRIT_SITE/etc/owners-autoassign.config`
+and is applied across all projects in Gerrit.
+
+owners.disable.branch
+:	List of branches regex where the resolution and auto-assignment of owners is disabled.
+
+Example:
+
+```
+[owners "disable"]
+  branch = refs/meta/config
+  branch = refs/heads/sandboxes.*
+```
+
 ## Project configuration
 
 The project configuration `autoAssignWip` controls the automatic
@@ -62,6 +78,11 @@ Additional owners can be specified for files selected by other matching
 conditions (matchers section). Matching can be done by file suffix, regex
 (partial or full) and exact string comparison. For exact match, path is
 relative to the root of the repo.
+
+> **NOTE:** The `generic` matcher is a special type of regex matching that
+> is applied only when none of the other sections are matching. It is
+> used to define fallback rules. The `generic: .*` is the top-level fallback
+> and can be used with other more specific `generic` matchers.
 
 The plugin analyzes the latest patch set by looking at each file directory and
 building an OWNERS hierarchy. It stops once it finds an OWNERS file that has

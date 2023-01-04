@@ -1,3 +1,30 @@
+## Global configuration
+
+The global plugin configuration is read from the `$GERRIT_SITE/etc/owners.config`
+and is applied across all projects in Gerrit.
+
+owners.disable.branch
+:	List of branches regex where the resolution of owners is disabled.
+
+Example:
+
+```
+[owners "disable"]
+  branch = refs/meta/config
+  branch = refs/heads/sandboxes.*
+```
+
+owners.expandGroups
+:   Expand owners and groups into account ids. If set to `false` all owners are left untouched, apart from e-mail
+    addresses which have the domain dropped. Defaults to `true`.
+
+Example:
+
+```
+[owners]
+  expandGroups = false
+```
+
 ## Configuration
 
 Owner approval is determined based on OWNERS files located in the same
@@ -42,6 +69,11 @@ conditions (matchers section). Matching can be done by file suffix, regex
 (partial or full) and exact string comparison. For exact match, path is
 relative to the root of the repo.
 
+> **NOTE:** The `generic` matcher is a special type of regex matching that
+> is applied only when none of the other sections are matching. It is
+> used to define fallback rules. The `generic: .*` is the top-level fallback
+> and can be used with other more specific `generic` matchers.
+
 The plugin analyzes the latest patch set by looking at each file directory and
 building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
 “inherited” set to false (by default it’s true.)
@@ -84,6 +116,8 @@ contain the 'inherited: true' condition at the top of the file or if they are ab
 That means that in the absence of any OWNERS file in the target branch, the refs/meta/config
 OWNERS is used as global default.
 
+If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
+in all parent projects up to All-Projects.
 
 ## Example 1 - OWNERS file without matchers and default Gerrit submit rules
 
