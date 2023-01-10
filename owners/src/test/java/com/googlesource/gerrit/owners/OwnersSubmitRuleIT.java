@@ -78,6 +78,27 @@ public class OwnersSubmitRuleIT extends LightweightPluginDaemonTest {
     assertThat(changeApi.get().requirements).isEmpty();
   }
 
+  @Test
+  @GlobalPluginConfig(pluginName = "owners", name = "owners.enableSubmitRule", value = "true")
+  public void shouldRequireApprovalFromOwner() throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRoot(true, admin2);
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    assertThat(changeApi.get().submittable).isFalse();
+    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
+
+    changeApi.current().review(ReviewInput.approve());
+    assertThat(changeApi.get().submittable).isFalse();
+    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.approve());
+    assertThat(forChange(r).get().submittable).isTrue();
+    assertThat(forChange(r).get().requirements).containsExactly(READY);
+  }
+
   private ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
     return gApi.changes().id(r.getChangeId());
   }
@@ -100,6 +121,22 @@ public class OwnersSubmitRuleIT extends LightweightPluginDaemonTest {
             String.format(
                 "inherited: %s\nmatchers:\n" + "- suffix: %s\n  owners:\n   - %s\n",
                 inherit, extension, u.email()),
+            ""));
+  }
+
+  private void addOwnerFileToRoot(boolean inherit, TestAccount u) throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // owners:
+    // - u.email()
+    merge(
+        createChange(
+            testRepo,
+            "master",
+            "Add OWNER file",
+            "OWNERS",
+            String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()),
             ""));
   }
 }
