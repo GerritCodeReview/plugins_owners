@@ -16,12 +16,24 @@ package com.googlesource.gerrit.owners;
 
 import static com.google.gerrit.server.project.ProjectCache.illegalState;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toSet;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Streams;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Account.Id;
+import com.google.gerrit.entities.LabelFunction;
+import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.LabelTypes;
+import com.google.gerrit.entities.LegacySubmitRequirement;
+import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.SubmitRecord;
 import com.google.gerrit.extensions.annotations.Exports;
+import com.google.gerrit.server.approval.ApprovalsUtil;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.DiffNotAvailableException;
 import com.google.gerrit.server.patch.DiffOperations;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
@@ -41,7 +53,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 
@@ -57,12 +71,15 @@ public class OwnersSubmitRequirement implements SubmitRule {
   }
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private static final LegacySubmitRequirement SUBMIT_REQUIREMENT =
+      LegacySubmitRequirement.builder().setFallbackText("Owners").setType("owners").build();
 
   private final PluginSettings pluginSettings;
   private final ProjectCache projectCache;
   private final Accounts accounts;
   private final GitRepositoryManager repoManager;
   private final DiffOperations diffOperations;
+  private final ApprovalsUtil approvalsUtil;
 
   @Inject
   OwnersSubmitRequirement(
@@ -70,12 +87,14 @@ public class OwnersSubmitRequirement implements SubmitRule {
       ProjectCache projectCache,
       Accounts accounts,
       GitRepositoryManager repoManager,
-      DiffOperations diffOperations) {
+      DiffOperations diffOperations,
+      ApprovalsUtil approvalsUtil) {
     this.pluginSettings = pluginSettings;
     this.projectCache = projectCache;
     this.accounts = accounts;
     this.repoManager = repoManager;
     this.diffOperations = diffOperations;
+    this.approvalsUtil = approvalsUtil;
   }
 
   @Override
@@ -111,12 +130,35 @@ public class OwnersSubmitRequirement implements SubmitRule {
               getDiff(cd.project(), cd.currentPatchSet().commitId()),
               pluginSettings.expandGroups());
 
-      if (pathOwners.getFileOwners().isEmpty()) {
+      Map<String, Set<Id>> fileOwners = pathOwners.getFileOwners();
+      if (fileOwners.isEmpty()) {
         logger.atInfo().log("Change has no file owners defined. Skipping submit requirement.");
         return Optional.empty();
       }
 
-      logger.atInfo().log("TODO: check if change is approved.");
+      ChangeNotes notes = cd.notes();
+      requireNonNull(notes, "notes");
+      LabelTypes labelTypes = projectState.getLabelTypes(notes);
+      Account.Id uploader = notes.getCurrentPatchSet().uploader();
+      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
+          Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
+              .collect(Collectors.groupingBy(PatchSetApproval::accountId));
+
+      Set<String> missingApprovals =
+          fileOwners.entrySet().stream()
+              .filter(
+                  requiredApproval ->
+                      isApprovalMissing(requiredApproval, uploader, approvalsByAccount, labelTypes))
+              .map(Map.Entry::getKey)
+              .collect(toSet());
+
+      return Optional.of(
+          missingApprovals.isEmpty()
+              ? ok()
+              : notReady(
+                  String.format(
+                      "Missing approvals for path(s): [%s]",
+                      Joiner.on(", ").join(missingApprovals))));
     } catch (IOException e) {
       logger.atSevere().withCause(e).log("TODO: handle exceptions");
       throw new IllegalStateException(
@@ -125,8 +167,57 @@ public class OwnersSubmitRequirement implements SubmitRule {
       logger.atSevere().withCause(e).log("TODO: handle exceptions");
       throw new IllegalStateException("Unable to get diff while evaluating owners requirement", e);
     }
+  }
 
-    return Optional.empty();
+  static boolean isApprovalMissing(
+      Map.Entry<String, Set<Account.Id>> requiredApproval,
+      Account.Id uploader,
+      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
+      LabelTypes labelTypes) {
+    return requiredApproval.getValue().stream()
+        .anyMatch(
+            fileOwner -> isNotApprovedByOwner(fileOwner, uploader, approvalsByAccount, labelTypes));
+  }
+
+  static boolean isNotApprovedByOwner(
+      Account.Id fileOwner,
+      Account.Id uploader,
+      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
+      LabelTypes labelTypes) {
+    return Optional.ofNullable(approvalsByAccount.get(fileOwner))
+        .map(
+            approvals ->
+                approvals.stream()
+                    .noneMatch(
+                        approval ->
+                            hasSufficientApproval(approval, labelTypes, fileOwner, uploader)))
+        .orElse(true);
+  }
+
+  static boolean hasSufficientApproval(
+      PatchSetApproval approval, LabelTypes labelTypes, Account.Id fileOwner, Account.Id uploader) {
+    return labelTypes
+        .byLabel(approval.labelId())
+        .map(label -> isLabelApproved(label, fileOwner, uploader, approval))
+        .orElse(false);
+  }
+
+  static boolean isLabelApproved(
+      LabelType label, Account.Id fileOwner, Account.Id uploader, PatchSetApproval approval) {
+    if (label.isIgnoreSelfApproval() && fileOwner.equals(uploader)) {
+      return false;
+    }
+
+    LabelFunction function = label.getFunction();
+    if (function.isMaxValueRequired()) {
+      return label.isMaxPositive(approval);
+    }
+
+    if (function.isBlock() && label.isMaxNegative(approval)) {
+      return false;
+    }
+
+    return approval.value() > label.getDefaultValue();
   }
 
   private Map<String, FileDiffOutput> getDiff(Project.NameKey project, ObjectId revision)
@@ -141,5 +232,24 @@ public class OwnersSubmitRequirement implements SubmitRule {
     // only the changes from it should be reviewed as changes against the parent 1 were already
     // reviewed
     return diffOperations.listModifiedFilesAgainstParent(project, revision, 0);
+  }
+
+  private static SubmitRecord notReady(String missingApprovals) {
+    SubmitRecord submitRecord = new SubmitRecord();
+    submitRecord.status = SubmitRecord.Status.NOT_READY;
+    submitRecord.errorMessage = missingApprovals;
+    submitRecord.requirements = List.of(SUBMIT_REQUIREMENT);
+    SubmitRecord.Label label = new SubmitRecord.Label();
+    label.label = "Code-Review from owners";
+    label.status = SubmitRecord.Label.Status.NEED;
+    submitRecord.labels = List.of(label);
+    return submitRecord;
+  }
+
+  private static SubmitRecord ok() {
+    SubmitRecord submitRecord = new SubmitRecord();
+    submitRecord.status = SubmitRecord.Status.OK;
+    submitRecord.requirements = List.of(SUBMIT_REQUIREMENT);
+    return submitRecord;
   }
 }
