@@ -1,0 +1,284 @@
+// Copyright (C) 2023 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.googlesource.gerrit.owners;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.server.project.testing.TestLabels.labelBuilder;
+import static com.google.gerrit.server.project.testing.TestLabels.value;
+import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.hasSufficientApproval;
+import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovalMissing;
+import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isLabelApproved;
+import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isNotApprovedByOwner;
+import static org.mockito.Mockito.mock;
+
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.LabelFunction;
+import com.google.gerrit.entities.LabelId;
+import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.LabelTypes;
+import com.google.gerrit.entities.PatchSet;
+import com.google.gerrit.entities.PatchSetApproval;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.junit.Test;
+
+public class OwnersSubmitRequirementTest {
+  private static String LABEL_ID = "foo";
+  private static int MAX_LABEL_VALUE = 1;
+
+  @Test
+  public void shouldApprovalBeMissingWhenSomeoneElseApproved() {
+    // given
+    Account.Id fileOwner = mock(Account.Id.class);
+    Account.Id uploader = mock(Account.Id.class);
+    LabelTypes labelTypes = maxNoBlockLabelFooTypes();
+    Map<Account.Id, List<PatchSetApproval>> uploaderApproval =
+        Map.of(uploader, List.of(approvedBy(uploader, LABEL_ID, MAX_LABEL_VALUE)));
+
+    // when
+    boolean isApprovalMissing =
+        isApprovalMissing(
+            Map.entry("path", Set.of(fileOwner)), uploader, uploaderApproval, labelTypes);
+
+    // then
+    assertThat(isApprovalMissing).isTrue();
+  }
+
+  @Test
+  public void shouldApprovalBeNotMissingWhenApprovedByFileOwner() {
+    // given
+    Account.Id fileOwner = mock(Account.Id.class);
+    Account.Id uploader = mock(Account.Id.class);
+    LabelTypes labelTypes = maxNoBlockLabelFooTypes();
+    Map<Account.Id, List<PatchSetApproval>> fileOwnerApproval =
+        Map.of(fileOwner, List.of(approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE)));
+
+    // when
+    boolean isApprovalMissing =
+        isApprovalMissing(
+            Map.entry("path", Set.of(fileOwner)), uploader, fileOwnerApproval, labelTypes);
+
+    // then
+    assertThat(isApprovalMissing).isFalse();
+  }
+
+  @Test
+  public void shouldNotBeApprovedByOwnerWhenSomeoneElseApproved() {
+    // given
+    Account.Id fileOwner = mock(Account.Id.class);
+    Account.Id uploader = mock(Account.Id.class);
+    LabelTypes labelTypes = maxNoBlockLabelFooTypes();
+    Map<Account.Id, List<PatchSetApproval>> uploaderApproval =
+        Map.of(uploader, List.of(approvedBy(uploader, LABEL_ID, MAX_LABEL_VALUE)));
+
+    // when
+    boolean notApprovedByOwner =
+        isNotApprovedByOwner(fileOwner, fileOwner, uploaderApproval, labelTypes);
+
+    // then
+    assertThat(notApprovedByOwner).isTrue();
+  }
+
+  @Test
+  public void shouldNotBeApprovedWhenApprovalGivenForDifferentLabel() {
+    // given
+    Account.Id fileOwner = mock(Account.Id.class);
+    LabelTypes labelTypes =
+        new LabelTypes(
+            List.of(label().setName("bar").setFunction(LabelFunction.MAX_NO_BLOCK).build()));
+    Map<Account.Id, List<PatchSetApproval>> fileOwnerForDifferentLabelApproval =
+        Map.of(fileOwner, List.of(approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE)));
+
+    // when
+    boolean notApprovedByOwner =
+        isNotApprovedByOwner(fileOwner, fileOwner, fileOwnerForDifferentLabelApproval, labelTypes);
+
+    // then
+    assertThat(notApprovedByOwner).isTrue();
+  }
+
+  @Test
+  public void shouldBeApprovedByOwner() {
+    // given
+    Account.Id fileOwner = mock(Account.Id.class);
+    LabelTypes labelTypes = maxNoBlockLabelFooTypes();
+    Map<Account.Id, List<PatchSetApproval>> fileOwnerApproval =
+        Map.of(fileOwner, List.of(approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE)));
+
+    // when
+    boolean notApprovedByOwner =
+        isNotApprovedByOwner(fileOwner, fileOwner, fileOwnerApproval, labelTypes);
+
+    // then
+    assertThat(notApprovedByOwner).isFalse();
+  }
+
+  @Test
+  public void shouldHaveNotSufficientApprovalWhenLabelIsNotApproved() {
+    // given
+    LabelType maxValueRequired = label().setFunction(LabelFunction.MAX_NO_BLOCK).build();
+    Account.Id fileOwner = mock(Account.Id.class);
+    LabelTypes labelTypes = new LabelTypes(List.of(maxValueRequired));
+
+    // when
+    boolean hasSufficientApproval =
+        hasSufficientApproval(approvedBy(fileOwner, LABEL_ID, 0), labelTypes, fileOwner, fileOwner);
+
+    // then
+    assertThat(hasSufficientApproval).isFalse();
+  }
+
+  @Test
+  public void shouldHaveNotSufficientApprovalWhenLabelDoesntMatch() {
+    // given
+    Account.Id fileOwner = mock(Account.Id.class);
+    LabelTypes labelTypes = new LabelTypes(Collections.emptyList());
+
+    // when
+    boolean hasSufficientApproval =
+        hasSufficientApproval(approvedBy(fileOwner, LABEL_ID, 0), labelTypes, fileOwner, fileOwner);
+
+    // then
+    assertThat(hasSufficientApproval).isFalse();
+  }
+
+  @Test
+  public void shouldHaveSufficientApprovalWhenLabelIsApproved() {
+    // given
+    LabelType maxValueRequired = label().setFunction(LabelFunction.MAX_NO_BLOCK).build();
+    Account.Id fileOwner = mock(Account.Id.class);
+    LabelTypes labelTypes = new LabelTypes(List.of(maxValueRequired));
+
+    // when
+    boolean hasSufficientApproval =
+        hasSufficientApproval(
+            approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE), labelTypes, fileOwner, fileOwner);
+
+    // then
+    assertThat(hasSufficientApproval).isTrue();
+  }
+
+  @Test
+  public void labelShouldNotBeApprovedWhenSelfApprovalIsDisabledAndOwnerAppoved() {
+    // given
+    LabelType ignoreSelfApproval = label().setIgnoreSelfApproval(true).build();
+    Account.Id fileOwner = mock(Account.Id.class);
+
+    // when
+    boolean approved =
+        isLabelApproved(
+            ignoreSelfApproval,
+            fileOwner,
+            fileOwner,
+            approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE));
+
+    // then
+    assertThat(approved).isFalse();
+  }
+
+  @Test
+  public void labelShouldNotBeApprovedWhenMaxValueIsRequiredButNotProvided() {
+    // given
+    LabelType maxValueRequired = label().setFunction(LabelFunction.MAX_NO_BLOCK).build();
+    Account.Id fileOwner = mock(Account.Id.class);
+
+    // when
+    boolean approved =
+        isLabelApproved(maxValueRequired, fileOwner, fileOwner, approvedBy(fileOwner, LABEL_ID, 0));
+
+    // then
+    assertThat(approved).isFalse();
+  }
+
+  @Test
+  public void labelShouldBeApprovedWhenMaxValueIsRequiredAndProvided() {
+    // given
+    LabelType maxValueRequired = label().setFunction(LabelFunction.MAX_NO_BLOCK).build();
+    Account.Id fileOwner = mock(Account.Id.class);
+
+    // when
+    boolean approved =
+        isLabelApproved(
+            maxValueRequired,
+            fileOwner,
+            fileOwner,
+            approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE));
+
+    // then
+    assertThat(approved).isTrue();
+  }
+
+  @Test
+  public void labelShouldNotBeAppovedWhenAnyValueWithBlockIsRequiredAndMaxNegativeIsProvided() {
+    // given
+    LabelType maxValueRequired = label().setFunction(LabelFunction.ANY_WITH_BLOCK).build();
+    Account.Id fileOwner = mock(Account.Id.class);
+
+    // when
+    boolean approved =
+        isLabelApproved(
+            maxValueRequired, fileOwner, fileOwner, approvedBy(fileOwner, LABEL_ID, -1));
+
+    // then
+    assertThat(approved).isFalse();
+  }
+
+  @Test
+  public void labelShouldBeApprovedWhenAnyValueWithBlockIsRequiredAndPositiveIsProvided() {
+    // given
+    LabelType maxValueRequired =
+        label()
+            .setValues(
+                Arrays.asList(
+                    value(2, "Approved"),
+                    value(1, "OK"),
+                    value(0, "No score"),
+                    value(-1, "Blocked")))
+            .setFunction(LabelFunction.ANY_WITH_BLOCK)
+            .build();
+    Account.Id fileOwner = mock(Account.Id.class);
+
+    // when
+    boolean approved =
+        isLabelApproved(maxValueRequired, fileOwner, fileOwner, approvedBy(fileOwner, LABEL_ID, 1));
+
+    // then
+    assertThat(approved).isTrue();
+  }
+
+  private static final LabelTypes maxNoBlockLabelFooTypes() {
+    LabelType maxValueRequired = label().setFunction(LabelFunction.MAX_NO_BLOCK).build();
+    return new LabelTypes(List.of(maxValueRequired));
+  }
+
+  private static final LabelType.Builder label() {
+    return labelBuilder(
+        LABEL_ID, value(MAX_LABEL_VALUE, "Approved"), value(0, "No score"), value(-1, "Blocked"));
+  }
+
+  private static final PatchSetApproval approvedBy(Account.Id approving, String label, int value) {
+    return PatchSetApproval.builder()
+        .key(PatchSetApproval.key(mock(PatchSet.Id.class), approving, LabelId.create(label)))
+        .granted(Timestamp.from(Instant.now()))
+        .realAccountId(approving)
+        .value(value)
+        .build();
+  }
+}
