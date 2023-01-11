@@ -25,6 +25,17 @@ Example:
   expandGroups = false
 ```
 
+owners.enableSubmitRule
+:   If set to `true` the approvals are evaluated through the owners submit rule without a need of
+    prolog predicate being added to a project. Defaults to `false`.
+
+Example:
+
+```
+[owners]
+  enableSubmitRule = true
+```
+
 ## Configuration
 
 Owner approval is determined based on OWNERS files located in the same
