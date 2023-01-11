@@ -15,16 +15,35 @@
 
 package com.googlesource.gerrit.owners;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.googlesource.gerrit.owners.common.PluginSettings;
 
 public class OwnersModule extends AbstractModule {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+  private final PluginSettings pluginSettings;
+
+  @Inject
+  OwnersModule(PluginSettings pluginSettings) {
+    this.pluginSettings = pluginSettings;
+  }
+
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), PredicateProvider.class)
         .to(OwnerPredicateProvider.class)
         .asEagerSingleton();
     install(new OwnersRestApiModule());
+
+    if (pluginSettings.enableSubmitRequirement()) {
+      install(new OwnersSubmitRequirement.OwnersSubmitRequirementModule());
+    } else {
+      logger.atInfo().log(
+          "OwnersSubmitRequirement is disabled therefore it will not be evaluated.");
+    }
   }
 }
