@@ -34,6 +34,7 @@ public class PluginSettings {
   private final String ownersPluginName;
   private final Config globalPluginConfig;
   private final boolean expandGroups;
+  private final boolean enableSubmitRequirement;
 
   @Inject
   public PluginSettings(PluginConfigFactory configFactory, @PluginName String ownersPluginName) {
@@ -45,6 +46,8 @@ public class PluginSettings {
         ImmutableSet.copyOf(globalPluginConfig.getStringList("owners", "disable", "branch"));
 
     this.expandGroups = globalPluginConfig.getBoolean("owners", "expandGroups", true);
+    this.enableSubmitRequirement =
+        globalPluginConfig.getBoolean("owners", "enableSubmitRequirement", false);
   }
 
   /**
@@ -73,6 +76,11 @@ public class PluginSettings {
   /** Returns true if the groups in the OWNERS file should be expanded in a list of account ids. */
   public boolean expandGroups() {
     return expandGroups;
+  }
+
+  /** @return <code>true</code> when OWNERS file should be evaluated through the submit rule */
+  public boolean enableSubmitRequirement() {
+    return enableSubmitRequirement;
   }
 
   /**
