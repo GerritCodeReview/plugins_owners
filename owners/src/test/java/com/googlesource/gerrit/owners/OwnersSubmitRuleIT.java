@@ -99,6 +99,26 @@ public class OwnersSubmitRuleIT extends LightweightPluginDaemonTest {
     assertThat(forChange(r).get().requirements).containsExactly(READY);
   }
 
+  @Test
+  @GlobalPluginConfig(pluginName = "owners", name = "owners.enableSubmitRule", value = "true")
+  public void shouldBlockOwnersApprovalForMaxNegativeVote() throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRoot(true, admin2);
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    assertThat(changeApi.get().submittable).isFalse();
+    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.approve());
+    assertThat(forChange(r).get().submittable).isTrue();
+    assertThat(forChange(r).get().requirements).containsExactly(READY);
+
+    changeApi.current().review(ReviewInput.reject());
+    assertThat(changeApi.get().submittable).isFalse();
+  }
+
   private ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
     return gApi.changes().id(r.getChangeId());
   }
