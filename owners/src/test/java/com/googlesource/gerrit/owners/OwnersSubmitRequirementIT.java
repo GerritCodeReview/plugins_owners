@@ -120,6 +120,31 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     assertThat(changeReady.requirements).containsExactly(READY);
   }
 
+  @Test
+  @GlobalPluginConfig(
+      pluginName = "owners",
+      name = "owners.enableSubmitRequirement",
+      value = "true")
+  public void shouldBlockOwnersApprovalForMaxNegativeVote() throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRoot(true, admin2);
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    ChangeInfo changeNotReady = changeApi.get();
+    assertThat(changeNotReady.submittable).isFalse();
+    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.approve());
+    ChangeInfo changeReady = forChange(r).get();
+    assertThat(changeReady.submittable).isTrue();
+    assertThat(changeReady.requirements).containsExactly(READY);
+
+    changeApi.current().review(ReviewInput.reject());
+    assertThat(forChange(r).get().submittable).isFalse();
+  }
+
   private ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
     return gApi.changes().id(r.getChangeId());
   }
