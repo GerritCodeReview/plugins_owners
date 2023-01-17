@@ -25,6 +25,7 @@ import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelFunction;
+import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.LabelTypes;
 import com.google.gerrit.entities.LegacySubmitRequirement;
@@ -140,7 +141,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
-      LabelTypes labelTypes = projectState.getLabelTypes(notes);
+      LabelTypes labelTypes = ownersLabel(projectState.getLabelTypes(notes));
       Account.Id uploader = notes.getCurrentPatchSet().uploader();
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
           Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
@@ -169,6 +170,19 @@ public class OwnersSubmitRequirement implements SubmitRule {
       logger.atSevere().withCause(e).log("TODO: handle exceptions");
       throw new IllegalStateException("Unable to get diff while evaluating owners requirement", e);
     }
+  }
+
+  /** the idea is to select the label type that is configured for owner to cast the vote */
+  private LabelTypes ownersLabel(LabelTypes labelTypes) {
+
+    // TODO: there is no specific label configuration introduced to the OWNERS file therefore for
+    // the time being set it to Code Review explicitly or nothing if it doesn't exist for the
+    // project in question
+    return new LabelTypes(
+        labelTypes
+            .byLabel(LabelId.CODE_REVIEW)
+            .map(Collections::singletonList)
+            .orElseGet(Collections::emptyList));
   }
 
   static boolean isApprovalMissing(
