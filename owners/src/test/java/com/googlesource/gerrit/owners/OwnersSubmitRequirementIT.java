@@ -16,6 +16,11 @@
 package com.googlesource.gerrit.owners;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth8.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowLabel;
+import static com.google.gerrit.server.group.SystemGroupBackend.REGISTERED_USERS;
+import static com.google.gerrit.server.project.testing.TestLabels.labelBuilder;
+import static com.google.gerrit.server.project.testing.TestLabels.value;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
@@ -23,13 +28,25 @@ import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
+import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
+import com.google.gerrit.entities.LabelFunction;
+import com.google.gerrit.entities.LabelId;
+import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.LegacySubmitRequirementInfo;
+import com.google.gerrit.extensions.common.SubmitRecordInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.git.meta.MetaDataUpdate;
+import com.google.gerrit.server.project.ProjectConfig;
 import com.google.inject.Inject;
+import java.io.IOException;
+import java.util.Collection;
+import org.eclipse.jgit.errors.ConfigInvalidException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.junit.Test;
 
 @TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
@@ -41,6 +58,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
       new LegacySubmitRequirementInfo("OK", "Owners", "owners");
 
   @Inject private RequestScopeOperations requestScopeOperations;
+  @Inject private ProjectOperations projectOperations;
 
   @Test
   @GlobalPluginConfig(
@@ -140,6 +158,98 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
 
     changeApi.current().review(ReviewInput.reject());
     assertThat(forChange(r).get().submittable).isFalse();
+  }
+
+  @Test
+  @GlobalPluginConfig(
+      pluginName = "owners",
+      name = "owners.enableSubmitRequirement",
+      value = "true")
+  public void shouldRequireVerifiedApprovalEvenIfCodeOwnerApproved() throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRoot(true, admin2);
+
+    installVerifiedLabel();
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    assertThat(changeApi.get().submittable).isFalse();
+    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.approve());
+    assertThat(forChange(r).get().submittable).isFalse();
+    assertThat(forChange(r).get().requirements).containsExactly(READY);
+    verifyHasSubmitRecord(
+        forChange(r).get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.NEED);
+
+    changeApi.current().review(new ReviewInput().label(LabelId.VERIFIED, 1));
+    assertThat(changeApi.get().submittable).isTrue();
+    verifyHasSubmitRecord(
+        changeApi.get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.OK);
+  }
+
+  @Test
+  @GlobalPluginConfig(
+      pluginName = "owners",
+      name = "owners.enableSubmitRequirement",
+      value = "true")
+  public void shouldRequireCodeOwnerApprovalEvenIfVerifiedWasApproved() throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRoot(true, admin2);
+
+    installVerifiedLabel();
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    assertThat(changeApi.get().submittable).isFalse();
+    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(new ReviewInput().label(LabelId.VERIFIED, 1));
+    ChangeInfo notReady = forChange(r).get();
+    assertThat(notReady.submittable).isFalse();
+    assertThat(notReady.requirements).containsExactly(NOT_READY);
+    verifyHasSubmitRecord(
+        notReady.submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.OK);
+
+    forChange(r).current().review(ReviewInput.approve());
+    ChangeInfo ready = forChange(r).get();
+    assertThat(ready.submittable).isTrue();
+    assertThat(ready.requirements).containsExactly(READY);
+  }
+
+  private void verifyHasSubmitRecord(
+      Collection<SubmitRecordInfo> records, String label, SubmitRecordInfo.Label.Status status) {
+    assertThat(
+            records.stream()
+                .flatMap(record -> record.labels.stream())
+                .filter(l -> l.label.equals(label) && l.status == status)
+                .findAny())
+        .isPresent();
+  }
+
+  private void installVerifiedLabel()
+      throws IOException, ConfigInvalidException, RepositoryNotFoundException {
+    LabelType verified =
+        labelBuilder(
+                LabelId.VERIFIED, value(1, "Verified"), value(0, "No score"), value(-1, "Fails"))
+            .setFunction(LabelFunction.MAX_WITH_BLOCK)
+            .build();
+    try (MetaDataUpdate md = metaDataUpdateFactory.create(project)) {
+      ProjectConfig cfg = projectConfigFactory.create(project);
+      cfg.load(md);
+      cfg.upsertLabelType(verified);
+      cfg.commit(md);
+    }
+    projectCache.evictAndReindex(project);
+
+    String heads = RefNames.REFS_HEADS + "*";
+    projectOperations
+        .project(project)
+        .forUpdate()
+        .add(allowLabel(verified.getName()).ref(heads).group(REGISTERED_USERS).range(-1, 1))
+        .update();
   }
 
   private ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
