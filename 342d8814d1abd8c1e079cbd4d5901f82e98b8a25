@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b107fa80_f2e72e90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T16:35:00Z",
+      "side": 1,
+      "message": "Maybe there\u0027s a convention I\u0027m not aware of here, but it\u0027s not immediately clear to me whether this means this TODO is still missing from this change or will be done in another one. I appreciate the next step does this, so I assume it\u0027s the latter... maybe this should be clearer?\n\nAs I said, if it\u0027s a convention to put TODOs in commit messages to indicate these are changes that are to be done in subsequent changes, then ignore.",
+      "revId": "342d8814d1abd8c1e079cbd4d5901f82e98b8a25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aa61e20_80d45665",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T16:35:00Z",
+      "side": 1,
+      "message": "Why do we handle `IOException` in the same way as `DiffNotAvailableException`? Shouldn\u0027t either of them rethrow?",
+      "revId": "342d8814d1abd8c1e079cbd4d5901f82e98b8a25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
