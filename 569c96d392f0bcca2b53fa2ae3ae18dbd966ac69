@@ -56,6 +56,23 @@
       "message": "Does this really make sense alone? Would it be best to squash with the initial implementation of the submit requirement code?",
       "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa377fd_0075bc0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T15:19:07Z",
+      "side": 1,
+      "message": "Should this target `stable-3.6` instead of master?",
+      "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
