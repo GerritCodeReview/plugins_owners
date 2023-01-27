@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2110e8d7_c2970de0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-27T08:51:02Z",
+      "side": 1,
+      "message": "`enableSubmitRequirement` would be more appropriate. Submit rules are always enabled and you can use them with Prolog or Submit Requirements.",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 20
+      },
+      "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1914f18b_d91b9946",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -14,6 +37,23 @@
       "writtenOn": "2023-01-17T13:36:09Z",
       "side": 1,
       "message": "Originally I have proposed to have a logic that detects if `prolog` file is defined for project but I believe that at this moment it is better to have a feature flag. It could be later fine-grained to be enabled/disabled per project so that gradual migration to new approach could be performed. @luca.milanesio@gmail.com @maczech@gmail.com WDYT?",
+      "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c83a1be5_62ade330",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-27T08:51:02Z",
+      "side": 1,
+      "message": "Does this really make sense alone? Would it be best to squash with the initial implementation of the submit requirement code?",
       "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
