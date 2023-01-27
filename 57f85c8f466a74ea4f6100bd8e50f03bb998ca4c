@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89783d2d_a874dd53",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T21:24:16Z",
+      "side": 1,
+      "message": "Nit: why not `approvalUtil` so it matches the class name?",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2fbbe21_03914a48",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T21:24:16Z",
+      "side": 1,
+      "message": "Nit: maybe worth abstracting this into its own method (`evaluateMissingApprovals`/`getMissingApprovals` perhaps?), to help legibility both in terms of method length and intent of the code.\n\nWDYT?",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e26542e9_ff698dd8",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T21:24:16Z",
+      "side": 1,
+      "message": "Nit: IDE suggests replacing `filter(...).findAny().isPresent()` with `anyMatch(...)`.",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02aaa897_3fa5413b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T21:24:16Z",
+      "side": 1,
+      "message": "Nit: Doesn\u0027t Gerrit just call this `Uploader` in the UI? If so, why not just call this `uploader`? Or am I thinking of something different?",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "746133fb_5a1ab40a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T21:24:16Z",
+      "side": 1,
+      "message": "Nit: If we replace the encompassing `flatMap` with a `map` we can change the `filter(...).findAny()` steps to a single `noneMatch(...)` which short-circuits. And we can then drop the outer final `map(...)`. Untested, but we have two fewer method calls, making the code a little simpler, and as a side benefit we save ourselves the intermediate `filter` operation making this a little more efficient.",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c94368d_d5185cf3",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T21:24:16Z",
+      "side": 1,
+      "message": "Nit: Same as `isEmpty`.",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63e3438a_f98d13cb",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-01-27T21:24:16Z",
+      "side": 1,
+      "message": "Shouldn\u0027t these methods approval methods be static?\n\nAnd would it be worth making them package private perhaps so we can unit test them? There appear to be several layers of nested logic so it might be a good idea to add some unit tests in addition to the integration tests.",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
