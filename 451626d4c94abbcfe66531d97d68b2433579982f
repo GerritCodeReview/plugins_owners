@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b287dc4b_d597f58b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:18:32Z",
+      "side": 1,
+      "message": "Wouldn\u0027t this better to be conditional if the submit requirements are enabled?",
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ba9c0bc_da4a1d2e",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:18:32Z",
+      "side": 1,
+      "message": "Would be better named as `OwnersSubmitRequirement`",
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd5c19a8_96b643dc",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:18:32Z",
+      "side": 1,
+      "message": "`OwnersSubmitRequirement`",
+      "range": {
+        "startLine": 40,
+        "startChar": 40,
+        "endLine": 40,
+        "endChar": 56
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0507c4c_33d1cb5f",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:18:32Z",
+      "side": 1,
+      "message": "Does this make sense? What\u0027s the point of having the submit requirement and then displaying an info in the logs? Wouldn\u0027t it be better to avoid registering it altogether? Gerrit already should take care of saying that the submit requirement isn\u0027t there.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 5
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe125e38_9620c0d6",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:18:32Z",
+      "side": 1,
+      "message": "This can be dried out.",
+      "range": {
+        "startLine": 72,
+        "startChar": 67,
+        "endLine": 72,
+        "endChar": 79
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a650deb_21e8add1",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:18:32Z",
+      "side": 1,
+      "message": "This looks like an impossible situation because the ChangeData has been generated from a Project. Would this be best expressed with a `requireNotNull`.",
+      "range": {
+        "startLine": 72,
+        "startChar": 40,
+        "endLine": 72,
+        "endChar": 52
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
