@@ -20,6 +20,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97f72dd6_2fd5d5bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:46:53Z",
+      "side": 1,
+      "message": "My understanding is that the `TODO` are to be completed in this change, which makes sense because this one is still **WIP**",
+      "parentUuid": "b107fa80_f2e72e90",
+      "revId": "342d8814d1abd8c1e079cbd4d5901f82e98b8a25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31cd5221_21f9bad8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:46:53Z",
+      "side": 1,
+      "message": "Are you also planning to add tests?",
+      "revId": "342d8814d1abd8c1e079cbd4d5901f82e98b8a25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9aa61e20_80d45665",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
         "patchSetId": 1
@@ -31,6 +66,24 @@
       "writtenOn": "2023-01-27T16:35:00Z",
       "side": 1,
       "message": "Why do we handle `IOException` in the same way as `DiffNotAvailableException`? Shouldn\u0027t either of them rethrow?",
+      "revId": "342d8814d1abd8c1e079cbd4d5901f82e98b8a25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e75c6336_87e86346",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-28T16:46:53Z",
+      "side": 1,
+      "message": "Yes, we should make this call fail and re-throw, rather that just logging IMHO.",
+      "parentUuid": "9aa61e20_80d45665",
       "revId": "342d8814d1abd8c1e079cbd4d5901f82e98b8a25",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
