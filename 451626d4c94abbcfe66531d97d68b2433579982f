@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a93790_cb1a3383",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T08:59:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b287dc4b_d597f58b",
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ba9c0bc_da4a1d2e",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-01-28T16:18:32Z",
       "side": 1,
       "message": "Would be better named as `OwnersSubmitRequirement`",
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b33920e_51a65119",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T08:59:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ba9c0bc_da4a1d2e",
       "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4095d0a2_5e16c1a8",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T08:59:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd5c19a8_96b643dc",
+      "range": {
+        "startLine": 40,
+        "startChar": 40,
+        "endLine": 40,
+        "endChar": 56
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0507c4c_33d1cb5f",
@@ -71,6 +131,30 @@
       "writtenOn": "2023-01-28T16:18:32Z",
       "side": 1,
       "message": "Does this make sense? What\u0027s the point of having the submit requirement and then displaying an info in the logs? Wouldn\u0027t it be better to avoid registering it altogether? Gerrit already should take care of saying that the submit requirement isn\u0027t there.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 5
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d145de8_a1fbbb20",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T08:59:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0507c4c_33d1cb5f",
       "range": {
         "startLine": 58,
         "startChar": 0,
@@ -122,6 +206,54 @@
         "startChar": 40,
         "endLine": 72,
         "endChar": 52
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27d00f96_388cf3b8",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T08:59:56Z",
+      "side": 1,
+      "message": "It would if `get` returned sth else then `Optional\u003cProjectState\u003e`... For the time being I have changed it to throw `illegalState` so that it doesn\u0027t have to caught and re-thrown. WDYT?",
+      "parentUuid": "9a650deb_21e8add1",
+      "range": {
+        "startLine": 72,
+        "startChar": 40,
+        "endLine": 72,
+        "endChar": 52
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "969076c9_77243382",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T08:59:56Z",
+      "side": 1,
+      "message": "Not sure what you meant by that - modified it to be logged only once a day",
+      "parentUuid": "fe125e38_9620c0d6",
+      "range": {
+        "startLine": 72,
+        "startChar": 67,
+        "endLine": 72,
+        "endChar": 79
       },
       "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
