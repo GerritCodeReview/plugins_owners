@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5900eb08_ce6f5d60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T09:03:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2110e8d7_c2970de0",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 20
+      },
+      "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1914f18b_d91b9946",
@@ -107,6 +131,60 @@
       "side": 1,
       "message": "There is no `stable-3.6` branch in the owners plugin: `master` is fine.",
       "parentUuid": "daa377fd_0075bc0c",
+      "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31b0a762_7930fa70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T09:03:00Z",
+      "side": 1,
+      "message": "It was the original idea to limit it per-project. IOW for a project in question either prolog rules or submit requirements are enabled. Now it works as expected: both prolog rules and submit requirements are possible even for the same project.",
+      "parentUuid": "ace073a2_4f5e57a7",
+      "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93a92681_acb9b7fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T09:03:00Z",
+      "side": 1,
+      "message": "AFAICT (see [1]) there is no `stable-3.6` for `plugins/owners` there is only `stable-3.4` and `master` and we are generally targeting the `stable-3.5` with it hence `master` for plugin ;)\n\n[1] https://gerrit-review.googlesource.com/admin/repos/plugins/owners,branches",
+      "parentUuid": "daa377fd_0075bc0c",
+      "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b63fe1e3_f4733a34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-01-30T09:03:00Z",
+      "side": 1,
+      "message": "Squashed into https://gerrit-review.googlesource.com/c/plugins/owners/+/356401",
+      "parentUuid": "c83a1be5_62ade330",
       "revId": "569c96d392f0bcca2b53fa2ae3ae18dbd966ac69",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
