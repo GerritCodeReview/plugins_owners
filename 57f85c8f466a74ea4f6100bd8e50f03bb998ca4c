@@ -71,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc01a50_e1718d23",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-02T21:13:49Z",
+      "side": 1,
+      "message": "Makes sense.",
+      "parentUuid": "4cf7b218_e9ed209b",
+      "revId": "57f85c8f466a74ea4f6100bd8e50f03bb998ca4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e26542e9_ff698dd8",
