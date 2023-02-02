@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b0029ac_54fbf0dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-02T21:02:46Z",
+      "side": 1,
+      "message": "`submit requirement`?",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "687fa9dd_d159eedc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-02T21:02:46Z",
+      "side": 1,
+      "message": "`SubmitRequirement`",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1acb8f6f_a734fbc2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-02T21:02:46Z",
+      "side": 1,
+      "message": "Typo: `Note that this`, maybe?",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "844526f5_143255be",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-02T21:02:46Z",
+      "side": 1,
+      "message": "Should this say `submit requirement`? I\u0027m not sure if submit rules are something else in Gerrit. In fact, should we say `requirement` throughout the change instead of `rule`?",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
