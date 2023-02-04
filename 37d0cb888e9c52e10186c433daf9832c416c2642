@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec52c18b_42a29215",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "As per definition of `isBlock` function:\n\n\u003e Whether the label is a \"block\" label, meaning a minimum vote will prevent submission.\n\nIOW only the minimum vote blocks the submit. Negative, but not minimum indicates only ones intention but doesn\u0027t block from submission.",
+      "parentUuid": "5df070c0_d452bcd1",
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4b6c822_d51bbb22",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-03T12:07:14Z",
       "side": 1,
       "message": "This doesn\u0027t compile for me - I\u0027m compiling against Gerrit `c0a3cc0328` (the current tip of master) and this method requires four parameters not three. Am I missing something?",
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14fe17c0_916c5784",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Changes are meant for `stable-3.5` (the oldest supported ATM). We will sort out the other branches once the chain is approved.",
+      "parentUuid": "e4b6c822_d51bbb22",
       "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5e7581a_d661ecd8",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "\u003e the function.isRequired() code paths\n\nThere is no explicit value that is `isRequired` only hence there is no explicit test that could reflect it (see [1] for reference). As you can see `isRequired` is `true` for `MAX_WITH_BLOCK` and `MAX_NO_BLOCK` which is covered as a part of all test cases using `MAX_NO_BLOCK`. I have removed that code path.\n\n\n\u003e the follow-through if we don\u0027t match any of our guard clauses\n\nThe `labelShouldBeApprovedWhenAnyValueWithBlockIsConfiguredAndPositiveValueIsProvided` unit test is actually that case 😊. It uses `ANY_WITH_BLOCK` which means:\n* `isBlock \u003d true`\n* `isRequired \u003d false`\n* `requiresMaxValue \u003d false`\n\nadditionally it has 2 positive values configured (`+1` and `+2`) and `+1` is given.\nThat means it is neither a subject of `isMaxValueRequired` nor `isBlock` nor `isRequired` checks.\nHaving said that it actually inspired me to add another test case (`labelShouldNotBeApprovedWhenAnyValueWithBlockIsConfiguredAndDefaultValueIsProvided`) and slightly modify the test function 😄\n\n[1] https://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.5/java/com/google/gerrit/entities/LabelFunction.java#33",
+      "parentUuid": "e6fd3c55_ce9304ac",
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f9378bb_9fc62b2c",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
         "patchSetId": 3
@@ -65,6 +119,30 @@
       "writtenOn": "2023-02-03T12:07:14Z",
       "side": 1,
       "message": "Typo: `Approved`.",
+      "range": {
+        "startLine": 179,
+        "startChar": 72,
+        "endLine": 179,
+        "endChar": 79
+      },
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9efc7744_8f5822e0",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f9378bb_9fc62b2c",
       "range": {
         "startLine": 179,
         "startChar": 72,
@@ -98,6 +176,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "611bfb47_b4d0359d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0603bdd4_46d39f98",
+      "range": {
+        "startLine": 229,
+        "startChar": 30,
+        "endLine": 229,
+        "endChar": 37
+      },
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a565ff6_67760ea5",
@@ -111,6 +213,24 @@
       "writtenOn": "2023-02-03T12:07:14Z",
       "side": 1,
       "message": "I think this variable is misnamed as no max value is required - maybe we can just call it `anyWithBlock`?",
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39a9e489_dc84209a",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a565ff6_67760ea5",
       "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -132,6 +252,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e5caec2_99d86957",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d37ec445_dda94a49",
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0451d19_aede6451",
@@ -145,6 +283,24 @@
       "writtenOn": "2023-02-03T12:07:14Z",
       "side": 1,
       "message": "This should probably also be `anyWithBlock` (or similar).",
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e455025d_2fe611a4",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0451d19_aede6451",
       "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
