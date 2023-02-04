@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "952b429e_b06838e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b0029ac_54fbf0dd",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "687fa9dd_d159eedc",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-02T21:02:46Z",
       "side": 1,
       "message": "`SubmitRequirement`",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6389d879_b5f508d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Nope, the interface is called `SubmitRule`, but I have added the `interface` word so that it is more obvious.",
+      "parentUuid": "687fa9dd_d159eedc",
       "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec7d667c_c4c85eb6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1acb8f6f_a734fbc2",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "844526f5_143255be",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-02-02T21:02:46Z",
       "side": 1,
       "message": "Should this say `submit requirement`? I\u0027m not sure if submit rules are something else in Gerrit. In fact, should we say `requirement` throughout the change instead of `rule`?",
+      "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3944ad7_14532904",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-04T10:37:13Z",
+      "side": 1,
+      "message": "It should be consistent 😊 I have called it `rule` for the interface name `SubmitRule` and spread it across the whole code base... Thanks for catching it all 👍",
+      "parentUuid": "844526f5_143255be",
       "revId": "71b05aee5d2094c2d89d0601072327bfdd132f58",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
