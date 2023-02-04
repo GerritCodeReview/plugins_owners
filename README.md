@@ -118,7 +118,8 @@ To execute the tests run:
 
 This project can be imported into the Eclipse IDE:
 
-Add the plugin name to the `CUSTOM_PLUGINS` in Gerrit core in
+Add the plugin name to the `CUSTOM_PLUGINS` (and in case when you want to run
+tests from the IDE to `CUSTOM_PLUGINS_TEST_DEPS`) in Gerrit core in
 `tools/bzl/plugins.bzl` file and run:
 
 ```
