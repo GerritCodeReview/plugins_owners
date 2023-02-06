@@ -106,6 +106,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d13b43b4_a8381df5",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-06T09:31:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d5e7581a_d661ecd8",
+      "revId": "37d0cb888e9c52e10186c433daf9832c416c2642",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f9378bb_9fc62b2c",
