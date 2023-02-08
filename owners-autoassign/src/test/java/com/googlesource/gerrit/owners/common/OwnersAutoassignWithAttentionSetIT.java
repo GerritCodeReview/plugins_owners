@@ -58,7 +58,7 @@ public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonT
   public static class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-      install(new AutoassignModule());
+      install(new AutoAssignModule());
 
       DynamicItem.bind(binder(), OwnersAttentionSet.class)
           .to(SelectFirstOwnerForAttentionSet.class)

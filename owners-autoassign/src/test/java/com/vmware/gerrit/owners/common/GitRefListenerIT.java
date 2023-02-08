@@ -15,7 +15,7 @@
 
 package com.vmware.gerrit.owners.common;
 
-import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
+import static com.googlesource.gerrit.owners.common.AutoAssignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
 import static org.junit.Assert.assertEquals;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -35,7 +35,7 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.owners.common.AutoassignConfigModule;
+import com.googlesource.gerrit.owners.common.AutoAssignConfigModule;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.StreamSupport;
@@ -58,7 +58,7 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
     @Override
     protected void configure() {
       DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListenerTest.class);
-      install(new AutoassignConfigModule());
+      install(new AutoAssignConfigModule());
     }
   }
 

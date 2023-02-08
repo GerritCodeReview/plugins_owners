@@ -80,7 +80,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private ChangeNotes.Factory notesFactory;
 
-  private final AutoassignConfig cfg;
+  private final AutoAssignConfig cfg;
 
   @Inject
   public GitRefListener(
@@ -92,7 +92,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoassignConfig cfg) {
+      AutoAssignConfig cfg) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.repositoryManager = repositoryManager;
