@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.vmware.gerrit.owners.common;
+package com.googlesource.gerrit.owners.common;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,12 +26,14 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.owners.common.ReviewerManager;
+
 import org.eclipse.jgit.transport.ReceiveCommand.Type;
 import org.junit.Test;
 
 @TestPlugin(
     name = "owners-autoassign",
-    sysModule = "com.vmware.gerrit.owners.common.GitRefListenerIT$TestModule")
+    sysModule = "com.googlesource.gerrit.owners.common.GitRefListenerIT$TestModule")
 public class GitRefListenerIT extends LightweightPluginDaemonTest {
 
   @Inject GitRefListenerTest gitRefListener;
