@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.vmware.gerrit.owners.common;
+package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.server.CurrentUser;
@@ -38,7 +38,7 @@ public class GitRefListenerTest extends GitRefListener {
       PatchListCache patchListCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
-      ReviewerManager reviewerManager,
+      SyncReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider) {
     super(
