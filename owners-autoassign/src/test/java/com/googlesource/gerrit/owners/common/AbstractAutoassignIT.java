@@ -58,7 +58,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
   public static class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-      install(new AutoAssignModule());
+      install(new AutoAssignModule(new AutoAssignConfig()));
     }
   }
 
