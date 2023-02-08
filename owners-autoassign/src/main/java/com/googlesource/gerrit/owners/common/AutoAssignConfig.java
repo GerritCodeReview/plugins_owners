@@ -16,8 +16,8 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.extensions.client.InheritableBoolean.TRUE;
-import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
-import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
+import static com.googlesource.gerrit.owners.common.AutoAssignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
+import static com.googlesource.gerrit.owners.common.AutoAssignConfigModule.PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES;
 
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -29,13 +29,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class AutoassignConfig {
+public class AutoAssignConfig {
 
   private final PluginConfigFactory cfgFactory;
   private final String pluginName;
 
   @Inject
-  AutoassignConfig(@PluginName String pluginName, PluginConfigFactory cfgFactory) {
+  AutoAssignConfig(@PluginName String pluginName, PluginConfigFactory cfgFactory) {
     this.pluginName = pluginName;
     this.cfgFactory = cfgFactory;
   }

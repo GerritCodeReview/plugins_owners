@@ -69,7 +69,7 @@ public class ReviewerManager {
   @Inject(optional = true)
   private DynamicItem<OwnersAttentionSet> ownersForAttentionSet;
 
-  private final AutoassignConfig cfg;
+  private final AutoAssignConfig cfg;
 
   @Inject
   public ReviewerManager(
@@ -78,7 +78,7 @@ public class ReviewerManager {
       IdentifiedUser.GenericFactory userFactory,
       ChangeData.Factory changeDataFactory,
       PermissionBackend permissionBackend,
-      AutoassignConfig cfg) {
+      AutoAssignConfig cfg) {
     this.requestContext = requestContext;
     this.gApi = gApi;
     this.userFactory = userFactory;

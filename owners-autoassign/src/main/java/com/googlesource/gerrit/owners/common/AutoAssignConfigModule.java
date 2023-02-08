@@ -23,7 +23,7 @@ import com.google.gerrit.server.config.ProjectConfigEntry;
 import com.google.inject.AbstractModule;
 import java.util.Arrays;
 
-public class AutoassignConfigModule extends AbstractModule {
+public class AutoAssignConfigModule extends AbstractModule {
   public static final String PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES = "autoAssignWip";
   public static final String PROJECT_CONFIG_AUTOASSIGN_FIELD = "autoAssignField";
 
