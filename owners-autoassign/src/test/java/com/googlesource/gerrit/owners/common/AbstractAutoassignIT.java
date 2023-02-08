@@ -16,7 +16,7 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.owners.common.AutoassignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
+import static com.googlesource.gerrit.owners.common.AutoAssignConfigModule.PROJECT_CONFIG_AUTOASSIGN_FIELD;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.common.RawInputUtil;
@@ -58,7 +58,7 @@ public abstract class AbstractAutoassignIT extends LightweightPluginDaemonTest {
   public static class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-      install(new AutoassignModule());
+      install(new AutoAssignModule());
     }
   }
 
