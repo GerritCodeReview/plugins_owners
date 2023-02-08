@@ -16,14 +16,30 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 
-public class AutoassignModule extends AbstractModule {
+public class AutoAssignModule extends AbstractModule {
+  private final AutoAssignConfig config;
+
+  @Inject
+  AutoAssignModule(AutoAssignConfig config) {
+    this.config = config;
+  }
+
+  @VisibleForTesting
+  AutoAssignModule() {
+    this.config = new AutoAssignConfig();
+  }
+
   @Override
   protected void configure() {
+    bind(ReviewerManager.class)
+        .to(config.isAsyncReviewers() ? AsyncReviewerManager.class : SyncReviewerManager.class);
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
-    install(new AutoassignConfigModule());
+    install(new AutoAssignConfigModule());
   }
 }
