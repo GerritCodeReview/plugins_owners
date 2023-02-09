@@ -56,7 +56,7 @@ public class OwnersAutoassignWithAttentionSetIT extends LightweightPluginDaemonT
   public static class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-      install(new AutoassignModule(SelectFirstOwnerForAttentionSet.class));
+      install(new AutoassignModule(SelectFirstOwnerForAttentionSet.class, new AutoAssignConfig()));
     }
   }
 

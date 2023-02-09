@@ -28,19 +28,29 @@ import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
 public class AutoassignModule extends AbstractModule {
 
   private final Class<? extends OwnersAttentionSet> ownersAttentionSetImpl;
+  private final AutoAssignConfig config;
+
+  @VisibleForTesting
+  AutoassignModule() {
+    this(DefaultAddAllOwnersToAttentionSet.class, new AutoAssignConfig());
+  }
 
   @Inject
-  public AutoassignModule() {
-    this(DefaultAddAllOwnersToAttentionSet.class);
+  AutoassignModule(AutoAssignConfig config) {
+    this(DefaultAddAllOwnersToAttentionSet.class, config);
   }
 
   @VisibleForTesting
-  public AutoassignModule(Class<? extends OwnersAttentionSet> ownersAttentionSetImpl) {
+  public AutoassignModule(
+      Class<? extends OwnersAttentionSet> ownersAttentionSetImpl, AutoAssignConfig config) {
     this.ownersAttentionSetImpl = ownersAttentionSetImpl;
+    this.config = config;
   }
 
   @Override
   protected void configure() {
+    bind(ReviewerManager.class)
+        .to(config.isAsyncReviewers() ? AsyncReviewerManager.class : SyncReviewerManager.class);
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
     DynamicItem.bind(binder(), OwnersAttentionSet.class)
         .to(ownersAttentionSetImpl)

@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.vmware.gerrit.owners.common;
+package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
-import com.googlesource.gerrit.owners.common.AutoassignConfig;
+import com.googlesource.gerrit.owners.common.AutoAssignConfig;
 import com.googlesource.gerrit.owners.common.GitRefListener;
 import com.googlesource.gerrit.owners.common.ReviewerManager;
 import org.eclipse.jgit.lib.Repository;
@@ -46,11 +46,11 @@ public class GitRefListenerTest extends GitRefListener {
       ProjectCache projectCache,
       GitRepositoryManager repositoryManager,
       Accounts accounts,
-      ReviewerManager reviewerManager,
+      SyncReviewerManager reviewerManager,
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoassignConfig cfg) {
+      AutoAssignConfig cfg) {
     super(
         api,
         patchListCache,
