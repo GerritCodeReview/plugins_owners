@@ -22,7 +22,7 @@ import static com.googlesource.gerrit.owners.common.MatcherConfig.partialRegexMa
 import static com.googlesource.gerrit.owners.common.MatcherConfig.regexMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
 import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
-import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
@@ -148,7 +148,7 @@ public class RegexTest extends Config {
             accounts,
             repositoryManager,
             repository,
-            EMPTY_LIST,
+            emptyList(),
             branch,
             Set.of(
                 "project/file.txt", // matches exact in
@@ -263,7 +263,7 @@ public class RegexTest extends Config {
             accounts,
             repositoryManager,
             repository,
-            EMPTY_LIST,
+            emptyList(),
             branch,
             Set.of("project/file.sql", "another.txt"),
             EXPAND_GROUPS);

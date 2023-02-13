@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
-import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
@@ -27,7 +27,6 @@ import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -68,7 +67,7 @@ public class PathOwnersTest extends ClassicConfig {
             accounts,
             repositoryManager,
             repository,
-            Collections.EMPTY_LIST,
+            emptyList(),
             branch,
             Set.of(CLASSIC_FILE_TXT),
             EXPAND_GROUPS);
@@ -88,7 +87,7 @@ public class PathOwnersTest extends ClassicConfig {
             accounts,
             repositoryManager,
             repository,
-            EMPTY_LIST,
+            emptyList(),
             branch,
             Set.of(CLASSIC_FILE_TXT),
             DO_NOT_EXPAND_GROUPS);
@@ -108,7 +107,7 @@ public class PathOwnersTest extends ClassicConfig {
             accounts,
             repositoryManager,
             repository,
-            EMPTY_LIST,
+            emptyList(),
             Optional.empty(),
             Set.of(CLASSIC_FILE_TXT),
             EXPAND_GROUPS);
@@ -128,7 +127,7 @@ public class PathOwnersTest extends ClassicConfig {
             accounts,
             repositoryManager,
             repository,
-            EMPTY_LIST,
+            emptyList(),
             branch,
             Set.of("classic/file.txt"),
             EXPAND_GROUPS);
@@ -157,7 +156,7 @@ public class PathOwnersTest extends ClassicConfig {
             accounts,
             repositoryManager,
             repository,
-            EMPTY_LIST,
+            emptyList(),
             branch,
             Set.of(fileName),
             EXPAND_GROUPS);
@@ -269,7 +268,7 @@ public class PathOwnersTest extends ClassicConfig {
             accounts,
             repositoryManager,
             repository,
-            EMPTY_LIST,
+            emptyList(),
             branch,
             Set.of("dir/subdir/file.txt"),
             EXPAND_GROUPS);
