@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.google.gerrit.entities.Patch.COMMIT_MSG;
+import static com.google.gerrit.entities.Patch.MERGE_LIST;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
@@ -27,7 +29,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.compress.utils.Sets;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
 import org.powermock.api.easymock.PowerMock;
@@ -83,6 +87,24 @@ public abstract class Config {
 
   void creatingPatch(String... fileNames) {
     creatingPatchList(Arrays.asList(fileNames));
+  }
+
+  public Set<String> getModifiedPathsFromPatchList(PatchList patchList) {
+    Set<String> paths = Sets.newHashSet();
+    for (PatchListEntry patch : patchList.getPatches()) {
+      // Ignore commit message and Merge List
+      String newName = patch.getNewName();
+      if (!COMMIT_MSG.equals(newName) && !MERGE_LIST.equals(newName)) {
+        paths.add(newName);
+
+        // If a file was moved then we need approvals for old and new
+        // path
+        if (patch.getChangeType() == Patch.ChangeType.RENAMED) {
+          paths.add(patch.getOldName());
+        }
+      }
+    }
+    return paths;
   }
 
   void creatingPatchList(List<String> names) {

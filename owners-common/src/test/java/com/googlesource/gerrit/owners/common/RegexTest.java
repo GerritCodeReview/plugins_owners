@@ -155,7 +155,13 @@ public class RegexTest extends Config {
     // function under test
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            getModifiedPathsFromPatchList(patchList),
+            EXPAND_GROUPS);
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -258,7 +264,13 @@ public class RegexTest extends Config {
 
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            getModifiedPathsFromPatchList(patchList),
+            EXPAND_GROUPS);
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");
