@@ -3,6 +3,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e7d16451_fbc31cf8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-13T19:33:49Z",
+      "side": 1,
+      "message": "nit: s/availabl/available",
+      "range": {
+        "startLine": 12,
+        "startChar": 8,
+        "endLine": 12,
+        "endChar": 17
+      },
+      "revId": "373a8c27e349e3a7d73f434f9534fc912c222d81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b3e2b72e_0894d3c1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -14,6 +37,24 @@
       "writtenOn": "2023-02-13T13:58:22Z",
       "side": 1,
       "message": "I didn\u0027t check yet why the CI didn\u0027t fail.",
+      "revId": "373a8c27e349e3a7d73f434f9534fc912c222d81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2117a2b0_2ba1764a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-13T19:33:49Z",
+      "side": 1,
+      "message": "I believe the problem in CI is that it calls only the `plugin/*` targets - see https://gerrit.googlesource.com/gerrit-ci-scripts/+/refs/heads/master/jenkins/gerrit-bazel-plugin-owners.yaml#67\nfor details... having said that I have no idea how to fix it call also common 😊",
+      "parentUuid": "b3e2b72e_0894d3c1",
       "revId": "373a8c27e349e3a7d73f434f9534fc912c222d81",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

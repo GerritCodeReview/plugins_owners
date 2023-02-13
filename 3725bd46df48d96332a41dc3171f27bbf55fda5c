@@ -16,6 +16,24 @@
       "message": "This is basically the logic we had in `PathOwners`. This logic is not needed anymore there, it is only valuable for the tests.\n\nThere is a bit of repetition in the code of `getModifiedPaths`, but I am not sure if it is worth trying to abstract `getModifiedPaths` to handle both PatchList and `Map\u003cString, FileDiffOutput\u003e`. Furthermore, the method will need to become public (or maybe package protected?) to be used in the tests.",
       "revId": "3725bd46df48d96332a41dc3171f27bbf55fda5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8da4df0_3ef2c2dd",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/Config.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-13T19:33:49Z",
+      "side": 1,
+      "message": "As it results with `Set\u003cString\u003e` which would rely on the sole constructor I would rather get rid off it all. IOW remove all the boiler-plate code and provide the `Set\u003cString\u003e` with the content in question whenever it is necessary. See the PS that I have uploded.",
+      "parentUuid": "f98d1422_dcfe92c5",
+      "revId": "3725bd46df48d96332a41dc3171f27bbf55fda5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
