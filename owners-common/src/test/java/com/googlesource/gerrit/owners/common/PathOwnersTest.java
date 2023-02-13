@@ -70,7 +70,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             Collections.EMPTY_LIST,
             branch,
-            patchList,
+            Set.of(CLASSIC_FILE_TXT),
             EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
@@ -90,7 +90,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             EMPTY_LIST,
             branch,
-            patchList,
+            Set.of(CLASSIC_FILE_TXT),
             DO_NOT_EXPAND_GROUPS);
     Set<String> ownersSet = owners.getFileGroupOwners().get(CLASSIC_FILE_TXT);
     assertEquals(2, ownersSet.size());
@@ -110,7 +110,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             EMPTY_LIST,
             Optional.empty(),
-            patchList,
+            Set.of(CLASSIC_FILE_TXT),
             EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(0, ownersSet.size());
@@ -121,12 +121,17 @@ public class PathOwnersTest extends ClassicConfig {
     expectConfig("OWNERS", createConfig(true, owners(USER_C_EMAIL_COM)));
     expectConfig(CLASSIC_OWNERS, createConfig(true, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
-    creatingPatchList(Arrays.asList("classic/file.txt"));
     replayAll();
 
     PathOwners owners2 =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            Set.of("classic/file.txt"),
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
@@ -145,12 +150,17 @@ public class PathOwnersTest extends ClassicConfig {
         createConfig(true, owners(), suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     String fileName = "file.sql";
-    creatingPatchList(Collections.singletonList(fileName));
     replayAll();
 
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            Set.of(fileName),
+            EXPAND_GROUPS);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(1, fileOwners.size());
@@ -172,7 +182,6 @@ public class PathOwnersTest extends ClassicConfig {
         createConfig(true, owners(), suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     String fileName = "file.sql";
-    creatingPatchList(Collections.singletonList(fileName));
 
     mockParentRepository(parentRepository1NameKey, parentRepository1);
     replayAll();
@@ -184,7 +193,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             Arrays.asList(parentRepository1NameKey),
             branch,
-            patchList,
+            Set.of(fileName),
             EXPAND_GROUPS);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
@@ -213,7 +222,6 @@ public class PathOwnersTest extends ClassicConfig {
 
     String sqlFileName = "file.sql";
     String javaFileName = "file.java";
-    creatingPatchList(Arrays.asList(sqlFileName, javaFileName));
 
     mockParentRepository(parentRepository1NameKey, parentRepository1);
     mockParentRepository(parentRepository2NameKey, parentRepository2);
@@ -226,7 +234,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             Arrays.asList(parentRepository1NameKey, parentRepository2NameKey),
             branch,
-            patchList,
+            Set.of(sqlFileName, javaFileName),
             EXPAND_GROUPS);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
@@ -254,12 +262,17 @@ public class PathOwnersTest extends ClassicConfig {
     expectConfig("dir/OWNERS", createConfig(true, owners(USER_B_EMAIL_COM)));
     expectConfig("dir/subdir/OWNERS", createConfig(true, owners(USER_A_EMAIL_COM)));
 
-    creatingPatchList(Arrays.asList("dir/subdir/file.txt"));
     replayAll();
 
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            Set.of("dir/subdir/file.txt"),
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
 
     assertEquals(3, ownersSet.size());
@@ -282,7 +295,6 @@ public class PathOwnersTest extends ClassicConfig {
     expectNoConfig("OWNERS");
     expectConfig(CLASSIC_OWNERS, createConfig(false, owners(owners)));
 
-    creatingPatchList(Arrays.asList(CLASSIC_FILE_TXT));
     replayAll();
   }
 }

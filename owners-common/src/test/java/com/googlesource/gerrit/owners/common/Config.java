@@ -21,13 +21,9 @@ import static org.easymock.EasyMock.expect;
 import com.google.common.base.Charsets;
 import com.google.gerrit.entities.Patch;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
 import org.powermock.api.easymock.PowerMock;
@@ -38,7 +34,6 @@ public abstract class Config {
   protected Repository repository;
   protected Repository parentRepository1;
   protected Repository parentRepository2;
-  protected PatchList patchList;
   protected ConfigurationParser parser;
   protected TestAccounts accounts = new TestAccounts();
   protected Optional<String> branch = Optional.of("master");
@@ -79,17 +74,6 @@ public abstract class Config {
                 anyObject(Repository.class), anyObject(String.class), eq(path)))
         .andReturn(Optional.empty())
         .anyTimes();
-  }
-
-  void creatingPatch(String... fileNames) {
-    creatingPatchList(Arrays.asList(fileNames));
-  }
-
-  void creatingPatchList(List<String> names) {
-    patchList = PowerMock.createMock(PatchList.class);
-    List<PatchListEntry> entries =
-        names.stream().map(name -> expectEntry(name)).collect(Collectors.toList());
-    expect(patchList.getPatches()).andReturn(entries);
   }
 
   PatchListEntry expectEntry(String name) {

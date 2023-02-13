@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
 import com.google.gerrit.entities.Account;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -141,21 +140,25 @@ public class RegexTest extends Config {
     expectConfig("OWNERS", parentConfig);
     expectConfig("project/OWNERS", childConfig);
 
-    creatingPatchList(
-        Arrays.asList(
-            "project/file.txt", // matches exact in
-            // project owners d,e
-            "file1.txt", // no matches so nothing for this
-            "project/afile2.sql", // matches two matchers so we have b,c,d
-            "project/bfile.txt", // no matching
-            "projectalfa", // matches PartialRegex
-            "project/file.sql")); // only .sql matching b,c
     replayAll();
 
     // function under test
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            Set.of(
+                "project/file.txt", // matches exact in
+                // project owners d,e
+                "file1.txt", // no matches so nothing for this
+                "project/afile2.sql", // matches two matchers so we have b,c,d
+                "project/bfile.txt", // no matching
+                "projectalfa", // matches PartialRegex
+                "project/file.sql"), // only .sql matching b,c
+            EXPAND_GROUPS);
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -253,12 +256,17 @@ public class RegexTest extends Config {
 
     expectConfig("OWNERS", configString);
     expectNoConfig("project/OWNERS");
-    creatingPatch("project/file.sql", "another.txt");
     replayAll();
 
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            Set.of("project/file.sql", "another.txt"),
+            EXPAND_GROUPS);
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");
