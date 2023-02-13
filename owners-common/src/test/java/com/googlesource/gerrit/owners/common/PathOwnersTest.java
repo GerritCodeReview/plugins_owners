@@ -70,7 +70,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             Collections.EMPTY_LIST,
             branch,
-            patchList,
+            getModifiedPathsFromPatchList(patchList),
             EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
@@ -90,7 +90,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             EMPTY_LIST,
             branch,
-            patchList,
+            getModifiedPathsFromPatchList(patchList),
             DO_NOT_EXPAND_GROUPS);
     Set<String> ownersSet = owners.getFileGroupOwners().get(CLASSIC_FILE_TXT);
     assertEquals(2, ownersSet.size());
@@ -110,7 +110,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             EMPTY_LIST,
             Optional.empty(),
-            patchList,
+            getModifiedPathsFromPatchList(patchList),
             EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(0, ownersSet.size());
@@ -126,7 +126,13 @@ public class PathOwnersTest extends ClassicConfig {
 
     PathOwners owners2 =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            getModifiedPathsFromPatchList(patchList),
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
@@ -150,7 +156,13 @@ public class PathOwnersTest extends ClassicConfig {
 
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            getModifiedPathsFromPatchList(patchList),
+            EXPAND_GROUPS);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(1, fileOwners.size());
@@ -184,7 +196,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             Arrays.asList(parentRepository1NameKey),
             branch,
-            patchList,
+            getModifiedPathsFromPatchList(patchList),
             EXPAND_GROUPS);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
@@ -226,7 +238,7 @@ public class PathOwnersTest extends ClassicConfig {
             repository,
             Arrays.asList(parentRepository1NameKey, parentRepository2NameKey),
             branch,
-            patchList,
+            getModifiedPathsFromPatchList(patchList),
             EXPAND_GROUPS);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
@@ -259,7 +271,13 @@ public class PathOwnersTest extends ClassicConfig {
 
     PathOwners owners =
         new PathOwners(
-            accounts, repositoryManager, repository, EMPTY_LIST, branch, patchList, EXPAND_GROUPS);
+            accounts,
+            repositoryManager,
+            repository,
+            EMPTY_LIST,
+            branch,
+            getModifiedPathsFromPatchList(patchList),
+            EXPAND_GROUPS);
     Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
 
     assertEquals(3, ownersSet.size());
