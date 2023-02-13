@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f98d1422_dcfe92c5",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/Config.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-02-13T13:54:51Z",
+      "side": 1,
+      "message": "This is basically the logic we had in `PathOwners`. This logic is not needed anymore there, it is only valuable for the tests.\n\nThere is a bit of repetition in the code of `getModifiedPaths`, but I am not sure if it is worth trying to abstract `getModifiedPaths` to handle both PatchList and `Map\u003cString, FileDiffOutput\u003e`. Furthermore, the method will need to become public (or maybe package protected?) to be used in the tests.",
+      "revId": "3725bd46df48d96332a41dc3171f27bbf55fda5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
