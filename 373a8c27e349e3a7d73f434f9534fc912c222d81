@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3e2b72e_0894d3c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-02-13T13:58:22Z",
+      "side": 1,
+      "message": "I didn\u0027t check yet why the CI didn\u0027t fail.",
+      "revId": "373a8c27e349e3a7d73f434f9534fc912c222d81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
