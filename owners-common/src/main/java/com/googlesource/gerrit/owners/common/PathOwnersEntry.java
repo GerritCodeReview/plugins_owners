@@ -22,6 +22,7 @@ import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
  */
 class PathOwnersEntry {
   private final boolean inherited;
+  private Optional<String> label;
   private Set<Account.Id> owners = Sets.newHashSet();
   private Set<Account.Id> reviewers = Sets.newHashSet();
   private String ownersPath;
@@ -40,12 +42,14 @@ class PathOwnersEntry {
 
   public PathOwnersEntry() {
     inherited = true;
+    label = Optional.empty();
   }
 
   public PathOwnersEntry(
       String path,
       OwnersConfig config,
       Accounts accounts,
+      Optional<String> inheritedLabel,
       Set<Account.Id> inheritedOwners,
       Set<Account.Id> inheritedReviewers,
       Collection<Matcher> inheritedMatchers,
@@ -72,6 +76,9 @@ class PathOwnersEntry {
       for (Matcher matcher : inheritedMatchers) {
         addMatcher(matcher);
       }
+      this.label = config.getLabel().or(() -> inheritedLabel);
+    } else {
+      this.label = config.getLabel();
     }
     this.inherited = config.isInherited();
   }
@@ -84,6 +91,8 @@ class PathOwnersEntry {
         + owners
         + ", matchers="
         + matchers
+        + ", label="
+        + label
         + "]";
   }
 
@@ -130,6 +139,14 @@ class PathOwnersEntry {
 
   public boolean isInherited() {
     return inherited;
+  }
+
+  public Optional<String> getLabel() {
+    return label;
+  }
+
+  public void setLabel(Optional<String> label) {
+    this.label = label;
   }
 
   public void addMatchers(Collection<Matcher> values) {

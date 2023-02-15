@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class OwnersMap {
@@ -30,6 +31,7 @@ public class OwnersMap {
   private Map<String, Set<Account.Id>> fileOwners = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileReviewers = Maps.newHashMap();
   private Map<String, Set<String>> fileGroupOwners = Maps.newHashMap();
+  private Optional<String> label = Optional.empty();
 
   @Override
   public String toString() {
@@ -118,5 +120,13 @@ public class OwnersMap {
     }
 
     fileGroupOwners.computeIfAbsent(file, (f) -> Sets.newHashSet()).addAll(groupOwners);
+  }
+
+  public Optional<String> getLabel() {
+    return label;
+  }
+
+  public void setLabel(Optional<String> label) {
+    this.label = label;
   }
 }
