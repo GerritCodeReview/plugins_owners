@@ -141,7 +141,9 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
-      LabelTypes labelTypes = ownersLabel(projectState.getLabelTypes(notes));
+      LabelTypes labelTypes = projectState.getLabelTypes(notes);
+      String label = resolveLabel(labelTypes, pathOwners.getLabel());
+      LabelTypes ownersLabelType = ownersLabel(labelTypes, label, project);
       Account.Id uploader = notes.getCurrentPatchSet().uploader();
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
           Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
@@ -151,7 +153,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
           fileOwners.entrySet().stream()
               .filter(
                   requiredApproval ->
-                      isApprovalMissing(requiredApproval, uploader, approvalsByAccount, labelTypes))
+                      isApprovalMissing(
+                          requiredApproval, uploader, approvalsByAccount, ownersLabelType))
               .map(Map.Entry::getKey)
               .collect(toSet());
 
@@ -159,6 +162,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
           missingApprovals.isEmpty()
               ? ok()
               : notReady(
+                  label,
                   String.format(
                       "Missing approvals for path(s): [%s]",
                       Joiner.on(", ").join(missingApprovals))));
@@ -172,17 +176,36 @@ public class OwnersSubmitRequirement implements SubmitRule {
     }
   }
 
-  /** the idea is to select the label type that is configured for owner to cast the vote */
-  private LabelTypes ownersLabel(LabelTypes labelTypes) {
+  /**
+   * The idea is to select the label type that is configured for owner to cast the vote. If nothing
+   * is configured in the OWNERS file then `Code-Review` will be selected.
+   *
+   * @param labelTypes labels configured for project
+   * @param label that is configured in the OWNERS file
+   */
+  static String resolveLabel(LabelTypes labelTypes, Optional<String> label) {
+    return label.orElse(LabelId.CODE_REVIEW);
+  }
 
-    // TODO: there is no specific label configuration introduced to the OWNERS file therefore for
-    // the time being set it to Code Review explicitly or nothing if it doesn't exist for the
-    // project in question
+  /**
+   * Create single label LabelTypes if label can be found or empty otherwise.
+   *
+   * @param labelTypes labels configured for project
+   * @param label that is resolved from the OWNERS file
+   * @param project that change is evaluated for
+   */
+  static LabelTypes ownersLabel(LabelTypes labelTypes, String label, Project.NameKey project) {
     return new LabelTypes(
         labelTypes
-            .byLabel(LabelId.CODE_REVIEW)
+            .byLabel(label)
             .map(Collections::singletonList)
-            .orElseGet(Collections::emptyList));
+            .orElseGet(
+                () -> {
+                  logger.atSevere().log(
+                      "OWNERS label '%s' is not configured for '%s' project. Change is not submittable.",
+                      label, project);
+                  return Collections.emptyList();
+                }));
   }
 
   static boolean isApprovalMissing(
@@ -250,13 +273,13 @@ public class OwnersSubmitRequirement implements SubmitRule {
     return diffOperations.listModifiedFilesAgainstParent(project, revision, 0);
   }
 
-  private static SubmitRecord notReady(String missingApprovals) {
+  private static SubmitRecord notReady(String ownersLabel, String missingApprovals) {
     SubmitRecord submitRecord = new SubmitRecord();
     submitRecord.status = SubmitRecord.Status.NOT_READY;
     submitRecord.errorMessage = missingApprovals;
     submitRecord.requirements = List.of(SUBMIT_REQUIREMENT);
     SubmitRecord.Label label = new SubmitRecord.Label();
-    label.label = "Code-Review from owners";
+    label.label = String.format("%s from owners", ownersLabel);
     label.status = SubmitRecord.Label.Status.NEED;
     submitRecord.labels = List.of(label);
     return submitRecord;

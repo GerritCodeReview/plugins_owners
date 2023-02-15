@@ -15,12 +15,16 @@
 package com.googlesource.gerrit.owners;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth8.assertThat;
+import static com.google.gerrit.server.project.testing.TestLabels.codeReview;
 import static com.google.gerrit.server.project.testing.TestLabels.labelBuilder;
 import static com.google.gerrit.server.project.testing.TestLabels.value;
+import static com.google.gerrit.server.project.testing.TestLabels.verified;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.hasSufficientApproval;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovalMissing;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isLabelApproved;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isNotApprovedByOwner;
+import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.resolveLabel;
 import static org.mockito.Mockito.mock;
 
 import com.google.gerrit.entities.Account;
@@ -30,18 +34,67 @@ import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.LabelTypes;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.PatchSetApproval;
+import com.google.gerrit.entities.Project;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.Test;
 
 public class OwnersSubmitRequirementTest {
   private static String LABEL_ID = "foo";
   private static int MAX_LABEL_VALUE = 1;
+  private static Project.NameKey PROJECT = Project.nameKey("project");
+
+  @Test
+  public void shouldResolveLabelToConfiguredOne() {
+    // when
+    String label = resolveLabel(null, Optional.of(LABEL_ID));
+
+    // then
+    assertThat(label).isEqualTo(LABEL_ID);
+  }
+
+  @Test
+  public void shouldResolveLabelToCodeReviewIfProjectHasCodeReviewLabelConfigured() {
+    // given
+    LabelTypes types =
+        new LabelTypes(
+            List.of(verified(), label().setFunction(LabelFunction.NO_BLOCK).build(), codeReview()));
+
+    // when
+    String label = resolveLabel(types, Optional.empty());
+
+    // then
+    assertThat(label).isEqualTo(LabelId.CODE_REVIEW);
+  }
+
+  @Test
+  public void shouldOwnersLabelContainOnlyConfiguredLabel() {
+    // when
+    LabelTypes result =
+        OwnersSubmitRequirement.ownersLabel(
+            new LabelTypes(List.of(label().build())), LABEL_ID, PROJECT);
+
+    // then
+    assertThat(result.getLabelTypes()).hasSize(1);
+    assertThat(result.byLabel(LABEL_ID)).isPresent();
+  }
+
+  @Test
+  public void shouldOwnersLabelBeEmptyIfNonExistingLabelIsConfigured() {
+    // when
+    LabelTypes result =
+        OwnersSubmitRequirement.ownersLabel(
+            new LabelTypes(List.of(codeReview())), LABEL_ID, PROJECT);
+
+    // then
+    assertThat(result.getLabelTypes()).isEmpty();
+  }
 
   @Test
   public void shouldApprovalBeMissingWhenSomeoneElseApproved() {
