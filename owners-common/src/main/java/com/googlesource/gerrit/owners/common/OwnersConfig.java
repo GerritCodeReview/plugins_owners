@@ -19,6 +19,7 @@ package com.googlesource.gerrit.owners.common;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -36,6 +37,9 @@ public class OwnersConfig {
   /** Map name of matcher and Matcher (value + Set Owners) */
   private Map<String, Matcher> matchers = Maps.newHashMap();
 
+  /** Label that is required for submit. CodeReview if nothing is specified. */
+  private Optional<String> label = Optional.empty();
+
   @Override
   public String toString() {
     return "OwnersConfig [inherited="
@@ -44,6 +48,8 @@ public class OwnersConfig {
         + owners
         + ", matchers="
         + matchers
+        + ", label="
+        + label
         + "]";
   }
 
@@ -77,5 +83,13 @@ public class OwnersConfig {
 
   public Matcher addMatcher(Matcher matcher) {
     return this.matchers.put(matcher.path, matcher);
+  }
+
+  public void setLabel(Optional<String> label) {
+    this.label = label;
+  }
+
+  public Optional<String> getLabel() {
+    return label;
   }
 }

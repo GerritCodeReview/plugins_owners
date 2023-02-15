@@ -16,6 +16,7 @@ package com.googlesource.gerrit.owners;
 
 import static com.google.gerrit.server.project.ProjectCache.illegalState;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.google.common.base.Joiner;
@@ -141,7 +142,9 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
-      LabelTypes labelTypes = ownersLabel(projectState.getLabelTypes(notes));
+      LabelTypes labelTypes = projectState.getLabelTypes(notes);
+      String label = resolveLabel(labelTypes, pathOwners.getLabel());
+      LabelTypes ownersLabelType = ownersLabel(labelTypes, label);
       Account.Id uploader = notes.getCurrentPatchSet().uploader();
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
           Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
@@ -151,7 +154,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
           fileOwners.entrySet().stream()
               .filter(
                   requiredApproval ->
-                      isApprovalMissing(requiredApproval, uploader, approvalsByAccount, labelTypes))
+                      isApprovalMissing(
+                          requiredApproval, uploader, approvalsByAccount, ownersLabelType))
               .map(Map.Entry::getKey)
               .collect(toSet());
 
@@ -159,6 +163,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
           missingApprovals.isEmpty()
               ? ok()
               : notReady(
+                  label,
                   String.format(
                       "Missing approvals for path(s): [%s]",
                       Joiner.on(", ").join(missingApprovals))));
@@ -172,15 +177,50 @@ public class OwnersSubmitRequirement implements SubmitRule {
     }
   }
 
-  /** the idea is to select the label type that is configured for owner to cast the vote */
-  private LabelTypes ownersLabel(LabelTypes labelTypes) {
+  /**
+   * The idea is to select the label type that is configured for owner to cast the vote. If nothing
+   * is configured in the OWNERS file then from all required labels `Code-Review` will be selected
+   * or the first one that is required. In the case when there are no required labels then
+   * `Code-Review` will be attempted or first one that is configured. No labels results in empty
+   * LabelTypes being returned.
+   *
+   * @param labelTypes labels configured for project
+   * @param label that is configured in the OWNERS file
+   */
+  static String resolveLabel(LabelTypes labelTypes, Optional<String> label) {
+    return label.orElseGet(
+        () -> {
+          List<LabelType> types = labelTypes.getLabelTypes();
+          List<String> requiredLabels =
+              types.stream()
+                  .filter(type -> type.getFunction().isRequired())
+                  .map(LabelType::getName)
+                  .collect(toList());
+          if (requiredLabels.isEmpty()) {
+            // there are no required labels set so select `Code-Review` if it exists for repo or
+            // the first one that is configured
+            return types.isEmpty()
+                ? LabelId.CODE_REVIEW
+                : labelTypes.byLabel(LabelId.CODE_REVIEW).orElseGet(() -> types.get(0)).getName();
+          }
+          // if required label contains `Code-Review` select it otherwise take the first one
+          // that is required
+          return requiredLabels.contains(LabelId.CODE_REVIEW)
+              ? LabelId.CODE_REVIEW
+              : requiredLabels.iterator().next();
+        });
+  }
 
-    // TODO: there is no specific label configuration introduced to the OWNERS file therefore for
-    // the time being set it to Code Review explicitly or nothing if it doesn't exist for the
-    // project in question
+  /**
+   * Create single label LabelTypes if label can be found or empty otherwise.
+   *
+   * @param labelTypes labels configured for project
+   * @param label that is resolved from the OWNERS file
+   */
+  static LabelTypes ownersLabel(LabelTypes labelTypes, String label) {
     return new LabelTypes(
         labelTypes
-            .byLabel(LabelId.CODE_REVIEW)
+            .byLabel(label)
             .map(Collections::singletonList)
             .orElseGet(Collections::emptyList));
   }
@@ -250,13 +290,13 @@ public class OwnersSubmitRequirement implements SubmitRule {
     return diffOperations.listModifiedFilesAgainstParent(project, revision, 0);
   }
 
-  private static SubmitRecord notReady(String missingApprovals) {
+  private static SubmitRecord notReady(String ownersLabel, String missingApprovals) {
     SubmitRecord submitRecord = new SubmitRecord();
     submitRecord.status = SubmitRecord.Status.NOT_READY;
     submitRecord.errorMessage = missingApprovals;
     submitRecord.requirements = List.of(SUBMIT_REQUIREMENT);
     SubmitRecord.Label label = new SubmitRecord.Label();
-    label.label = "Code-Review from owners";
+    label.label = String.format("%s from owners", ownersLabel);
     label.status = SubmitRecord.Label.Status.NEED;
     submitRecord.labels = List.of(label);
     return submitRecord;
