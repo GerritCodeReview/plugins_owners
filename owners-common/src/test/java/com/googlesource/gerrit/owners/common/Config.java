@@ -89,9 +89,15 @@ public abstract class Config {
     return parser.getOwnersConfig(string.getBytes(Charsets.UTF_8));
   }
 
-  public String createConfig(boolean inherited, String[] owners, MatcherConfig... matchers) {
+  String createConfig(boolean inherited, String[] owners, MatcherConfig... matchers) {
+    return createConfig(inherited, Optional.empty(), owners, matchers);
+  }
+
+  String createConfig(
+      boolean inherited, Optional<String> label, String[] owners, MatcherConfig... matchers) {
     StringBuilder sb = new StringBuilder();
     sb.append("inherited: " + inherited + "\n");
+    label.ifPresent(l -> sb.append("label: " + l + "\n"));
     if (owners.length > 0) {
       sb.append("owners: \n");
       for (String owner : owners) {
