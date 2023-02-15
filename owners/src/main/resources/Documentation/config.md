@@ -45,6 +45,7 @@ The `OWNERS` file has the following YAML structure:
 
 ```yaml
 inherited: true
+label: Code-Review
 owners:
 - some.email@example.com
 - User Name
@@ -88,6 +89,12 @@ relative to the root of the repo.
 The plugin analyzes the latest patch set by looking at each file directory and
 building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
 “inherited” set to false (by default it’s true.)
+
+> **NOTE:** The `label` value (default is `Code-Review`) is taken into
+> consideration only when `owners.enableSubmitRequirement = true`.
+> Owners scores are matched against the label specified in the property in
+> question.
+> **IMPORTANT:** At present owners specified as groups are not supported.
 
 For example, imagine the following tree:
 
@@ -141,6 +148,20 @@ owners:
 - Doug Smith
 ```
 
+### When `owners.enableSubmitRequirement = true`
+
+Then Gerrit would:
+
+Evaluate default submit requirement which gives `OK` if no `Code-Review -2` is
+given and at least one `Code-Review +2` is being provided.
+
+Evaluate owners submit requirement to check if `Code-Review +2` is given by
+either 'John Doe' or 'Doug Smith'. If none of them has approved then
+```label('Code-Review from owners', need(_)).``` requirement is added making
+the change not submittable.
+
+### When `owners.enableSubmitRequirement = false` (default)
+
 And sample rules.pl that uses this predicate to enable the submit rule if
 one of the owners has given a Code Review +2
 
@@ -175,6 +196,12 @@ owners:
 - Doug Smith
 ```
 
+### When `owners.enableSubmitRequirement = true`
+
+This case is not yet covered by the owners submit requirement implementation.
+
+### When `owners.enableSubmitRequirement = false` (default)
+
 And a rule which makes submittable a change if at least one of the owners has
 given a +1 without taking into consideration any other label:
 
@@ -199,11 +226,10 @@ matrix and governance process.
 In this case, we need to grant specific people with the _Owner-Approved_ label
 without necessarily having to give Code-Review +2 rights on the entire project.
 
-Amend the project.config as shown in (1) and add a new label; then give
-permissions to any registered user. Finally, define a small variant of the
-Prolog rules as shown in (2).
+Amend the project.config as shown in below and add a new label; then give
+permissions to any registered user.
 
-(1) Example fo the project config changes with the new label with values
+Example fo the project config changes with the new label with values
 (label name and values are arbitrary)
 
 ```
@@ -219,7 +245,25 @@ Prolog rules as shown in (2).
      label-Owner-Approved = -1..+1 group Registered Users
 ```
 
-(2) Define the project's rules.pl with an amended version of Example 1:
+### When `owners.enableSubmitRequirement = true`
+
+Given now an OWNERS configuration of:
+
+```yaml
+inherited: true
+label: Owner-Approved
+owners:
+- John Doe
+- Doug Smith
+```
+
+A change cannot be submitted until 'John Doe' or 'Doug Smith' add a label
+`Owner-Approved`, independently from being able to provide any Code-Review.
+
+### When `owners.enableSubmitRequirement = false` (default)
+
+Finally, define prolog rules as shown in below (an amended version of
+Example 1):
 
 ```prolog
 submit_rule(S) :-
@@ -263,6 +307,18 @@ matchers:
   - Matt Designer
 ```
 
+### When `owners.enableSubmitRequirement = true`
+
+Then for any change that contains files with .sql or .css extensions, besides
+to the default Gerrit submit rules, the extra constraints on the additional
+owners of the modified files will be added. The final submit is enabled if both
+Gerrit default rules are satisfied and all the owners of the .sql files
+('Mister Dba') and the .css files (either 'John Creative' or 'Matt Designer')
+have provided their `Code-Review +2` feedback (as `Code-Review` is default
+label for owners submit requirement).
+
+### When `owners.enableSubmitRequirement = false` (default)
+
 And a rules.pl of:
 
 ```prolog
@@ -281,6 +337,12 @@ Gerrit default rules are satisfied and all the owners of the .sql files
 provided their Code-Review +2 feedback.
 
 ## Example 5 - Owners details on a per-file basis
+
+### When `owners.enableSubmitRequirement = true`
+
+This case is not yet covered by the owners submit requirement implementation.
+
+### When `owners.enableSubmitRequirement = false` (default)
 
 When using the owners with a series of matchers associated to different set of
 owners, it may not be trivial to understand exactly *why* change is not approved

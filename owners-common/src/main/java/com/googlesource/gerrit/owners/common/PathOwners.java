@@ -90,6 +90,8 @@ public class PathOwners {
 
   private final boolean expandGroups;
 
+  private final Optional<String> label;
+
   public PathOwners(
       Accounts accounts,
       GitRepositoryManager repositoryManager,
@@ -148,6 +150,7 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
+    label = map.getLabel();
   }
   /**
    * Returns a read only view of the paths to owners mapping.
@@ -181,6 +184,10 @@ public class PathOwners {
 
   public boolean expandGroups() {
     return expandGroups;
+  }
+
+  public Optional<String> getLabel() {
+    return label;
   }
 
   /**
@@ -230,6 +237,7 @@ public class PathOwners {
           ownersMap.setMatchers(newMatchers);
         }
       }
+      ownersMap.setLabel(Optional.ofNullable(currentEntry).flatMap(PathOwnersEntry::getLabel));
       return ownersMap;
     } catch (IOException e) {
       log.warn("Invalid OWNERS file", e);
@@ -257,6 +265,7 @@ public class PathOwners {
                     rootPath,
                     conf,
                     accounts,
+                    Optional.empty(),
                     Collections.emptySet(),
                     Collections.emptySet(),
                     Collections.emptySet(),
@@ -341,6 +350,7 @@ public class PathOwners {
       } else {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(repository, ownersPath, branch);
+        Optional<String> label = currentEntry.getLabel();
         final Set<Id> owners = currentEntry.getOwners();
         final Set<Id> reviewers = currentEntry.getReviewers();
         Collection<Matcher> inheritedMatchers = currentEntry.getMatchers().values();
@@ -352,6 +362,7 @@ public class PathOwners {
                             ownersPath,
                             c,
                             accounts,
+                            label,
                             owners,
                             reviewers,
                             inheritedMatchers,
@@ -376,6 +387,9 @@ public class PathOwners {
       }
       if (currentEntry.getOwnersPath() == null) {
         currentEntry.setOwnersPath(projectEntry.getOwnersPath());
+      }
+      if (currentEntry.getLabel().isEmpty()) {
+        currentEntry.setLabel(projectEntry.getLabel());
       }
     }
   }
