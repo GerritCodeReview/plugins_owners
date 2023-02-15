@@ -44,6 +44,7 @@ public class ConfigurationParser {
       Boolean inherited =
           Optional.ofNullable(jsonNode.get("inherited")).map(JsonNode::asBoolean).orElse(true);
       ret.setInherited(inherited);
+      ret.setLabel(Optional.ofNullable(jsonNode.get("label")).map(JsonNode::asText));
       addClassicMatcher(jsonNode, ret);
       addMatchers(jsonNode, ret);
       return Optional.of(ret);

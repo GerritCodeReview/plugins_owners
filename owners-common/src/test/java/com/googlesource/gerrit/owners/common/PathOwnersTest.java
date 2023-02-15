@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth8.assertThat;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
 import static java.util.Collections.emptyList;
 import static org.easymock.EasyMock.eq;
@@ -46,6 +48,8 @@ public class PathOwnersTest extends ClassicConfig {
   private static final String CLASSIC_OWNERS = "classic/OWNERS";
   private static final boolean EXPAND_GROUPS = true;
   private static final boolean DO_NOT_EXPAND_GROUPS = false;
+  private static final String EXPECTED_LABEL = "expected-label";
+  private static final String A_LABEL = "a-label";
   public static final String CLASSIC_FILE_TXT = "classic/file.txt";
   public static final Project.NameKey parentRepository1NameKey =
       Project.NameKey.parse("parentRepository1");
@@ -117,8 +121,11 @@ public class PathOwnersTest extends ClassicConfig {
 
   @Test
   public void testClassicWithInheritance() throws Exception {
-    expectConfig("OWNERS", createConfig(true, owners(USER_C_EMAIL_COM)));
-    expectConfig(CLASSIC_OWNERS, createConfig(true, owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+    expectConfig("OWNERS", createConfig(true, Optional.of(A_LABEL), owners(USER_C_EMAIL_COM)));
+    expectConfig(
+        CLASSIC_OWNERS,
+        createConfig(
+            true, Optional.of(EXPECTED_LABEL), owners(USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     replayAll();
 
@@ -138,6 +145,10 @@ public class PathOwnersTest extends ClassicConfig {
     assertTrue(ownersSet2.contains(USER_A_ID));
     assertTrue(ownersSet2.contains(USER_B_ID));
     assertTrue(ownersSet2.contains(USER_C_ID));
+
+    // expect that classic configuration takes precedence over `OWNERS` file for the label
+    // definition
+    assertThat(owners2.getLabel()).hasValue(EXPECTED_LABEL);
   }
 
   @Test
@@ -146,7 +157,11 @@ public class PathOwnersTest extends ClassicConfig {
     expectConfig(
         "OWNERS",
         RefNames.REFS_CONFIG,
-        createConfig(true, owners(), suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+        createConfig(
+            true,
+            Optional.of(EXPECTED_LABEL),
+            owners(),
+            suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     String fileName = "file.sql";
     replayAll();
@@ -168,17 +183,26 @@ public class PathOwnersTest extends ClassicConfig {
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
     assertTrue(ownersSet.contains(USER_B_ID));
+    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
   }
 
   @Test
   public void testProjectInheritFromParentProject() throws Exception {
-    expectConfig("OWNERS", "master", createConfig(true, owners()));
-    expectConfig("OWNERS", RefNames.REFS_CONFIG, repository, createConfig(true, owners()));
+    expectConfig("OWNERS", "master", createConfig(true, Optional.of(EXPECTED_LABEL), owners()));
+    expectConfig(
+        "OWNERS",
+        RefNames.REFS_CONFIG,
+        repository,
+        createConfig(true, Optional.of("foo"), owners()));
     expectConfig(
         "OWNERS",
         RefNames.REFS_CONFIG,
         parentRepository1,
-        createConfig(true, owners(), suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
+        createConfig(
+            true,
+            Optional.of(A_LABEL),
+            owners(),
+            suffixMatcher(".sql", USER_A_EMAIL_COM, USER_B_EMAIL_COM)));
 
     String fileName = "file.sql";
 
@@ -202,6 +226,10 @@ public class PathOwnersTest extends ClassicConfig {
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
     assertTrue(ownersSet.contains(USER_B_ID));
+
+    // expect that `master` configuration overwrites the label definition of both `refs/meta/config`
+    // and parent repo
+    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
   }
 
   @Test
@@ -212,12 +240,14 @@ public class PathOwnersTest extends ClassicConfig {
         "OWNERS",
         RefNames.REFS_CONFIG,
         parentRepository1,
-        createConfig(true, owners(), suffixMatcher(".sql", USER_A_EMAIL_COM)));
+        createConfig(
+            true, Optional.of(EXPECTED_LABEL), owners(), suffixMatcher(".sql", USER_A_EMAIL_COM)));
     expectConfig(
         "OWNERS",
         RefNames.REFS_CONFIG,
         parentRepository2,
-        createConfig(true, owners(), suffixMatcher(".java", USER_B_EMAIL_COM)));
+        createConfig(
+            true, Optional.of(A_LABEL), owners(), suffixMatcher(".java", USER_B_EMAIL_COM)));
 
     String sqlFileName = "file.sql";
     String javaFileName = "file.java";
@@ -246,6 +276,9 @@ public class PathOwnersTest extends ClassicConfig {
     Set<Account.Id> ownersSet2 = fileOwners.get(javaFileName);
     assertEquals(1, ownersSet2.size());
     assertTrue(ownersSet2.contains(USER_B_ID));
+
+    // expect that closer parent (parentRepository1) overwrites the label definition
+    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
   }
 
   private void mockParentRepository(Project.NameKey repositoryName, Repository repository)
@@ -258,8 +291,10 @@ public class PathOwnersTest extends ClassicConfig {
   @Test
   public void testClassicWithInheritanceAndDeepNesting() throws Exception {
     expectConfig("OWNERS", createConfig(true, owners(USER_C_EMAIL_COM)));
-    expectConfig("dir/OWNERS", createConfig(true, owners(USER_B_EMAIL_COM)));
-    expectConfig("dir/subdir/OWNERS", createConfig(true, owners(USER_A_EMAIL_COM)));
+    expectConfig("dir/OWNERS", createConfig(true, Optional.of(A_LABEL), owners(USER_B_EMAIL_COM)));
+    expectConfig(
+        "dir/subdir/OWNERS",
+        createConfig(true, Optional.of(EXPECTED_LABEL), owners(USER_A_EMAIL_COM)));
 
     replayAll();
 
@@ -278,16 +313,24 @@ public class PathOwnersTest extends ClassicConfig {
     assertTrue(ownersSet.contains(USER_A_ID));
     assertTrue(ownersSet.contains(USER_B_ID));
     assertTrue(ownersSet.contains(USER_C_ID));
+
+    // expect that more specific configuration overwrites the label definition
+    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
   }
 
   @Test
   public void testParsingYaml() {
-    String yamlString = ("inherited: true\nowners:\n- " + USER_C_EMAIL_COM);
+    String yamlString =
+        "inherited: true\nlabel: " + EXPECTED_LABEL + "\nowners:\n- " + USER_C_EMAIL_COM;
     Optional<OwnersConfig> config = getOwnersConfig(yamlString);
     assertTrue(config.isPresent());
-    assertTrue(config.get().isInherited());
-    assertEquals(1, config.get().getOwners().size());
-    assertTrue(config.get().getOwners().contains(USER_C_EMAIL_COM));
+    OwnersConfig ownersConfig = config.get();
+    assertTrue(ownersConfig.isInherited());
+    assertThat(ownersConfig.getLabel()).isPresent();
+    assertThat(ownersConfig.getLabel().get()).isEqualTo(EXPECTED_LABEL);
+    Set<String> owners = ownersConfig.getOwners();
+    assertEquals(1, owners.size());
+    assertTrue(owners.contains(USER_C_EMAIL_COM));
   }
 
   private void mockOwners(String... owners) throws IOException {
