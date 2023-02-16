@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdd2c4f5_b03f6b37",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-16T19:15:55Z",
+      "side": 1,
+      "message": "Yeap at this point it is checking if any label is not blocking the submit and if required value is casted. It is more directed towards configured, needed or `Code-Review` in the follow-up changes. Have reworked the commit message.",
+      "parentUuid": "3f9ee246_da2fb225",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 15
+      },
+      "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0223f745_4050b301",
@@ -37,6 +61,93 @@
       "writtenOn": "2023-02-16T08:51:53Z",
       "side": 1,
       "message": "The code looks very clean, well done!\nHave you done more E2E testing on that, other than the tests?",
+      "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54502f88_ac4c848f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-16T19:15:55Z",
+      "side": 1,
+      "message": "Not at this point. But I did on #356463 I have the local site setup that I\u0027m publishing the plugin into and I\u0027m confirming if it behaves as expected. Obviously I\u0027m open for more real-life scenarios and I have added `topic` on purpose so that we will merge all when we feel it is ready.",
+      "parentUuid": "0223f745_4050b301",
+      "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aea242c7_fa92eb5d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-16T19:15:55Z",
+      "side": 1,
+      "message": "nit: `changeNotReady`",
+      "range": {
+        "startLine": 56,
+        "startChar": 15,
+        "endLine": 56,
+        "endChar": 23
+      },
+      "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dbc681c_6679e171",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-16T19:15:55Z",
+      "side": 1,
+      "message": "nit: `changeNotReadyAfterSelfApproval`",
+      "range": {
+        "startLine": 61,
+        "startChar": 15,
+        "endLine": 61,
+        "endChar": 40
+      },
+      "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1255c129_f7b3142d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-16T19:15:55Z",
+      "side": 1,
+      "message": "nit: `changeReady`",
+      "range": {
+        "startLine": 67,
+        "startChar": 15,
+        "endLine": 67,
+        "endChar": 20
+      },
       "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
