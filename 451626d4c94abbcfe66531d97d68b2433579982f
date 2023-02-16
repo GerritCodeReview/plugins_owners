@@ -257,6 +257,54 @@
       },
       "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06bf1041_6154c024",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-16T08:46:21Z",
+      "side": 1,
+      "message": "I see you changed it to `requireNotNull` 👍",
+      "parentUuid": "27d00f96_388cf3b8",
+      "range": {
+        "startLine": 72,
+        "startChar": 40,
+        "endLine": 72,
+        "endChar": 52
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "225766b5_b1cb3da2",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-16T08:46:21Z",
+      "side": 1,
+      "message": "It was a nit anyway.",
+      "parentUuid": "969076c9_77243382",
+      "range": {
+        "startLine": 72,
+        "startChar": 67,
+        "endLine": 72,
+        "endChar": 79
+      },
+      "revId": "451626d4c94abbcfe66531d97d68b2433579982f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

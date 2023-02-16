@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a415982f_b425e871",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-16T08:46:21Z",
+      "side": 1,
+      "message": "Just one small nit, everything else looks 👍",
+      "revId": "25284e9970b13cf48be08fa925dabd78492830e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06db122a_fe2cb543",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-16T08:46:21Z",
+      "side": 1,
+      "message": "`cd.project()` can be DRY-ed out as variable.\n\n```\n    project \u003d cd.project();\n    ProjectState projectState \u003d\n        projectCache.get(project).orElseThrow(illegalState(project));\n```",
+      "range": {
+        "startLine": 91,
+        "startChar": 25,
+        "endLine": 91,
+        "endChar": 76
+      },
+      "revId": "25284e9970b13cf48be08fa925dabd78492830e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
