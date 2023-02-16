@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f9ee246_da2fb225",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-16T08:51:53Z",
+      "side": 1,
+      "message": "By reading the code, it verifies any label and not specifically `CR`, which makes sense to me.\n\nIs the commit message stale?",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 15
+      },
+      "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0223f745_4050b301",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-16T08:51:53Z",
+      "side": 1,
+      "message": "The code looks very clean, well done!\nHave you done more E2E testing on that, other than the tests?",
+      "revId": "ebafcf146ed59e30ff8d8b1159ff6c42bfa6f083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
