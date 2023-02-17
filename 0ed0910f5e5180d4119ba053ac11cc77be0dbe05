@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e135862d_d369204b",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-17T18:43:42Z",
+      "side": 1,
+      "message": "copy-paste error - test names should be switched",
+      "range": {
+        "startLine": 227,
+        "startChar": 2,
+        "endLine": 248,
+        "endChar": 88
+      },
+      "revId": "0ed0910f5e5180d4119ba053ac11cc77be0dbe05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
