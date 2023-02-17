@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "172dccad_8785ca61",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-17T18:40:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "664811aa_caa93af8",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 11,
+        "endChar": 40
+      },
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "936542fd_0d85e028",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed72f05_3477cd1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-17T18:40:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "936542fd_0d85e028",
+      "range": {
+        "startLine": 20,
+        "startChar": 35,
+        "endLine": 20,
+        "endChar": 74
+      },
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87a549d6_ce302831",
@@ -60,6 +108,24 @@
       "writtenOn": "2023-02-17T17:00:54Z",
       "side": 1,
       "message": "How did we come up with these requirements?",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e30355e5_01955ffe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-17T18:40:09Z",
+      "side": 1,
+      "message": "I tried to cover the following cases:\n* site that uses `owners` with default `prolog` rule - aka `Code-Review` is specified and required and we expect file owners are voting for it - in this approach removing `prolog` rule and enabling submit requirements would be sufficient\n* the same would be for similar site that has both `Code-Review` and `Verified` labels defined\n\nAbove two would cover majority of the cases out of the box.\n\n* new site with `Code-Review` (by default) and OWNERS get added - one doesn\u0027t even have to specify label and it would automatically work\n* site has `Code-Review` and another required labels specified - again by default file-owners would require `Code-Review` to be casted instead of jumping in for any other random label that is specified\n\n* the rest cases are rather exotic but I had to decide on sth so I have decided on that 😄 we can obviously cross it all out and either require people to specify label or ignore file owners...\n\nAt this point all opinions are important hence speak up - @luca you too 😊",
+      "parentUuid": "87a549d6_ce302831",
       "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -98,6 +164,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1739d00_5d3307f4",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-17T18:40:09Z",
+      "side": 1,
+      "message": "AFAIU nope for `stable-3.5`+ java8 support got dropped (see [1] for details).\n\n[1] https://www.gerritcodereview.com/3.5.html#support-for-java-8-dropped",
+      "parentUuid": "1b7605ec_e0468c8b",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d31437e_a2a58f1c",
@@ -115,6 +199,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "407bbe45_3e3407d1",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/Config.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-17T18:40:09Z",
+      "side": 1,
+      "message": "yeah muscle memory - compiler should optimise it to StringBuilder operations anyway",
+      "parentUuid": "8d31437e_a2a58f1c",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff3c2b0a_408c70fd",
@@ -128,6 +230,24 @@
       "writtenOn": "2023-02-17T17:00:54Z",
       "side": 1,
       "message": "This doesn\u0027t compile for me. Isn\u0027t `orElseGet` a method on `Optional`? `byLabel` returns a `LabelType` for me. That also doesn\u0027t match the signature of the method where we should return a `String`.",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "749a8f42_a1a38341",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-17T18:40:09Z",
+      "side": 1,
+      "message": "In Gerrit\u0027s `stable-3.5` I have the following method signature:\n```\ncom.google.gerrit.entities.LabelTypes\n\npublic Optional\u003cLabelType\u003e byLabel(String labelName)\n```\n\nIOW it returns `Optional\u003cLabelType\u003e` hence it should work/compile ;)",
+      "parentUuid": "ff3c2b0a_408c70fd",
       "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
