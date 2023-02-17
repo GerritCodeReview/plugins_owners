@@ -1,6 +1,69 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "664811aa_caa93af8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T17:00:54Z",
+      "side": 1,
+      "message": "Typo: `derived`",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 11,
+        "endChar": 40
+      },
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "936542fd_0d85e028",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T17:00:54Z",
+      "side": 1,
+      "message": "Something funny with the parens here - the first one\u0027s a brace?",
+      "range": {
+        "startLine": 20,
+        "startChar": 35,
+        "endLine": 20,
+        "endChar": 74
+      },
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a549d6_ce302831",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T17:00:54Z",
+      "side": 1,
+      "message": "How did we come up with these requirements?",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "69fd98d9_5e9ac840",
@@ -14,6 +77,57 @@
       "writtenOn": "2023-02-17T13:04:31Z",
       "side": 1,
       "message": "All comments are welcomed 😊",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b7605ec_e0468c8b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T17:00:54Z",
+      "side": 1,
+      "message": "Nit: I suppose we can\u0027t use `or` because we still need to maintain Java 8 compatibility?",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d31437e_a2a58f1c",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/Config.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T17:00:54Z",
+      "side": 1,
+      "message": "Nit: mainly for consistent styling, but why not append once with concatenation like we do on the line above instead of appending three times? I don\u0027t see a clear advantage one way or the other, so we might as well do things the same way.",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff3c2b0a_408c70fd",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T17:00:54Z",
+      "side": 1,
+      "message": "This doesn\u0027t compile for me. Isn\u0027t `orElseGet` a method on `Optional`? `byLabel` returns a `LabelType` for me. That also doesn\u0027t match the signature of the method where we should return a `String`.",
       "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
