@@ -130,6 +130,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c807c97_0d21dee3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T22:18:44Z",
+      "side": 1,
+      "message": "I don\u0027t have a lot of context, but wouldn\u0027t it be better to follow your last bullet point\u0027s advice, i.e. either specify a label or ignore file owners if no label specified (if I understand that correctly)? Picking the first required one seems arbitrary - why not all of them, for example?\n\nHopefully that makes sense, this is quite new to me.",
+      "parentUuid": "e30355e5_01955ffe",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "69fd98d9_5e9ac840",
@@ -178,6 +196,24 @@
       "side": 1,
       "message": "AFAIU nope for `stable-3.5`+ java8 support got dropped (see [1] for details).\n\n[1] https://www.gerritcodereview.com/3.5.html#support-for-java-8-dropped",
       "parentUuid": "1b7605ec_e0468c8b",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee0eff74_045380f2",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T22:18:44Z",
+      "side": 1,
+      "message": "Nice - in that case we don\u0027t need a ternary, we can use `or`: `this.label \u003d config.getLabel().or(() -\u003e inheritedLabel)`.",
+      "parentUuid": "d1739d00_5d3307f4",
       "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -248,6 +284,24 @@
       "side": 1,
       "message": "In Gerrit\u0027s `stable-3.5` I have the following method signature:\n```\ncom.google.gerrit.entities.LabelTypes\n\npublic Optional\u003cLabelType\u003e byLabel(String labelName)\n```\n\nIOW it returns `Optional\u003cLabelType\u003e` hence it should work/compile ;)",
       "parentUuid": "ff3c2b0a_408c70fd",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cddd088e_4de37d48",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-02-17T22:18:44Z",
+      "side": 1,
+      "message": "Yep - I should have mentioned, I was running this against `stable-3.4`. Thanks.",
+      "parentUuid": "749a8f42_a1a38341",
       "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
