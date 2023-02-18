@@ -148,6 +148,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b70a122_8ae0ab36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-18T07:56:07Z",
+      "side": 1,
+      "message": "\u003e Picking the first required one seems arbitrary - why not all of them, for example?\n\nThat is a fair point and trying always to succeed doesn\u0027t really make sense 😊 Having said that I believe that `Code-Review` label is special in the Gerrit land as I haven\u0027t seen any single site that was not configured to have it and it sounds natural to fallback to it. To sum it up: either one configures a label or we fallback to `Code-Review`. If there is no `Code-Review` than no random picking and failure. WDYT?",
+      "parentUuid": "5c807c97_0d21dee3",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "69fd98d9_5e9ac840",
@@ -214,6 +232,24 @@
       "side": 1,
       "message": "Nice - in that case we don\u0027t need a ternary, we can use `or`: `this.label \u003d config.getLabel().or(() -\u003e inheritedLabel)`.",
       "parentUuid": "d1739d00_5d3307f4",
+      "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca35b119_a190d4cd",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-18T07:56:07Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "ee0eff74_045380f2",
       "revId": "fffb6b59eecb8bbad2829c0906ec5eed8d45abfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },

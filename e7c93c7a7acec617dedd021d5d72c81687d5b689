@@ -16,6 +16,24 @@
       "message": "Nit: we can replace these two tests (`isPresent`/`isEqualTo`) with a single one: `assertThat(owners.getlabel()).hasValue(EXPECTED_LABEL)` (also below tests).",
       "revId": "e7c93c7a7acec617dedd021d5d72c81687d5b689",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cbf5876_fbc43725",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-18T07:56:07Z",
+      "side": 1,
+      "message": "Right! We can also get rid off `isPresent()` check",
+      "parentUuid": "76bf1b74_ee15d6bc",
+      "revId": "e7c93c7a7acec617dedd021d5d72c81687d5b689",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
