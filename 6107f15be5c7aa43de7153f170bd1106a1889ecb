@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8291de33_492d4bac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-26T22:13:28Z",
+      "side": 1,
+      "message": "@luca @darius I have installed the plugin in my local setup and verified all examples that are mentioned in the `owners/src/main/resources/Documentation/config.md` file adding extra bits where necessary or mentioning what is still missing. Missing parts are also mentioned in this commit message and I will address them in the follow-up(s).\n\nApart from that I believe it is ready for the final round of reviews 😄",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 65
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "759a8f61_1dc24115",
