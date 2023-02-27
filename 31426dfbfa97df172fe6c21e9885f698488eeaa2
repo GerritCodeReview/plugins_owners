@@ -16,6 +16,29 @@
       "message": "Verified both:\n* code format\n* tests\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 57.0s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 49.0s\n//plugins/owners-common:test                                             PASSED in 1.8s\n```",
       "revId": "31426dfbfa97df172fe6c21e9885f698488eeaa2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "234e0a7c_5768a230",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-02-27T11:04:49Z",
+      "side": 1,
+      "message": "`function` is deprecated.\nUnless we want to test a \"legacy\" scenario, I think this should rather be set to `NoBlock/NoOp` and defer to requirement evaluation logic to the submit rule.",
+      "range": {
+        "startLine": 237,
+        "startChar": 13,
+        "endLine": 237,
+        "endChar": 24
+      },
+      "revId": "31426dfbfa97df172fe6c21e9885f698488eeaa2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
