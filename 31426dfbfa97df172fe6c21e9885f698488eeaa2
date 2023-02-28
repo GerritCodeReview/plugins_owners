@@ -39,6 +39,30 @@
       },
       "revId": "31426dfbfa97df172fe6c21e9885f698488eeaa2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcd1152f_1339c0ea",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T18:04:32Z",
+      "side": 1,
+      "message": "AFAICT as of `stable-3.5` function is not deprecated (see [1]) and I can\u0027t see it being marked as deprecated for `master` either (see [2]) so I\u0027m not sure if I understand what _legacy_ means in this context...\n\nLet me elaborate why the `Verified` label was introduced - I wanted to test the scenario when:\n1. Code Review and Verified labels are required with their max values to be given prior a change is submittable\n2. `admin2` needs to score with max value for Code Review\n\nNow giving `V+1` by him is not sufficient for a change to be submittable and they have to cast `CR+2` for a change to be submittable.\n\nLast but not least this is a change in the chain which is not yet perfect and the following one adds a label definition to the picture (with default `Code-Review`) that delivers the missing bit.\n\n[1] https://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.5/java/com/google/gerrit/entities/LabelType.java#229\n\n[2] https://gerrit.googlesource.com/gerrit/+/refs/heads/master/java/com/google/gerrit/entities/LabelType.java#206",
+      "parentUuid": "234e0a7c_5768a230",
+      "range": {
+        "startLine": 237,
+        "startChar": 13,
+        "endLine": 237,
+        "endChar": 24
+      },
+      "revId": "31426dfbfa97df172fe6c21e9885f698488eeaa2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
