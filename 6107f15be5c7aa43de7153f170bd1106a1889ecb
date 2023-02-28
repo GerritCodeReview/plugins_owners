@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50f9b1bd_a727caa4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T18:37:15Z",
+      "side": 1,
+      "message": "That is correct. This point describes what happens when project (or its parents) have no `Code-Review` label defined (unlikely to happen but still possible)...\n\nThe same happen when one defines label that doesn\u0027t exist - it will not be submittable.",
+      "parentUuid": "031e2a38_6bfe63b7",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 60
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "269da688_23a0616f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-27T11:48:12Z",
       "side": 1,
       "message": "per",
+      "range": {
+        "startLine": 44,
+        "startChar": 33,
+        "endLine": 44,
+        "endChar": 36
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d2db55f_c5b24a38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T18:37:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "269da688_23a0616f",
       "range": {
         "startLine": 44,
         "startChar": 33,
@@ -110,6 +158,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9364355_f51ba05a",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T18:37:15Z",
+      "side": 1,
+      "message": "AFAIU the `OwnersConfig` models the `OWNERS` file but that file might be configured on various levels (hierarchy applies) e.g. in project `root` directory, in `refs/meta/config`, in parent project, etc... having it default here would cross out the fallback down the hierarchy to the All-Projects project... I wish but IIUC no 😊",
+      "parentUuid": "25d9db6f_0f693048",
+      "range": {
+        "startLine": 88,
+        "startChar": 14,
+        "endLine": 88,
+        "endChar": 22
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86091617_57b8038a",
@@ -123,6 +195,24 @@
       "writtenOn": "2023-02-27T11:48:12Z",
       "side": 1,
       "message": "Since if configuring not existing label results in change being not submittable and currently we don\u0027t display it in the UI, I think it might be worth adding a log here to warn about the g not existing label.",
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95a3fcf1_d1ab13c1",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T18:37:15Z",
+      "side": 1,
+      "message": "Makes sense. I\u0027m going to work on surfacing the configuration errors back to UI (and that should be a part of it too) but for the time being I have added a log statement (ERROR).",
+      "parentUuid": "86091617_57b8038a",
       "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -152,6 +242,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "734163ab_da914336",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T18:37:15Z",
+      "side": 1,
+      "message": "Not sure if I understand... `false` section describes how it works when prolog is enabled and one needs to add the prolog file.\n\nWhen `owners.enableSubmitRequirement \u003d true` no prolog is needed and by default `OWNERS` scores will be examined against the `Code Review` label (which is not redefined in the `OWNERS` snippet) and this description is valid. Note that it refers to _submit requirement_ not to `Prolog rule` evaluation...",
+      "parentUuid": "4f377ec6_7f347288",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 27
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba41e34d_7eba98a5",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
         "patchSetId": 5
@@ -163,6 +277,24 @@
       "writtenOn": "2023-02-27T11:48:12Z",
       "side": 1,
       "message": "Might be worth adding a test to show what happens when configuring a non-existent label. WDYT?",
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b0e102c_3cb6da64",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T18:37:15Z",
+      "side": 1,
+      "message": "it was already added in `shouldRequireConfiguredLabelByCodeOwnerEvenIfItIsNotConfiguredForProject` should I rename it for clarity?",
+      "parentUuid": "ba41e34d_7eba98a5",
       "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
