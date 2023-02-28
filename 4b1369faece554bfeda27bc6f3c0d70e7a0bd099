@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08d49139_8cef1c4b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-28T21:51:37Z",
+      "side": 1,
+      "message": "This is no longer an issue. It was a problem introduced in https://gerrit-review.googlesource.com/c/plugins/owners/+/356403/7..8 and as such was fixed there (extra tests were added to cover it). I will add a dedicated integration test in the follow up.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 29
+      },
+      "revId": "4b1369faece554bfeda27bc6f3c0d70e7a0bd099",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
