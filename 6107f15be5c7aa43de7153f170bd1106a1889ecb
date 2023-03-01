@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74072168_edd8dbd1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-01T11:06:47Z",
+      "side": 1,
+      "message": "\u003e That is correct. This point describes what happens when project (or its parents) have no `Code-Review` label defined (unlikely to happen but still possible)...\n\u003e \n\nI am a bit confused. In which case we are then defaulting if `Code-Review` is not defined?",
+      "parentUuid": "50f9b1bd_a727caa4",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 60
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "269da688_23a0616f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -266,6 +290,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da11596e_bb60b5fc",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-01T11:06:47Z",
+      "side": 1,
+      "message": "\u003e Not sure if I understand... `false` section describes how it works when prolog is enabled and one needs to add the prolog file.\n\u003e \n\nYep, so why do we add a Prolog clause in this case? Or am I misunderstanding it?",
+      "parentUuid": "734163ab_da914336",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 27
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba41e34d_7eba98a5",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
         "patchSetId": 5
@@ -295,6 +343,24 @@
       "side": 1,
       "message": "it was already added in `shouldRequireConfiguredLabelByCodeOwnerEvenIfItIsNotConfiguredForProject` should I rename it for clarity?",
       "parentUuid": "ba41e34d_7eba98a5",
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa3fb164_18317201",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-01T11:06:47Z",
+      "side": 1,
+      "message": "My bad, you are right. I think the name is ok.",
+      "parentUuid": "2b0e102c_3cb6da64",
       "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
