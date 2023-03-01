@@ -168,6 +168,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8d865f96_9a7eb584",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-01T19:34:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8291de33_492d4bac",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 65
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "759a8f61_1dc24115",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -350,6 +374,30 @@
       "side": 1,
       "message": "\u003e If none of them has approved then\n```label(\u0027Code-Review from owners\u0027, need(_)).``` requirement is added making\nthe change not submittable.\n\nAs discussed let\u0027s try to remove the reference to the prolog clause to avoid confusion.",
       "parentUuid": "da11596e_bb60b5fc",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 27
+      },
+      "revId": "6107f15be5c7aa43de7153f170bd1106a1889ecb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "501b8a1b_14ca8e58",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-01T19:34:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "854fb05f_ba3bbd6b",
       "range": {
         "startLine": 153,
         "startChar": 0,
