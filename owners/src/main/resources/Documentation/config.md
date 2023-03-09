@@ -45,7 +45,7 @@ The `OWNERS` file has the following YAML structure:
 
 ```yaml
 inherited: true
-label: Code-Review
+label: Code-Review, 1
 owners:
 - some.email@example.com
 - User Name
@@ -94,6 +94,9 @@ building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
 > consideration only when `owners.enableSubmitRequirement = true`.
 > Owners scores are matched against the label specified in the property in
 > question.
+> The required label's score can be provided (by default label's scores
+> configuration is used) so that owners don't have to be granted with the
+> maximum label's score. Note that only single digit (0..9) is allowed.
 
 For example, imagine the following tree:
 
@@ -197,7 +200,40 @@ owners:
 
 ### When `owners.enableSubmitRequirement = true`
 
-This case is not yet covered by the owners submit requirement implementation.
+This case is supported with the `Code-Review` label and `OWNERS` file
+modifications.
+
+The `OWNERS` file requires the label configuration to be added (here is the
+updated version):
+
+```yaml
+inherited: true
+label: Code-Review, 1
+owners:
+- John Doe
+- Doug Smith
+```
+
+But additionally one needs to modify the label on the particular project level
+to the following version:
+
+```
+[label "Code-Review"]
+	function = NoOp
+	defaultValue = 0
+	copyMinScore = true
+	copyAllScoresOnTrivialRebase = true
+	value = -2 This shall not be merged
+	value = -1 I would prefer this is not merged as is
+	value = 0 No score
+	value = +1 Looks good to me, but someone else must approve
+	value = +2 Looks good to me, approved
+```
+
+Note that `function` is set to `NoOp`.
+
+As a result Gerrit would make the change Submittable only if 'John Doe' or
+'Doug Smith' have provided at least a `Code-Review +1`.
 
 ### When `owners.enableSubmitRequirement = false` (default)
 
@@ -285,7 +321,30 @@ owners:
 A change cannot be submitted until John Doe or Doug Smith add a label
 "Owner-Approved", independently from being able to provide any Code-Review.
 
-## Example 4 - Owners based on matchers
+## Example 4 - OWNERS file without matchers, default Gerrit submit rules and owners Code-Review +1 required
+
+This is a variant of `example 3` when no additional label is created but owners
+shouldn't be granted with `Code-Review +2` for all project files as it might be
+outside of their comptenence/comfort zone.
+
+### When `owners.enableSubmitRequirement = true`
+
+Given an OWNERS configuration of:
+
+```yaml
+inherited: true
+label: Code-Review, 1
+owners:
+- John Doe
+- Doug Smith
+```
+
+A change cannot be submitted until 'John Doe' or 'Doug Smith' add
+`Code-Review+1` score. Note that regular developers still need to cast the
+`Code-Review+2` for a change to be submittable as default submit rule is
+still evaluated.
+
+## Example 5 - Owners based on matchers
 
 Often the ownership comes from the developer's skills and competencies and
 cannot be purely defined by the project's directory structure.
@@ -335,7 +394,7 @@ Gerrit default rules are satisfied and all the owners of the .sql files
 (Mister Dba) and the .css files (either John Creative or Matt Designer) have
 provided their Code-Review +2 feedback.
 
-## Example 5 - Owners details on a per-file basis
+## Example 6 - Owners details on a per-file basis
 
 ### When `owners.enableSubmitRequirement = true`
 
