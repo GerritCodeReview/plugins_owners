@@ -38,7 +38,7 @@ public class OwnersConfig {
   private Map<String, Matcher> matchers = Maps.newHashMap();
 
   /** Label that is required for submit. CodeReview if nothing is specified. */
-  private Optional<String> label = Optional.empty();
+  private Optional<ScoreDefinition> label = Optional.empty();
 
   @Override
   public String toString() {
@@ -85,11 +85,11 @@ public class OwnersConfig {
     return this.matchers.put(matcher.path, matcher);
   }
 
-  public void setLabel(Optional<String> label) {
+  public void setLabel(Optional<ScoreDefinition> label) {
     this.label = label;
   }
 
-  public Optional<String> getLabel() {
+  public Optional<ScoreDefinition> getLabel() {
     return label;
   }
 }

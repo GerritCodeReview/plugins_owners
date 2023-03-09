@@ -148,7 +148,8 @@ public class PathOwnersTest extends ClassicConfig {
 
     // expect that classic configuration takes precedence over `OWNERS` file for the label
     // definition
-    assertThat(owners2.getLabel()).hasValue(EXPECTED_LABEL);
+    assertThat(owners2.getLabel()).isPresent();
+    assertThat(owners2.getLabel().get().getLabel()).isEqualTo(EXPECTED_LABEL);
   }
 
   @Test
@@ -183,7 +184,8 @@ public class PathOwnersTest extends ClassicConfig {
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
     assertTrue(ownersSet.contains(USER_B_ID));
-    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
+    assertThat(owners.getLabel()).isPresent();
+    assertThat(owners.getLabel().get().getLabel()).isEqualTo(EXPECTED_LABEL);
   }
 
   @Test
@@ -229,7 +231,8 @@ public class PathOwnersTest extends ClassicConfig {
 
     // expect that `master` configuration overwrites the label definition of both `refs/meta/config`
     // and parent repo
-    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
+    assertThat(owners.getLabel()).isPresent();
+    assertThat(owners.getLabel().get().getLabel()).isEqualTo(EXPECTED_LABEL);
   }
 
   @Test
@@ -278,7 +281,8 @@ public class PathOwnersTest extends ClassicConfig {
     assertTrue(ownersSet2.contains(USER_B_ID));
 
     // expect that closer parent (parentRepository1) overwrites the label definition
-    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
+    assertThat(owners.getLabel()).isPresent();
+    assertThat(owners.getLabel().get().getLabel()).isEqualTo(EXPECTED_LABEL);
   }
 
   private void mockParentRepository(Project.NameKey repositoryName, Repository repository)
@@ -315,11 +319,29 @@ public class PathOwnersTest extends ClassicConfig {
     assertTrue(ownersSet.contains(USER_C_ID));
 
     // expect that more specific configuration overwrites the label definition
-    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL);
+    assertThat(owners.getLabel()).isPresent();
+    assertThat(owners.getLabel().get().getLabel()).isEqualTo(EXPECTED_LABEL);
   }
 
   @Test
   public void testParsingYaml() {
+    String yamlString =
+        "inherited: true\nlabel: " + EXPECTED_LABEL + ",1\nowners:\n- " + USER_C_EMAIL_COM;
+    Optional<OwnersConfig> config = getOwnersConfig(yamlString);
+    assertTrue(config.isPresent());
+    OwnersConfig ownersConfig = config.get();
+    assertTrue(ownersConfig.isInherited());
+    assertThat(ownersConfig.getLabel()).isPresent();
+    ScoreDefinition label = ownersConfig.getLabel().get();
+    assertThat(label.getLabel()).isEqualTo(EXPECTED_LABEL);
+    assertThat(label.getScore()).hasValue(1);
+    Set<String> owners = ownersConfig.getOwners();
+    assertEquals(1, owners.size());
+    assertTrue(owners.contains(USER_C_EMAIL_COM));
+  }
+
+  @Test
+  public void testParsingYamlWithLabelWithoutScore() {
     String yamlString =
         "inherited: true\nlabel: " + EXPECTED_LABEL + "\nowners:\n- " + USER_C_EMAIL_COM;
     Optional<OwnersConfig> config = getOwnersConfig(yamlString);
@@ -327,7 +349,9 @@ public class PathOwnersTest extends ClassicConfig {
     OwnersConfig ownersConfig = config.get();
     assertTrue(ownersConfig.isInherited());
     assertThat(ownersConfig.getLabel()).isPresent();
-    assertThat(ownersConfig.getLabel().get()).isEqualTo(EXPECTED_LABEL);
+    ScoreDefinition label = ownersConfig.getLabel().get();
+    assertThat(label.getLabel()).isEqualTo(EXPECTED_LABEL);
+    assertThat(label.getScore()).isEmpty();
     Set<String> owners = ownersConfig.getOwners();
     assertEquals(1, owners.size());
     assertTrue(owners.contains(USER_C_EMAIL_COM));

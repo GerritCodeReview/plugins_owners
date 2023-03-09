@@ -90,7 +90,7 @@ public class PathOwners {
 
   private final boolean expandGroups;
 
-  private final Optional<String> label;
+  private final Optional<ScoreDefinition> label;
 
   public PathOwners(
       Accounts accounts,
@@ -186,7 +186,7 @@ public class PathOwners {
     return expandGroups;
   }
 
-  public Optional<String> getLabel() {
+  public Optional<ScoreDefinition> getLabel() {
     return label;
   }
 
@@ -350,7 +350,7 @@ public class PathOwners {
       } else {
         String ownersPath = partial + "OWNERS";
         Optional<OwnersConfig> conf = getOwnersConfig(repository, ownersPath, branch);
-        Optional<String> label = currentEntry.getLabel();
+        Optional<ScoreDefinition> label = currentEntry.getLabel();
         final Set<Id> owners = currentEntry.getOwners();
         final Set<Id> reviewers = currentEntry.getReviewers();
         Collection<Matcher> inheritedMatchers = currentEntry.getMatchers().values();

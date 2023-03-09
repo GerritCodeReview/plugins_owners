@@ -25,7 +25,6 @@ import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelFunction;
-import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.LabelTypes;
 import com.google.gerrit.entities.LegacySubmitRequirement;
@@ -49,6 +48,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PluginSettings;
+import com.googlesource.gerrit.owners.common.ScoreDefinition;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -142,8 +142,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
       LabelTypes labelTypes = projectState.getLabelTypes(notes);
-      String label = resolveLabel(labelTypes, pathOwners.getLabel());
-      LabelTypes ownersLabelType = ownersLabel(labelTypes, label, project);
+      ScoreDefinition label = resolveLabel(labelTypes, pathOwners.getLabel());
+      LabelAndScore ownersLabel = ownersLabel(labelTypes, label, project);
       Account.Id uploader = notes.getCurrentPatchSet().uploader();
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
           Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
@@ -154,7 +154,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
               .filter(
                   requiredApproval ->
                       isApprovalMissing(
-                          requiredApproval, uploader, approvalsByAccount, ownersLabelType))
+                          requiredApproval, uploader, approvalsByAccount, ownersLabel))
               .map(Map.Entry::getKey)
               .collect(toSet());
 
@@ -162,7 +162,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
           missingApprovals.isEmpty()
               ? ok()
               : notReady(
-                  label,
+                  label.getLabel(),
                   String.format(
                       "Missing approvals for path(s): [%s]",
                       Joiner.on(", ").join(missingApprovals))));
@@ -181,82 +181,120 @@ public class OwnersSubmitRequirement implements SubmitRule {
    * is configured in the OWNERS file then `Code-Review` will be selected.
    *
    * @param labelTypes labels configured for project
-   * @param label that is configured in the OWNERS file
+   * @param label and score definition that is configured in the OWNERS file
    */
-  static String resolveLabel(LabelTypes labelTypes, Optional<String> label) {
-    return label.orElse(LabelId.CODE_REVIEW);
+  static ScoreDefinition resolveLabel(LabelTypes labelTypes, Optional<ScoreDefinition> label) {
+    return label.orElse(ScoreDefinition.CODE_REVIEW);
   }
 
   /**
-   * Create single label LabelTypes if label can be found or empty otherwise.
+   * Create {@link LabelAndScore} definition with a single label LabelTypes if label can be found or
+   * empty otherwise. Note that score definition copied from OWNERS.
    *
    * @param labelTypes labels configured for project
-   * @param label that is resolved from the OWNERS file
+   * @param label and score definition (optional) that is resolved from the OWNERS file
    * @param project that change is evaluated for
    */
-  static LabelTypes ownersLabel(LabelTypes labelTypes, String label, Project.NameKey project) {
-    return new LabelTypes(
-        labelTypes
-            .byLabel(label)
-            .map(Collections::singletonList)
-            .orElseGet(
-                () -> {
-                  logger.atSevere().log(
-                      "OWNERS label '%s' is not configured for '%s' project. Change is not submittable.",
-                      label, project);
-                  return Collections.emptyList();
-                }));
+  static LabelAndScore ownersLabel(
+      LabelTypes labelTypes, ScoreDefinition label, Project.NameKey project) {
+    return labelTypes
+        .byLabel(label.getLabel())
+        .map(
+            type ->
+                new LabelAndScore(
+                    new LabelTypes(Collections.singletonList(type)), label.getScore()))
+        .orElseGet(
+            () -> {
+              logger.atSevere().log(
+                  "OWNERS label '%s' is not configured for '%s' project. Change is not submittable.",
+                  label, project);
+              return LabelAndScore.EMPTY;
+            });
   }
 
   static boolean isApprovalMissing(
       Map.Entry<String, Set<Account.Id>> requiredApproval,
       Account.Id uploader,
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
-      LabelTypes labelTypes) {
+      LabelAndScore ownersLabel) {
     return requiredApproval.getValue().stream()
         .noneMatch(
-            fileOwner -> isApprovedByOwner(fileOwner, uploader, approvalsByAccount, labelTypes));
+            fileOwner -> isApprovedByOwner(fileOwner, uploader, approvalsByAccount, ownersLabel));
   }
 
   static boolean isApprovedByOwner(
       Account.Id fileOwner,
       Account.Id uploader,
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
-      LabelTypes labelTypes) {
+      LabelAndScore ownersLabel) {
     return Optional.ofNullable(approvalsByAccount.get(fileOwner))
         .map(
             approvals ->
                 approvals.stream()
                     .anyMatch(
                         approval ->
-                            hasSufficientApproval(approval, labelTypes, fileOwner, uploader)))
+                            hasSufficientApproval(approval, ownersLabel, fileOwner, uploader)))
         .orElse(false);
   }
 
   static boolean hasSufficientApproval(
-      PatchSetApproval approval, LabelTypes labelTypes, Account.Id fileOwner, Account.Id uploader) {
-    return labelTypes
+      PatchSetApproval approval,
+      LabelAndScore ownersLabel,
+      Account.Id fileOwner,
+      Account.Id uploader) {
+    return ownersLabel
+        .getOwnersLabelType()
         .byLabel(approval.labelId())
-        .map(label -> isLabelApproved(label, fileOwner, uploader, approval))
+        .map(label -> isLabelApproved(label, ownersLabel.getScore(), fileOwner, uploader, approval))
         .orElse(false);
   }
 
   static boolean isLabelApproved(
-      LabelType label, Account.Id fileOwner, Account.Id uploader, PatchSetApproval approval) {
+      LabelType label,
+      Optional<Integer> score,
+      Account.Id fileOwner,
+      Account.Id uploader,
+      PatchSetApproval approval) {
     if (label.isIgnoreSelfApproval() && fileOwner.equals(uploader)) {
       return false;
     }
 
-    LabelFunction function = label.getFunction();
-    if (function.isMaxValueRequired()) {
-      return label.isMaxPositive(approval);
+    return score
+        .map(value -> approval.value() >= value)
+        .orElseGet(
+            () -> {
+              LabelFunction function = label.getFunction();
+              if (function.isMaxValueRequired()) {
+                return label.isMaxPositive(approval);
+              }
+
+              if (function.isBlock() && label.isMaxNegative(approval)) {
+                return false;
+              }
+
+              return approval.value() > label.getDefaultValue();
+            });
+  }
+
+  static class LabelAndScore {
+    static LabelAndScore EMPTY =
+        new LabelAndScore(new LabelTypes(Collections.emptyList()), Optional.empty());
+
+    private final LabelTypes ownersLabelType;
+    private final Optional<Integer> score;
+
+    LabelAndScore(LabelTypes ownersLabelType, Optional<Integer> score) {
+      this.ownersLabelType = ownersLabelType;
+      this.score = score;
     }
 
-    if (function.isBlock() && label.isMaxNegative(approval)) {
-      return false;
+    LabelTypes getOwnersLabelType() {
+      return ownersLabelType;
     }
 
-    return approval.value() > label.getDefaultValue();
+    Optional<Integer> getScore() {
+      return score;
+    }
   }
 
   private Map<String, FileDiffOutput> getDiff(Project.NameKey project, ObjectId revision)

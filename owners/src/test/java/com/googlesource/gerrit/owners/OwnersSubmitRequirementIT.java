@@ -44,6 +44,7 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.git.meta.MetaDataUpdate;
 import com.google.gerrit.server.project.ProjectConfig;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.owners.common.ScoreDefinition;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Stream;
@@ -230,7 +231,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
   public void shouldRequireConfiguredLabelByCodeOwner() throws Exception {
     TestAccount admin2 = accountCreator.admin2();
     String labelId = "Foo";
-    addOwnerFileToRoot(true, labelId, admin2);
+    addOwnerFileToRoot(true, ScoreDefinition.parse(labelId).get(), admin2);
 
     installLabel(labelId);
 
@@ -261,7 +262,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
       throws Exception {
     TestAccount admin2 = accountCreator.admin2();
     String notExistinglabelId = "Foo";
-    addOwnerFileToRoot(true, notExistinglabelId, admin2);
+    addOwnerFileToRoot(true, ScoreDefinition.parse(notExistinglabelId).get(), admin2);
 
     PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
     ChangeApi changeApi = forChange(r);
@@ -272,6 +273,70 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     ChangeInfo changeStillNotReady = changeApi.get();
     assertThat(changeStillNotReady.submittable).isFalse();
     assertThat(changeStillNotReady.requirements).containsExactly(NOT_READY);
+  }
+
+  @Test
+  @GlobalPluginConfig(
+      pluginName = "owners",
+      name = "owners.enableSubmitRequirement",
+      value = "true")
+  public void shouldRequireConfiguredLabelScoreByCodeOwner() throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRoot(true, ScoreDefinition.parse("Code-Review,1").get(), admin2);
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    ChangeInfo changeNotReady = changeApi.get();
+    assertThat(changeNotReady.submittable).isFalse();
+    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
+
+    changeApi.current().review(ReviewInput.approve());
+    ChangeInfo changeNotReadyAfterSelfApproval = changeApi.get();
+    assertThat(changeNotReadyAfterSelfApproval.submittable).isFalse();
+    assertThat(changeNotReadyAfterSelfApproval.requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.recommend());
+    ChangeInfo changeReadyWithOwnerScore = forChange(r).get();
+    assertThat(changeReadyWithOwnerScore.submittable).isTrue();
+    assertThat(changeReadyWithOwnerScore.requirements).containsExactly(READY);
+  }
+
+  @Test
+  @GlobalPluginConfig(
+      pluginName = "owners",
+      name = "owners.enableSubmitRequirement",
+      value = "true")
+  public void shouldConfiguredLabelScoreByCodeOwnerBeNotSufficientIfLabelRequiresMaxValue()
+      throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRoot(true, ScoreDefinition.parse("Code-Review,1").get(), admin2);
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    ChangeInfo changeNotReady = changeApi.get();
+    assertThat(changeNotReady.submittable).isFalse();
+    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.recommend());
+    ChangeInfo ownersVoteNotSufficient = changeApi.get();
+    assertThat(ownersVoteNotSufficient.submittable).isFalse();
+    assertThat(ownersVoteNotSufficient.requirements).containsExactly(READY);
+    verifyHasSubmitRecord(
+        ownersVoteNotSufficient.submitRecords,
+        LabelId.CODE_REVIEW,
+        SubmitRecordInfo.Label.Status.NEED);
+
+    requestScopeOperations.setApiUser(admin.id());
+    forChange(r).current().review(ReviewInput.approve());
+    ChangeInfo changeReadyWithMaxScore = forChange(r).get();
+    assertThat(changeReadyWithMaxScore.submittable).isTrue();
+    assertThat(changeReadyWithMaxScore.requirements).containsExactly(READY);
+    verifyHasSubmitRecord(
+        changeReadyWithMaxScore.submitRecords,
+        LabelId.CODE_REVIEW,
+        SubmitRecordInfo.Label.Status.OK);
   }
 
   private void verifyHasSubmitRecord(
@@ -358,11 +423,12 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
             ""));
   }
 
-  private void addOwnerFileToRoot(boolean inherit, String label, TestAccount u) throws Exception {
+  private void addOwnerFileToRoot(boolean inherit, ScoreDefinition label, TestAccount u)
+      throws Exception {
     // Add OWNERS file to root:
     //
     // inherited: true
-    // label: label
+    // label: label,score # score is optional
     // owners:
     // - u.email()
     merge(
@@ -371,7 +437,14 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
             "master",
             "Add OWNER file",
             "OWNERS",
-            String.format("inherited: %s\nlabel: %s\nowners:\n- %s\n", inherit, label, u.email()),
+            String.format(
+                "inherited: %s\nlabel: %s\nowners:\n- %s\n",
+                inherit,
+                String.format(
+                    "%s%s",
+                    label.getLabel(),
+                    label.getScore().map(value -> String.format(",%d", value)).orElse("")),
+                u.email()),
             ""));
   }
 }
