@@ -31,7 +31,7 @@ public class OwnersMap {
   private Map<String, Set<Account.Id>> fileOwners = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileReviewers = Maps.newHashMap();
   private Map<String, Set<String>> fileGroupOwners = Maps.newHashMap();
-  private Optional<String> label = Optional.empty();
+  private Optional<LabelDefinition> label = Optional.empty();
 
   @Override
   public String toString() {
@@ -122,11 +122,11 @@ public class OwnersMap {
     fileGroupOwners.computeIfAbsent(file, (f) -> Sets.newHashSet()).addAll(groupOwners);
   }
 
-  public Optional<String> getLabel() {
+  public Optional<LabelDefinition> getLabel() {
     return label;
   }
 
-  public void setLabel(Optional<String> label) {
+  public void setLabel(Optional<LabelDefinition> label) {
     this.label = label;
   }
 }
