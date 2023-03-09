@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  */
 class PathOwnersEntry {
   private final boolean inherited;
-  private Optional<String> label;
+  private Optional<LabelDefinition> label;
   private Set<Account.Id> owners = Sets.newHashSet();
   private Set<Account.Id> reviewers = Sets.newHashSet();
   private String ownersPath;
@@ -49,7 +49,7 @@ class PathOwnersEntry {
       String path,
       OwnersConfig config,
       Accounts accounts,
-      Optional<String> inheritedLabel,
+      Optional<LabelDefinition> inheritedLabel,
       Set<Account.Id> inheritedOwners,
       Set<Account.Id> inheritedReviewers,
       Collection<Matcher> inheritedMatchers,
@@ -141,11 +141,11 @@ class PathOwnersEntry {
     return inherited;
   }
 
-  public Optional<String> getLabel() {
+  public Optional<LabelDefinition> getLabel() {
     return label;
   }
 
-  public void setLabel(Optional<String> label) {
+  public void setLabel(Optional<LabelDefinition> label) {
     this.label = label;
   }
 
