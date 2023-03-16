@@ -145,6 +145,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "306042f5_6b8251f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "Not gone through the whole change yet, but thought I\u0027d post what I have so far.",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "526c488d_3f14a0c0",
@@ -199,6 +216,24 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "f7905a18_a0bf70ea",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2496cbb_d8220c06",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ScoreDefinition.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "Maybe `Requirement` is more meaningful than `Definition` (i.e. `LabelRequirement`)? The commit message mentions this being a `requirement` which I think it is, both from a label and score point of view.\n\nHaving said that I don\u0027t know if there are conventions or there is Gerrit terminology where `Definition` is more appropriate for this case.",
+      "parentUuid": "a1203732_efbc3054",
       "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -268,6 +303,91 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c91f8d7_5f52f60d",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "Nit: we could do this in a single test:\n\n`assertThat(owners2.getLabel().map(ScoreDefinition::getLabel)).hasValue(EXPECTED_LABEL);`\n\nI think it\u0027s a little more expressive but YMMV (either way is fine).",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7008db40_8c071a4c",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "Nit: existing test, but can we add some newlines between different parts of this test? I think it would make it a little easier to read.",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ba0410_078165d1",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "Tiny nit: is the default case with the score? If there\u0027s no leaning towards with/without score, would it make sense to call this `testParsingYamlWithScore`?",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edbdb33e_a143851b",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "Nit: could we add some newlines here as well to make it easier to parse.",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c769e762_a84d985c",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/ScoreDefinitionTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "Terse and readable 👍",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d0963448_779ba06e",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
         "patchSetId": 1
@@ -285,6 +405,23 @@
         "endLine": 146,
         "endChar": 19
       },
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba4a2c8f_60298b1d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-16T23:14:24Z",
+      "side": 1,
+      "message": "I think I\u0027m missing a step here - I can see that this is ever set to a single label or no label. Why can\u0027t this be an `Optional\u003cLabelType\u003e`? Is this future-proofing, or something else?",
       "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
