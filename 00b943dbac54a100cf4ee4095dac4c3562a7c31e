@@ -16,6 +16,40 @@
       "message": "Verified both:\n* code format\n* tests\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 76.1s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 45.8s\n//plugins/owners-common:test                                             PASSED in 1.8s\n```",
       "revId": "00b943dbac54a100cf4ee4095dac4c3562a7c31e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7d83e9_72bcf43a",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/LabelDefinition.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-17T13:48:04Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the capture group for the value be `\\\\d+`? Its type is `short`, so it can have more than one digit.",
+      "revId": "00b943dbac54a100cf4ee4095dac4c3562a7c31e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1ceb896_9fc6426f",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-17T13:48:04Z",
+      "side": 1,
+      "message": "This seems a little strange to me - I thought that from a data modelling perspective `labelType` should always be present on a \u0027valid\u0027 `LabelAndScore`, and if we have an \u0027invalid\u0027 (`EMPTY`) label we could choose to return an `Optional` or perhaps even throw, depending on the caller\u0027s requirement.\n\nThis model leaves open the possibility of a `LabelAndScore` instance with an empty label type but a non-empty score, which I don\u0027t think makes sense.\n\nWe\u0027d have to use `Optional`s more (e.g. `ownersLabel` would have to return `Optional\u003cLabelAndScore\u003e`, but I\u0027d still towards having a correct model rather than avoiding `Optional`.\n\nWDYT?",
+      "revId": "00b943dbac54a100cf4ee4095dac4c3562a7c31e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
