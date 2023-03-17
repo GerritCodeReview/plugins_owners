@@ -260,6 +260,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5bcb126_beb2c387",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-17T11:11:48Z",
+      "side": 1,
+      "message": "The inheritance logic is referenced in `com.googlesource.gerrit.owners.common.PathOwners.PathOwners(Accounts, GitRepositoryManager, Repository, List\u003cNameKey\u003e, Optional\u003cString\u003e, Set\u003cString\u003e, boolean)` constructor. And it is implemented in `com.googlesource.gerrit.owners.common.PathOwners.fetchOwners(String)`.\nThe `label` bit is added o all structures that are involved in building it.",
+      "parentUuid": "8e0f3309_fc06f51c",
+      "revId": "376e1c2c1d81fb584dad333a5e81f1a3c1d4e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "526c488d_3f14a0c0",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 1
