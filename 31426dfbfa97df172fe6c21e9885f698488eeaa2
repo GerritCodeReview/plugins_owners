@@ -111,6 +111,30 @@
       },
       "revId": "31426dfbfa97df172fe6c21e9885f698488eeaa2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89af2a29_5e68a679",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-20T08:35:51Z",
+      "side": 1,
+      "message": "I have aligned doc and code here [1]\n\n[1]: https://gerrit-review.googlesource.com/c/gerrit/+/361434",
+      "parentUuid": "71f78d10_e13a6c87",
+      "range": {
+        "startLine": 237,
+        "startChar": 13,
+        "endLine": 237,
+        "endChar": 24
+      },
+      "revId": "31426dfbfa97df172fe6c21e9885f698488eeaa2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
