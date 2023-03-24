@@ -22,6 +22,23 @@
       },
       "revId": "58491f26036d538cde1219f000f3269886f8289e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0625d18d_7a5f5a39",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-24T09:26:58Z",
+      "side": 1,
+      "message": "Nit: Do we need to propagate the `Optional` wrapper for `ownersLabel` all the way down this stack? I think we can short-cut and do `ownersLabel.map(ol -\u003e isApprovalMissing(...)).orElse(false)`, which simplifies the signatures of the methods in the `isApprovalMissing` pathway as we can remove the `Optional` wrapper and don\u0027t need to handle (or propagate) the empty cases anymore.\n\nWDYT?",
+      "revId": "58491f26036d538cde1219f000f3269886f8289e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
