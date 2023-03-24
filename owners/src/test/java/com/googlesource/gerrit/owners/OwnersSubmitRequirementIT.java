@@ -51,13 +51,13 @@ import org.junit.Test;
 @TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
 @UseLocalDisk
 public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
-  private static final LegacySubmitRequirementInfo NOT_READY =
+  protected static final LegacySubmitRequirementInfo NOT_READY =
       new LegacySubmitRequirementInfo("NOT_READY", "Owners", "owners");
-  private static final LegacySubmitRequirementInfo READY =
+  protected static final LegacySubmitRequirementInfo READY =
       new LegacySubmitRequirementInfo("OK", "Owners", "owners");
 
-  @Inject private RequestScopeOperations requestScopeOperations;
-  @Inject private ProjectOperations projectOperations;
+  @Inject protected RequestScopeOperations requestScopeOperations;
+  @Inject protected ProjectOperations projectOperations;
 
   @Test
   @GlobalPluginConfig(
@@ -369,7 +369,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
         .isPresent();
   }
 
-  private void installVerifiedLabel() throws Exception {
+  protected void installVerifiedLabel() throws Exception {
     installLabel(LabelId.VERIFIED);
   }
 
@@ -396,7 +396,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     }
   }
 
-  private ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
+  protected ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
     return gApi.changes().id(r.getChangeId());
   }
 
@@ -443,7 +443,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
             ""));
   }
 
-  private void addOwnerFileToRoot(boolean inherit, LabelDefinition label, TestAccount u)
+  protected void addOwnerFileToRoot(boolean inherit, LabelDefinition label, TestAccount u)
       throws Exception {
     // Add OWNERS file to root:
     //
