@@ -56,7 +56,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
   private static final LegacySubmitRequirementInfo READY =
       new LegacySubmitRequirementInfo("OK", "Owners", "owners");
 
-  @Inject private RequestScopeOperations requestScopeOperations;
+  @Inject protected RequestScopeOperations requestScopeOperations;
   @Inject private ProjectOperations projectOperations;
 
   @Test
@@ -396,7 +396,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     }
   }
 
-  private ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
+  protected ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
     return gApi.changes().id(r.getChangeId());
   }
 
@@ -443,7 +443,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
             ""));
   }
 
-  private void addOwnerFileToRoot(boolean inherit, LabelDefinition label, TestAccount u)
+  protected void addOwnerFileToRoot(boolean inherit, LabelDefinition label, TestAccount u)
       throws Exception {
     // Add OWNERS file to root:
     //
