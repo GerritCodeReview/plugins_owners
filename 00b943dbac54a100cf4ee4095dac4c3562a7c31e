@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d4095a5_9190fa3d",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/LabelDefinition.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-24T14:45:17Z",
+      "side": 1,
+      "message": "Still sceptical 😊 consider it is a `\\d+` and it will accept that someone would configure `11` (quick double-typed number `1`). As a result it will never be satisfied without a reason why. I would prefer it has failed configuring the rule (which is logged), WDYT?",
+      "parentUuid": "21985dd1_4f74ba32",
+      "revId": "00b943dbac54a100cf4ee4095dac4c3562a7c31e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1ceb896_9fc6426f",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
         "patchSetId": 2
