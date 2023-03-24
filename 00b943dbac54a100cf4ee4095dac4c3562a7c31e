@@ -143,6 +143,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b366fb4_e872b1cb",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/LabelDefinition.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-24T20:59:47Z",
+      "side": 1,
+      "message": "Haha, yes makes sense I agree with your rationale!",
+      "parentUuid": "43b02806_dce464cb",
+      "revId": "00b943dbac54a100cf4ee4095dac4c3562a7c31e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1ceb896_9fc6426f",
