@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d99a483_1c4538b4",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/LabelDefinition.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-24T16:34:17Z",
+      "side": 1,
+      "message": "We can do that but as we\u0027d be straying from Gerrit\u0027s definition of a label, maybe we should document that the owners plugin only supports single-digit votes? If you say that makes more sense I\u0027m more than happy to go with your suggestion, you have plenty more experience with this plugin than me 😊\n\nOn a somewhat related note, it sounds like in practice Gerrit doesn\u0027t encourage multi-digit votes, in fact in this case, we actively blow up and assume they\u0027ve made a mistake instead of allowing it. Should Gerrit support multi-digit votes at all? Or has this conversation been had before already? More of an information query from me!",
+      "parentUuid": "0d4095a5_9190fa3d",
+      "revId": "00b943dbac54a100cf4ee4095dac4c3562a7c31e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1ceb896_9fc6426f",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
         "patchSetId": 2
