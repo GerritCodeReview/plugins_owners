@@ -41,8 +41,6 @@ import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.LegacySubmitRequirementInfo;
 import com.google.gerrit.extensions.common.SubmitRecordInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.server.git.meta.MetaDataUpdate;
-import com.google.gerrit.server.project.ProjectConfig;
 import com.google.gerrit.server.project.testing.TestLabels;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
@@ -392,13 +390,10 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
   }
 
   private void installLabel(LabelType label) throws Exception {
-    try (MetaDataUpdate md = metaDataUpdateFactory.create(project)) {
-      ProjectConfig cfg = projectConfigFactory.create(project);
-      cfg.load(md);
-      cfg.upsertLabelType(label);
-      cfg.commit(md);
+    try (ProjectConfigUpdate u = updateProject(project)) {
+      u.getConfig().upsertLabelType(label);
+      u.save();
     }
-    projectCache.evictAndReindex(project);
   }
 
   private ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
