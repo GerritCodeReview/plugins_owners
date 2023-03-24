@@ -41,15 +41,10 @@ import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.LegacySubmitRequirementInfo;
 import com.google.gerrit.extensions.common.SubmitRecordInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.server.git.meta.MetaDataUpdate;
-import com.google.gerrit.server.project.ProjectConfig;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Stream;
-import org.eclipse.jgit.errors.ConfigInvalidException;
-import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.junit.Test;
 
 @TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
@@ -349,24 +344,19 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
         .isPresent();
   }
 
-  private void installVerifiedLabel()
-      throws RepositoryNotFoundException, IOException, ConfigInvalidException {
+  private void installVerifiedLabel() throws Exception {
     installLabel(LabelId.VERIFIED);
   }
 
-  private void installLabel(String labelId)
-      throws IOException, ConfigInvalidException, RepositoryNotFoundException {
+  private void installLabel(String labelId) throws Exception {
     LabelType verified =
         labelBuilder(labelId, value(1, "Verified"), value(0, "No score"), value(-1, "Fails"))
             .setFunction(LabelFunction.MAX_WITH_BLOCK)
             .build();
-    try (MetaDataUpdate md = metaDataUpdateFactory.create(project)) {
-      ProjectConfig cfg = projectConfigFactory.create(project);
-      cfg.load(md);
-      cfg.upsertLabelType(verified);
-      cfg.commit(md);
+    try (ProjectConfigUpdate u = updateProject(project)) {
+      u.getConfig().upsertLabelType(verified);
+      u.save();
     }
-    projectCache.evictAndReindex(project);
 
     String heads = RefNames.REFS_HEADS + "*";
     projectOperations
