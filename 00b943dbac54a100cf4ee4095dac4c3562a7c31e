@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43b02806_dce464cb",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/LabelDefinition.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-24T19:33:48Z",
+      "side": 1,
+      "message": "I have added to both commit description and documentation that only single digit `0..9` to be precise is only allowed.\n\n\u003e On a somewhat related note, it sounds like in practice Gerrit doesn\u0027t encourage multi-digit votes...\n\nI\u0027m not sure if that discussion was held but I have witnessed multiple complains that `CR [-2..2]` is already too much and GH\u0027s `[-1..+1]` is good enough 😊 I can\u0027t really imagine different than _cuz I can_ rationale behind setting up sth with more than `+3`...",
+      "parentUuid": "5d99a483_1c4538b4",
+      "revId": "00b943dbac54a100cf4ee4095dac4c3562a7c31e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1ceb896_9fc6426f",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
         "patchSetId": 2
