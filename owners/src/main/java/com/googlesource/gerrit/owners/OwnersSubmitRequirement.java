@@ -104,16 +104,21 @@ public class OwnersSubmitRequirement implements SubmitRule {
     requireNonNull(cd, "changeData");
 
     Change change = cd.change();
+    Project.NameKey project = cd.project();
+    int changeId = cd.getId().get();
     if (change.isClosed()) {
-      logger.atInfo().log("Change is closed therefore OWNERS file based requirement is skipped.");
+      logger.atFine().log(
+          "Project's '%s' change #%d is closed therefore OWNERS file based submit requiremens are skipped.",
+          project, changeId);
       return Optional.empty();
     }
 
-    Project.NameKey project = cd.project();
     ProjectState projectState = projectCache.get(project).orElseThrow(illegalState(project));
     if (projectState.hasPrologRules()) {
       logger.atInfo().atMostEvery(1, TimeUnit.DAYS).log(
-          "Project has prolog rules enabled. It may interfere with submit requirement evaluation.");
+          "Project '%s' has prolog rules enabled. "
+              + "It may interfere with the owners submit requirements evaluation.",
+          project);
     }
 
     String branch = change.getDest().branch();
@@ -135,7 +140,9 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
       Map<String, Set<Id>> fileOwners = pathOwners.getFileOwners();
       if (fileOwners.isEmpty()) {
-        logger.atInfo().log("Change has no file owners defined. Skipping submit requirement.");
+        logger.atFinest().log(
+            "Project's '%s' change #%d has no file owners defined. Skipping submit requirement.",
+            project, changeId);
         return Optional.empty();
       }
 
@@ -171,12 +178,19 @@ public class OwnersSubmitRequirement implements SubmitRule {
                       "Missing approvals for path(s): [%s]",
                       Joiner.on(", ").join(missingApprovals))));
     } catch (IOException e) {
-      logger.atSevere().withCause(e).log("TODO: handle exceptions");
-      throw new IllegalStateException(
-          "Unable to open repository while evaluating owners requirement", e);
+      String msg =
+          String.format(
+              "Project's '%s' repository cannot be opened to evaluate owners submit requirements",
+              project);
+      logger.atSevere().withCause(e).log(msg);
+      throw new IllegalStateException(msg, e);
     } catch (DiffNotAvailableException e) {
-      logger.atSevere().withCause(e).log("TODO: handle exceptions");
-      throw new IllegalStateException("Unable to get diff while evaluating owners requirement", e);
+      String msg =
+          String.format(
+              "Project '%s' change %d: unable to get diff to evaluate owners submit requirements",
+              project, changeId);
+      logger.atSevere().withCause(e).log(msg);
+      throw new IllegalStateException(msg, e);
     }
   }
 
