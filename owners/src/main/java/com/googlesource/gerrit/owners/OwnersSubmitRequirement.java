@@ -22,7 +22,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Streams;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
-import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelType;
@@ -113,32 +112,10 @@ public class OwnersSubmitRequirement implements SubmitRule {
       return Optional.empty();
     }
 
-    ProjectState projectState = projectCache.get(project).orElseThrow(illegalState(project));
-    if (projectState.hasPrologRules()) {
-      logger.atInfo().atMostEvery(1, TimeUnit.DAYS).log(
-          "Project '%s' has prolog rules enabled. "
-              + "It may interfere with the OWNERS submit requirements evaluation.",
-          project);
-    }
-
-    String branch = change.getDest().branch();
-    List<Project.NameKey> parents =
-        Optional.ofNullable(projectState.getProject().getParent())
-            .map(Arrays::asList)
-            .orElse(Collections.emptyList());
-
-    try (Repository repo = repoManager.openRepository(project)) {
-      PathOwners pathOwners =
-          new PathOwners(
-              accounts,
-              repoManager,
-              repo,
-              parents,
-              pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
-              getDiff(project, cd.currentPatchSet().commitId()),
-              pluginSettings.expandGroups());
-
-      Map<String, Set<Id>> fileOwners = pathOwners.getFileOwners();
+    try {
+      ProjectState projectState = getProjectState(project);
+      PathOwners pathOwners = getPathOwners(cd, projectState);
+      Map<String, Set<Account.Id>> fileOwners = pathOwners.getFileOwners();
       if (fileOwners.isEmpty()) {
         logger.atFinest().log(
             "Project '%s': change #%d has no OWNERS submit requirements defined. "
@@ -152,10 +129,12 @@ public class OwnersSubmitRequirement implements SubmitRule {
       LabelTypes labelTypes = projectState.getLabelTypes(notes);
       LabelDefinition label = resolveLabel(labelTypes, pathOwners.getLabel());
       Optional<LabelAndScore> ownersLabel = ownersLabel(labelTypes, label, project);
-      Account.Id uploader = notes.getCurrentPatchSet().uploader();
+
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
           Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
               .collect(Collectors.groupingBy(PatchSetApproval::accountId));
+
+      Account.Id uploader = notes.getCurrentPatchSet().uploader();
 
       Set<String> missingApprovals =
           fileOwners.entrySet().stream()
@@ -192,6 +171,42 @@ public class OwnersSubmitRequirement implements SubmitRule {
               project, changeId);
       logger.atSevere().withCause(e).log(msg);
       throw new IllegalStateException(msg, e);
+    }
+  }
+
+  private ProjectState getProjectState(Project.NameKey project) {
+    ProjectState projectState = projectCache.get(project).orElseThrow(illegalState(project));
+    if (projectState.hasPrologRules()) {
+      logger.atInfo().atMostEvery(1, TimeUnit.DAYS).log(
+          "Project '%s' has prolog rules enabled. "
+              + "It may interfere with the OWNERS submit requirements evaluation.",
+          project);
+    }
+    return projectState;
+  }
+
+  private PathOwners getPathOwners(ChangeData cd, ProjectState projectState)
+      throws IOException, DiffNotAvailableException {
+    String branch = cd.change().getDest().branch();
+
+    List<Project.NameKey> parents =
+        Optional.<Project.NameKey>ofNullable(projectState.getProject().getParent())
+            .map(Arrays::asList)
+            .orElse(Collections.emptyList());
+
+    Project.NameKey nameKey = projectState.getNameKey();
+    try (Repository repo = repoManager.openRepository(nameKey)) {
+      PathOwners pathOwners =
+          new PathOwners(
+              accounts,
+              repoManager,
+              repo,
+              parents,
+              pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
+              getDiff(nameKey, cd.currentPatchSet().commitId()),
+              pluginSettings.expandGroups());
+
+      return pathOwners;
     }
   }
 
