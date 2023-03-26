@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce2f7b0d_a9dae8d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-26T16:25:10Z",
+      "side": 1,
+      "message": "Verified both:\n* code format\n* tests\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 132.7s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 46.5s\n//plugins/owners-common:test                                             PASSED in 2.1s\n```",
+      "revId": "aa5f8213e85a81a641e787c74f9468ff13aa30a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
