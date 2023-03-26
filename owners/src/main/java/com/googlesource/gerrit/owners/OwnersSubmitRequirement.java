@@ -31,6 +31,7 @@ import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.SubmitRecord;
 import com.google.gerrit.extensions.annotations.Exports;
+import com.google.gerrit.metrics.Timer0;
 import com.google.gerrit.server.approval.ApprovalsUtil;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
@@ -75,6 +76,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
   private static final LegacySubmitRequirement SUBMIT_REQUIREMENT =
       LegacySubmitRequirement.builder().setFallbackText("Owners").setType("owners").build();
 
+  private final OwnersMetrics metrics;
   private final PluginSettings pluginSettings;
   private final ProjectCache projectCache;
   private final Accounts accounts;
@@ -84,12 +86,14 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
   @Inject
   OwnersSubmitRequirement(
+      OwnersMetrics metrics,
       PluginSettings pluginSettings,
       ProjectCache projectCache,
       Accounts accounts,
       GitRepositoryManager repoManager,
       DiffOperations diffOperations,
       ApprovalsUtil approvalsUtil) {
+    this.metrics = metrics;
     this.pluginSettings = pluginSettings;
     this.projectCache = projectCache;
     this.accounts = accounts;
@@ -112,7 +116,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
       return Optional.empty();
     }
 
-    try {
+    metrics.countSubmitRuleRuns.increment();
+    try (Timer0.Context ctx = metrics.runSubmitRule.start()) {
       ProjectState projectState = getProjectState(project);
       PathOwners pathOwners = getPathOwners(cd, projectState);
       Map<String, Set<Account.Id>> fileOwners = pathOwners.getFileOwners();
@@ -186,26 +191,29 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
   private PathOwners getPathOwners(ChangeData cd, ProjectState projectState)
       throws IOException, DiffNotAvailableException {
-    String branch = cd.change().getDest().branch();
+    metrics.countConfigLoads.increment();
+    try (Timer0.Context ctx = metrics.loadConfig.start()) {
+      String branch = cd.change().getDest().branch();
 
-    List<Project.NameKey> parents =
-        Optional.<Project.NameKey>ofNullable(projectState.getProject().getParent())
-            .map(Arrays::asList)
-            .orElse(Collections.emptyList());
+      List<Project.NameKey> parents =
+          Optional.<Project.NameKey>ofNullable(projectState.getProject().getParent())
+              .map(Arrays::asList)
+              .orElse(Collections.emptyList());
 
-    Project.NameKey nameKey = projectState.getNameKey();
-    try (Repository repo = repoManager.openRepository(nameKey)) {
-      PathOwners pathOwners =
-          new PathOwners(
-              accounts,
-              repoManager,
-              repo,
-              parents,
-              pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
-              getDiff(nameKey, cd.currentPatchSet().commitId()),
-              pluginSettings.expandGroups());
+      Project.NameKey nameKey = projectState.getNameKey();
+      try (Repository repo = repoManager.openRepository(nameKey)) {
+        PathOwners pathOwners =
+            new PathOwners(
+                accounts,
+                repoManager,
+                repo,
+                parents,
+                pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
+                getDiff(nameKey, cd.currentPatchSet().commitId()),
+                pluginSettings.expandGroups());
 
-      return pathOwners;
+        return pathOwners;
+      }
     }
   }
 
