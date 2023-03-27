@@ -16,6 +16,92 @@
       "message": "Verified both:\n* code format\n* tests\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 132.7s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 46.5s\n//plugins/owners-common:test                                             PASSED in 2.1s\n```",
       "revId": "aa5f8213e85a81a641e787c74f9468ff13aa30a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cde1e4d_2466ac35",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersMetrics.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-27T11:12:05Z",
+      "side": 1,
+      "message": "add integration test to ensure that metrics are installed",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 19
+      },
+      "revId": "aa5f8213e85a81a641e787c74f9468ff13aa30a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e124cb_561b5133",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersMetrics.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-27T11:12:05Z",
+      "side": 1,
+      "message": "postfix with `_latency` as it is more readable",
+      "revId": "aa5f8213e85a81a641e787c74f9468ff13aa30a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b7247bc_ae8f5939",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersMetrics.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-27T11:12:05Z",
+      "side": 1,
+      "message": "postfix with `_latency` as it is more readable",
+      "range": {
+        "startLine": 48,
+        "startChar": 34,
+        "endLine": 48,
+        "endChar": 49
+      },
+      "revId": "aa5f8213e85a81a641e787c74f9468ff13aa30a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad9c38dd_e0019e70",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersMetrics.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-27T11:12:05Z",
+      "side": 1,
+      "message": "the `owners/` prefix is not needed as Gerrit prefixes metrics with plugin name anyway",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 44
+      },
+      "revId": "aa5f8213e85a81a641e787c74f9468ff13aa30a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
