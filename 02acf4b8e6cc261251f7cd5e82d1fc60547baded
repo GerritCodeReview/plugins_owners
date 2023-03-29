@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83e709a0_3b68da8b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-29T18:32:01Z",
+      "side": 1,
+      "message": "Consider \"Project \u0027%s\u0027 cannot be opened to...\" for consistency with the other comments (see L#119)",
+      "range": {
+        "startLine": 183,
+        "startChar": 15,
+        "endLine": 183,
+        "endChar": 46
+      },
+      "revId": "02acf4b8e6cc261251f7cd5e82d1fc60547baded",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21405a13_5a826cce",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-29T18:32:01Z",
+      "side": 1,
+      "message": "Same as previous comment.",
+      "range": {
+        "startLine": 189,
+        "startChar": 15,
+        "endLine": 189,
+        "endChar": 106
+      },
+      "revId": "02acf4b8e6cc261251f7cd5e82d1fc60547baded",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
