@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02caad0d_2587db99",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-29T18:35:29Z",
+      "side": 1,
+      "message": "purpose",
+      "range": {
+        "startLine": 11,
+        "startChar": 57,
+        "endLine": 11,
+        "endChar": 64
+      },
+      "revId": "e670750834c10096c74344512fb19526f5c55531",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3a5ec0d_fb37c1c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-29T18:35:29Z",
+      "side": 1,
+      "message": "Nice one! Just a couple of nits",
+      "revId": "e670750834c10096c74344512fb19526f5c55531",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a2c809c_69a2bee6",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-29T18:35:29Z",
+      "side": 1,
+      "message": "nit: leftover",
+      "revId": "e670750834c10096c74344512fb19526f5c55531",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
