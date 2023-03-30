@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0784ed14_6adf9566",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-30T06:34:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c6a6926_cfa86ae5",
+      "range": {
+        "startLine": 19,
+        "startChar": 57,
+        "endLine": 19,
+        "endChar": 61
+      },
+      "revId": "8dd95803d1c49e870ccf2f0ebfdcd228aba2d2de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2937a453_245580e4",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2023-03-29T18:28:30Z",
       "side": 1,
       "message": "What about adding the plugin prefix/suffix as well to be sure not to clash with Gerrit core ever: `approval_owners_plugin` ?",
+      "range": {
+        "startLine": 39,
+        "startChar": 17,
+        "endLine": 39,
+        "endChar": 68
+      },
+      "revId": "8dd95803d1c49e870ccf2f0ebfdcd228aba2d2de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3699d34e_ad9216f7",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersApprovalHasPredicate.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-30T06:34:22Z",
+      "side": 1,
+      "message": "I\u0027m following the `code-owners` guidance here. Gerrit has no such term as file owner IOW we are safe with `has:approval_owners`.",
+      "parentUuid": "53121b42_6e1b3cb2",
       "range": {
         "startLine": 39,
         "startChar": 17,
