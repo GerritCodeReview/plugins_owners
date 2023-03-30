@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe27ed64_ef25f417",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-30T21:17:12Z",
+      "side": 1,
+      "message": "`predicate`",
+      "range": {
+        "startLine": 9,
+        "startChar": 37,
+        "endLine": 9,
+        "endChar": 47
+      },
+      "revId": "b3afefbf05397bfa2ed9f40ad225df17e4816760",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "775d3b0c_1a93f61e",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-30T21:17:12Z",
+      "side": 1,
+      "message": "Ah, I hadn\u0027t seen this pattern before. How does it work? Doesn\u0027t this duplicate each test and run the parent\u0027s tests twice? If we do this for the helper methods, would it be worth abstracting them out separately?",
+      "revId": "b3afefbf05397bfa2ed9f40ad225df17e4816760",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00d6a77b_b9c9e6c5",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-30T21:17:12Z",
+      "side": 1,
+      "message": "I was going to suggest doing `LabelDefinition.parse(...).ifPresent(...)`, so we don\u0027t need the naked `get`, but then we have to handle the exception in here 😞",
+      "revId": "b3afefbf05397bfa2ed9f40ad225df17e4816760",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
