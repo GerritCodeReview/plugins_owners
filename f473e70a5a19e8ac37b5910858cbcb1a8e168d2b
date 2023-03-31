@@ -47,6 +47,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e773886f_8fbd0f6a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T09:28:49Z",
+      "side": 1,
+      "message": "Replaced with `Project \u0027%s\u0027: change %d ...` without Saxon genitives 😎 where applicable 😊 Also reviewed all modified cases.",
+      "parentUuid": "1164c259_85d5ef84",
+      "range": {
+        "startLine": 111,
+        "startChar": 11,
+        "endLine": 111,
+        "endChar": 25
+      },
+      "revId": "f473e70a5a19e8ac37b5910858cbcb1a8e168d2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1d1d7aa_ed21029a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T09:28:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f48ec130_d56784bb",
+      "range": {
+        "startLine": 111,
+        "startChar": 82,
+        "endLine": 111,
+        "endChar": 93
+      },
+      "revId": "f473e70a5a19e8ac37b5910858cbcb1a8e168d2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96fadd88_0d5f9fbd",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-03-31T07:58:09Z",
       "side": 1,
       "message": "Nit: don\u0027t we tend to use the plural instead of the singular, at least looking at the other log lines?",
+      "range": {
+        "startLine": 144,
+        "startChar": 83,
+        "endLine": 144,
+        "endChar": 94
+      },
+      "revId": "f473e70a5a19e8ac37b5910858cbcb1a8e168d2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0380ba66_a63c67ef",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T09:28:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96fadd88_0d5f9fbd",
       "range": {
         "startLine": 144,
         "startChar": 83,
