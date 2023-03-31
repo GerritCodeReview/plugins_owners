@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c88a0d48_e934a672",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-03-31T08:26:53Z",
+      "side": 1,
+      "message": "Better abstraction 😊",
+      "revId": "c1f73d51ec961d5965d3ec1f5d3cfb2eaa69dfd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
