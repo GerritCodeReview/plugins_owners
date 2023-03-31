@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1602dec1_8756c695",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T05:12:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe27ed64_ef25f417",
+      "range": {
+        "startLine": 9,
+        "startChar": 37,
+        "endLine": 9,
+        "endChar": 47
+      },
+      "revId": "b3afefbf05397bfa2ed9f40ad225df17e4816760",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "775d3b0c_1a93f61e",
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "00842c1a_3b42bdf6",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T05:12:53Z",
+      "side": 1,
+      "message": "\u003e Doesn\u0027t this duplicate each test and run the parent\u0027s tests twice?\n\nThat is the behaviour I want but considering the `defaultConfig` (in line `#44`) and `setup` (in line `#56`) methods it will be called against the site that has the `Submit Requirements` feature enabled also configured to kick in 😊",
+      "parentUuid": "775d3b0c_1a93f61e",
+      "revId": "b3afefbf05397bfa2ed9f40ad225df17e4816760",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00d6a77b_b9c9e6c5",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
         "patchSetId": 4
@@ -54,6 +96,24 @@
       "writtenOn": "2023-03-30T21:17:12Z",
       "side": 1,
       "message": "I was going to suggest doing `LabelDefinition.parse(...).ifPresent(...)`, so we don\u0027t need the naked `get`, but then we have to handle the exception in here 😞",
+      "revId": "b3afefbf05397bfa2ed9f40ad225df17e4816760",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c677112_6acee10d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T05:12:53Z",
+      "side": 1,
+      "message": "Yeah, if `parse` is broken then unit tests will also detect it IMHO there is no need to duplicate the check here 😎",
+      "parentUuid": "00d6a77b_b9c9e6c5",
       "revId": "b3afefbf05397bfa2ed9f40ad225df17e4816760",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
