@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 
 public class OwnersModule extends AbstractModule {
@@ -34,6 +35,7 @@ public class OwnersModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    install(PathOwnersEntriesCache.module());
     DynamicSet.bind(binder(), PredicateProvider.class)
         .to(OwnerPredicateProvider.class)
         .asEagerSingleton();
