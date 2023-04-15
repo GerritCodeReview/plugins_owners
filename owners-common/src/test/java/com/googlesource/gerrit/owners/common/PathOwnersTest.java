@@ -21,7 +21,9 @@ import static java.util.Collections.emptyList;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
 import com.google.gerrit.entities.Account;
@@ -50,6 +52,8 @@ public class PathOwnersTest extends ClassicConfig {
   private static final boolean DO_NOT_EXPAND_GROUPS = false;
   private static final String EXPECTED_LABEL = "expected-label";
   private static final String A_LABEL = "a-label";
+  private static PathOwnersEntriesCache CACHE_MOCK = new PathOwnersEntriesCacheMock();
+
   public static final String CLASSIC_FILE_TXT = "classic/file.txt";
   public static final Project.NameKey parentRepository1NameKey =
       Project.NameKey.parse("parentRepository1");
@@ -74,7 +78,9 @@ public class PathOwnersTest extends ClassicConfig {
             emptyList(),
             branch,
             Set.of(CLASSIC_FILE_TXT),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
@@ -94,7 +100,9 @@ public class PathOwnersTest extends ClassicConfig {
             emptyList(),
             branch,
             Set.of(CLASSIC_FILE_TXT),
-            DO_NOT_EXPAND_GROUPS);
+            DO_NOT_EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
     Set<String> ownersSet = owners.getFileGroupOwners().get(CLASSIC_FILE_TXT);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A));
@@ -114,7 +122,9 @@ public class PathOwnersTest extends ClassicConfig {
             emptyList(),
             Optional.empty(),
             Set.of(CLASSIC_FILE_TXT),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(0, ownersSet.size());
   }
@@ -137,7 +147,9 @@ public class PathOwnersTest extends ClassicConfig {
             emptyList(),
             branch,
             Set.of("classic/file.txt"),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
     Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
@@ -174,7 +186,9 @@ public class PathOwnersTest extends ClassicConfig {
             emptyList(),
             branch,
             Set.of(fileName),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(1, fileOwners.size());
@@ -217,7 +231,9 @@ public class PathOwnersTest extends ClassicConfig {
             Arrays.asList(parentRepository1NameKey),
             branch,
             Set.of(fileName),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(fileOwners.size(), 1);
@@ -264,7 +280,9 @@ public class PathOwnersTest extends ClassicConfig {
             Arrays.asList(parentRepository1NameKey, parentRepository2NameKey),
             branch,
             Set.of(sqlFileName, javaFileName),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(fileOwners.size(), 2);
@@ -306,7 +324,9 @@ public class PathOwnersTest extends ClassicConfig {
             emptyList(),
             branch,
             Set.of("dir/subdir/file.txt"),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK);
     Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
 
     assertEquals(3, ownersSet.size());

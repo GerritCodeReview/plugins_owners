@@ -89,6 +89,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
 
   private final AutoAssignConfig cfg;
 
+  private final PathOwnersEntriesCache cache;
+
   @Inject
   public GitRefListener(
       GerritApi api,
@@ -100,7 +102,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoAssignConfig cfg) {
+      AutoAssignConfig cfg,
+      PathOwnersEntriesCache cache) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.projectCache = projectCache;
@@ -111,6 +114,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.currentUserProvider = currentUserProvider;
     this.notesFactory = notesFactory;
     this.cfg = cfg;
+    this.cache = cache;
   }
 
   @Override
@@ -235,7 +239,9 @@ public class GitRefListener implements GitReferenceUpdatedListener {
                 parentProjectsNameKeys,
                 cfg.isBranchDisabled(change.branch) ? Optional.empty() : Optional.of(change.branch),
                 patchList,
-                cfg.expandGroups());
+                cfg.expandGroups(),
+                projectNameKey.get(),
+                cache);
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());
