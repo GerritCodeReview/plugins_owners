@@ -35,7 +35,7 @@ import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
 import org.junit.Test;
 
-@TestPlugin(name = "owners", httpModule = "com.googlesource.gerrit.owners.OwnersRestApiModule")
+@TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
 @UseLocalDisk
 public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 

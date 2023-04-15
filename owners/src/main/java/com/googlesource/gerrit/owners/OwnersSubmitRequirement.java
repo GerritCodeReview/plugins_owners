@@ -48,6 +48,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 import java.io.IOException;
 import java.util.Arrays;
@@ -83,6 +84,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
   private final GitRepositoryManager repoManager;
   private final DiffOperations diffOperations;
   private final ApprovalsUtil approvalsUtil;
+  private final PathOwnersEntriesCache cache;
 
   @Inject
   OwnersSubmitRequirement(
@@ -92,7 +94,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
       Accounts accounts,
       GitRepositoryManager repoManager,
       DiffOperations diffOperations,
-      ApprovalsUtil approvalsUtil) {
+      ApprovalsUtil approvalsUtil,
+      PathOwnersEntriesCache cache) {
     this.metrics = metrics;
     this.pluginSettings = pluginSettings;
     this.projectCache = projectCache;
@@ -100,6 +103,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
     this.repoManager = repoManager;
     this.diffOperations = diffOperations;
     this.approvalsUtil = approvalsUtil;
+    this.cache = cache;
   }
 
   @Override
@@ -211,7 +215,9 @@ public class OwnersSubmitRequirement implements SubmitRule {
                 parents,
                 pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
                 getDiff(nameKey, cd.currentPatchSet().commitId()),
-                pluginSettings.expandGroups());
+                pluginSettings.expandGroups(),
+                nameKey.get(),
+                cache);
 
         return pathOwners;
       }
