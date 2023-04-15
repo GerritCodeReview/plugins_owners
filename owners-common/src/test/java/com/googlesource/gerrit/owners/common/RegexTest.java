@@ -158,7 +158,9 @@ public class RegexTest extends Config {
                 "project/bfile.txt", // no matching
                 "projectalfa", // matches PartialRegex
                 "project/file.sql"), // only .sql matching b,c
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            new PathOwnersEntriesCacheMock());
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -266,7 +268,9 @@ public class RegexTest extends Config {
             emptyList(),
             branch,
             Set.of("project/file.sql", "another.txt"),
-            EXPAND_GROUPS);
+            EXPAND_GROUPS,
+            "foo",
+            new PathOwnersEntriesCacheMock());
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");

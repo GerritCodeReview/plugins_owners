@@ -26,6 +26,7 @@ import com.google.gerrit.server.rules.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,7 +44,10 @@ public class OwnersStoredValues {
   public static StoredValue<PathOwners> PATH_OWNERS;
 
   public static synchronized void initialize(
-      Accounts accounts, PluginSettings settings, OwnersMetrics metrics) {
+      Accounts accounts,
+      PluginSettings settings,
+      PathOwnersEntriesCache cache,
+      OwnersMetrics metrics) {
     if (PATH_OWNERS != null) {
       return;
     }
@@ -72,7 +76,9 @@ public class OwnersStoredValues {
                   maybeParentProjectNameKey,
                   settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
                   patchList,
-                  settings.expandGroups());
+                  settings.expandGroups(),
+                  projectState.getName(),
+                  cache);
             }
           }
         };
