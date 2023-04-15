@@ -14,9 +14,11 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.cache.CacheModule;
+import com.google.gerrit.server.config.AllUsersName;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
@@ -46,15 +48,25 @@ public interface PathOwnersEntriesCache {
   @Singleton
   static class OwnersRefUpdateListener implements GitReferenceUpdatedListener {
     private final PathOwnersEntriesCache cache;
+    private final String allUsersName;
 
     @Inject
-    OwnersRefUpdateListener(PathOwnersEntriesCache cache) {
+    OwnersRefUpdateListener(PathOwnersEntriesCache cache, AllUsersName allUsersName) {
       this.cache = cache;
+      this.allUsersName = allUsersName.get();
     }
 
     @Override
     public void onGitReferenceUpdated(Event event) {
-      cache.invalidate(event.getProjectName(), event.getRefName());
+      if (supportedEvent(allUsersName, event)) {
+        cache.invalidate(event.getProjectName(), event.getRefName());
+      }
+    }
+
+    static boolean supportedEvent(String allUsersName, Event event) {
+      String refName = event.getRefName();
+      return !allUsersName.equals(event.getProjectName())
+          && (refName.startsWith(RefNames.REFS_HEADS) || refName.equals(RefNames.REFS_CONFIG));
     }
   }
 }
