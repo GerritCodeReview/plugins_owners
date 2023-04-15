@@ -4,6 +4,7 @@ load("//owners-common:common.bzl", "EXTERNAL_DEPS", "EXTERNAL_TEST_DEPS")
 load("//tools/bzl:junit.bzl", "junit_tests")
 
 PROLOG_PREDICATES = glob(["src/main/java/gerrit_owners/**/*.java"]) + [
+    "src/main/java/com/googlesource/gerrit/owners/OwnersMetrics.java",
     "src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java",
 ]
 

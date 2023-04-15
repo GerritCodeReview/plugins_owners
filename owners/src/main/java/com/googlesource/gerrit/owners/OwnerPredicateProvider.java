@@ -27,8 +27,8 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 @Listen
 public class OwnerPredicateProvider implements PredicateProvider {
   @Inject
-  public OwnerPredicateProvider(Accounts accounts, PluginSettings config) {
-    OwnersStoredValues.initialize(accounts, config);
+  public OwnerPredicateProvider(Accounts accounts, PluginSettings config, OwnersMetrics metrics) {
+    OwnersStoredValues.initialize(accounts, config, metrics);
   }
 
   @Override

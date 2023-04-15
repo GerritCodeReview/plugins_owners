@@ -17,6 +17,7 @@
 package com.googlesource.gerrit.owners;
 
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.metrics.Timer0;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import com.google.gerrit.server.project.ProjectState;
@@ -41,7 +42,8 @@ public class OwnersStoredValues {
 
   public static StoredValue<PathOwners> PATH_OWNERS;
 
-  public static synchronized void initialize(Accounts accounts, PluginSettings settings) {
+  public static synchronized void initialize(
+      Accounts accounts, PluginSettings settings, OwnersMetrics metrics) {
     if (PATH_OWNERS != null) {
       return;
     }
@@ -55,20 +57,23 @@ public class OwnersStoredValues {
             ProjectState projectState = StoredValues.PROJECT_STATE.get(engine);
             GitRepositoryManager gitRepositoryManager = StoredValues.REPO_MANAGER.get(engine);
 
-            List<Project.NameKey> maybeParentProjectNameKey =
-                Optional.ofNullable(projectState.getProject().getParent())
-                    .map(Arrays::asList)
-                    .orElse(Collections.emptyList());
+            metrics.countConfigLoads.increment();
+            try (Timer0.Context ctx = metrics.loadConfig.start()) {
+              List<Project.NameKey> maybeParentProjectNameKey =
+                  Optional.ofNullable(projectState.getProject().getParent())
+                      .map(Arrays::asList)
+                      .orElse(Collections.emptyList());
 
-            String branch = StoredValues.getChange(engine).getDest().branch();
-            return new PathOwners(
-                accounts,
-                gitRepositoryManager,
-                repository,
-                maybeParentProjectNameKey,
-                settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
-                patchList,
-                settings.expandGroups());
+              String branch = StoredValues.getChange(engine).getDest().branch();
+              return new PathOwners(
+                  accounts,
+                  gitRepositoryManager,
+                  repository,
+                  maybeParentProjectNameKey,
+                  settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
+                  patchList,
+                  settings.expandGroups());
+            }
           }
         };
   }
