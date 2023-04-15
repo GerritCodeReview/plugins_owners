@@ -36,6 +36,26 @@ Example:
   enableSubmitRequirement = true
 ```
 
+cache."owners.path_owners_entries".memoryLimit
+:   The cache is used to hold the parsed version of `OWNERS` files in the
+    repository so that when submit rules are calculated (either through prolog
+    or through submit requirements) it is not read over and over again. The
+    cache entry gets invalidated when `OWNERS` file branch is updated.
+    By default it follows default Gerrit's cache memory limit but it makes
+    sense to adjust it as a function of number of project that use the `owners`
+    plugin multiplied by average number of active branches (plus 1 for the
+    refs/meta/config) and average number of directories (as directory hierarchy
+    back to root is checked for the `OWNERS` file existence).
+    _Note that in opposite to the previous settings the modification needs to be
+    performed in the `$GERRIT_SITE/etc/gerrit.config` file._
+
+Example
+
+```
+[cache "owners.path_owners_entries"]
+  memoryLimit = 2048
+```
+
 ## Configuration
 
 Owner approval is determined based on OWNERS files located in the same

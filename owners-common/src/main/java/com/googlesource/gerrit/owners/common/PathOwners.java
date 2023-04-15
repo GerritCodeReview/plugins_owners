@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -99,7 +100,9 @@ public class PathOwners {
       List<Project.NameKey> parentProjectsNames,
       Optional<String> branchWhenEnabled,
       Map<String, FileDiffOutput> fileDiffMap,
-      boolean expandGroups) {
+      boolean expandGroups,
+      String project,
+      PathOwnersEntriesCache cache) {
     this(
         accounts,
         repositoryManager,
@@ -107,7 +110,9 @@ public class PathOwners {
         parentProjectsNames,
         branchWhenEnabled,
         getModifiedPaths(fileDiffMap),
-        expandGroups);
+        expandGroups,
+        project,
+        cache);
   }
 
   public PathOwners(
@@ -117,7 +122,9 @@ public class PathOwners {
       List<Project.NameKey> parentProjectsNames,
       Optional<String> branchWhenEnabled,
       DiffSummary diffSummary,
-      boolean expandGroups) {
+      boolean expandGroups,
+      String project,
+      PathOwnersEntriesCache cache) {
     this(
         accounts,
         repositoryManager,
@@ -125,7 +132,9 @@ public class PathOwners {
         parentProjectsNames,
         branchWhenEnabled,
         ImmutableSet.copyOf(diffSummary.getPaths()),
-        expandGroups);
+        expandGroups,
+        project,
+        cache);
   }
 
   public PathOwners(
@@ -135,7 +144,9 @@ public class PathOwners {
       List<Project.NameKey> parentProjectsNames,
       Optional<String> branchWhenEnabled,
       Set<String> modifiedPaths,
-      boolean expandGroups) {
+      boolean expandGroups,
+      String project,
+      PathOwnersEntriesCache cache) {
     this.repositoryManager = repositoryManager;
     this.repository = repository;
     this.parentProjectsNames = parentProjectsNames;
@@ -144,7 +155,10 @@ public class PathOwners {
     this.accounts = accounts;
     this.expandGroups = expandGroups;
 
-    OwnersMap map = branchWhenEnabled.map(branch -> fetchOwners(branch)).orElse(new OwnersMap());
+    OwnersMap map =
+        branchWhenEnabled
+            .map(branch -> fetchOwners(project, branch, cache))
+            .orElse(new OwnersMap());
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     reviewers = Multimaps.unmodifiableSetMultimap(map.getPathReviewers());
     matchers = map.getMatchers();
@@ -195,21 +209,29 @@ public class PathOwners {
    *
    * @return A structure containing matchers paths to owners
    */
-  private OwnersMap fetchOwners(String branch) {
+  private OwnersMap fetchOwners(String project, String branch, PathOwnersEntriesCache cache) {
     OwnersMap ownersMap = new OwnersMap();
     try {
       // Using a `map` would have needed a try/catch inside the lamba, resulting in more code
       List<PathOwnersEntry> parentsPathOwnersEntries =
-          getPathOwnersEntries(parentProjectsNames, RefNames.REFS_CONFIG);
-      PathOwnersEntry projectEntry = getPathOwnersEntry(repository, RefNames.REFS_CONFIG);
-      PathOwnersEntry rootEntry = getPathOwnersEntry(repository, branch);
+          getPathOwnersEntries(parentProjectsNames, RefNames.REFS_CONFIG, cache);
+      PathOwnersEntry projectEntry =
+          getPathOwnersEntry(project, repository, RefNames.REFS_CONFIG, cache);
+      PathOwnersEntry rootEntry = getPathOwnersEntry(project, repository, branch, cache);
 
       Map<String, PathOwnersEntry> entries = new HashMap<>();
       PathOwnersEntry currentEntry = null;
       for (String path : modifiedPaths) {
         currentEntry =
             resolvePathEntry(
-                path, branch, projectEntry, parentsPathOwnersEntries, rootEntry, entries);
+                project,
+                path,
+                branch,
+                projectEntry,
+                parentsPathOwnersEntries,
+                rootEntry,
+                entries,
+                cache);
 
         // add owners and reviewers to file for matcher predicates
         ownersMap.addFileOwners(path, currentEntry.getOwners());
@@ -239,38 +261,47 @@ public class PathOwners {
       }
       ownersMap.setLabel(Optional.ofNullable(currentEntry).flatMap(PathOwnersEntry::getLabel));
       return ownersMap;
-    } catch (IOException e) {
+    } catch (IOException | ExecutionException e) {
       log.warn("Invalid OWNERS file", e);
       return ownersMap;
     }
   }
 
   private List<PathOwnersEntry> getPathOwnersEntries(
-      List<Project.NameKey> projectNames, String branch) throws IOException {
+      List<Project.NameKey> projectNames, String branch, PathOwnersEntriesCache cache)
+      throws IOException, ExecutionException {
     ImmutableList.Builder<PathOwnersEntry> pathOwnersEntries = ImmutableList.builder();
     for (Project.NameKey projectName : projectNames) {
       try (Repository repo = repositoryManager.openRepository(projectName)) {
-        pathOwnersEntries = pathOwnersEntries.add(getPathOwnersEntry(repo, branch));
+        pathOwnersEntries =
+            pathOwnersEntries.add(getPathOwnersEntry(projectName.get(), repo, branch, cache));
       }
     }
     return pathOwnersEntries.build();
   }
 
-  private PathOwnersEntry getPathOwnersEntry(Repository repo, String branch) throws IOException {
+  private PathOwnersEntry getPathOwnersEntry(
+      String project, Repository repo, String branch, PathOwnersEntriesCache cache)
+      throws ExecutionException {
     String rootPath = "OWNERS";
-    return getOwnersConfig(repo, rootPath, branch)
-        .map(
-            conf ->
-                new PathOwnersEntry(
-                    rootPath,
-                    conf,
-                    accounts,
-                    Optional.empty(),
-                    Collections.emptySet(),
-                    Collections.emptySet(),
-                    Collections.emptySet(),
-                    Collections.emptySet()))
-        .orElse(new PathOwnersEntry());
+    return cache.get(
+        project,
+        branch,
+        rootPath,
+        () ->
+            getOwnersConfig(repo, rootPath, branch)
+                .map(
+                    conf ->
+                        new PathOwnersEntry(
+                            rootPath,
+                            conf,
+                            accounts,
+                            Optional.empty(),
+                            Collections.emptySet(),
+                            Collections.emptySet(),
+                            Collections.emptySet(),
+                            Collections.emptySet()))
+                .orElse(new PathOwnersEntry()));
   }
 
   private void processMatcherPerPath(
@@ -318,13 +349,15 @@ public class PathOwners {
   }
 
   private PathOwnersEntry resolvePathEntry(
+      String project,
       String path,
       String branch,
       PathOwnersEntry projectEntry,
       List<PathOwnersEntry> parentsPathOwnersEntries,
       PathOwnersEntry rootEntry,
-      Map<String, PathOwnersEntry> entries)
-      throws IOException {
+      Map<String, PathOwnersEntry> entries,
+      PathOwnersEntriesCache cache)
+      throws ExecutionException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
     StringBuilder builder = new StringBuilder();
@@ -349,25 +382,33 @@ public class PathOwners {
         currentEntry = entries.get(partial);
       } else {
         String ownersPath = partial + "OWNERS";
-        Optional<OwnersConfig> conf = getOwnersConfig(repository, ownersPath, branch);
-        Optional<LabelDefinition> label = currentEntry.getLabel();
-        final Set<Id> owners = currentEntry.getOwners();
-        final Set<Id> reviewers = currentEntry.getReviewers();
-        Collection<Matcher> inheritedMatchers = currentEntry.getMatchers().values();
-        Set<String> groupOwners = currentEntry.getGroupOwners();
+        PathOwnersEntry pathFallbackEntry = currentEntry;
         currentEntry =
-            conf.map(
-                    c ->
-                        new PathOwnersEntry(
-                            ownersPath,
-                            c,
-                            accounts,
-                            label,
-                            owners,
-                            reviewers,
-                            inheritedMatchers,
-                            groupOwners))
-                .orElse(currentEntry);
+            cache.get(
+                project,
+                branch,
+                ownersPath,
+                () ->
+                    getOwnersConfig(repository, ownersPath, branch)
+                        .map(
+                            c -> {
+                              Optional<LabelDefinition> label = pathFallbackEntry.getLabel();
+                              final Set<Id> owners = pathFallbackEntry.getOwners();
+                              final Set<Id> reviewers = pathFallbackEntry.getReviewers();
+                              Collection<Matcher> inheritedMatchers =
+                                  pathFallbackEntry.getMatchers().values();
+                              Set<String> groupOwners = pathFallbackEntry.getGroupOwners();
+                              return new PathOwnersEntry(
+                                  ownersPath,
+                                  c,
+                                  accounts,
+                                  label,
+                                  owners,
+                                  reviewers,
+                                  inheritedMatchers,
+                                  groupOwners);
+                            })
+                        .orElse(pathFallbackEntry));
         entries.put(partial, currentEntry);
       }
     }

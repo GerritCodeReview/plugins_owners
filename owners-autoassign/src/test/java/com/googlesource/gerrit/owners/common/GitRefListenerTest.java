@@ -27,10 +27,6 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.owners.common.Accounts;
-import com.googlesource.gerrit.owners.common.AutoAssignConfig;
-import com.googlesource.gerrit.owners.common.GitRefListener;
-import com.googlesource.gerrit.owners.common.ReviewerManager;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
 
@@ -50,7 +46,8 @@ public class GitRefListenerTest extends GitRefListener {
       OneOffRequestContext oneOffReqCtx,
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
-      AutoAssignConfig cfg) {
+      AutoAssignConfig cfg,
+      PathOwnersEntriesCache cache) {
     super(
         api,
         patchListCache,
@@ -61,7 +58,8 @@ public class GitRefListenerTest extends GitRefListener {
         oneOffReqCtx,
         currentUserProvider,
         notesFactory,
-        cfg);
+        cfg,
+        cache);
   }
 
   @Override
