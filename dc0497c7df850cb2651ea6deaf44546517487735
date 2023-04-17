@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0eaeb6e_cd5f0ac9",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-17T13:57:05Z",
+      "side": 1,
+      "message": "nit: is this needed?",
+      "revId": "dc0497c7df850cb2651ea6deaf44546517487735",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
