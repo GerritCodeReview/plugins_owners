@@ -16,6 +16,86 @@
       "message": "Verified both:\n* code format\n* tests\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 128.7s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 49.6s\n//plugins/owners-common:test                                             PASSED in 1.9s\n```",
       "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04620abc_3389a7e7",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-17T15:17:55Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we catch this at L#219 and eventually fallback to the non cached value?",
+      "range": {
+        "startLine": 264,
+        "startChar": 6,
+        "endLine": 265,
+        "endChar": 52
+      },
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8193428_75b36c23",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-17T15:17:55Z",
+      "side": 1,
+      "message": "Should we also consider implementing `GitBatchRefUpdateListener`?",
+      "range": {
+        "startLine": 47,
+        "startChar": 50,
+        "endLine": 47,
+        "endChar": 77
+      },
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44abc333_eca74cf3",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-17T15:17:55Z",
+      "side": 1,
+      "message": "Am I missing something or we need to make sure that `com.googlesource.gerrit.owners.common.GitRefListener#onGitReferenceUpdated` is called after `PathOwnersEntriesCache.onGitReferenceUpdated`?\n\nIf so, how can we do that? Maybe I am just not getting how all the pieces fit together.",
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b2f2470_d9270c9b",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-17T15:17:55Z",
+      "side": 1,
+      "message": "Should we add one test to show we are actually  hitting the cache?",
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
