@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2da4f5a4_a4de487c",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-17T13:53:56Z",
+      "side": 1,
+      "message": "Once 3.5 won\u0027t be maintained anymore this will be redundant. Might be wort adding a comment specifying this is only needed for 3.5 and can be removed later on.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 3
+      },
+      "revId": "be3fc14b0815aec4c74b97deab2920e4d591b5f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
