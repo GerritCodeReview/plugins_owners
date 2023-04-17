@@ -16,6 +16,29 @@
       "message": "Good stuff!",
       "revId": "b066b782bfcc7dac09829708870373451a4520bf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6186a5ad_a3ad160e",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersMetricsIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-17T14:04:19Z",
+      "side": 1,
+      "message": "```suggestion\n    // one needs to at least create the OWNERS file to have metrics emitted\n```",
+      "range": {
+        "startLine": 39,
+        "startChar": 29,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "b066b782bfcc7dac09829708870373451a4520bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
