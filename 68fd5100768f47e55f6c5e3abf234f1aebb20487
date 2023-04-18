@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eedec84_1aecee42",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-04-18T11:13:31Z",
+      "side": 1,
+      "message": "Why not private and why static?",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 11
+      },
+      "revId": "68fd5100768f47e55f6c5e3abf234f1aebb20487",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
