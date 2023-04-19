@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a6c5c02_c1dd7595",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-19T07:55:06Z",
+      "side": 1,
+      "message": "The exception is thrown by the `cache.get(...)`, not from the `getPathOwnersEntry`.\n\nHence we could be successful going to disk. This is what I meant:\n\n```java\n\nPathOwnersEntry projectEntry;\ntry {\n  projectEntry \u003d cache.get(\n              project,\n              RefNames.REFS_CONFIG,\n              () -\u003e getPathOwnersEntry(repository, RefNames.REFS_CONFIG));\n} catch (ExecutionException e) {\n  projectEntry \u003d getPathOwnersEntry(repository, RefNames.REFS_CONFIG);     \n}\n\n```",
+      "parentUuid": "f9871efd_a32756a7",
+      "range": {
+        "startLine": 264,
+        "startChar": 6,
+        "endLine": 265,
+        "endChar": 52
+      },
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8193428_75b36c23",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
         "patchSetId": 1
@@ -143,6 +167,24 @@
       "side": 1,
       "message": "You mean the new value is loaded? Nah, let\u0027s do that only when/if the new value is needed. If this is not what you meant please add more context.",
       "parentUuid": "44abc333_eca74cf3",
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aba44db_ce5c7e48",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-19T07:55:06Z",
+      "side": 1,
+      "message": "What I meant is here we are invalidating the cache, while in `com.googlesource.gerrit.owners.common.GitRefListener` we are now propagating the `PathOwnersEntriesCache` to the `PathOwners`.\n\n`PathOwners` will try to read from the cache, or recompute the `PathOwnersEntry` if no entries were present in the cache.\n\nIf `PathOwners` access the cache before it is invalidated, we might get a stale value. Could this be a problem?",
+      "parentUuid": "92644c1f_a9985c42",
       "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
