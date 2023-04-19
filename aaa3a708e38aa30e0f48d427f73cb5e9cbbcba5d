@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92b9bdee_036d4e2a",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-04-19T06:09:23Z",
+      "side": 1,
+      "message": "Missing path to get the owners content from.",
+      "revId": "aaa3a708e38aa30e0f48d427f73cb5e9cbbcba5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
