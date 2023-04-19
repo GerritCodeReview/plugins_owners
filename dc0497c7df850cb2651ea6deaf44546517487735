@@ -16,6 +16,24 @@
       "message": "nit: is this needed?",
       "revId": "dc0497c7df850cb2651ea6deaf44546517487735",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a461a04a_d3bcc5d2",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-04-19T06:07:52Z",
+      "side": 1,
+      "message": "IMHO getting `uploader` is neither part of getting labels nor approvals hence it landed in its own _paragraph_ ;)",
+      "parentUuid": "a0eaeb6e_cd5f0ac9",
+      "revId": "dc0497c7df850cb2651ea6deaf44546517487735",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
