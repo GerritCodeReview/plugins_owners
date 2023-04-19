@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9871efd_a32756a7",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-04-19T06:07:52Z",
+      "side": 1,
+      "message": "Tempting 😊 but IMHO it will not help too much as it will be thrown, per-documentation, when:\n\n\u003e @throws ExecutionException if a checked exception was thrown while loading the value\n\nIOW loading value already failed so trying to load it again... not sure if it would help, WDYT?",
+      "parentUuid": "04620abc_3389a7e7",
+      "range": {
+        "startLine": 264,
+        "startChar": 6,
+        "endLine": 265,
+        "endChar": 52
+      },
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8193428_75b36c23",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2023-04-17T15:17:55Z",
       "side": 1,
       "message": "Should we also consider implementing `GitBatchRefUpdateListener`?",
+      "range": {
+        "startLine": 47,
+        "startChar": 50,
+        "endLine": 47,
+        "endChar": 77
+      },
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85c1ed72_d85c04cd",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-04-19T06:07:52Z",
+      "side": 1,
+      "message": "Good point on `stable-3.6` onwards. I have added a bullet to the ticket related to the merge to `stable-3.6`",
+      "parentUuid": "b8193428_75b36c23",
       "range": {
         "startLine": 47,
         "startChar": 50,
@@ -83,6 +131,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92644c1f_a9985c42",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-04-19T06:07:52Z",
+      "side": 1,
+      "message": "You mean the new value is loaded? Nah, let\u0027s do that only when/if the new value is needed. If this is not what you meant please add more context.",
+      "parentUuid": "44abc333_eca74cf3",
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b2f2470_d9270c9b",
         "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
         "patchSetId": 1
@@ -94,6 +160,24 @@
       "writtenOn": "2023-04-17T15:17:55Z",
       "side": 1,
       "message": "Should we add one test to show we are actually  hitting the cache?",
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd98b3c8_2daebc71",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-04-19T06:07:52Z",
+      "side": 1,
+      "message": "That was actually great catch... as I have detected that I haven\u0027t added caching to all paths...",
+      "parentUuid": "6b2f2470_d9270c9b",
       "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
