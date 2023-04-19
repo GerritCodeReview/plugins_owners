@@ -22,6 +22,30 @@
       },
       "revId": "68fd5100768f47e55f6c5e3abf234f1aebb20487",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "078fc616_1d128098",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-04-19T06:07:52Z",
+      "side": 1,
+      "message": "I have added unit test that verifies its functionality in isolation but I\u0027m open for suggestions 😊",
+      "parentUuid": "6eedec84_1aecee42",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 11
+      },
+      "revId": "68fd5100768f47e55f6c5e3abf234f1aebb20487",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
