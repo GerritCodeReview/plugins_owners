@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
  * <p>Used internally by PathOwners to represent and compute the owners at a specific path.
  */
 class PathOwnersEntry {
+  static final PathOwnersEntry EMPTY = new PathOwnersEntry();
+
   private final boolean inherited;
   private Optional<LabelDefinition> label;
   private Set<Account.Id> owners = Sets.newHashSet();

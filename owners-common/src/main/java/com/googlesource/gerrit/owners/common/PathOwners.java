@@ -301,7 +301,7 @@ public class PathOwners {
                             Collections.emptySet(),
                             Collections.emptySet(),
                             Collections.emptySet()))
-                .orElse(new PathOwnersEntry()));
+                .orElse(PathOwnersEntry.EMPTY));
   }
 
   private void processMatcherPerPath(
