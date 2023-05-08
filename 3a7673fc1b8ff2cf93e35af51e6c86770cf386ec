@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fe5c8fb_690a35c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-05-08T13:37:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2881b628_90488c79",
+      "range": {
+        "startLine": 9,
+        "startChar": 19,
+        "endLine": 9,
+        "endChar": 26
+      },
+      "revId": "3a7673fc1b8ff2cf93e35af51e6c86770cf386ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00361275_7686ef81",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-04-21T10:17:37Z",
       "side": 1,
       "message": "Nit: we make use of `static`, `public`, and `final` in this interface. Note that these are redundant and could be removed (as [1] explains).\n\n[1] https://stackoverflow.com/a/17011419",
+      "revId": "3a7673fc1b8ff2cf93e35af51e6c86770cf386ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47488d58_4c483007",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-05-08T13:37:29Z",
+      "side": 1,
+      "message": "Correct. It was a class for a short period of time hence the leftovers.",
+      "parentUuid": "00361275_7686ef81",
       "revId": "3a7673fc1b8ff2cf93e35af51e6c86770cf386ec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
