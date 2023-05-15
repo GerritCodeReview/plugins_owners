@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ceaf2ae_f79a29d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-05-15T12:55:35Z",
+      "side": 1,
+      "message": "@luca is this still a WIP or it is ready for review?\n\nCan you add a test for it?",
+      "revId": "53f6b0352867164375335952e3be74ffd90e651d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
