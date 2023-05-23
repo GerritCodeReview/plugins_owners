@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae750586_a0f366db",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-23T22:52:47Z",
+      "side": 1,
+      "message": "That\u0027s not necessarily true: you may have non-standard refs (e.g. `refs/sandbox/foo`) and still require to have OWNERS cache eviction working.",
+      "range": {
+        "startLine": 75,
+        "startChar": 13,
+        "endLine": 75,
+        "endChar": 53
+      },
+      "revId": "8c97d1571ba894b70999920bd9b771eb5fb2821c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
