@@ -16,6 +16,23 @@
       "message": "Verified both:\n* code format\n* tests\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 136.2s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 47.1s\n//plugins/owners-common:test                                             PASSED in 1.7s\n```",
       "revId": "10321061a83e88ca3cdc0455cdcb633d457e1fe2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c4fcfeb_7fb6c695",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-23T22:50:56Z",
+      "side": 1,
+      "message": "SGTM, happy to merge once the missing tests are covered.",
+      "revId": "10321061a83e88ca3cdc0455cdcb633d457e1fe2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

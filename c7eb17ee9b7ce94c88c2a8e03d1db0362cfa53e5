@@ -113,6 +113,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd0f0b98_6cbb6df6",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-23T22:50:56Z",
+      "side": 1,
+      "message": "Agreed with @geminica.programs@gmail.com, the ExecutionException is when the loader failed. Calling the loader again won\u0027t help.",
+      "parentUuid": "f3695fa5_1e76ac86",
+      "range": {
+        "startLine": 264,
+        "startChar": 6,
+        "endLine": 265,
+        "endChar": 52
+      },
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8193428_75b36c23",
@@ -209,6 +233,24 @@
       "side": 1,
       "message": "What I meant is here we are invalidating the cache, while in `com.googlesource.gerrit.owners.common.GitRefListener` we are now propagating the `PathOwnersEntriesCache` to the `PathOwners`.\n\n`PathOwners` will try to read from the cache, or recompute the `PathOwnersEntry` if no entries were present in the cache.\n\nIf `PathOwners` access the cache before it is invalidated, we might get a stale value. Could this be a problem?",
       "parentUuid": "92644c1f_a9985c42",
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9c7b4f9_ab4b4b3f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-23T22:50:56Z",
+      "side": 1,
+      "message": "The only situation where we would have problems is then the ref-update of the OWNERS file is also creating or updating a change, which is clearly impossible.",
+      "parentUuid": "2aba44db_ce5c7e48",
       "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
