@@ -167,14 +167,14 @@ public class OwnersSubmitRequirement implements SubmitRule {
           String.format(
               "Project '%s': repository cannot be opened to evaluate OWNERS submit requirements.",
               project);
-      logger.atSevere().withCause(e).log(msg);
+      logger.atSevere().withCause(e).log("%s", msg);
       throw new IllegalStateException(msg, e);
     } catch (DiffNotAvailableException e) {
       String msg =
           String.format(
               "Project '%s' change #%d: unable to get diff to evaluate OWNERS submit requirements.",
               project, changeId);
-      logger.atSevere().withCause(e).log(msg);
+      logger.atSevere().withCause(e).log("%s", msg);
       throw new IllegalStateException(msg, e);
     }
   }
