@@ -33,6 +33,24 @@
       "message": "SGTM, happy to merge once the missing tests are covered.",
       "revId": "10321061a83e88ca3cdc0455cdcb633d457e1fe2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f000034a_ea579631",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-05-25T08:10:01Z",
+      "side": 1,
+      "message": "@luca the cache hits (with hierarchy) are covered in the unit tests `com.googlesource.gerrit.owners.common.PathOwnersTest.testPathOwnersEntriesCacheIsCalled`",
+      "parentUuid": "5c4fcfeb_7fb6c695",
+      "revId": "10321061a83e88ca3cdc0455cdcb633d457e1fe2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

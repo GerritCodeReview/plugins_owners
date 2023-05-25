@@ -288,6 +288,24 @@
       "parentUuid": "6b2f2470_d9270c9b",
       "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f03b97d_141f97b6",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-05-25T08:10:01Z",
+      "side": 1,
+      "message": "The test case that verifies the cache\u0027s hit for:\nrepo\u0027s `refs/meta/config` and destination branch dirs as well as parent\u0027s `refs/meta/config` was added - see `testPathOwnersEntriesCacheIsCalled`",
+      "parentUuid": "dd98b3c8_2daebc71",
+      "revId": "c7eb17ee9b7ce94c88c2a8e03d1db0362cfa53e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
