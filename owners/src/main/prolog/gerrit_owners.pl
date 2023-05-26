@@ -38,8 +38,8 @@ add_owner_approval(Users, In, Out) :-
 add_owner_approval(_, In, Out) :- In = Out.
 
 owner_approved(Path) :-
-  owner(Path, User),
-  gerrit:commit_label(label('Code-Review', 2), User),
+  owner(Path, user(US)),
+  code_review_user(US),
   !.
 
 owner_approved(Users, Path) :-
