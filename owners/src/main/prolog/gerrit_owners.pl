@@ -57,9 +57,6 @@ findall_match_file_user(FileAndUser) :-
     findall(US,code_review_user(US),Approvers),
     matcher_needed(Approvers,F,FileAndUser).
 
-code_review_user(U) :-
-    gerrit:commit_label(label('Code-Review', 2), user(U)).
-
 % this loops over all the paths and if for any
 % we have some labels generated then add a single
 % Owner-Code-Review need to block submit button
