@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e1766e5_0764a899",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-26T07:57:28Z",
+      "side": 1,
+      "message": "Just a small nit / preference: feel free to address or not depending on your coding style :-)",
+      "revId": "66e7024363c2afc68bd3069cbe97aeec07b25fc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f88eef8e_34ab3e52",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCache.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-26T07:57:28Z",
+      "side": 1,
+      "message": "Seems a bit weird to me that the Key is part of the implementation and not its definition.",
+      "range": {
+        "startLine": 36,
+        "startChar": 26,
+        "endLine": 36,
+        "endChar": 52
+      },
+      "revId": "66e7024363c2afc68bd3069cbe97aeec07b25fc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
