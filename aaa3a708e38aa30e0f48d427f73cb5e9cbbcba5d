@@ -16,6 +16,24 @@
       "message": "Missing path to get the owners content from.",
       "revId": "aaa3a708e38aa30e0f48d427f73cb5e9cbbcba5d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c289b05_fcc3ed0c",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-05-26T04:51:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92b9bdee_036d4e2a",
+      "revId": "aaa3a708e38aa30e0f48d427f73cb5e9cbbcba5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
