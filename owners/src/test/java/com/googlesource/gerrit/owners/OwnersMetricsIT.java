@@ -22,6 +22,7 @@ import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
+import com.google.gerrit.entities.RefNames;
 import com.google.inject.Inject;
 import org.junit.Test;
 
@@ -56,13 +57,14 @@ public class OwnersMetricsIT extends LightweightPluginDaemonTest {
     // inherited: true
     // owners:
     // - u.email()
-    merge(
-        createChange(
+    pushFactory
+        .create(
+            admin.newIdent(),
             testRepo,
-            "master",
             "Add OWNER file",
             "OWNERS",
-            String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()),
-            ""));
+            String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()))
+        .to(RefNames.fullName("master"))
+        .assertOkStatus();
   }
 }

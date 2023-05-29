@@ -411,20 +411,14 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     //   - u1.email()
     //   - ...
     //   - uN.email()
-    merge(
-        createChange(
-            testRepo,
-            "master",
-            "Add OWNER file",
-            "OWNERS",
-            String.format(
-                "inherited: %s\nmatchers:\n" + "- suffix: %s\n  owners:\n%s",
-                inherit,
-                extension,
-                Stream.of(users)
-                    .map(user -> String.format("   - %s\n", user.email()))
-                    .collect(joining())),
-            ""));
+    pushOwnersToMaster(
+        String.format(
+            "inherited: %s\nmatchers:\n" + "- suffix: %s\n  owners:\n%s",
+            inherit,
+            extension,
+            Stream.of(users)
+                .map(user -> String.format("   - %s\n", user.email()))
+                .collect(joining())));
   }
 
   private void addOwnerFileToRoot(boolean inherit, TestAccount u) throws Exception {
@@ -433,14 +427,7 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     // inherited: true
     // owners:
     // - u.email()
-    merge(
-        createChange(
-            testRepo,
-            "master",
-            "Add OWNER file",
-            "OWNERS",
-            String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()),
-            ""));
+    pushOwnersToMaster(String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()));
   }
 
   protected void addOwnerFileToRoot(boolean inherit, LabelDefinition label, TestAccount u)
@@ -451,20 +438,21 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     // label: label,score # score is optional
     // owners:
     // - u.email()
-    merge(
-        createChange(
-            testRepo,
-            "master",
-            "Add OWNER file",
-            "OWNERS",
+    pushOwnersToMaster(
+        String.format(
+            "inherited: %s\nlabel: %s\nowners:\n- %s\n",
+            inherit,
             String.format(
-                "inherited: %s\nlabel: %s\nowners:\n- %s\n",
-                inherit,
-                String.format(
-                    "%s%s",
-                    label.getName(),
-                    label.getScore().map(value -> String.format(",%d", value)).orElse("")),
-                u.email()),
-            ""));
+                "%s%s",
+                label.getName(),
+                label.getScore().map(value -> String.format(",%d", value)).orElse("")),
+            u.email()));
+  }
+
+  private void pushOwnersToMaster(String owners) throws Exception {
+    pushFactory
+        .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
+        .to(RefNames.fullName("master"))
+        .assertOkStatus();
   }
 }
