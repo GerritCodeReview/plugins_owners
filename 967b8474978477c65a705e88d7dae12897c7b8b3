@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "02494f26_39a79978",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-31T21:44:13Z",
+      "side": 1,
+      "message": "Nevermind, found it :-)",
+      "parentUuid": "6c69d85c_f8d3966a",
+      "range": {
+        "startLine": 11,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "967b8474978477c65a705e88d7dae12897c7b8b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "082e736d_a55f5906",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
