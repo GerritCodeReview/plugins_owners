@@ -16,6 +16,23 @@
       "message": "Verified with\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 122.9s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 47.0s\n//plugins/owners-common:test                                             PASSED in 2.5s\n```",
       "revId": "499bbee328419bbe4a246da241aa7f9436a2658e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ec44ac8_b5da80e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-31T06:49:37Z",
+      "side": 1,
+      "message": "Would it be possible to add a test for that?",
+      "revId": "499bbee328419bbe4a246da241aa7f9436a2658e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
