@@ -37,6 +37,7 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.patch.DiffNotAvailableException;
 import com.google.gerrit.server.patch.DiffOperations;
+import com.google.gerrit.server.patch.DiffOptions;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.project.ProjectState;
@@ -348,7 +349,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
     // For merge commits the default base is the auto-merge commit which should be used as base IOW
     // only the changes from it should be reviewed as changes against the parent 1 were already
     // reviewed
-    return diffOperations.listModifiedFilesAgainstParent(project, revision, 0);
+    return diffOperations.listModifiedFilesAgainstParent(
+        project, revision, 0, DiffOptions.DEFAULTS);
   }
 
   private static SubmitRecord notReady(String ownersLabel, String missingApprovals) {

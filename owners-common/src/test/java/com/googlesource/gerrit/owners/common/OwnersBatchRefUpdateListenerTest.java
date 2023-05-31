@@ -14,44 +14,55 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
+import com.google.gerrit.extensions.events.GitBatchRefUpdateListener;
 import com.google.gerrit.server.config.AllProjectsNameProvider;
 import com.google.gerrit.server.config.AllUsersName;
 import com.google.gerrit.server.config.AllUsersNameProvider;
 import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache.OwnersRefUpdateListener;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 @RunWith(Parameterized.class)
-public class OwnersRefUpdateListenerTest {
+public class OwnersBatchRefUpdateListenerTest {
   @Parameterized.Parameters
   public static Collection<Object[]> events() {
     return Arrays.asList(
         new Object[][] {
-          {mockEvent(ALL_USERS_NAME.get(), null), 0},
+          {mockEvent(ALL_USERS_NAME.get(), RefNames.REFS_CONFIG), 0},
           {mockEvent(AllProjectsNameProvider.DEFAULT, RefNames.REFS_CHANGES), 0},
           {mockEvent(AllProjectsNameProvider.DEFAULT, RefNames.REFS_SEQUENCES), 0},
           {mockEvent(AllProjectsNameProvider.DEFAULT, RefNames.REFS_CONFIG), 1},
+          {
+            mockEvent(
+                AllProjectsNameProvider.DEFAULT, RefNames.REFS_CONFIG, RefNames.REFS_SEQUENCES),
+            1
+          },
           {mockEvent("foo", RefNames.fullName("bar")), 1},
-          {mockEvent("foo", RefNames.REFS_CONFIG), 1}
+          {mockEvent("foo", RefNames.REFS_CONFIG), 1},
+          {mockEvent("foo", RefNames.REFS_CONFIG, RefNames.fullName("bar")), 2}
         });
   }
 
   private static AllUsersName ALL_USERS_NAME = new AllUsersName(AllUsersNameProvider.DEFAULT);
 
-  private final GitReferenceUpdatedListener.Event input;
+  private final GitBatchRefUpdateListener.Event input;
   private final int expectedTimes;
 
-  public OwnersRefUpdateListenerTest(GitReferenceUpdatedListener.Event input, int expectedTimes) {
+  public OwnersBatchRefUpdateListenerTest(
+      GitBatchRefUpdateListener.Event input, int expectedTimes) {
     this.input = input;
     this.expectedTimes = expectedTimes;
   }
@@ -63,16 +74,26 @@ public class OwnersRefUpdateListenerTest {
     OwnersRefUpdateListener listener = new OwnersRefUpdateListener(cachMock, ALL_USERS_NAME);
 
     // when
-    listener.onGitReferenceUpdated(input);
+    listener.onGitBatchRefUpdate(input);
 
     // then
-    verify(cachMock, times(expectedTimes)).invalidate(input.getProjectName(), input.getRefName());
+    verify(cachMock, times(expectedTimes)).invalidate(anyString(), anyString());
   }
 
-  private static GitReferenceUpdatedListener.Event mockEvent(String project, String ref) {
-    GitReferenceUpdatedListener.Event eventMock = mock(GitReferenceUpdatedListener.Event.class);
+  private static GitBatchRefUpdateListener.Event mockEvent(String project, String... refs) {
+    GitBatchRefUpdateListener.Event eventMock = mock(GitBatchRefUpdateListener.Event.class);
     when(eventMock.getProjectName()).thenReturn(project);
-    when(eventMock.getRefName()).thenReturn(ref);
+    Set<GitBatchRefUpdateListener.UpdatedRef> updatedRefs =
+        Stream.of(refs)
+            .map(
+                ref -> {
+                  GitBatchRefUpdateListener.UpdatedRef updatedRef =
+                      mock(GitBatchRefUpdateListener.UpdatedRef.class);
+                  when(updatedRef.getRefName()).thenReturn(ref);
+                  return updatedRef;
+                })
+            .collect(Collectors.toSet());
+    when(eventMock.getUpdatedRefs()).thenReturn(updatedRefs);
     return eventMock;
   }
 }

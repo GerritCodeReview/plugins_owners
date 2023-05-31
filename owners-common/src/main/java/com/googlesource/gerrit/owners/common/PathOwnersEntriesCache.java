@@ -17,6 +17,7 @@ package com.googlesource.gerrit.owners.common;
 import com.google.common.cache.RemovalNotification;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.events.GitBatchRefUpdateListener;
 import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.cache.CacheModule;
@@ -103,7 +104,7 @@ public interface PathOwnersEntriesCache {
   }
 
   @Singleton
-  class OwnersRefUpdateListener implements GitReferenceUpdatedListener {
+  class OwnersRefUpdateListener implements GitReferenceUpdatedListener, GitBatchRefUpdateListener {
     private final PathOwnersEntriesCache cache;
     private final String allUsersName;
 
@@ -114,16 +115,26 @@ public interface PathOwnersEntriesCache {
     }
 
     @Override
-    public void onGitReferenceUpdated(Event event) {
-      if (supportedEvent(allUsersName, event)) {
-        cache.invalidate(event.getProjectName(), event.getRefName());
+    public void onGitReferenceUpdated(GitReferenceUpdatedListener.Event event) {
+      String projectName = event.getProjectName();
+      String refName = event.getRefName();
+      if (!allUsersName.equals(projectName) && supportedEvent(refName)) {
+        cache.invalidate(projectName, refName);
       }
     }
 
-    static boolean supportedEvent(String allUsersName, Event event) {
-      String refName = event.getRefName();
-      return !allUsersName.equals(event.getProjectName())
-          && (refName.equals(RefNames.REFS_CONFIG) || !RefNames.isGerritRef(refName));
+    @Override
+    public void onGitBatchRefUpdate(GitBatchRefUpdateListener.Event event) {
+      String projectName = event.getProjectName();
+      if (!allUsersName.equals(projectName)) {
+        event.getUpdatedRefs().stream()
+            .filter(refUpdate -> supportedEvent(refUpdate.getRefName()))
+            .forEach(refUpdate -> cache.invalidate(projectName, refUpdate.getRefName()));
+      }
+    }
+
+    private boolean supportedEvent(String refName) {
+      return (refName.equals(RefNames.REFS_CONFIG) || !RefNames.isGerritRef(refName));
     }
   }
 

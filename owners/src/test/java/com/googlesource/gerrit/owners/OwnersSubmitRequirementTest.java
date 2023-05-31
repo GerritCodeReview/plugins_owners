@@ -38,7 +38,6 @@ import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
 import com.googlesource.gerrit.owners.OwnersSubmitRequirement.LabelAndScore;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
@@ -456,7 +455,7 @@ public class OwnersSubmitRequirementTest {
   private static final PatchSetApproval approvedBy(Account.Id approving, String label, int value) {
     return PatchSetApproval.builder()
         .key(PatchSetApproval.key(mock(PatchSet.Id.class), approving, LabelId.create(label)))
-        .granted(Timestamp.from(Instant.now()))
+        .granted(Instant.now())
         .realAccountId(approving)
         .value(value)
         .build();
