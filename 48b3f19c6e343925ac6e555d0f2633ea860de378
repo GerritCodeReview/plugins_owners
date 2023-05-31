@@ -22,6 +22,30 @@
       },
       "revId": "48b3f19c6e343925ac6e555d0f2633ea860de378",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0677dd36_04e93d0a",
+        "filename": "owners/src/main/prolog/gerrit_owners.pl",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-31T10:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7324f480_49efe088",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 25
+      },
+      "revId": "48b3f19c6e343925ac6e555d0f2633ea860de378",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
