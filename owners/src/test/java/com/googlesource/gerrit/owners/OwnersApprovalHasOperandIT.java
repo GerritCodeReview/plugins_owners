@@ -30,29 +30,13 @@ import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.SubmitRequirementResultInfo;
 import com.google.gerrit.extensions.common.SubmitRequirementResultInfo.Status;
-import com.google.gerrit.server.experiments.ExperimentFeaturesConstants;
-import com.google.gerrit.testing.ConfigSuite;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import java.util.Collection;
-import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
 
 public class OwnersApprovalHasOperandIT extends OwnersSubmitRequirementIT {
   private static final String REQUIREMENT_NAME = "Owner-Approval";
-
-  // This configuration is needed on 3.5 only and should be removed during/after the merge to
-  // stable-3.6 as it is enabled there by default.
-  @ConfigSuite.Default
-  public static Config defaultConfig() {
-    Config cfg = new Config();
-    cfg.setString(
-        "experiments",
-        null,
-        "enabled",
-        ExperimentFeaturesConstants.GERRIT_BACKEND_REQUEST_FEATURE_ENABLE_SUBMIT_REQUIREMENTS);
-    return cfg;
-  }
 
   @Before
   public void setup() throws Exception {
