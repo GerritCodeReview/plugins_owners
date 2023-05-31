@@ -43,7 +43,7 @@ class OwnersApprovalHasPredicate extends SubmitRequirementPredicate {
   @Override
   public boolean match(ChangeData cd) {
     Optional<SubmitRecord> submitRecord = ownersSubmitRequirement.evaluate(cd);
-    return submitRecord.map(sr -> sr.status == SubmitRecord.Status.OK).orElse(false);
+    return submitRecord.map(sr -> sr.status == SubmitRecord.Status.OK).orElse(true);
   }
 
   /**
