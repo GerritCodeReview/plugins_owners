@@ -33,6 +33,24 @@
       "message": "Would it be possible to add a test for that?",
       "revId": "499bbee328419bbe4a246da241aa7f9436a2658e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "121b98d6_a6e46c17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-05-31T07:00:08Z",
+      "side": 1,
+      "message": "we have IT test for that but it fails on `stable-3.6+` as in `stable-3.5` it is still experimental 😊\nThis https://gerrit.googlesource.com/plugins/owners/+/refs/heads/stable-3.5/owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java#107 fails when called from https://gerrit.googlesource.com/plugins/owners/+/refs/heads/stable-3.5/owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java (the latter derives and configures submit requirement) and if you look at the test in question it shouldn\u0027t fail as path in test is not a subject of `OWNERS` configuration.\n\nSo my take would be to `fix` it (`stable-3.5` can\u0027t leverage on it anyway) for `stable-3.5` and actually use it/test it on `stable-3.6` along with other changes that are necessary for it, WDYT?",
+      "parentUuid": "0ec44ac8_b5da80e8",
+      "revId": "499bbee328419bbe4a246da241aa7f9436a2658e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
