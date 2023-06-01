@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
@@ -116,6 +117,21 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 
   @Test
   @UseLocalDisk
+  public void shouldReflectChangesInParentProject() throws Exception {
+    addOwnerFileToProjectConfig(allProjects, true, admin);
+
+    String changeId = createChange().getChangeId();
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+    assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(rootOwner));
+
+    addOwnerFileToProjectConfig(allProjects, true, user);
+    resp = assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+    assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(projectOwner));
+  }
+
+  @Test
+  @UseLocalDisk
   public void shouldNotReturnInheritedOwnersFromProjectsOwners() throws Exception {
     assertNotInheritFromProject(project);
   }
@@ -157,6 +173,11 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 
   private void addOwnerFileToProjectConfig(Project.NameKey projectNameKey, boolean inherit)
       throws Exception {
+    addOwnerFileToProjectConfig(projectNameKey, inherit, user);
+  }
+
+  private void addOwnerFileToProjectConfig(
+      Project.NameKey projectNameKey, boolean inherit, TestAccount account) throws Exception {
     TestRepository<InMemoryRepository> project = cloneProject(projectNameKey);
     GitUtil.fetch(project, RefNames.REFS_CONFIG + ":" + RefNames.REFS_CONFIG);
     project.reset(RefNames.REFS_CONFIG);
@@ -168,7 +189,7 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
             "OWNERS",
             String.format(
                 "inherited: %s\nmatchers:\n" + "- suffix: .txt\n  owners:\n   - %s\n",
-                inherit, user.email()))
+                inherit, account.email()))
         .to(RefNames.REFS_CONFIG);
   }
 

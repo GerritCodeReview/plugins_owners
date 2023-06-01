@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import org.junit.Ignore;
@@ -30,8 +31,8 @@ public class PathOwnersEntriesCacheMock implements PathOwnersEntriesCache {
   public void invalidateIndexKey(Key key) {}
 
   @Override
-  public PathOwnersEntry get(
-      String project, String branch, String path, Callable<PathOwnersEntry> loader)
+  public Optional<OwnersConfig> get(
+      String project, String branch, String path, Callable<Optional<OwnersConfig>> loader)
       throws ExecutionException {
     try {
       hit++;
