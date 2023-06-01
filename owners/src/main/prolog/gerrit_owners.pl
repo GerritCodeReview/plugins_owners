@@ -38,8 +38,8 @@ add_owner_approval(Users, In, Out) :-
 add_owner_approval(_, In, Out) :- In = Out.
 
 owner_approved(Path) :-
-  owner(Path, User),
-  gerrit:commit_label(label('Code-Review', 2), User),
+  owner(Path, user(US)),
+  code_review_user(US),
   !.
 
 owner_approved(Users, Path) :-
@@ -55,9 +55,6 @@ findall_match_file_user(FileAndUser) :-
     matcher_path(F),
     findall(US,code_review_user(US),Approvers),
     matcher_needed(Approvers,F,FileAndUser).
-
-code_review_user(U) :-
-    gerrit:commit_label(label('Code-Review', 2), user(U)).
 
 % this loops over all the paths and if for any
 % we have some labels generated then add a single
