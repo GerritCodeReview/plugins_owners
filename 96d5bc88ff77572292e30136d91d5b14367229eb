@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916db186_95b85f63",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-01T04:58:09Z",
+      "side": 0,
+      "message": "@luca AFAIU this code is repeated 😮 - see here https://gerrit.googlesource.com/plugins/owners/+/refs/heads/stable-3.4/owners/src/main/java/com/googlesource/gerrit/owners/OwnersStoredValues.java#57\n\nI will apply it for `stable-3.5` submit requirement 😞",
+      "revId": "96d5bc88ff77572292e30136d91d5b14367229eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
