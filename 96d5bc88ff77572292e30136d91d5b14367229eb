@@ -34,6 +34,24 @@
       "parentUuid": "916db186_95b85f63",
       "revId": "96d5bc88ff77572292e30136d91d5b14367229eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7449a9ad_2e8e1481",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-01T04:59:20Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "67ff5b4a_e9b46d59",
+      "revId": "96d5bc88ff77572292e30136d91d5b14367229eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
