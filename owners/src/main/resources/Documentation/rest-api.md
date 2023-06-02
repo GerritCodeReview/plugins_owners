@@ -1,7 +1,7 @@
 # Rest API
 
-The @PLUGIN@ exposes a Rest API endpoint to list the owners associated to each file and, for each owner,
-its associated labels and votes:
+The @PLUGIN@ exposes a Rest API endpoint to list the owners associated to each file that
+needs a review, and, for each owner, its current labels and votes:
 
 ```bash
 GET /changes/{change-id}/revisions/{revision-id}/owners~files-owners
