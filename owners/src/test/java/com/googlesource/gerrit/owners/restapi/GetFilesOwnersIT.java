@@ -17,7 +17,6 @@ package com.googlesource.gerrit.owners.restapi;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit.Result;
@@ -98,7 +97,21 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  public void shouldReturnOwnersLabels() throws Exception {
+  public void shouldReturnOwnersLabelsWhenNotApprovedByOwners() throws Exception {
+    addOwnerFileToRoot(true);
+    String changeId = createChange().getChangeId();
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+
+    assertThat(resp.value().ownersLabels).isEmpty();
+  }
+
+  @Test
+  public void shouldReturnEmptyResponseWhenApprovedByOwners() throws Exception {
     addOwnerFileToRoot(true);
     String changeId = createChange().getChangeId();
     approve(changeId);
@@ -106,8 +119,7 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().ownersLabels)
-        .containsExactly(admin.id().get(), ImmutableMap.builder().put("Code-Review", 2).build());
+    assertThat(resp.value().files).isEmpty();
   }
 
   @Test
@@ -121,6 +133,20 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 
     assertThat(resp.value().files)
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
+  }
+
+  @Test
+  @GlobalPluginConfig(pluginName = "owners", name = "owners.expandGroups", value = "false")
+  public void shouldReturnEmptyResponseWhenApprovedByOwnersWithUnexpandedFileOwners()
+      throws Exception {
+    addOwnerFileToRoot(true);
+    String changeId = createChange().getChangeId();
+    approve(changeId);
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files).isEmpty();
   }
 
   @Test
