@@ -34,6 +34,24 @@
       "parentUuid": "8e2ba51d_80529e7e",
       "revId": "c385a67d2045063be57f9eea02d356e9f4096bd6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee9a86c9_7ce94488",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-02T05:18:08Z",
+      "side": 1,
+      "message": "Change I034ee23d44e5 adjusts CI.",
+      "parentUuid": "7e79a5a8_b1f0981c",
+      "revId": "c385a67d2045063be57f9eea02d356e9f4096bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
