@@ -16,6 +16,24 @@
       "message": "It fails on\n```\n1) shouldReturnInheritedOwnersFromParentProjectsOwners(com.googlesource.gerrit.owners.restapi.GetFilesOwnersIT)\nkeys with wrong values\nfor key       : a.txt\nexpected value: [Owner{id\u003d1000000}, Owner{id\u003d1000001}]\nbut got value : [Owner{id\u003d1000000}]\n---\nexpected      : {a.txt\u003d[Owner{id\u003d1000000}, Owner{id\u003d1000001}]}\nbut was       : {a.txt\u003d[Owner{id\u003d1000000}]}\n\tat com.googlesource.gerrit.owners.restapi.GetFilesOwnersIT.assertInheritFromProject(GetFilesOwnersIT.java:194)\n\tat com.googlesource.gerrit.owners.restapi.GetFilesOwnersIT.shouldReturnInheritedOwnersFromParentProjectsOwners(GetFilesOwnersIT.java:148)\n```\nand the problem is with `PathOwnersEntriesCache` caching for `repo` (with parents) and changing the parents...\n\nI guess that we will merge it once I sort out the problem with cache",
       "revId": "65040a9458c3e9c286ccd7418129dfa7da81cf6a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "168a2fce_827a8813",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-03T06:42:22Z",
+      "side": 1,
+      "message": "Fixed in I6eed6cee12.",
+      "parentUuid": "8d49fa26_e0044d0d",
+      "revId": "65040a9458c3e9c286ccd7418129dfa7da81cf6a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
