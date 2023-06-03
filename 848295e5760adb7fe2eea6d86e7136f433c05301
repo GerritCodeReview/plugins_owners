@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9496c6a2_db35d135",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-03T06:18:39Z",
+      "side": 1,
+      "message": "@luca one nit and you are free to merge 😎",
+      "revId": "848295e5760adb7fe2eea6d86e7136f433c05301",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d0b5322_fa6a179b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/JgitWrapper.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-03T06:18:39Z",
+      "side": 1,
+      "message": "nit: how about `com.google.gerrit.entities.RefNames.fullName`?\n\nThen we could compact these 3 lines into:\n```\nRef ref \u003d repository.getRefDatabase().exactRef(RefNames.fullName(refName));\n```\nWDYT?",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 88
+      },
+      "revId": "848295e5760adb7fe2eea6d86e7136f433c05301",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
