@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "714f028d_77e51507",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-03T06:06:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a311e23d_0f6d69f2",
+      "range": {
+        "startLine": 10,
+        "startChar": 40,
+        "endLine": 10,
+        "endChar": 44
+      },
+      "revId": "876339cc134aa77a73b51a26de8e1c17bf9ee45a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "addcd465_d1f88605",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -37,6 +61,29 @@
       "writtenOn": "2023-06-02T20:35:21Z",
       "side": 1,
       "message": "Just one nit, feel free to merge once resolved.",
+      "revId": "876339cc134aa77a73b51a26de8e1c17bf9ee45a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f66332ec_9b1473bd",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-03T06:06:49Z",
+      "side": 1,
+      "message": "nit: `s/shouldReflectChangesInInParentProject/shouldReflectChangesInParentProject`",
+      "range": {
+        "startLine": 120,
+        "startChar": 14,
+        "endLine": 120,
+        "endChar": 51
+      },
       "revId": "876339cc134aa77a73b51a26de8e1c17bf9ee45a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
