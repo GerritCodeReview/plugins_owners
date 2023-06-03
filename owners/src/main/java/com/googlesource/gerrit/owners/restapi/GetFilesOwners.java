@@ -15,7 +15,6 @@
 
 package com.googlesource.gerrit.owners.restapi;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
@@ -35,6 +34,7 @@ import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -45,7 +45,13 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
@@ -95,12 +101,11 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     int id = revision.getChangeResource().getChange().getChangeId();
 
     Project.NameKey project = change.getProject();
-    List<Project.NameKey> maybeParentProjectNameKey =
-        projectCache
-            .get(project)
-            .map(p -> Arrays.asList(p.getProject().getParent()))
-            .filter(Predicates.notNull())
-            .orElse(Collections.emptyList());
+    List<Project.NameKey> projectParents =
+        projectCache.get(project).stream()
+            .flatMap(s -> s.parents().stream())
+            .map(ProjectState::getNameKey)
+            .collect(Collectors.toList());
 
     try (Repository repository = repositoryManager.openRepository(project)) {
       Set<String> changePaths = new HashSet<>(changeDataFactory.create(change).currentFilePaths());
@@ -111,7 +116,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               accounts,
               repositoryManager,
               repository,
-              maybeParentProjectNameKey,
+              projectParents,
               pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
               changePaths,
               pluginSettings.expandGroups(),
