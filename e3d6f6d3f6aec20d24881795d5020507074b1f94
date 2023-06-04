@@ -16,6 +16,24 @@
       "message": "Thanks for the review. Apologize, I missed to adapt the test classes. See my comment on one removal, that should be extracted in its own change on stable-3.6 branch. Even with these fixes one test is failing, I think this is expected:\n\n```\n1) shouldNotRequireApprovalForNotMatchingPath(com.googlesource.gerrit.owners.OwnersApprovalHasOperandIT)\nexpected to be true\n\tat com.googlesource.gerrit.owners.OwnersSubmitRequirementIT.shouldNotRequireApprovalForNotMatchingPath(OwnersSubmitRequirementIT.java:107)\n\nFAILURES!!!\nTests run: 53,  Failures: 1\n```",
       "revId": "e3d6f6d3f6aec20d24881795d5020507074b1f94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4253dba6_8b92b1a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-04T09:48:31Z",
+      "side": 1,
+      "message": "Never mind. I missed to rebase on top of the merges from stable branches.",
+      "parentUuid": "b0171251_5385263f",
+      "revId": "e3d6f6d3f6aec20d24881795d5020507074b1f94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
