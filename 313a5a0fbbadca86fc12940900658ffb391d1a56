@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2694f8e7_09fd0268",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-04T09:53:55Z",
+      "side": 0,
+      "message": "It was done already.",
+      "parentUuid": "b57ca13f_3c331939",
+      "range": {
+        "startLine": 44,
+        "startChar": 2,
+        "endLine": 47,
+        "endChar": 40
+      },
+      "revId": "313a5a0fbbadca86fc12940900658ffb391d1a56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a0953d5_5172b7db",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-04T09:36:59Z",
       "side": 0,
       "message": "This was removed on master branch",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 93
+      },
+      "revId": "313a5a0fbbadca86fc12940900658ffb391d1a56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03200ae9_1f2aedc1",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-04T09:53:55Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "9a0953d5_5172b7db",
       "range": {
         "startLine": 53,
         "startChar": 8,
