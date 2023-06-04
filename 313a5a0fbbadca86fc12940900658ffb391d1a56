@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b57ca13f_3c331939",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-04T09:36:59Z",
+      "side": 0,
+      "message": "This should be done on stable-3.6 branch, and that change should be merged to master branch and this fix should be rebased on top of it.",
+      "range": {
+        "startLine": 44,
+        "startChar": 2,
+        "endLine": 47,
+        "endChar": 40
+      },
+      "revId": "313a5a0fbbadca86fc12940900658ffb391d1a56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a0953d5_5172b7db",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-04T09:36:59Z",
+      "side": 0,
+      "message": "This was removed on master branch",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 93
+      },
+      "revId": "313a5a0fbbadca86fc12940900658ffb391d1a56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
