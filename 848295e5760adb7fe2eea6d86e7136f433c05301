@@ -39,6 +39,30 @@
       },
       "revId": "848295e5760adb7fe2eea6d86e7136f433c05301",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2228cf3_bac3e463",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/JgitWrapper.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-04T21:56:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d0b5322_fa6a179b",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 88
+      },
+      "revId": "848295e5760adb7fe2eea6d86e7136f433c05301",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
