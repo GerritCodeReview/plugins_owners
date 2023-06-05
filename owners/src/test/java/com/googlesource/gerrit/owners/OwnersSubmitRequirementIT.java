@@ -23,6 +23,7 @@ import static com.google.gerrit.server.project.testing.TestLabels.labelBuilder;
 import static com.google.gerrit.server.project.testing.TestLabels.value;
 import static java.util.stream.Collectors.joining;
 
+import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestAccount;
@@ -34,9 +35,11 @@ import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
 import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.client.SubmitType;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.LegacySubmitRequirementInfo;
 import com.google.gerrit.extensions.common.SubmitRecordInfo;
@@ -46,6 +49,8 @@ import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import java.util.Collection;
 import java.util.stream.Stream;
+import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
+import org.eclipse.jgit.junit.TestRepository;
 import org.junit.Test;
 
 @TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
@@ -359,6 +364,40 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     assertThat(ownersVoteSufficient.requirements).containsExactly(READY);
   }
 
+  @Test
+  @GlobalPluginConfig(
+      pluginName = "owners",
+      name = "owners.enableSubmitRequirement",
+      value = "true")
+  public void shouldRequireApprovalFromGrandParentProjectOwner() throws Exception {
+    Project.NameKey parentProjectName =
+        createProjectOverAPI("parent", allProjects, true, SubmitType.FAST_FORWARD_ONLY);
+    Project.NameKey childProjectName =
+        createProjectOverAPI("child", parentProjectName, true, SubmitType.FAST_FORWARD_ONLY);
+    TestRepository<InMemoryRepository> childRepo = cloneProject(childProjectName);
+
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRefsMetaConfig(true, admin2, allProjects);
+
+    PushOneCommit.Result r =
+        createCommitAndPush(childRepo, "refs/for/master", "Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    ChangeInfo changeNotReady = changeApi.get();
+    assertThat(changeNotReady.submittable).isFalse();
+    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
+
+    changeApi.current().review(ReviewInput.approve());
+    ChangeInfo changeNotReadyAfterSelfApproval = changeApi.get();
+    assertThat(changeNotReadyAfterSelfApproval.submittable).isFalse();
+    assertThat(changeNotReadyAfterSelfApproval.requirements).containsExactly(NOT_READY);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.approve());
+    ChangeInfo changeReady = forChange(r).get();
+    assertThat(changeReady.submittable).isTrue();
+    assertThat(changeReady.requirements).containsExactly(READY);
+  }
+
   private void verifyHasSubmitRecord(
       Collection<SubmitRecordInfo> records, String label, SubmitRecordInfo.Label.Status status) {
     assertThat(
@@ -430,6 +469,17 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     pushOwnersToMaster(String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()));
   }
 
+  private void addOwnerFileToRefsMetaConfig(
+      boolean inherit, TestAccount u, Project.NameKey projectName) throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // owners:
+    // - u.email()
+    pushOwnersToRefsMetaConfig(
+        String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()), projectName);
+  }
+
   protected void addOwnerFileToRoot(boolean inherit, LabelDefinition label, TestAccount u)
       throws Exception {
     // Add OWNERS file to root:
@@ -453,6 +503,17 @@ public class OwnersSubmitRequirementIT extends LightweightPluginDaemonTest {
     pushFactory
         .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
         .to(RefNames.fullName("master"))
+        .assertOkStatus();
+  }
+
+  private void pushOwnersToRefsMetaConfig(String owners, Project.NameKey projectName)
+      throws Exception {
+    TestRepository<InMemoryRepository> project = cloneProject(projectName);
+    GitUtil.fetch(project, RefNames.REFS_CONFIG + ":" + RefNames.REFS_CONFIG);
+    project.reset(RefNames.REFS_CONFIG);
+    pushFactory
+        .create(admin.newIdent(), project, "Add OWNER file", "OWNERS", owners)
+        .to(RefNames.REFS_CONFIG)
         .assertOkStatus();
   }
 }

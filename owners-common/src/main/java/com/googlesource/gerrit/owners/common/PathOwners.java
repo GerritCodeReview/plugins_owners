@@ -35,6 +35,7 @@ import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.DiffSummary;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
+import com.google.gerrit.server.project.ProjectState;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -202,6 +203,12 @@ public class PathOwners {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  public static List<Project.NameKey> getParents(ProjectState projectState) {
+    return projectState.parents().stream()
+        .map(ProjectState::getNameKey)
+        .collect(Collectors.toList());
   }
 
   /**

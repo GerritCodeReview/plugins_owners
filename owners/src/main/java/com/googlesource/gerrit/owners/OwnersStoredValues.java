@@ -31,7 +31,6 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,11 +61,7 @@ public class OwnersStoredValues {
 
             metrics.countConfigLoads.increment();
             try (Timer0.Context ctx = metrics.loadConfig.start()) {
-              List<Project.NameKey> parentProjectsNameKeys =
-                  projectState.parents().stream()
-                      .map(ProjectState::getNameKey)
-                      .collect(Collectors.toList());
-
+              List<Project.NameKey> parentProjectsNameKeys = PathOwners.getParents(projectState);
               String branch = StoredValues.getChange(engine).getDest().branch();
               return new PathOwners(
                   accounts,

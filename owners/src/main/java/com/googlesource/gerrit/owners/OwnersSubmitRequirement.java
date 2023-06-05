@@ -51,8 +51,6 @@ import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -200,11 +198,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
     try (Timer0.Context ctx = metrics.loadConfig.start()) {
       String branch = cd.change().getDest().branch();
 
-      List<Project.NameKey> parents =
-          Optional.<Project.NameKey>ofNullable(projectState.getProject().getParent())
-              .map(Arrays::asList)
-              .orElse(Collections.emptyList());
-
+      List<Project.NameKey> parents = PathOwners.getParents(projectState);
       Project.NameKey nameKey = projectState.getNameKey();
       try (Repository repo = repoManager.openRepository(nameKey)) {
         PathOwners pathOwners =
