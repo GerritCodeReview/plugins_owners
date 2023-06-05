@@ -39,6 +39,30 @@
       },
       "revId": "a446131998d38e17d34c2b1f9d3ba9dd0ce15420",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d0f4b0e_7ec77787",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-05T06:26:59Z",
+      "side": 1,
+      "message": "\u003e Another question is: why this test is executed twice?\n\nI think this is because `OwnersApprovalHasOperandI` is derived from `OwnersSubmitRequirementIT` as described in the commit message in change 365711. But is this actually justified, that all tests are executed twice? Can we do something similar to `pull-replication` and extract abstract class, see change 375954?\n\nUnrelated to this change, but I am seeing timeout in test execution on my old laptop, so that I tried to split the tests into own Bazel rule per test:\n\n```\n-junit_tests(\n-    name \u003d \"owners_tests\",\n-    srcs \u003d glob([\"src/test/java/**/*.java\"]),\n-    tags \u003d [\"owners\"],\n-    deps \u003d [\"owners__plugin_test_deps\"],\n-)\n+[junit_tests(\n+    name \u003d f[:f.index(\".\")].replace(\"/\", \"_\"),\n+    srcs \u003d [f],\n+    tags \u003d [\"owner\"],\n+    deps \u003d PLUGIN_TEST_DEPS + PLUGIN_DEPS + [\n+        \":owners__plugin_test_deps\",\n+    ],\n+) for f in glob([\"src/test/java/**/*.java\"])]\n```\n\nAnd it doesn\u0027t work, for the same reasons as in `pull-replication` plugin, see change 374814.",
+      "parentUuid": "eacae754_891c636f",
+      "range": {
+        "startLine": 367,
+        "startChar": 2,
+        "endLine": 399,
+        "endChar": 3
+      },
+      "revId": "a446131998d38e17d34c2b1f9d3ba9dd0ce15420",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
