@@ -63,6 +63,30 @@
       },
       "revId": "a446131998d38e17d34c2b1f9d3ba9dd0ce15420",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9e35add_6e18410d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-05T08:35:16Z",
+      "side": 1,
+      "message": "That is correct. The second time is performed when submit requirement feature is configured for project in question (it requires an extra project configuration).\n\nI can take the separation of ITs as a follow-up to this change 👍",
+      "parentUuid": "8d0f4b0e_7ec77787",
+      "range": {
+        "startLine": 367,
+        "startChar": 2,
+        "endLine": 399,
+        "endChar": 3
+      },
+      "revId": "a446131998d38e17d34c2b1f9d3ba9dd0ce15420",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
