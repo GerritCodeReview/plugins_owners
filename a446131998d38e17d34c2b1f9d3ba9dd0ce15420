@@ -16,6 +16,29 @@
       "message": "Verified with\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 133.7s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 48.7s\n//plugins/owners-common:test                                             PASSED in 1.9s\n```",
       "revId": "a446131998d38e17d34c2b1f9d3ba9dd0ce15420",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eacae754_891c636f",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-05T06:06:41Z",
+      "side": 1,
+      "message": "Would it be possible to add a test to demonstrate that OWNERS file hierarchy doesn\u0027t inherit from All-Parents project as predecessor of this change?\n\nI tried to apply this test only to the stable-3.5 without the rest of this change, but then the test is failing:\n\n```\n1) shouldRequireApprovalFromGrandParentProjectOwner(com.googlesource.gerrit.owners.OwnersApprovalHasOperandIT)\nmissing (1): LegacySubmitRequirementInfo{status\u003dNOT_READY, fallbackText\u003dOwners, type\u003downers}\n---\nexpected   : [LegacySubmitRequirementInfo{status\u003dNOT_READY, fallbackText\u003dOwners, type\u003downers}]\nbut was    : []\n\tat com.googlesource.gerrit.owners.OwnersSubmitRequirementIT.shouldRequireApprovalFromGrandParentProjectOwner(OwnersSubmitRequirementIT.java:387)\n2) shouldRequireApprovalFromGrandParentProjectOwner(com.googlesource.gerrit.owners.OwnersSubmitRequirementIT)\nmissing (1): LegacySubmitRequirementInfo{status\u003dNOT_READY, fallbackText\u003dOwners, type\u003downers}\n---\nexpected   : [LegacySubmitRequirementInfo{status\u003dNOT_READY, fallbackText\u003dOwners, type\u003downers}]\nbut was    : []\n\tat com.googlesource.gerrit.owners.OwnersSubmitRequirementIT.shouldRequireApprovalFromGrandParentProjectOwner(OwnersSubmitRequirementIT.java:387)\n\nFAILURES!!!\nTests run: 58,  Failures: 2\n```\n\nAnother question is: why this test is executed twice?",
+      "range": {
+        "startLine": 367,
+        "startChar": 2,
+        "endLine": 399,
+        "endChar": 3
+      },
+      "revId": "a446131998d38e17d34c2b1f9d3ba9dd0ce15420",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
