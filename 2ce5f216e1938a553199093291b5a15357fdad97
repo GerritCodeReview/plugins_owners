@@ -22,6 +22,30 @@
       },
       "revId": "2ce5f216e1938a553199093291b5a15357fdad97",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5cc32c_d7607cd9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-06T07:54:06Z",
+      "side": 1,
+      "message": "\u003e AFAIU the implemented solution will not work in the case when custom label is in `rules.pl` configuration as described in [1]...\n\u003e \n\u003e [1] https://gerrit.googlesource.com/plugins/owners/+/refs/heads/stable-3.4/owners/src/main/resources/Documentation/config.md#example-3-owners-file-without-matchers-and-custom-owner_approves-label\n\nTrue, let me specify that in commit message and documentation. Do you have any idea on how that could be achieved?",
+      "parentUuid": "305bc031_8c0b355a",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 25
+      },
+      "revId": "2ce5f216e1938a553199093291b5a15357fdad97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
