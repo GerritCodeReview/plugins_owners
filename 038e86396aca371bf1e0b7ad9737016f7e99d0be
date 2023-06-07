@@ -16,6 +16,75 @@
       "message": "Verified with\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 1.3s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersApprovalHasOperandIT PASSED in 68.6s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersMetricsIT PASSED in 13.1s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersSubmitRequirementIT PASSED in 63.3s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersIT PASSED in 33.3s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 54.4s\n//plugins/owners-common:test                                             PASSED in 2.0s\n```",
       "revId": "038e86396aca371bf1e0b7ad9737016f7e99d0be",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0246456_89092125",
+        "filename": "owners/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-07T04:32:47Z",
+      "side": 1,
+      "message": "Optinal: Effectively we want only to include the new single class:\n\n```\n  srcs \u003d [owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementITAbstract.java]\n```\n\nOTOH, if we would later more Utility/Base classes here, we would need to extend this source set.",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 6
+      },
+      "revId": "038e86396aca371bf1e0b7ad9737016f7e99d0be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "599e88e0_1f3276e0",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-07T04:32:47Z",
+      "side": 1,
+      "message": "Do we need to duplicate the tests because of this submit rule? Do we have a plna how to remove this duplication?",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 69,
+        "endChar": 22
+      },
+      "revId": "038e86396aca371bf1e0b7ad9737016f7e99d0be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "205c6829_58214e68",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersITAbstract.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-07T04:32:47Z",
+      "side": 1,
+      "message": "This class should be abstract: `class abstract`.\n\nAlso we extract the methods from `OwnersSubmitRequirementIT`, so that I woul have expected we name this abstract class `OwnersSubmitRequirementITAbstract`. Why `SubmitRequirement` was omitted?",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "038e86396aca371bf1e0b7ad9737016f7e99d0be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
