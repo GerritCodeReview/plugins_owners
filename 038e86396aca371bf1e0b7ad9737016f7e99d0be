@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f9e1dc5_12353aa7",
+        "filename": "owners/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-07T05:45:29Z",
+      "side": 1,
+      "message": "Yeap I would prefer to keep it that way so we are open for future additions - I was tempted before to add more utilities classes ;)",
+      "parentUuid": "b0246456_89092125",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 6
+      },
+      "revId": "038e86396aca371bf1e0b7ad9737016f7e99d0be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "599e88e0_1f3276e0",
@@ -64,6 +88,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae9c0739_39483af3",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersApprovalHasOperandIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-07T05:45:29Z",
+      "side": 1,
+      "message": "IMHO this is expected we are verifying that functionality works both ways - once label functions are finally ditched only one set of tests will be sufficient (though the operand).\n\nBTW: with this change we are cutting the test time in half and it is in pair with `owners_autoassign_tests` so I would say it is good enough 😄",
+      "parentUuid": "599e88e0_1f3276e0",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 69,
+        "endChar": 22
+      },
+      "revId": "038e86396aca371bf1e0b7ad9737016f7e99d0be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "205c6829_58214e68",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-06-07T04:32:47Z",
       "side": 1,
       "message": "This class should be abstract: `class abstract`.\n\nAlso we extract the methods from `OwnersSubmitRequirementIT`, so that I woul have expected we name this abstract class `OwnersSubmitRequirementITAbstract`. Why `SubmitRequirement` was omitted?",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "038e86396aca371bf1e0b7ad9737016f7e99d0be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53916eab_0b4a4b6b",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersITAbstract.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-07T05:45:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "205c6829_58214e68",
       "range": {
         "startLine": 54,
         "startChar": 0,
