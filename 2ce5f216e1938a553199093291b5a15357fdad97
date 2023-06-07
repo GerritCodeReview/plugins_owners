@@ -46,6 +46,30 @@
       },
       "revId": "2ce5f216e1938a553199093291b5a15357fdad97",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "194e9289_62cae0da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-07T05:31:31Z",
+      "side": 1,
+      "message": "ATM not much, once we are in submit requirements OWNERS file alone is sufficient source of truth 👍",
+      "parentUuid": "3e5cc32c_d7607cd9",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 25
+      },
+      "revId": "2ce5f216e1938a553199093291b5a15357fdad97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
