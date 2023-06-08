@@ -18,7 +18,6 @@ package com.googlesource.gerrit.owners.restapi;
 import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
-import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -32,7 +31,6 @@ import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.gerrit.server.patch.PatchListCache;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
@@ -54,14 +52,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Repository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public class GetFilesOwners implements RestReadView<RevisionResource> {
-  private static final Logger log = LoggerFactory.getLogger(GetFilesOwners.class);
-
-  private final PatchListCache patchListCache;
   private final Accounts accounts;
   private final AccountCache accountCache;
   private final ProjectCache projectCache;
@@ -73,7 +66,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
 
   @Inject
   GetFilesOwners(
-      PatchListCache patchListCache,
       Accounts accounts,
       AccountCache accountCache,
       ProjectCache projectCache,
@@ -82,7 +74,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       GerritApi gerritApi,
       ChangeData.Factory changeDataFactory,
       PathOwnersEntriesCache cache) {
-    this.patchListCache = patchListCache;
     this.accounts = accounts;
     this.accountCache = accountCache;
     this.projectCache = projectCache;
@@ -96,7 +87,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   @Override
   public Response<FilesOwnersResponse> apply(RevisionResource revision)
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
-    PatchSet ps = revision.getPatchSet();
     Change change = revision.getChange();
     int id = revision.getChangeResource().getChange().getChangeId();
 
