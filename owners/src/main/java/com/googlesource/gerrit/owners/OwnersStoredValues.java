@@ -51,7 +51,7 @@ public class OwnersStoredValues {
     }
     log.info("Initializing OwnerStoredValues");
     PATH_OWNERS =
-        new StoredValue<PathOwners>() {
+        new StoredValue<>() {
           @Override
           protected PathOwners createValue(Prolog engine) {
             Map<String, FileDiffOutput> patchList = StoredValues.DIFF_LIST.get(engine);
