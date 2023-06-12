@@ -94,6 +94,30 @@
       },
       "revId": "2ce5f216e1938a553199093291b5a15357fdad97",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63f35809_cd445695",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-12T06:17:28Z",
+      "side": 1,
+      "message": "ping @luca do you still plan to add a note to the documentation?",
+      "parentUuid": "0215649b_220fd9f7",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 25
+      },
+      "revId": "2ce5f216e1938a553199093291b5a15357fdad97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
