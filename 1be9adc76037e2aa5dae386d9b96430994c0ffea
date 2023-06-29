@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13aa47f6_06df7cb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-29T06:32:40Z",
+      "side": 1,
+      "message": "With a nit suggestion that IMHO improves the readability a bit - feel free to apply it ;)",
+      "revId": "1be9adc76037e2aa5dae386d9b96430994c0ffea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a85d948_d73ac790",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-29T06:32:40Z",
+      "side": 1,
+      "message": "The `anyMatch` condition of `isApprovedByOwner` could be simplified by turning `codeReviewLabelValue` to work on `Stream` rather then `Optional`, WDYT?\n\n```suggestion\n  private boolean isApprovedByOwner(\n      Set\u003cGroupOwner\u003e fileOwners,\n      Map\u003cInteger, Map\u003cString, Integer\u003e\u003e ownersLabels,\n      short codeReviewMaxValue) {\n    return fileOwners.stream()\n        .filter(owner -\u003e owner instanceof Owner)\n        .map(owner -\u003e ((Owner) owner).getId())\n        .flatMap(ownerId -\u003e codeReviewLabelValue(ownersLabels, ownerId))\n        .anyMatch(value -\u003e value \u003d\u003d codeReviewMaxValue);\n  }\n\n  private Stream\u003cInteger\u003e codeReviewLabelValue(\n      Map\u003cInteger, Map\u003cString, Integer\u003e\u003e ownersLabels, int ownerId) {\n    return Stream.ofNullable(ownersLabels.get(ownerId))\n        .flatMap(m -\u003e Stream.ofNullable(m.get(LabelId.CODE_REVIEW)));\n  }\n```",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 3
+      },
+      "revId": "1be9adc76037e2aa5dae386d9b96430994c0ffea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
