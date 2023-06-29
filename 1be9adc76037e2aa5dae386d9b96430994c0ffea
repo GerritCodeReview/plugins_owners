@@ -39,6 +39,30 @@
       },
       "revId": "1be9adc76037e2aa5dae386d9b96430994c0ffea",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7990df3_d11c6d79",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-29T13:33:31Z",
+      "side": 1,
+      "message": "`Stream.ofNullable` is not Java-8 compatible (see [1]), hence I\u0027d prefer to keep the current form.\n\n[1] https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html#ofNullable(T)",
+      "parentUuid": "4a85d948_d73ac790",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 3
+      },
+      "revId": "1be9adc76037e2aa5dae386d9b96430994c0ffea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
