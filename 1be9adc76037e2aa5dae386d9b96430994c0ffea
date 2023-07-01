@@ -63,6 +63,30 @@
       },
       "revId": "1be9adc76037e2aa5dae386d9b96430994c0ffea",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a1f0a63_b7268b2d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-07-01T07:15:19Z",
+      "side": 1,
+      "message": "Ouch - they really let this be half backed for `JDK 8`...",
+      "parentUuid": "a7990df3_d11c6d79",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 3
+      },
+      "revId": "1be9adc76037e2aa5dae386d9b96430994c0ffea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
