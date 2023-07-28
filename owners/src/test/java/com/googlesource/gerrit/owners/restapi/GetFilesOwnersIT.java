@@ -16,8 +16,8 @@
 package com.googlesource.gerrit.owners.restapi;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit.Result;
@@ -25,6 +25,8 @@ import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
+import com.google.gerrit.entities.LabelId;
+import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
@@ -32,7 +34,9 @@ import com.google.gerrit.extensions.client.SubmitType;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
+import com.google.gerrit.server.project.testing.TestLabels;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
@@ -99,7 +103,21 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  public void shouldReturnOwnersLabels() throws Exception {
+  public void shouldReturnOwnersLabelsWhenNotApprovedByOwners() throws Exception {
+    addOwnerFileToRoot(true);
+    String changeId = createChange().getChangeId();
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+
+    assertThat(resp.value().ownersLabels).isEmpty();
+  }
+
+  @Test
+  public void shouldReturnEmptyResponseWhenApprovedByOwners() throws Exception {
     addOwnerFileToRoot(true);
     String changeId = createChange().getChangeId();
     approve(changeId);
@@ -107,8 +125,7 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().ownersLabels)
-        .containsExactly(admin.id().get(), ImmutableMap.builder().put("Code-Review", 2).build());
+    assertThat(resp.value().files).isEmpty();
   }
 
   @Test
@@ -122,6 +139,20 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 
     assertThat(resp.value().files)
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
+  }
+
+  @Test
+  @GlobalPluginConfig(pluginName = "owners", name = "owners.expandGroups", value = "false")
+  public void shouldReturnEmptyResponseWhenApprovedByOwnersWithUnexpandedFileOwners()
+      throws Exception {
+    addOwnerFileToRoot(true);
+    String changeId = createChange().getChangeId();
+    approve(changeId);
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files).isEmpty();
   }
 
   @Test
@@ -175,6 +206,30 @@ public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
   public void shouldNotReturnInheritedOwnersFromParentProjectsOwners() throws Exception {
     addOwnerFileToProjectConfig(project, false);
     assertNotInheritFromProject(allProjects);
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldThrowExceptionWhenCodeReviewLabelIsNotConfigured() throws Exception {
+    addOwnerFileToProjectConfig(project, false);
+    replaceCodeReviewWithLabel(
+        TestLabels.label(
+            "Foo", TestLabels.value(1, "Foo is fine"), TestLabels.value(-1, "Foo is not fine")));
+    String changeId = createChange().getChangeId();
+
+    ResourceNotFoundException thrown =
+        assertThrows(
+            ResourceNotFoundException.class,
+            () -> ownersApi.apply(parseCurrentRevisionResource(changeId)));
+    assertThat(thrown).hasMessageThat().isEqualTo(GetFilesOwners.MISSING_CODE_REVIEW_LABEL);
+  }
+
+  private void replaceCodeReviewWithLabel(LabelType label) throws Exception {
+    try (ProjectConfigUpdate u = updateProject(allProjects)) {
+      u.getConfig().getLabelSections().remove(LabelId.CODE_REVIEW);
+      u.getConfig().upsertLabelType(label);
+      u.save();
+    }
   }
 
   private static <T> Response<T> assertResponseOk(Response<T> response) {
