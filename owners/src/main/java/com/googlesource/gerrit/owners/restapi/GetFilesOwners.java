@@ -18,6 +18,8 @@ package com.googlesource.gerrit.owners.restapi;
 import com.google.common.collect.Maps;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
+import com.google.gerrit.entities.LabelId;
+import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -88,6 +90,13 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   public Response<FilesOwnersResponse> apply(RevisionResource revision)
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
     Change change = revision.getChange();
+    Optional<Short> codeReviewMaxValue =
+        revision
+            .getChangeResource()
+            .getChangeData()
+            .getLabelTypes()
+            .byLabel(LabelId.CODE_REVIEW)
+            .map(LabelType::getMaxPositive);
     int id = revision.getChangeResource().getChange().getChangeId();
 
     Project.NameKey project = change.getProject();
@@ -110,22 +119,57 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               project.get(),
               cache);
 
+      Map<String, Set<GroupOwner>> fileExpandedOwners =
+          Maps.transformValues(
+              owners.getFileOwners(),
+              ids ->
+                  ids.stream()
+                      .map(this::getOwnerFromAccountId)
+                      .flatMap(Optional::stream)
+                      .collect(Collectors.toSet()));
+
       Map<String, Set<GroupOwner>> fileToOwners =
           pluginSettings.expandGroups()
-              ? Maps.transformValues(
-                  owners.getFileOwners(),
-                  ids ->
-                      ids.stream()
-                          .map(this::getOwnerFromAccountId)
-                          .flatMap(Optional::stream)
-                          .collect(Collectors.toSet()))
+              ? fileExpandedOwners
               : Maps.transformValues(
                   owners.getFileGroupOwners(),
                   groupNames ->
                       groupNames.stream().map(GroupOwner::new).collect(Collectors.toSet()));
 
-      return Response.ok(new FilesOwnersResponse(getLabels(id), fileToOwners));
+      Map<Integer, Map<String, Integer>> ownersLabels = getLabels(id);
+
+      Map<String, Set<GroupOwner>> filesWithPendingOwners =
+          codeReviewMaxValue
+              .map(
+                  value ->
+                      Maps.filterEntries(
+                          fileToOwners,
+                          (fileOwnerEntry) ->
+                              !isApprovedByOwner(
+                                  fileExpandedOwners.get(fileOwnerEntry.getKey()),
+                                  ownersLabels,
+                                  value)))
+              .orElse(fileToOwners);
+
+      return Response.ok(new FilesOwnersResponse(ownersLabels, filesWithPendingOwners));
     }
+  }
+
+  private boolean isApprovedByOwner(
+      Set<GroupOwner> fileOwners,
+      Map<Integer, Map<String, Integer>> ownersLabels,
+      short codeReviewMaxValue) {
+    return fileOwners.stream()
+        .filter(owner -> owner instanceof Owner)
+        .map(owner -> ((Owner) owner).getId())
+        .map(ownerId -> codeReviewLabelValue(ownersLabels, ownerId))
+        .anyMatch(value -> value.filter(v -> v == codeReviewMaxValue).isPresent());
+  }
+
+  private Optional<Integer> codeReviewLabelValue(
+      Map<Integer, Map<String, Integer>> ownersLabels, int ownerId) {
+    return Optional.ofNullable(ownersLabels.get(ownerId))
+        .flatMap(m -> Optional.ofNullable(m.get(LabelId.CODE_REVIEW)));
   }
 
   /**
