@@ -46,6 +46,30 @@
       },
       "revId": "9cbf79e2fd791095939e871fcfd07885072f4889",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928870c2_208b9a72",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-07-31T14:21:23Z",
+      "side": 1,
+      "message": "I guess that you mean the case when `Code-Review` label was not found, right?\nThis is a rare case but still doable in `owners` as described in https://gerrit.googlesource.com/plugins/owners/+/refs/heads/stable-3.5/owners/src/main/resources/Documentation/config.md#example-3-owners-file-without-matchers-and-custom-owner_approves-label-when-default\n\nHaving said that we are not going to analyse the `prolog` to determine it (it was also `true` for `stable-3.4` as discussed https://gerrit-review.googlesource.com/c/plugins/owners/+/375914/comment/305bc031_8c0b355a/) and my plan is to check it for other labels _only when_ submit requirements are enabled as it would be easy then. WDYT?",
+      "parentUuid": "0e60a500_e6821f60",
+      "range": {
+        "startLine": 142,
+        "startChar": 10,
+        "endLine": 152,
+        "endChar": 36
+      },
+      "revId": "9cbf79e2fd791095939e871fcfd07885072f4889",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
