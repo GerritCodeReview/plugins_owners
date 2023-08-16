@@ -111,6 +111,30 @@
       },
       "revId": "9cbf79e2fd791095939e871fcfd07885072f4889",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6430b48d_52187547",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-08-16T14:06:45Z",
+      "side": 1,
+      "message": "The `ResourceNotFoundException` is being thrown in this case. Additionally information is being logged.",
+      "parentUuid": "d4740f61_6a2a13bc",
+      "range": {
+        "startLine": 142,
+        "startChar": 10,
+        "endLine": 152,
+        "endChar": 36
+      },
+      "revId": "9cbf79e2fd791095939e871fcfd07885072f4889",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
