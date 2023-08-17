@@ -55,6 +55,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.eclipse.jgit.lib.Repository;
 
 @Singleton
@@ -173,14 +174,14 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     return fileOwners.stream()
         .filter(owner -> owner instanceof Owner)
         .map(owner -> ((Owner) owner).getId())
-        .map(ownerId -> codeReviewLabelValue(ownersLabels, ownerId))
-        .anyMatch(value -> value.filter(v -> v == codeReviewMaxValue).isPresent());
+        .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId))
+        .anyMatch(value -> value == codeReviewMaxValue);
   }
 
-  private Optional<Integer> codeReviewLabelValue(
+  private Stream<Integer> codeReviewLabelValue(
       Map<Integer, Map<String, Integer>> ownersLabels, int ownerId) {
-    return Optional.ofNullable(ownersLabels.get(ownerId))
-        .flatMap(m -> Optional.ofNullable(m.get(LabelId.CODE_REVIEW)));
+    return Stream.ofNullable(ownersLabels.get(ownerId))
+        .flatMap(m -> Stream.ofNullable(m.get(LabelId.CODE_REVIEW)));
   }
 
   /**
