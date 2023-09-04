@@ -66,7 +66,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final GitRepositoryManager repositoryManager;
   private final PluginSettings pluginSettings;
   private final GerritApi gerritApi;
-  private final ChangeData.Factory changeDataFactory;
   private final PathOwnersEntriesCache cache;
 
   static final String MISSING_CODE_REVIEW_LABEL =
@@ -83,7 +82,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       GitRepositoryManager repositoryManager,
       PluginSettings pluginSettings,
       GerritApi gerritApi,
-      ChangeData.Factory changeDataFactory,
       PathOwnersEntriesCache cache) {
     this.accounts = accounts;
     this.accountCache = accountCache;
@@ -91,7 +89,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     this.repositoryManager = repositoryManager;
     this.pluginSettings = pluginSettings;
     this.gerritApi = gerritApi;
-    this.changeDataFactory = changeDataFactory;
     this.cache = cache;
   }
 
@@ -99,10 +96,9 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   public Response<FilesOwnersResponse> apply(RevisionResource revision)
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
     Change change = revision.getChange();
+    ChangeData changeData = revision.getChangeResource().getChangeData();
     Short codeReviewMaxValue =
-        revision
-            .getChangeResource()
-            .getChangeData()
+        changeData
             .getLabelTypes()
             .byLabel(LabelId.CODE_REVIEW)
             .map(LabelType::getMaxPositive)
@@ -113,14 +109,13 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                       revision.getProject());
                   return new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL);
                 });
-    int id = revision.getChangeResource().getChange().getChangeId();
 
     Project.NameKey project = change.getProject();
     List<Project.NameKey> projectParents =
         projectCache.get(project).map(PathOwners::getParents).orElse(Collections.emptyList());
 
     try (Repository repository = repositoryManager.openRepository(project)) {
-      Set<String> changePaths = new HashSet<>(changeDataFactory.create(change).currentFilePaths());
+      Set<String> changePaths = new HashSet<>(changeData.currentFilePaths());
 
       String branch = change.getDest().branch();
       PathOwners owners =
@@ -152,7 +147,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                   groupNames ->
                       groupNames.stream().map(GroupOwner::new).collect(Collectors.toSet()));
 
-      Map<Integer, Map<String, Integer>> ownersLabels = getLabels(id);
+      Map<Integer, Map<String, Integer>> ownersLabels = getLabels(change.getChangeId());
 
       Map<String, Set<GroupOwner>> filesWithPendingOwners =
           Maps.filterEntries(
