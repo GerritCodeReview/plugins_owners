@@ -33,10 +33,10 @@ import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.account.AccountCache;
+import com.google.gerrit.server.change.ChangeResource;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.project.ProjectCache;
-import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
@@ -66,7 +66,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final GitRepositoryManager repositoryManager;
   private final PluginSettings pluginSettings;
   private final GerritApi gerritApi;
-  private final ChangeData.Factory changeDataFactory;
   private final PathOwnersEntriesCache cache;
 
   static final String MISSING_CODE_REVIEW_LABEL =
@@ -83,7 +82,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       GitRepositoryManager repositoryManager,
       PluginSettings pluginSettings,
       GerritApi gerritApi,
-      ChangeData.Factory changeDataFactory,
       PathOwnersEntriesCache cache) {
     this.accounts = accounts;
     this.accountCache = accountCache;
@@ -91,7 +89,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     this.repositoryManager = repositoryManager;
     this.pluginSettings = pluginSettings;
     this.gerritApi = gerritApi;
-    this.changeDataFactory = changeDataFactory;
     this.cache = cache;
   }
 
@@ -99,9 +96,9 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   public Response<FilesOwnersResponse> apply(RevisionResource revision)
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
     Change change = revision.getChange();
+    ChangeResource changeResource = revision.getChangeResource();
     Short codeReviewMaxValue =
-        revision
-            .getChangeResource()
+        changeResource
             .getChangeData()
             .getLabelTypes()
             .byLabel(LabelId.CODE_REVIEW)
@@ -113,14 +110,14 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                       revision.getProject());
                   return new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL);
                 });
-    int id = revision.getChangeResource().getChange().getChangeId();
+    int id = change.getChangeId();
 
     Project.NameKey project = change.getProject();
     List<Project.NameKey> projectParents =
         projectCache.get(project).map(PathOwners::getParents).orElse(Collections.emptyList());
 
     try (Repository repository = repositoryManager.openRepository(project)) {
-      Set<String> changePaths = new HashSet<>(changeDataFactory.create(change).currentFilePaths());
+      Set<String> changePaths = new HashSet<>(changeResource.getChangeData().currentFilePaths());
 
       String branch = change.getDest().branch();
       PathOwners owners =
