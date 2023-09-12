@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e089912_c951decb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-09-12T16:28:40Z",
+      "side": 1,
+      "message": "Overall looks good. Two new tests are failing when changes to `GetFilesOwners.java` are reverted, so thats good.\nJust a two code _nit picks_.",
+      "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92f34f2c_c594672d",
@@ -36,6 +53,52 @@
         "startChar": 29,
         "endLine": 71,
         "endChar": 35
+      },
+      "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccd37c6_ad1c63ed",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-09-12T16:28:40Z",
+      "side": 1,
+      "message": "nit: code block not needed\n\n```suggestion\n        .orElseThrow(\n            () -\u003e new LabelNotFoundException(changeData.change().getProject(), labelId));\n```",
+      "range": {
+        "startLine": 187,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 15
+      },
+      "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4cd15d2_153e577d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersSubmitRequirementsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-09-12T16:28:40Z",
+      "side": 1,
+      "message": "all calls to `addOnwnerFileToRoot()` pass `true` as the first parameter, would be better to remove it from this private method and just inline `true` value in line 119.",
+      "range": {
+        "startLine": 108,
+        "startChar": 34,
+        "endLine": 108,
+        "endChar": 51
       },
       "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
