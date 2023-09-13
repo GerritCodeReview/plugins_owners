@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2899c2ee_605cd79d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-13T07:57:35Z",
+      "side": 1,
+      "message": "I know it is confusing, but ChangeData is a _swiss-knife_ that creates and loads change data from a series of different sources.\n\nWhen getting ChangeData from the change resource, it would create it from the ChangeNotes, but when created from the Change it would create it from the Change.Id.\n\nHave you verified that it is the same content returned in one way or another, at least for the purpose of this class?",
+      "range": {
+        "startLine": 99,
+        "startChar": 28,
+        "endLine": 99,
+        "endChar": 72
+      },
+      "revId": "4b95010e21e58d65d6c0d08305036260374c041b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
