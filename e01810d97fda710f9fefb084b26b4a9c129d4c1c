@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69345b52_bd6ce461",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-13T06:14:28Z",
+      "side": 1,
+      "message": "Can be simplified further to getting just `ChangeData`",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 65
+      },
+      "revId": "e01810d97fda710f9fefb084b26b4a9c129d4c1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c61acc8d_8022aaca",
@@ -14,6 +37,24 @@
       "writtenOn": "2023-09-12T10:13:18Z",
       "side": 1,
       "message": "Nice, this is a lot tidier now.\n\nNit: maybe we can inline it? We don\u0027t use it until L136, and only there.",
+      "revId": "e01810d97fda710f9fefb084b26b4a9c129d4c1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c2a4077_eb56b380",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-13T06:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c61acc8d_8022aaca",
       "revId": "e01810d97fda710f9fefb084b26b4a9c129d4c1c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
