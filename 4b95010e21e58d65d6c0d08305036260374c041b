@@ -22,6 +22,30 @@
       },
       "revId": "4b95010e21e58d65d6c0d08305036260374c041b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1631be8_7bba9d23",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-13T08:25:19Z",
+      "side": 1,
+      "message": "It is being used in 2 places:\n1. in line #103 where it is obtained from change resources anyway so no change there\n2. in line #118 where `currentFilePaths` is called - previously it called `ChangeData.Factory.create` from change to obtain the `ChangeData` and AFAICT `ChangeResource` calls similar method `this.changeData \u003d changeDataFactory.create(notes);` but from notes - now having said that I believe it works as otherwise a bunch of IT tests would fail as we expect paths there to be present e.g. `GetFilesOwnersIT.shouldReturnOwnersLabelsWhenNotApprovedByOwners`\n\nWDYT?",
+      "parentUuid": "2899c2ee_605cd79d",
+      "range": {
+        "startLine": 99,
+        "startChar": 28,
+        "endLine": 99,
+        "endChar": 72
+      },
+      "revId": "4b95010e21e58d65d6c0d08305036260374c041b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
