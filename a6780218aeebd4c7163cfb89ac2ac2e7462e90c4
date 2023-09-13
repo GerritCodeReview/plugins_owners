@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c48c41e_00996449",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-13T06:14:28Z",
+      "side": 1,
+      "message": "❤️",
+      "parentUuid": "7e089912_c951decb",
+      "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92f34f2c_c594672d",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-09-12T10:53:45Z",
       "side": 1,
       "message": "Existing typo: `owners`.",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 35
+      },
+      "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "384cf9e3_1e658855",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-13T06:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92f34f2c_c594672d",
       "range": {
         "startLine": 71,
         "startChar": 29,
@@ -81,6 +123,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f790bd67_7eb38f27",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-13T06:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cccd37c6_ad1c63ed",
+      "range": {
+        "startLine": 187,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 15
+      },
+      "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4cd15d2_153e577d",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-09-12T16:28:40Z",
       "side": 1,
       "message": "all calls to `addOnwnerFileToRoot()` pass `true` as the first parameter, would be better to remove it from this private method and just inline `true` value in line 119.",
+      "range": {
+        "startLine": 108,
+        "startChar": 34,
+        "endLine": 108,
+        "endChar": 51
+      },
+      "revId": "a6780218aeebd4c7163cfb89ac2ac2e7462e90c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0e8b0cb_ddfbed93",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersSubmitRequirementsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-13T06:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4cd15d2_153e577d",
       "range": {
         "startLine": 108,
         "startChar": 34,
