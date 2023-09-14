@@ -52,6 +52,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +102,10 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     int id = revision.getChangeResource().getChange().getChangeId();
 
     List<Project.NameKey> projectParents =
-        projectCache.get(change.getProject()).stream()
+        projectCache
+            .get(change.getProject())
+            .map(Stream::of)
+            .orElse(Stream.empty())
             .flatMap(s -> s.parents().stream())
             .map(ProjectState::getNameKey)
             .collect(Collectors.toList());
@@ -126,7 +130,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               ids ->
                   ids.stream()
                       .map(this::getOwnerFromAccountId)
-                      .flatMap(Optional::stream)
+                      .flatMap(owner -> owner.map(Stream::of).orElse(Stream.empty()))
                       .collect(Collectors.toSet()));
 
       Map<String, Set<GroupOwner>> fileToOwners =
