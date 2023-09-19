@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99fcc85_75d86b6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-19T09:19:51Z",
+      "side": 1,
+      "message": "There is no need for JDK8 fixes for `stable-3.5` as JDK8 support was dropped for this branch therefore this merge commit just _records_ it and it was performed with `--strategy\u003dours`.\n\nIt was also verified with\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 1.3s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersApprovalHasOperandIT PASSED in 41.5s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersMetricsIT PASSED in 11.9s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersSubmitRequirementIT PASSED in 38.8s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersIT PASSED in 34.9s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersSubmitRequirementsIT PASSED in 35.5s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 48.6s\n//plugins/owners-common:test                                             PASSED in 2.1s\n\nExecuted 8 out of 8 tests: 8 tests pass.\nINFO: Build completed successfully, 82 total actions\n```",
+      "revId": "c57bc6e9b7297a5a139b07e3f36f160fdcd6f26a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
