@@ -25,18 +25,19 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import java.time.Duration;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 @Singleton
 class PathOwnersEntriesCacheImpl implements PathOwnersEntriesCache {
 
-  private final Cache<Key, PathOwnersEntry> cache;
+  private final Cache<Key, Optional<OwnersConfig>> cache;
   private final Multimap<String, Key> keysIndex;
   private final LoadingCache<String, Object> keyLocks;
 
   @Inject
-  PathOwnersEntriesCacheImpl(@Named(CACHE_NAME) Cache<Key, PathOwnersEntry> cache) {
+  PathOwnersEntriesCacheImpl(@Named(CACHE_NAME) Cache<Key, Optional<OwnersConfig>> cache) {
     this.cache = cache;
     this.keysIndex = HashMultimap.create();
     this.keyLocks =
@@ -46,14 +47,14 @@ class PathOwnersEntriesCacheImpl implements PathOwnersEntriesCache {
   }
 
   @Override
-  public PathOwnersEntry get(
-      String project, String branch, String path, Callable<PathOwnersEntry> loader)
+  public Optional<OwnersConfig> get(
+      String project, String branch, String path, Callable<Optional<OwnersConfig>> loader)
       throws ExecutionException {
     Key key = new Key(project, branch, path);
     return cache.get(
         key,
         () -> {
-          PathOwnersEntry entry = loader.call();
+          Optional<OwnersConfig> entry = loader.call();
           String indexKey = indexKey(project, branch);
           synchronized (keyLocks.getUnchecked(indexKey)) {
             keysIndex.put(indexKey, key);

@@ -31,20 +31,11 @@ import java.util.stream.Collectors;
  *
  * <p>Used internally by PathOwners to represent and compute the owners at a specific path.
  */
-class PathOwnersEntry {
-  static final PathOwnersEntry EMPTY = new PathOwnersEntry();
-
-  private final boolean inherited;
-  private Optional<LabelDefinition> label;
-  private Set<Account.Id> owners = Sets.newHashSet();
-  private Set<Account.Id> reviewers = Sets.newHashSet();
-  private String ownersPath;
-  private Map<String, Matcher> matchers = Maps.newHashMap();
-  private Set<String> groupOwners = Sets.newHashSet();
+class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
+  static final ReadOnlyPathOwnersEntry EMPTY = new ReadOnlyPathOwnersEntry(true) {};
 
   public PathOwnersEntry() {
-    inherited = true;
-    label = Optional.empty();
+    super(true);
   }
 
   public PathOwnersEntry(
@@ -56,6 +47,7 @@ class PathOwnersEntry {
       Set<Account.Id> inheritedReviewers,
       Collection<Matcher> inheritedMatchers,
       Set<String> inheritedGroupOwners) {
+    super(config.isInherited());
     this.ownersPath = path;
     this.owners =
         config.getOwners().stream()
@@ -82,25 +74,57 @@ class PathOwnersEntry {
     } else {
       this.label = config.getLabel();
     }
-    this.inherited = config.isInherited();
-  }
-
-  @Override
-  public String toString() {
-    return "PathOwnersEntry [ownersPath="
-        + ownersPath
-        + ", owners="
-        + owners
-        + ", matchers="
-        + matchers
-        + ", label="
-        + label
-        + "]";
   }
 
   public void addMatcher(Matcher matcher) {
     Matcher currMatchers = this.matchers.get(matcher.getPath());
     this.matchers.put(matcher.getPath(), matcher.merge(currMatchers));
+  }
+
+  public void setOwners(Set<Account.Id> owners) {
+    this.owners = owners;
+  }
+
+  public void setReviewers(Set<Account.Id> reviewers) {
+    this.reviewers = reviewers;
+  }
+
+  public void setOwnersPath(String ownersPath) {
+    this.ownersPath = ownersPath;
+  }
+
+  public void setMatchers(Map<String, Matcher> matchers) {
+    this.matchers = matchers;
+  }
+
+  public void setLabel(Optional<LabelDefinition> label) {
+    this.label = label;
+  }
+
+  public void addMatchers(Collection<Matcher> values) {
+    for (Matcher matcher : values) {
+      addMatcher(matcher);
+    }
+  }
+
+  @Override
+  protected String className() {
+    return getClass().getSimpleName();
+  }
+}
+
+abstract class ReadOnlyPathOwnersEntry {
+  protected final boolean inherited;
+  protected Optional<LabelDefinition> label;
+  protected Set<Account.Id> owners = Sets.newHashSet();
+  protected Set<Account.Id> reviewers = Sets.newHashSet();
+  protected String ownersPath;
+  protected Map<String, Matcher> matchers = Maps.newHashMap();
+  protected Set<String> groupOwners = Sets.newHashSet();
+
+  protected ReadOnlyPathOwnersEntry(boolean inherited) {
+    this.inherited = inherited;
+    label = Optional.empty();
   }
 
   public Map<String, Matcher> getMatchers() {
@@ -115,28 +139,12 @@ class PathOwnersEntry {
     return groupOwners;
   }
 
-  public void setOwners(Set<Account.Id> owners) {
-    this.owners = owners;
-  }
-
   public Set<Account.Id> getReviewers() {
     return reviewers;
   }
 
-  public void setReviewers(Set<Account.Id> reviewers) {
-    this.reviewers = reviewers;
-  }
-
   public String getOwnersPath() {
     return ownersPath;
-  }
-
-  public void setOwnersPath(String ownersPath) {
-    this.ownersPath = ownersPath;
-  }
-
-  public void setMatchers(Map<String, Matcher> matchers) {
-    this.matchers = matchers;
   }
 
   public boolean isInherited() {
@@ -147,21 +155,29 @@ class PathOwnersEntry {
     return label;
   }
 
-  public void setLabel(Optional<LabelDefinition> label) {
-    this.label = label;
-  }
-
-  public void addMatchers(Collection<Matcher> values) {
-    for (Matcher matcher : values) {
-      addMatcher(matcher);
-    }
-  }
-
   public boolean hasMatcher(String path) {
     return this.matchers.containsKey(path);
   }
 
   public static String stripOwnerDomain(String owner) {
     return Splitter.on('@').split(owner).iterator().next();
+  }
+
+  @Override
+  public String toString() {
+    return className()
+        + " [ownersPath="
+        + ownersPath
+        + ", owners="
+        + owners
+        + ", matchers="
+        + matchers
+        + ", label="
+        + label
+        + "]";
+  }
+
+  protected String className() {
+    return "ReadOnlyPathOwnersEntry";
   }
 }

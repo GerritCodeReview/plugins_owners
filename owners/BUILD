@@ -12,8 +12,8 @@ java_library(
     name = "gerrit-owners-predicates",
     srcs = PROLOG_PREDICATES,
     deps = [
+        "//owners-common",
         "@prolog-runtime//jar:neverlink",
-        "//owners-common:owners-common",
     ] + PLUGIN_DEPS_NEVERLINK,
 )
 
@@ -50,15 +50,37 @@ gerrit_plugin(
 java_library(
     name = "owners__plugin_test_deps",
     testonly = 1,
+    srcs = glob(
+        ["src/test/java/**/*.java"],
+        exclude = [
+            "src/test/java/**/*Test.java",
+            "src/test/java/**/*IT.java",
+        ],
+    ),
     visibility = ["//visibility:public"],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+        ":owners",
+    ],
+    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":owners",
     ],
 )
 
 junit_tests(
     name = "owners_tests",
-    srcs = glob(["src/test/java/**/*.java"]),
+    srcs = glob(["src/test/java/**/*Test.java"]),
     tags = ["owners"],
-    deps = ["owners__plugin_test_deps"],
+    deps = [
+        ":owners__plugin_test_deps",
+    ],
 )
+
+[junit_tests(
+    name = f[:f.index(".")].replace("/", "_"),
+    srcs = [f],
+    tags = ["owners"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":owners__plugin_test_deps",
+    ],
+) for f in glob(["src/test/java/**/*IT.java"])]
