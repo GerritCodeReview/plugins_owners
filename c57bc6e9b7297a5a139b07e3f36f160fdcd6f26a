@@ -3,6 +3,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "64935cf9_632f264f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-09-19T09:21:12Z",
+      "side": 1,
+      "message": "nit: remove _remote_ references from the commit description",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "c57bc6e9b7297a5a139b07e3f36f160fdcd6f26a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c99fcc85_75d86b6a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
