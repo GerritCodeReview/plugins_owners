@@ -28,8 +28,6 @@ import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -53,7 +51,7 @@ public class OwnersStoredValues {
     }
     log.info("Initializing OwnerStoredValues");
     PATH_OWNERS =
-        new StoredValue<PathOwners>() {
+        new StoredValue<>() {
           @Override
           protected PathOwners createValue(Prolog engine) {
             Map<String, FileDiffOutput> patchList = StoredValues.DIFF_LIST.get(engine);
@@ -63,17 +61,13 @@ public class OwnersStoredValues {
 
             metrics.countConfigLoads.increment();
             try (Timer0.Context ctx = metrics.loadConfig.start()) {
-              List<Project.NameKey> maybeParentProjectNameKey =
-                  Optional.ofNullable(projectState.getProject().getParent())
-                      .map(Arrays::asList)
-                      .orElse(Collections.emptyList());
-
+              List<Project.NameKey> parentProjectsNameKeys = PathOwners.getParents(projectState);
               String branch = StoredValues.getChange(engine).getDest().branch();
               return new PathOwners(
                   accounts,
                   gitRepositoryManager,
                   repository,
-                  maybeParentProjectNameKey,
+                  parentProjectsNameKeys,
                   settings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
                   patchList,
                   settings.expandGroups(),

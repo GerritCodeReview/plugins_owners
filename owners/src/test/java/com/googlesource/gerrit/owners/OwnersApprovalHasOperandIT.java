@@ -21,6 +21,8 @@ import static com.google.gerrit.extensions.common.SubmitRequirementResultInfo.St
 
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestAccount;
+import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
 import com.google.gerrit.entities.SubmitRequirement;
 import com.google.gerrit.entities.SubmitRequirementExpression;
@@ -35,7 +37,9 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OwnersApprovalHasOperandIT extends OwnersSubmitRequirementIT {
+@TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
+@UseLocalDisk
+public class OwnersApprovalHasOperandIT extends OwnersSubmitRequirementITAbstract {
   private static final String REQUIREMENT_NAME = "Owner-Approval";
 
   @Before

@@ -25,7 +25,9 @@ import com.google.gerrit.server.config.AllUsersName;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
@@ -36,7 +38,7 @@ public interface PathOwnersEntriesCache {
     return new CacheModule() {
       @Override
       protected void configure() {
-        cache(CACHE_NAME, Key.class, PathOwnersEntry.class);
+        cache(CACHE_NAME, Key.class, new TypeLiteral<Optional<OwnersConfig>>() {});
         bind(PathOwnersEntriesCache.class).to(PathOwnersEntriesCacheImpl.class);
         DynamicSet.bind(binder(), GitBatchRefUpdateListener.class)
             .to(OwnersRefUpdateListener.class);
@@ -45,7 +47,8 @@ public interface PathOwnersEntriesCache {
     };
   }
 
-  PathOwnersEntry get(String project, String branch, String path, Callable<PathOwnersEntry> loader)
+  Optional<OwnersConfig> get(
+      String project, String branch, String path, Callable<Optional<OwnersConfig>> loader)
       throws ExecutionException;
 
   void invalidate(String project, String branch);
