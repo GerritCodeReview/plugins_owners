@@ -16,6 +16,29 @@
       "message": "Verified manually but also by calling tests from command line\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners-common/... plugins/owners/... plugins/owners-autoassign/...\n...\n//plugins/owners:owners_tests                                            PASSED in 3.2s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersApprovalHasOperandIT PASSED in 37.5s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersMetricsIT PASSED in 12.4s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersSubmitRequirementIT PASSED in 36.5s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersIT PASSED in 27.8s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersSubmitRequirementsIT PASSED in 29.4s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 28.2s\n//plugins/owners-common:test                                             PASSED in 3.3s\n```",
       "revId": "11e402e072fd5b2514b5639d013503465d7f89d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33392067_d684c698",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2024-01-07T12:33:43Z",
+      "side": 1,
+      "message": "the `Optional` in the return type is not needed anymore, as the return value will always be present since we don\u0027t handle the exception internally",
+      "range": {
+        "startLine": 40,
+        "startChar": 9,
+        "endLine": 40,
+        "endChar": 17
+      },
+      "revId": "11e402e072fd5b2514b5639d013503465d7f89d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
