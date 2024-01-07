@@ -25,6 +25,7 @@ import com.google.gerrit.server.rules.prolog.StoredValue;
 import com.google.gerrit.server.rules.prolog.StoredValues;
 import com.googlecode.prolog_cafe.lang.Prolog;
 import com.googlesource.gerrit.owners.common.Accounts;
+import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
@@ -73,6 +74,10 @@ public class OwnersStoredValues {
                   settings.expandGroups(),
                   projectState.getName(),
                   cache);
+            } catch (InvalidOwnersFileException e) {
+              // re-throw exception as it is already logged but more importantly it is nicely
+              // handled by the prolog rules evaluator and results in prolog rule error
+              throw new IllegalStateException(e);
             }
           }
         };

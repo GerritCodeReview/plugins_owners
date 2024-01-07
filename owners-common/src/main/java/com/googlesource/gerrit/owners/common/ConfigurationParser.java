@@ -37,24 +37,19 @@ public class ConfigurationParser {
     this.accounts = accounts;
   }
 
-  public Optional<OwnersConfig> getOwnersConfig(byte[] yamlBytes) {
-    try {
-      final OwnersConfig ret = new OwnersConfig();
-      JsonNode jsonNode = new ObjectMapper(new YAMLFactory()).readValue(yamlBytes, JsonNode.class);
-      Boolean inherited =
-          Optional.ofNullable(jsonNode.get("inherited")).map(JsonNode::asBoolean).orElse(true);
-      ret.setInherited(inherited);
-      ret.setLabel(
-          Optional.ofNullable(jsonNode.get("label"))
-              .map(JsonNode::asText)
-              .flatMap(LabelDefinition::parse));
-      addClassicMatcher(jsonNode, ret);
-      addMatchers(jsonNode, ret);
-      return Optional.of(ret);
-    } catch (IOException e) {
-      log.warn("Unable to read YAML Owners file", e);
-      return Optional.empty();
-    }
+  public Optional<OwnersConfig> getOwnersConfig(byte[] yamlBytes) throws IOException {
+    final OwnersConfig ret = new OwnersConfig();
+    JsonNode jsonNode = new ObjectMapper(new YAMLFactory()).readValue(yamlBytes, JsonNode.class);
+    Boolean inherited =
+        Optional.ofNullable(jsonNode.get("inherited")).map(JsonNode::asBoolean).orElse(true);
+    ret.setInherited(inherited);
+    ret.setLabel(
+        Optional.ofNullable(jsonNode.get("label"))
+            .map(JsonNode::asText)
+            .flatMap(LabelDefinition::parse));
+    addClassicMatcher(jsonNode, ret);
+    addMatchers(jsonNode, ret);
+    return Optional.of(ret);
   }
 
   private void addClassicMatcher(JsonNode jsonNode, OwnersConfig ret) {
