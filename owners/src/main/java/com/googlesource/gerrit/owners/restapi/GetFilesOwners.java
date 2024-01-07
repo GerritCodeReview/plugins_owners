@@ -39,6 +39,7 @@ import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
+import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
@@ -144,6 +145,9 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                       fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
 
       return Response.ok(new FilesOwnersResponse(ownersLabels, filesWithPendingOwners));
+    } catch (InvalidOwnersFileException e) {
+      logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
+      throw new ResourceConflictException(e.getMessage(), e);
     }
   }
 
