@@ -103,7 +103,8 @@ public class PathOwners {
       Map<String, FileDiffOutput> fileDiffMap,
       boolean expandGroups,
       String project,
-      PathOwnersEntriesCache cache) {
+      PathOwnersEntriesCache cache)
+      throws InvalidOwnersFileException {
     this(
         accounts,
         repositoryManager,
@@ -125,7 +126,8 @@ public class PathOwners {
       DiffSummary diffSummary,
       boolean expandGroups,
       String project,
-      PathOwnersEntriesCache cache) {
+      PathOwnersEntriesCache cache)
+      throws InvalidOwnersFileException {
     this(
         accounts,
         repositoryManager,
@@ -147,7 +149,8 @@ public class PathOwners {
       Set<String> modifiedPaths,
       boolean expandGroups,
       String project,
-      PathOwnersEntriesCache cache) {
+      PathOwnersEntriesCache cache)
+      throws InvalidOwnersFileException {
     this.repositoryManager = repositoryManager;
     this.repository = repository;
     this.parentProjectsNames = parentProjectsNames;
@@ -156,10 +159,12 @@ public class PathOwners {
     this.accounts = accounts;
     this.expandGroups = expandGroups;
 
-    OwnersMap map =
-        branchWhenEnabled
-            .map(branch -> fetchOwners(project, branch, cache))
-            .orElse(new OwnersMap());
+    OwnersMap map;
+    if (branchWhenEnabled.isPresent()) {
+      map = fetchOwners(project, branchWhenEnabled.get(), cache);
+    } else {
+      map = new OwnersMap();
+    }
     owners = Multimaps.unmodifiableSetMultimap(map.getPathOwners());
     reviewers = Multimaps.unmodifiableSetMultimap(map.getPathReviewers());
     matchers = map.getMatchers();
@@ -215,8 +220,10 @@ public class PathOwners {
    * Fetched the owners for the associated patch list.
    *
    * @return A structure containing matchers paths to owners
+   * @throws InvalidOwnersFileException when reading/parsing OWNERS file fails
    */
-  private OwnersMap fetchOwners(String project, String branch, PathOwnersEntriesCache cache) {
+  private OwnersMap fetchOwners(String project, String branch, PathOwnersEntriesCache cache)
+      throws InvalidOwnersFileException {
     OwnersMap ownersMap = new OwnersMap();
     try {
       // Using a `map` would have needed a try/catch inside the lamba, resulting in more code
@@ -267,16 +274,17 @@ public class PathOwners {
         }
       }
       ownersMap.setLabel(Optional.ofNullable(currentEntry).flatMap(PathOwnersEntry::getLabel));
-      return ownersMap;
-    } catch (IOException | ExecutionException e) {
-      log.warn("Invalid OWNERS file", e);
-      return ownersMap;
+    } catch (IOException e) {
+      log.warn("Opening repository %s failed", project, e);
+    } catch (ExecutionException e) {
+      log.warn("Reading OWNERS file for %s project, from cache failed", project, e);
     }
+    return ownersMap;
   }
 
   private List<ReadOnlyPathOwnersEntry> getPathOwnersEntries(
       List<Project.NameKey> projectNames, String branch, PathOwnersEntriesCache cache)
-      throws IOException, ExecutionException {
+      throws IOException, InvalidOwnersFileException, ExecutionException {
     ImmutableList.Builder<ReadOnlyPathOwnersEntry> pathOwnersEntries = ImmutableList.builder();
     for (Project.NameKey projectName : projectNames) {
       try (Repository repo = repositoryManager.openRepository(projectName)) {
@@ -290,7 +298,7 @@ public class PathOwners {
 
   private ReadOnlyPathOwnersEntry getPathOwnersEntryOrEmpty(
       String project, Repository repo, String branch, PathOwnersEntriesCache cache)
-      throws ExecutionException {
+      throws InvalidOwnersFileException, ExecutionException {
     return getPathOwnersEntry(project, repo, branch, cache)
         .map(v -> (ReadOnlyPathOwnersEntry) v)
         .orElse(PathOwnersEntry.EMPTY);
@@ -298,27 +306,33 @@ public class PathOwners {
 
   private PathOwnersEntry getPathOwnersEntryOrNew(
       String project, Repository repo, String branch, PathOwnersEntriesCache cache)
-      throws ExecutionException {
+      throws InvalidOwnersFileException, ExecutionException {
     return getPathOwnersEntry(project, repo, branch, cache).orElseGet(PathOwnersEntry::new);
   }
 
   private Optional<PathOwnersEntry> getPathOwnersEntry(
       String project, Repository repo, String branch, PathOwnersEntriesCache cache)
-      throws ExecutionException {
+      throws InvalidOwnersFileException, ExecutionException {
     String rootPath = "OWNERS";
-    return cache
-        .get(project, branch, rootPath, () -> getOwnersConfig(repo, rootPath, branch))
-        .map(
-            conf ->
-                new PathOwnersEntry(
+    return unwrapInvalidOwnersFileException(
+        () ->
+            cache
+                .get(
+                    project,
+                    branch,
                     rootPath,
-                    conf,
-                    accounts,
-                    Optional.empty(),
-                    Collections.emptySet(),
-                    Collections.emptySet(),
-                    Collections.emptySet(),
-                    Collections.emptySet()));
+                    () -> getOwnersConfig(project, repo, rootPath, branch))
+                .map(
+                    conf ->
+                        new PathOwnersEntry(
+                            rootPath,
+                            conf,
+                            accounts,
+                            Optional.empty(),
+                            Collections.emptySet(),
+                            Collections.emptySet(),
+                            Collections.emptySet(),
+                            Collections.emptySet())));
   }
 
   private void processMatcherPerPath(
@@ -374,7 +388,7 @@ public class PathOwners {
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
       PathOwnersEntriesCache cache)
-      throws ExecutionException {
+      throws InvalidOwnersFileException, ExecutionException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
     StringBuilder builder = new StringBuilder();
@@ -401,31 +415,33 @@ public class PathOwners {
         String ownersPath = partial + "OWNERS";
         PathOwnersEntry pathFallbackEntry = currentEntry;
         currentEntry =
-            cache
-                .get(
-                    project,
-                    branch,
-                    ownersPath,
-                    () -> getOwnersConfig(repository, ownersPath, branch))
-                .map(
-                    c -> {
-                      Optional<LabelDefinition> label = pathFallbackEntry.getLabel();
-                      final Set<Id> owners = pathFallbackEntry.getOwners();
-                      final Set<Id> reviewers = pathFallbackEntry.getReviewers();
-                      Collection<Matcher> inheritedMatchers =
-                          pathFallbackEntry.getMatchers().values();
-                      Set<String> groupOwners = pathFallbackEntry.getGroupOwners();
-                      return new PathOwnersEntry(
-                          ownersPath,
-                          c,
-                          accounts,
-                          label,
-                          owners,
-                          reviewers,
-                          inheritedMatchers,
-                          groupOwners);
-                    })
-                .orElse(pathFallbackEntry);
+            unwrapInvalidOwnersFileException(
+                () ->
+                    cache
+                        .get(
+                            project,
+                            branch,
+                            ownersPath,
+                            () -> getOwnersConfig(project, repository, ownersPath, branch))
+                        .map(
+                            c -> {
+                              Optional<LabelDefinition> label = pathFallbackEntry.getLabel();
+                              final Set<Id> owners = pathFallbackEntry.getOwners();
+                              final Set<Id> reviewers = pathFallbackEntry.getReviewers();
+                              Collection<Matcher> inheritedMatchers =
+                                  pathFallbackEntry.getMatchers().values();
+                              Set<String> groupOwners = pathFallbackEntry.getGroupOwners();
+                              return new PathOwnersEntry(
+                                  ownersPath,
+                                  c,
+                                  accounts,
+                                  label,
+                                  owners,
+                                  reviewers,
+                                  inheritedMatchers,
+                                  groupOwners);
+                            })
+                        .orElse(pathFallbackEntry));
         entries.put(partial, currentEntry);
       }
     }
@@ -480,12 +496,46 @@ public class PathOwners {
   /**
    * Returns the parsed FileOwnersConfig file for the given path if it exists.
    *
-   * @param ownersPath path to OWNERS file in the git repo
-   * @return config or null if it doesn't exist
-   * @throws IOException
+   * @return Optional(config) or Optional.empty if it doesn't exist
+   * @throws InvalidOwnersFileException when reading/parsing of the OWNERS file fails
    */
-  private Optional<OwnersConfig> getOwnersConfig(Repository repo, String ownersPath, String branch)
-      throws IOException {
-    return getBlobAsBytes(repo, branch, ownersPath).flatMap(parser::getOwnersConfig);
+  private Optional<OwnersConfig> getOwnersConfig(
+      String project, Repository repo, String ownersPath, String branch)
+      throws InvalidOwnersFileException {
+    try {
+      Optional<byte[]> configBytes = getBlobAsBytes(repo, branch, ownersPath);
+      if (configBytes.isEmpty()) {
+        return Optional.empty();
+      }
+      return parser.getOwnersConfig(configBytes.get());
+    } catch (IOException e) {
+      throw new InvalidOwnersFileException(project, ownersPath, branch, e);
+    }
+  }
+
+  @FunctionalInterface
+  private interface Executable<T> {
+    T call() throws ExecutionException;
+  }
+
+  /**
+   * Unwraps the InvalidOwnersFileException from the ExecutionException so that callers can focus on
+   * handling InvalidOwnersFileException if/when needed. Note that ExecutionException is thrown only
+   * when loading values to PathOwnersEntriesCache fails.
+   *
+   * @throws InvalidOwnersFileException when call throws ExecutionException that is matchable with
+   *     InvalidOwnersFileException otherwise RuntimeException is thrown
+   * @throws ExecutionException in all other cases
+   */
+  private <T> T unwrapInvalidOwnersFileException(Executable<T> action)
+      throws InvalidOwnersFileException, ExecutionException {
+    try {
+      return action.call();
+    } catch (ExecutionException e) {
+      if (e.getCause() instanceof InvalidOwnersFileException) {
+        throw (InvalidOwnersFileException) e.getCause();
+      }
+      throw e;
+    }
   }
 }
