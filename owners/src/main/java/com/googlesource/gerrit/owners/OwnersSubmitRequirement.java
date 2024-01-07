@@ -47,6 +47,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
+import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import com.googlesource.gerrit.owners.common.PathOwners;
 import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
@@ -165,6 +166,9 @@ public class OwnersSubmitRequirement implements SubmitRule {
                   String.format(
                       "Missing approvals for path(s): [%s]",
                       Joiner.on(", ").join(missingApprovals))));
+    } catch (InvalidOwnersFileException e) {
+      logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
+      return Optional.of(ruleError(e.getMessage()));
     } catch (IOException e) {
       String msg =
           String.format(
@@ -194,7 +198,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
   }
 
   private PathOwners getPathOwners(ChangeData cd, ProjectState projectState)
-      throws IOException, DiffNotAvailableException {
+      throws IOException, DiffNotAvailableException, InvalidOwnersFileException {
     metrics.countConfigLoads.increment();
     try (Timer0.Context ctx = metrics.loadConfig.start()) {
       String branch = cd.change().getDest().branch();
@@ -363,6 +367,13 @@ public class OwnersSubmitRequirement implements SubmitRule {
     SubmitRecord submitRecord = new SubmitRecord();
     submitRecord.status = SubmitRecord.Status.OK;
     submitRecord.requirements = List.of(SUBMIT_REQUIREMENT);
+    return submitRecord;
+  }
+
+  private static SubmitRecord ruleError(String err) {
+    SubmitRecord submitRecord = new SubmitRecord();
+    submitRecord.status = SubmitRecord.Status.RULE_ERROR;
+    submitRecord.errorMessage = err;
     return submitRecord;
   }
 }
