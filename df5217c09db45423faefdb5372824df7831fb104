@@ -16,6 +16,29 @@
       "message": "re-verified 👍",
       "revId": "df5217c09db45423faefdb5372824df7831fb104",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e56defa_9d5aa80d",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-19T17:57:30Z",
+      "side": 1,
+      "message": "Isn\u0027t log a SLF4J Logger? The format parameters placeholders are `{}` and not `%s` AFAIK",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 5
+      },
+      "revId": "df5217c09db45423faefdb5372824df7831fb104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
