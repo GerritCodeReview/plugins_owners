@@ -39,6 +39,53 @@
       },
       "revId": "df5217c09db45423faefdb5372824df7831fb104",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9543a25_88a885d9",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-01-22T07:32:55Z",
+      "side": 1,
+      "message": "Correct - done",
+      "parentUuid": "2e56defa_9d5aa80d",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 5
+      },
+      "revId": "df5217c09db45423faefdb5372824df7831fb104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01fa14aa_59722565",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-01-22T07:32:55Z",
+      "side": 1,
+      "message": "nit: remove it as redundant",
+      "range": {
+        "startLine": 527,
+        "startChar": 36,
+        "endLine": 527,
+        "endChar": 72
+      },
+      "revId": "df5217c09db45423faefdb5372824df7831fb104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
