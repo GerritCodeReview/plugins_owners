@@ -394,6 +394,31 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     assertThat(changeReady.requirements).containsExactly(READY);
   }
 
+  @Test
+  @GlobalPluginConfig(
+      pluginName = "owners",
+      name = "owners.enableSubmitRequirement",
+      value = "true")
+  public void shouldIndicateRuleErrorForBrokenOwnersFile() throws Exception {
+    addBrokenOwnersFileToRoot();
+
+    PushOneCommit.Result r = createChange("Add a file", "README.md", "foo");
+    ChangeApi changeApi = forChange(r);
+    ChangeInfo changeNotReady = changeApi.get();
+    assertThat(changeNotReady.submittable).isFalse();
+    assertThat(changeNotReady.requirements).isEmpty();
+    verifyHasSubmitRecordWithRuleError(changeNotReady.submitRecords);
+  }
+
+  private void verifyHasSubmitRecordWithRuleError(Collection<SubmitRecordInfo> records) {
+    assertThat(
+            records.stream()
+                .filter(record -> SubmitRecordInfo.Status.RULE_ERROR == record.status)
+                .filter(record -> record.errorMessage.startsWith("Invalid owners file: OWNERS"))
+                .findAny())
+        .isPresent();
+  }
+
   private void verifyHasSubmitRecord(
       Collection<SubmitRecordInfo> records, String label, SubmitRecordInfo.Label.Status status) {
     assertThat(
@@ -433,6 +458,10 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
 
   protected ChangeApi forChange(PushOneCommit.Result r) throws RestApiException {
     return gApi.changes().id(r.getChangeId());
+  }
+
+  private void addBrokenOwnersFileToRoot() throws Exception {
+    pushOwnersToMaster("{foo");
   }
 
   private void addOwnerFileWithMatchersToRoot(

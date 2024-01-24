@@ -31,7 +31,6 @@ import com.google.gerrit.entities.Account;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.Before;
@@ -85,11 +84,8 @@ public class RegexTest extends Config {
             regexMatcher(".*/a.*", ACCOUNT_D),
             partialRegexMatcher("Product.sql", ACCOUNT_A));
     // the function to test
-    Optional<OwnersConfig> configNullable = getOwnersConfig(fullConfig);
+    OwnersConfig config = getOwnersConfig(fullConfig);
     // check classical configuration
-    assertThat(configNullable).isPresent();
-
-    OwnersConfig config = configNullable.get();
     assertTrue(config.isInherited());
 
     Set<String> owners = config.getOwners();
@@ -237,16 +233,13 @@ public class RegexTest extends Config {
   public void testMatchersOnlyConfig() throws Exception {
     replayAll();
 
-    Optional<OwnersConfig> ownersConfigOpt =
+    OwnersConfig ownersConfig =
         getOwnersConfig(
             createConfig(
                 false,
                 new String[0],
                 suffixMatcher(".txt", ACCOUNT_B),
                 genericMatcher(".*", ACCOUNT_A)));
-
-    assertThat(ownersConfigOpt).isPresent();
-    OwnersConfig ownersConfig = ownersConfigOpt.get();
 
     assertThat(ownersConfig.getOwners()).isEmpty();
     assertThat(ownersConfig.getMatchers()).isNotEmpty();

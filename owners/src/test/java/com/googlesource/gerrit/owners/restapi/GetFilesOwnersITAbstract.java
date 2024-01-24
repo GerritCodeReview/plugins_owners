@@ -36,6 +36,7 @@ import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.project.testing.TestLabels;
+import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
@@ -223,6 +224,20 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     assertThat(thrown).hasCauseThat().isInstanceOf(LabelNotFoundException.class);
   }
 
+  @Test
+  @UseLocalDisk
+  public void shouldThrowResourceConflictWhenOwnersFileIsBroken() throws Exception {
+    addBrokenOwnersFileToRoot();
+    String changeId = createChange().getChangeId();
+
+    ResourceConflictException thrown =
+        assertThrows(
+            ResourceConflictException.class,
+            () -> ownersApi.apply(parseCurrentRevisionResource(changeId)));
+    assertThat(thrown).hasMessageThat().startsWith("Invalid owners file: OWNERS");
+    assertThat(thrown).hasCauseThat().isInstanceOf(InvalidOwnersFileException.class);
+  }
+
   protected void replaceCodeReviewWithLabel(LabelType label) throws Exception {
     try (ProjectConfigUpdate u = updateProject(allProjects)) {
       u.getConfig().getLabelSections().remove(LabelId.CODE_REVIEW);
@@ -262,6 +277,10 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     assertThat(resp.value().files)
         .containsExactly("a.txt", Sets.newHashSet(rootOwner, projectOwner));
+  }
+
+  private void addBrokenOwnersFileToRoot() throws Exception {
+    merge(createChange(testRepo, "master", "Add OWNER file", "OWNERS", "{foo", ""));
   }
 
   private void addOwnerFileToProjectConfig(Project.NameKey projectNameKey, boolean inherit)
