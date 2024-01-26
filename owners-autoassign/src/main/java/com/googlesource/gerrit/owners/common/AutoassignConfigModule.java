@@ -33,7 +33,7 @@ public class AutoassignConfigModule extends AbstractModule {
         .annotatedWith(Exports.named(PROJECT_CONFIG_AUTOASSIGN_WIP_CHANGES))
         .toInstance(
             new ProjectConfigEntry(
-                "Auto-assign WIP changes", InheritableBoolean.TRUE, InheritableBoolean.class));
+                "Auto-assign WIP changes", InheritableBoolean.INHERIT, InheritableBoolean.class));
     bind(ProjectConfigEntry.class)
         .annotatedWith(Exports.named(PROJECT_CONFIG_AUTOASSIGN_FIELD))
         .toInstance(
