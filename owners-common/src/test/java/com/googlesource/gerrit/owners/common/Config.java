@@ -85,7 +85,7 @@ public abstract class Config {
     return entry;
   }
 
-  Optional<OwnersConfig> getOwnersConfig(String string) {
+  OwnersConfig getOwnersConfig(String string) throws IOException {
     return parser.getOwnersConfig(string.getBytes(Charsets.UTF_8));
   }
 

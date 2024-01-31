@@ -256,6 +256,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       logger.warn("Could not open change: {}", cId, e);
     } catch (ReviewerManagerException e) {
       logger.warn("Could not add reviewers for change: {}", cId, e);
+    } catch (InvalidOwnersFileException e) {
+      logger.warn("Could not add reviewers for change: {} due to rules error", cId, e);
     }
   }
 

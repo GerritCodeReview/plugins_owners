@@ -339,14 +339,11 @@ public class PathOwnersTest extends ClassicConfig {
   }
 
   @Test
-  public void testParsingYamlWithLabelWithScore() {
+  public void testParsingYamlWithLabelWithScore() throws IOException {
     String yamlString =
         "inherited: true\nlabel: " + EXPECTED_LABEL + ",1\nowners:\n- " + USER_C_EMAIL_COM;
-    Optional<OwnersConfig> config = getOwnersConfig(yamlString);
+    OwnersConfig ownersConfig = getOwnersConfig(yamlString);
 
-    assertTrue(config.isPresent());
-
-    OwnersConfig ownersConfig = config.get();
     assertTrue(ownersConfig.isInherited());
     assertThat(ownersConfig.getLabel()).isPresent();
 
@@ -360,14 +357,11 @@ public class PathOwnersTest extends ClassicConfig {
   }
 
   @Test
-  public void testParsingYamlWithLabelWithoutScore() {
+  public void testParsingYamlWithLabelWithoutScore() throws IOException {
     String yamlString =
         "inherited: true\nlabel: " + EXPECTED_LABEL + "\nowners:\n- " + USER_C_EMAIL_COM;
-    Optional<OwnersConfig> config = getOwnersConfig(yamlString);
+    OwnersConfig ownersConfig = getOwnersConfig(yamlString);
 
-    assertTrue(config.isPresent());
-
-    OwnersConfig ownersConfig = config.get();
     assertTrue(ownersConfig.isInherited());
     assertThat(ownersConfig.getLabel()).isPresent();
 
