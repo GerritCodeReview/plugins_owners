@@ -418,7 +418,8 @@ provided their Code-Review +2 feedback.
 
 ### When `owners.enableSubmitRequirement = true`
 
-This case is not yet covered by the owners submit requirement implementation.
+This case is obsolete and _only_ prolog specific. The list of which file is
+owned by whom is available through the [REST API](rest-api.md).
 
 ### When `owners.enableSubmitRequirement = false` (default)
 
