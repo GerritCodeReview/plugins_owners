@@ -42,8 +42,8 @@ public class OwnersModule extends AbstractModule {
     install(new OwnersRestApiModule());
 
     if (pluginSettings.enableSubmitRequirement()) {
-      install(new OwnersSubmitRequirement.OwnersSubmitRequirementModule());
       install(new OwnersApprovalHasOperand.OwnerApprovalHasOperandModule());
+      logger.atInfo().log("The owners plugin works in submit-requirements mode.");
     } else {
       logger.atInfo().log(
           "OwnersSubmitRequirement is disabled therefore it will not be evaluated.");

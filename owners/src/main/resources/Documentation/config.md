@@ -25,16 +25,29 @@ Example:
   expandGroups = false
 ```
 
-owners.enableSubmitRequirement
-:   If set to `true` the approvals are evaluated through the owners submit rule without a need of
-    prolog predicate being added to a project. Defaults to `false`.
+<a name="owners.enableSubmitRequirement">owners.enableSubmitRequirement</a>
+:   If set to `true` the approvals are evaluated through the owners' `approval_owners` submit requirement operand
+    without a need of prolog predicate being added to a project. Defaults to `false`.
 
-Example:
+    Example:
 
-```
-[owners]
-  enableSubmitRequirement = true
-```
+    ```
+    [owners]
+      enableSubmitRequirement = true
+    ```
+
+    > **Note:** submit requirements need to be configured (either on a given project or its parent(s) level)
+    > in `project.config` before they are evaluated by Gerrit. The minimal configuration for `approval_owners`
+    > operand looks like below and it is assumed for all the following examples with
+    > `owners.enableSubmitRequirement = true` option enabled (see
+    > [submit requirements documentation](/Documentation/config-submit-requirements.html) for more details):
+
+    > Example:
+    > ```
+    > [submit-requirement "Owner-Approval"]
+    >   description = Files needs to be approved by owners
+    >   submittableIf = has:approval_owners
+    > ```
 
 cache."owners.path_owners_entries".memoryLimit
 :   The cache is used to hold the parsed version of `OWNERS` files in the
@@ -182,6 +195,9 @@ either 'John Doe' or 'Doug Smith'. If none of them has approved then
 `Code-Review from owners` requirement is added making the change not
 submittable.
 
+> See [notes](#owners.enableSubmitRequirement) for submit requirements
+> configuration prerequisites.
+
 ### When `owners.enableSubmitRequirement = false` (default)
 
 And sample rules.pl that uses this predicate to enable the submit rule if
@@ -255,6 +271,9 @@ Note that `function` is set to `NoOp`.
 As a result Gerrit would make the change Submittable only if 'John Doe' or
 'Doug Smith' have provided at least a `Code-Review +1`.
 
+> See [notes](#owners.enableSubmitRequirement) for submit requirements
+> configuration prerequisites.
+
 ### When `owners.enableSubmitRequirement = false` (default)
 
 And a rule which makes submittable a change if at least one of the owners has
@@ -315,6 +334,9 @@ owners:
 A change cannot be submitted until 'John Doe' or 'Doug Smith' add a label
 `Owner-Approved`, independently from being able to provide any Code-Review.
 
+> See [notes](#owners.enableSubmitRequirement) for submit requirements
+> configuration prerequisites.
+
 ### When `owners.enableSubmitRequirement = false` (default)
 
 Finally, define prolog rules as shown in below (an amended version of
@@ -364,6 +386,9 @@ A change cannot be submitted until 'John Doe' or 'Doug Smith' add
 `Code-Review+2` for a change to be submittable as default submit rule is
 still evaluated.
 
+> See [notes](#owners.enableSubmitRequirement) for submit requirements
+> configuration prerequisites.
+
 ## Example 5 - Owners based on matchers
 
 Often the ownership comes from the developer's skills and competencies and
@@ -394,6 +419,9 @@ Gerrit default rules are satisfied and all the owners of the .sql files
 ('Mister Dba') and the .css files (either 'John Creative' or 'Matt Designer')
 have provided their `Code-Review +2` feedback (as `Code-Review` is default
 label for owners submit requirement).
+
+> See [notes](#owners.enableSubmitRequirement) for submit requirements
+> configuration prerequisites.
 
 ### When `owners.enableSubmitRequirement = false` (default)
 

@@ -30,7 +30,6 @@ import com.google.gerrit.entities.LegacySubmitRequirement;
 import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.SubmitRecord;
-import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.metrics.Timer0;
 import com.google.gerrit.server.approval.ApprovalsUtil;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -42,8 +41,6 @@ import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.query.change.ChangeData;
-import com.google.gerrit.server.rules.SubmitRule;
-import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
@@ -63,16 +60,7 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 
 @Singleton
-public class OwnersSubmitRequirement implements SubmitRule {
-  public static class OwnersSubmitRequirementModule extends AbstractModule {
-    @Override
-    public void configure() {
-      bind(SubmitRule.class)
-          .annotatedWith(Exports.named("OwnersSubmitRequirement"))
-          .to(OwnersSubmitRequirement.class);
-    }
-  }
-
+class OwnersSubmitRequirement {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final LegacySubmitRequirement SUBMIT_REQUIREMENT =
       LegacySubmitRequirement.builder().setFallbackText("Owners").setType("owners").build();
@@ -106,8 +94,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
     this.cache = cache;
   }
 
-  @Override
-  public Optional<SubmitRecord> evaluate(ChangeData cd) {
+  Optional<SubmitRecord> evaluate(ChangeData cd) {
     requireNonNull(cd, "changeData");
 
     Change change = cd.change();

@@ -27,399 +27,26 @@ import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestAccount;
-import com.google.gerrit.acceptance.config.GlobalPluginConfig;
 import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
-import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
 import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
-import com.google.gerrit.extensions.api.changes.ReviewInput;
-import com.google.gerrit.extensions.client.SubmitType;
-import com.google.gerrit.extensions.common.ChangeInfo;
-import com.google.gerrit.extensions.common.LegacySubmitRequirementInfo;
 import com.google.gerrit.extensions.common.SubmitRecordInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.server.project.testing.TestLabels;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import java.util.Collection;
 import java.util.stream.Stream;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
-import org.junit.Test;
 
 abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemonTest {
-  private static final LegacySubmitRequirementInfo NOT_READY =
-      new LegacySubmitRequirementInfo("NOT_READY", "Owners", "owners");
-  private static final LegacySubmitRequirementInfo READY =
-      new LegacySubmitRequirementInfo("OK", "Owners", "owners");
-
-  @Inject protected RequestScopeOperations requestScopeOperations;
   @Inject private ProjectOperations projectOperations;
 
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireAtLeastOneApprovalForMatchingPathFromOwner() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    TestAccount user1 = accountCreator.user1();
-    addOwnerFileWithMatchersToRoot(true, ".md", admin2, user1);
-
-    PushOneCommit.Result r = createChange("Add a file", "README.md", "foo");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-
-    changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeNotReadyAfterSelfApproval = changeApi.get();
-    assertThat(changeNotReadyAfterSelfApproval.submittable).isFalse();
-    assertThat(changeNotReadyAfterSelfApproval.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.approve());
-    ChangeInfo changeReady = forChange(r).get();
-    assertThat(changeReady.submittable).isTrue();
-    assertThat(changeReady.requirements).containsExactly(READY);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldNotRequireApprovalForNotMatchingPath() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileWithMatchersToRoot(true, ".md", admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "README.txt", "foo");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).isEmpty();
-
-    changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeReady = changeApi.get();
-    assertThat(changeReady.submittable).isTrue();
-    assertThat(changeReady.requirements).isEmpty();
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireApprovalFromRootOwner() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-
-    changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeNotReadyAfterSelfApproval = changeApi.get();
-    assertThat(changeNotReadyAfterSelfApproval.submittable).isFalse();
-    assertThat(changeNotReadyAfterSelfApproval.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.approve());
-    ChangeInfo changeReady = forChange(r).get();
-    assertThat(changeReady.submittable).isTrue();
-    assertThat(changeReady.requirements).containsExactly(READY);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldBlockOwnersApprovalForMaxNegativeVote() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.approve());
-    ChangeInfo changeReady = forChange(r).get();
-    assertThat(changeReady.submittable).isTrue();
-    assertThat(changeReady.requirements).containsExactly(READY);
-
-    changeApi.current().review(ReviewInput.reject());
-    assertThat(forChange(r).get().submittable).isFalse();
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireVerifiedApprovalEvenIfCodeOwnerApproved() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, admin2);
-
-    installVerifiedLabel();
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    assertThat(changeApi.get().submittable).isFalse();
-    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.approve());
-    assertThat(forChange(r).get().submittable).isFalse();
-    assertThat(forChange(r).get().requirements).containsExactly(READY);
-    verifyHasSubmitRecord(
-        forChange(r).get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.NEED);
-
-    changeApi.current().review(new ReviewInput().label(LabelId.VERIFIED, 1));
-    assertThat(changeApi.get().submittable).isTrue();
-    verifyHasSubmitRecord(
-        changeApi.get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.OK);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireCodeOwnerApprovalEvenIfVerifiedWasApproved() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, admin2);
-
-    installVerifiedLabel();
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    assertThat(changeApi.get().submittable).isFalse();
-    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(new ReviewInput().label(LabelId.VERIFIED, 1));
-    ChangeInfo changeNotReady = forChange(r).get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-    verifyHasSubmitRecord(
-        changeNotReady.submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.OK);
-
-    forChange(r).current().review(ReviewInput.approve());
-    ChangeInfo changeReady = forChange(r).get();
-    assertThat(changeReady.submittable).isTrue();
-    assertThat(changeReady.requirements).containsExactly(READY);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireConfiguredLabelByCodeOwner() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    String labelId = "Foo";
-    addOwnerFileToRoot(true, LabelDefinition.parse(labelId).get(), admin2);
-
-    installLabel(labelId);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    assertThat(changeApi.get().submittable).isFalse();
-    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
-
-    changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeStillNotReady = changeApi.get();
-    assertThat(changeStillNotReady.submittable).isFalse();
-    assertThat(changeStillNotReady.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(new ReviewInput().label(labelId, 1));
-    ChangeInfo changeReady = forChange(r).get();
-    assertThat(changeReady.submittable).isTrue();
-    assertThat(changeReady.requirements).containsExactly(READY);
-    verifyHasSubmitRecord(changeReady.submitRecords, labelId, SubmitRecordInfo.Label.Status.OK);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireConfiguredLabelByCodeOwnerEvenIfItIsNotConfiguredForProject()
-      throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    String notExistinglabelId = "Foo";
-    addOwnerFileToRoot(true, LabelDefinition.parse(notExistinglabelId).get(), admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    assertThat(changeApi.get().submittable).isFalse();
-    assertThat(changeApi.get().requirements).containsExactly(NOT_READY);
-
-    changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeStillNotReady = changeApi.get();
-    assertThat(changeStillNotReady.submittable).isFalse();
-    assertThat(changeStillNotReady.requirements).containsExactly(NOT_READY);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireConfiguredLabelScoreByCodeOwner() throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, LabelDefinition.parse("Code-Review,1").get(), admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-
-    changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeNotReadyAfterSelfApproval = changeApi.get();
-    assertThat(changeNotReadyAfterSelfApproval.submittable).isFalse();
-    assertThat(changeNotReadyAfterSelfApproval.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.recommend());
-    ChangeInfo changeReadyWithOwnerScore = forChange(r).get();
-    assertThat(changeReadyWithOwnerScore.submittable).isTrue();
-    assertThat(changeReadyWithOwnerScore.requirements).containsExactly(READY);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldConfiguredLabelScoreByCodeOwnerBeNotSufficientIfLabelRequiresMaxValue()
-      throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, LabelDefinition.parse("Code-Review,1").get(), admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.recommend());
-    ChangeInfo ownersVoteNotSufficient = changeApi.get();
-    assertThat(ownersVoteNotSufficient.submittable).isFalse();
-    assertThat(ownersVoteNotSufficient.requirements).containsExactly(READY);
-    verifyHasSubmitRecord(
-        ownersVoteNotSufficient.submitRecords,
-        LabelId.CODE_REVIEW,
-        SubmitRecordInfo.Label.Status.NEED);
-
-    requestScopeOperations.setApiUser(admin.id());
-    forChange(r).current().review(ReviewInput.approve());
-    ChangeInfo changeReadyWithMaxScore = forChange(r).get();
-    assertThat(changeReadyWithMaxScore.submittable).isTrue();
-    assertThat(changeReadyWithMaxScore.requirements).containsExactly(READY);
-    verifyHasSubmitRecord(
-        changeReadyWithMaxScore.submitRecords,
-        LabelId.CODE_REVIEW,
-        SubmitRecordInfo.Label.Status.OK);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldConfiguredLabelScoreByCodeOwnersOverwriteSubmitRequirement() throws Exception {
-    installLabel(TestLabels.codeReview().toBuilder().setFunction(LabelFunction.NO_OP).build());
-
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, LabelDefinition.parse("Code-Review,1").get(), admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.recommend());
-    ChangeInfo ownersVoteSufficient = forChange(r).get();
-    assertThat(ownersVoteSufficient.submittable).isTrue();
-    assertThat(ownersVoteSufficient.requirements).containsExactly(READY);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldRequireApprovalFromGrandParentProjectOwner() throws Exception {
-    Project.NameKey parentProjectName =
-        createProjectOverAPI("parent", allProjects, true, SubmitType.FAST_FORWARD_ONLY);
-    Project.NameKey childProjectName =
-        createProjectOverAPI("child", parentProjectName, true, SubmitType.FAST_FORWARD_ONLY);
-    TestRepository<InMemoryRepository> childRepo = cloneProject(childProjectName);
-
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRefsMetaConfig(true, admin2, allProjects);
-
-    PushOneCommit.Result r =
-        createCommitAndPush(childRepo, "refs/for/master", "Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).containsExactly(NOT_READY);
-
-    changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeNotReadyAfterSelfApproval = changeApi.get();
-    assertThat(changeNotReadyAfterSelfApproval.submittable).isFalse();
-    assertThat(changeNotReadyAfterSelfApproval.requirements).containsExactly(NOT_READY);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.approve());
-    ChangeInfo changeReady = forChange(r).get();
-    assertThat(changeReady.submittable).isTrue();
-    assertThat(changeReady.requirements).containsExactly(READY);
-  }
-
-  @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
-  public void shouldIndicateRuleErrorForBrokenOwnersFile() throws Exception {
-    addBrokenOwnersFileToRoot();
-
-    PushOneCommit.Result r = createChange("Add a file", "README.md", "foo");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    assertThat(changeNotReady.requirements).isEmpty();
-    verifyHasSubmitRecordWithRuleError(changeNotReady.submitRecords);
-  }
-
-  private void verifyHasSubmitRecordWithRuleError(Collection<SubmitRecordInfo> records) {
-    assertThat(
-            records.stream()
-                .filter(record -> SubmitRecordInfo.Status.RULE_ERROR == record.status)
-                .filter(record -> record.errorMessage.startsWith("Invalid owners file: OWNERS"))
-                .findAny())
-        .isPresent();
-  }
-
-  private void verifyHasSubmitRecord(
+  protected void verifyHasSubmitRecord(
       Collection<SubmitRecordInfo> records, String label, SubmitRecordInfo.Label.Status status) {
     assertThat(
             records.stream()
@@ -429,11 +56,11 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
         .isPresent();
   }
 
-  private void installVerifiedLabel() throws Exception {
+  protected void installVerifiedLabel() throws Exception {
     installLabel(LabelId.VERIFIED);
   }
 
-  private void installLabel(String labelId) throws Exception {
+  protected void installLabel(String labelId) throws Exception {
     LabelType verified =
         labelBuilder(labelId, value(1, "Verified"), value(0, "No score"), value(-1, "Fails"))
             .setFunction(LabelFunction.MAX_WITH_BLOCK)
@@ -449,7 +76,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
         .update();
   }
 
-  private void installLabel(LabelType label) throws Exception {
+  protected void installLabel(LabelType label) throws Exception {
     try (ProjectConfigUpdate u = updateProject(project)) {
       u.getConfig().upsertLabelType(label);
       u.save();
@@ -460,11 +87,11 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     return gApi.changes().id(r.getChangeId());
   }
 
-  private void addBrokenOwnersFileToRoot() throws Exception {
+  protected void addBrokenOwnersFileToRoot() throws Exception {
     pushOwnersToMaster("{foo");
   }
 
-  private void addOwnerFileWithMatchersToRoot(
+  protected void addOwnerFileWithMatchersToRoot(
       boolean inherit, String extension, TestAccount... users) throws Exception {
     // Add OWNERS file to root:
     //
@@ -485,7 +112,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
                 .collect(joining())));
   }
 
-  private void addOwnerFileToRoot(boolean inherit, TestAccount u) throws Exception {
+  protected void addOwnerFileToRoot(boolean inherit, TestAccount u) throws Exception {
     // Add OWNERS file to root:
     //
     // inherited: true
@@ -494,7 +121,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     pushOwnersToMaster(String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()));
   }
 
-  private void addOwnerFileToRefsMetaConfig(
+  protected void addOwnerFileToRefsMetaConfig(
       boolean inherit, TestAccount u, Project.NameKey projectName) throws Exception {
     // Add OWNERS file to root:
     //
