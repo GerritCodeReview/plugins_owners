@@ -16,9 +16,7 @@ package com.googlesource.gerrit.owners;
 
 import static com.google.gerrit.server.project.ProjectCache.illegalState;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toSet;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Streams;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
@@ -26,10 +24,8 @@ import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.LabelTypes;
-import com.google.gerrit.entities.LegacySubmitRequirement;
 import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
-import com.google.gerrit.entities.SubmitRecord;
 import com.google.gerrit.metrics.Timer0;
 import com.google.gerrit.server.approval.ApprovalsUtil;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -40,6 +36,7 @@ import com.google.gerrit.server.patch.DiffOptions;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.project.ProjectState;
+import com.google.gerrit.server.project.SubmitRequirementEvaluationException;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -62,8 +59,6 @@ import org.eclipse.jgit.lib.Repository;
 @Singleton
 class OwnersSubmitRequirement {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private static final LegacySubmitRequirement SUBMIT_REQUIREMENT =
-      LegacySubmitRequirement.builder().setFallbackText("Owners").setType("owners").build();
 
   private final OwnersMetrics metrics;
   private final PluginSettings pluginSettings;
@@ -94,7 +89,7 @@ class OwnersSubmitRequirement {
     this.cache = cache;
   }
 
-  Optional<SubmitRecord> evaluate(ChangeData cd) {
+  boolean evaluate(ChangeData cd) throws SubmitRequirementEvaluationException {
     requireNonNull(cd, "changeData");
 
     Change change = cd.change();
@@ -104,7 +99,7 @@ class OwnersSubmitRequirement {
       logger.atFine().log(
           "Project '%s': change #%d is closed therefore OWNERS submit requirements are skipped.",
           project, changeId);
-      return Optional.empty();
+      return true;
     }
 
     metrics.countSubmitRuleRuns.increment();
@@ -117,7 +112,7 @@ class OwnersSubmitRequirement {
             "Project '%s': change #%d has no OWNERS submit requirements defined. "
                 + "Skipping submit requirements.",
             project, changeId);
-        return Optional.empty();
+        return true;
       }
 
       ChangeNotes notes = cd.notes();
@@ -132,44 +127,32 @@ class OwnersSubmitRequirement {
 
       Account.Id uploader = notes.getCurrentPatchSet().uploader();
 
-      Set<String> missingApprovals =
-          fileOwners.entrySet().stream()
-              .filter(
-                  requiredApproval ->
-                      ownersLabel
-                          .map(
-                              ol ->
-                                  isApprovalMissing(
-                                      requiredApproval, uploader, approvalsByAccount, ol))
-                          .orElse(true))
-              .map(Map.Entry::getKey)
-              .collect(toSet());
-
-      return Optional.of(
-          missingApprovals.isEmpty()
-              ? ok()
-              : notReady(
-                  label.getName(),
-                  String.format(
-                      "Missing approvals for path(s): [%s]",
-                      Joiner.on(", ").join(missingApprovals))));
+      // a SR is not fulfilled if any owner approval is missing
+      return !fileOwners.entrySet().stream()
+          .anyMatch(
+              requiredApproval ->
+                  ownersLabel
+                      .map(
+                          ol ->
+                              isApprovalMissing(requiredApproval, uploader, approvalsByAccount, ol))
+                      .orElse(true));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
-      return Optional.of(ruleError(e.getMessage()));
+      throw new SubmitRequirementEvaluationException(e.getMessage());
     } catch (IOException e) {
       String msg =
           String.format(
               "Project '%s': repository cannot be opened to evaluate OWNERS submit requirements.",
               project);
       logger.atSevere().withCause(e).log("%s", msg);
-      throw new IllegalStateException(msg, e);
+      throw new SubmitRequirementEvaluationException(e.getMessage(), e);
     } catch (DiffNotAvailableException e) {
       String msg =
           String.format(
               "Project '%s' change #%d: unable to get diff to evaluate OWNERS submit requirements.",
               project, changeId);
       logger.atSevere().withCause(e).log("%s", msg);
-      throw new IllegalStateException(msg, e);
+      throw new SubmitRequirementEvaluationException(e.getMessage(), e);
     }
   }
 
@@ -336,31 +319,5 @@ class OwnersSubmitRequirement {
     // reviewed
     return diffOperations.listModifiedFilesAgainstParent(
         project, revision, 0, DiffOptions.DEFAULTS);
-  }
-
-  private static SubmitRecord notReady(String ownersLabel, String missingApprovals) {
-    SubmitRecord submitRecord = new SubmitRecord();
-    submitRecord.status = SubmitRecord.Status.NOT_READY;
-    submitRecord.errorMessage = missingApprovals;
-    submitRecord.requirements = List.of(SUBMIT_REQUIREMENT);
-    SubmitRecord.Label label = new SubmitRecord.Label();
-    label.label = String.format("%s from owners", ownersLabel);
-    label.status = SubmitRecord.Label.Status.NEED;
-    submitRecord.labels = List.of(label);
-    return submitRecord;
-  }
-
-  private static SubmitRecord ok() {
-    SubmitRecord submitRecord = new SubmitRecord();
-    submitRecord.status = SubmitRecord.Status.OK;
-    submitRecord.requirements = List.of(SUBMIT_REQUIREMENT);
-    return submitRecord;
-  }
-
-  private static SubmitRecord ruleError(String err) {
-    SubmitRecord submitRecord = new SubmitRecord();
-    submitRecord.status = SubmitRecord.Status.RULE_ERROR;
-    submitRecord.errorMessage = err;
-    return submitRecord;
   }
 }
