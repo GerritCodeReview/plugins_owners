@@ -1,40 +1,43 @@
+@PLUGIN@ configuration
+======================
+
 ## Global configuration
 
 The global plugin configuration is read from the `$GERRIT_SITE/etc/owners.config`
 and is applied across all projects in Gerrit.
 
 owners.disable.branch
-:	List of branches regex where the resolution of owners is disabled.
+:   List of branches regex where the resolution of owners is disabled.
 
-Example:
+    Example:
 
-```
-[owners "disable"]
-  branch = refs/meta/config
-  branch = refs/heads/sandboxes.*
-```
+    ```
+    [owners "disable"]
+      branch = refs/meta/config
+      branch = refs/heads/sandboxes.*
+    ```
 
 owners.expandGroups
 :   Expand owners and groups into account ids. If set to `false` all owners are left untouched, apart from e-mail
     addresses which have the domain dropped. Defaults to `true`.
 
-Example:
+    Example:
 
-```
-[owners]
-  expandGroups = false
-```
+    ```
+    [owners]
+      expandGroups = false
+    ```
 
 owners.enableSubmitRequirement
 :   If set to `true` the approvals are evaluated through the owners submit rule without a need of
     prolog predicate being added to a project. Defaults to `false`.
 
-Example:
+    Example:
 
-```
-[owners]
-  enableSubmitRequirement = true
-```
+    ```
+    [owners]
+      enableSubmitRequirement = true
+    ```
 
 cache."owners.path_owners_entries".memoryLimit
 :   The cache is used to hold the parsed version of `OWNERS` files in the
@@ -49,12 +52,12 @@ cache."owners.path_owners_entries".memoryLimit
     _Note that in opposite to the previous settings the modification needs to be
     performed in the `$GERRIT_SITE/etc/gerrit.config` file._
 
-Example
+    Example
 
-```
-[cache "owners.path_owners_entries"]
-  memoryLimit = 2048
-```
+    ```
+    [cache "owners.path_owners_entries"]
+      memoryLimit = 2048
+    ```
 
 ## Configuration
 
