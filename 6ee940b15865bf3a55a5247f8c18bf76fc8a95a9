@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a55c623c_5ffd6718",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-12T14:04:01Z",
+      "side": 1,
+      "message": "a need",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 11
+      },
+      "revId": "6ee940b15865bf3a55a5247f8c18bf76fc8a95a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4261ccb_4b0b2df1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-12T14:04:01Z",
+      "side": 1,
+      "message": "for",
+      "range": {
+        "startLine": 16,
+        "startChar": 26,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "6ee940b15865bf3a55a5247f8c18bf76fc8a95a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c558155_21da71d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-12T14:04:01Z",
+      "side": 1,
+      "message": "remove _the_",
+      "range": {
+        "startLine": 18,
+        "startChar": 23,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "6ee940b15865bf3a55a5247f8c18bf76fc8a95a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4749c17b_428bcb7f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-12T14:04:01Z",
+      "side": 1,
+      "message": "test",
+      "range": {
+        "startLine": 27,
+        "startChar": 27,
+        "endLine": 27,
+        "endChar": 32
+      },
+      "revId": "6ee940b15865bf3a55a5247f8c18bf76fc8a95a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a0f1070_07d9dcca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-12T14:04:01Z",
+      "side": 1,
+      "message": "configuration",
+      "range": {
+        "startLine": 30,
+        "startChar": 15,
+        "endLine": 30,
+        "endChar": 28
+      },
+      "revId": "6ee940b15865bf3a55a5247f8c18bf76fc8a95a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a81f111a_9b95e15d",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-12T14:04:01Z",
+      "side": 1,
+      "message": "This would be a breaking change though, in a stable-3.6 branch which is also EOL.\n\nIs there a way that we can possibly preserve the _OwnersSubmitRequirement_ custom rule for not breaking existing users?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 9
+      },
+      "revId": "6ee940b15865bf3a55a5247f8c18bf76fc8a95a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
