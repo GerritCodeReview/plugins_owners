@@ -22,6 +22,30 @@
       },
       "revId": "4c434e92d693fb2a60c8c9fd15e8c0c3380ad4c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e69ab43_badc2bb4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-13T09:55:53Z",
+      "side": 1,
+      "message": "see changes from line 9 to 60 in the `config.md` there are multiple lines that have whitespaces added under the `## Global configuration` section",
+      "parentUuid": "e879703a_a7ff320f",
+      "range": {
+        "startLine": 11,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "4c434e92d693fb2a60c8c9fd15e8c0c3380ad4c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
