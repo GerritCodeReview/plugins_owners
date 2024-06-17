@@ -79,6 +79,52 @@
       },
       "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec25a3f8_c8c19e0a",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-06-17T15:23:39Z",
+      "side": 1,
+      "message": "I would add something like: `Keep in mind once the owners.enableSubmitRequirement global setting will be switched to true this section will need to be removed from all the project.config`.\n\nOtherwise I think it could create problems.",
+      "range": {
+        "startLine": 45,
+        "startChar": 37,
+        "endLine": 60,
+        "endChar": 9
+      },
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c6d93a9_3439451b",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-06-17T15:23:39Z",
+      "side": 1,
+      "message": "It looks to me we are only testing cases where submit rules are enabled. We should probably repeat the same tests where the `enableSubmitRequirement` is set to `false`, with different assertions.\n\nNot as part of this change, but it looks to me a case worth covering.",
+      "range": {
+        "startLine": 34,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
