@@ -123,6 +123,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6354d3cb_3b8a45f1",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-06-17T15:37:41Z",
+      "side": 1,
+      "message": "Actually, I think it is more complex:\n1) if the only logic you are after is `submittableIf`, if you switch to `enableSubmitRequirement` to `true`, any submit requirement in the project will have to be removed\n\n2) if your logic has other expressions, like `overrideIf`, `applicableIf`, you can\u0027t switch `enableSubmitRequirement` to `true` since you won\u0027t be able to implement that logic.\n\nMaybe we should add a note in the `enableSubmitRequirement` description warning about the caveat you might have when using it.\n\nThe most flexible way is always submit requirements. I guess `enableSubmitRequirement` will be removed in `master` and the problem will go away, however for the stable releases might be confusing.",
+      "parentUuid": "ec25a3f8_c8c19e0a",
+      "range": {
+        "startLine": 45,
+        "startChar": 37,
+        "endLine": 60,
+        "endChar": 9
+      },
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c6d93a9_3439451b",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
         "patchSetId": 1
