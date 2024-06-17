@@ -16,6 +16,7 @@ package com.googlesource.gerrit.owners;
 
 import com.google.gerrit.entities.SubmitRecord;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.project.SubmitRequirementEvaluationException;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.gerrit.server.query.change.SubmitRequirementPredicate;
 import com.google.gerrit.server.rules.SubmitRule;
@@ -43,7 +44,15 @@ class OwnersApprovalHasPredicate extends SubmitRequirementPredicate {
   @Override
   public boolean match(ChangeData cd) {
     Optional<SubmitRecord> submitRecord = ownersSubmitRequirement.evaluate(cd);
-    return submitRecord.map(sr -> sr.status == SubmitRecord.Status.OK).orElse(true);
+    return submitRecord
+        .map(
+            sr -> {
+              if (sr.status == SubmitRecord.Status.RULE_ERROR) {
+                throw new SubmitRequirementEvaluationException(sr.errorMessage);
+              }
+              return sr.status == SubmitRecord.Status.OK;
+            })
+        .orElse(true);
   }
 
   /**
