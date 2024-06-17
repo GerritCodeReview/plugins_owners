@@ -119,6 +119,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a877a70_4d03a4d5",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersApprovalHasPredicate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-17T20:08:04Z",
+      "side": 1,
+      "message": "Gotcha, maybe worth mentioning also in the commit message?",
+      "parentUuid": "52b259f6_d99797c8",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 15
+      },
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2043fcd8_0f84c5ee",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 1
