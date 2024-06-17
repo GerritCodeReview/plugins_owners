@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fef8ff05_de333fba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-17T08:36:55Z",
+      "side": 1,
+      "message": "Verified locally by calling:\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners/...\n...\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nINFO: Elapsed time: 44.826s, Critical Path: 44.67s\nINFO: 19 processes: 1 internal, 11 darwin-sandbox, 7 worker.\nINFO: Build completed successfully, 19 total actions\n//plugins/owners:owners_tests                                            PASSED in 1.2s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersApprovalHasOperandIT PASSED in 22.2s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersMetricsIT PASSED in 12.1s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersSubmitRequirementIT PASSED in 21.3s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersIT PASSED in 26.8s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersSubmitRequirementsIT PASSED in 27.2s\n\nExecuted 6 out of 6 tests: 6 tests pass.\nINFO: Build completed successfully, 19 total actions\n```",
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
