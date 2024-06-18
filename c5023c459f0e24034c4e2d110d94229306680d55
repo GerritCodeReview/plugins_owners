@@ -70,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aee3d7e_844769c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-06-18T07:33:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebf127e2_5dee22a9",
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a932ebbc_3e1b5efd",
@@ -306,6 +324,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd51949c_337dabd4",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-06-18T07:33:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7727b1d_ca354993",
+      "range": {
+        "startLine": 45,
+        "startChar": 37,
+        "endLine": 60,
+        "endChar": 9
+      },
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c6d93a9_3439451b",
@@ -343,6 +385,30 @@
       "side": 1,
       "message": "The same scenarios are tested in `OwnersApprovalHasOperandIT.java` when `enbaledSubmitRequirement` is not set (IOW when it is `false`). Not sure which other scenarios would you like to cover but happy I\u0027m to add some 😊",
       "parentUuid": "9c6d93a9_3439451b",
+      "range": {
+        "startLine": 34,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a947bd5_fd6d6412",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-06-18T07:33:54Z",
+      "side": 1,
+      "message": "Yes, but in that case we are using the submit requirements.\nI was thinking of testing with `enableSubmitRequirement` disabled and no submit requirements, to make sure the `enableSubmitRequirement` switch is doing the right thing.",
+      "parentUuid": "5988f241_41af37cc",
       "range": {
         "startLine": 34,
         "startChar": 13,
