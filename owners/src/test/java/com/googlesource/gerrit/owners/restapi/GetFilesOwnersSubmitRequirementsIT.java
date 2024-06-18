@@ -28,12 +28,14 @@ import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.restapi.Response;
+import com.google.gerrit.server.config.SitePath;
 import com.google.gerrit.server.project.testing.TestLabels;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.Owner;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import org.apache.commons.compress.utils.Sets;
@@ -44,6 +46,7 @@ import org.junit.Test;
 @UseLocalDisk
 public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract {
   @Inject private ProjectOperations projectOperations;
+  @SitePath private Path sitePath;
 
   @Override
   public void setUpTestPlugin() throws Exception {
@@ -53,7 +56,7 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
     // globally
     pluginCfg.setBoolean("owners", null, "enableSubmitRequirement", true);
     Files.writeString(
-        server.getSitePath().resolve("etc").resolve("owners.config"),
+        sitePath.resolve("etc").resolve("owners.config"),
         pluginCfg.toText(),
         StandardOpenOption.CREATE,
         StandardOpenOption.APPEND);
