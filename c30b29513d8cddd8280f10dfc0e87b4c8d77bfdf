@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b4de901_1db85314",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-18T09:17:49Z",
+      "side": 1,
+      "message": "Verified locally with:\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners/...\n...\n//plugins/owners:owners_tests                                            PASSED in 1.4s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersApprovalHasOperandIT PASSED in 22.2s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersMetricsIT PASSED in 10.1s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersSubmitRequirementIT PASSED in 21.5s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersIT PASSED in 25.7s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersSubmitRequirementsIT PASSED in 26.4s\n\nExecuted 6 out of 6 tests: 6 tests pass.\n```",
+      "revId": "c30b29513d8cddd8280f10dfc0e87b4c8d77bfdf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
