@@ -28,6 +28,7 @@ import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.restapi.Response;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.project.testing.TestLabels;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
@@ -44,6 +45,7 @@ import org.junit.Test;
 @UseLocalDisk
 public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract {
   @Inject private ProjectOperations projectOperations;
+  @Inject private SitePaths sitePaths;
 
   @Override
   public void setUpTestPlugin() throws Exception {
@@ -53,7 +55,7 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
     // globally
     pluginCfg.setBoolean("owners", null, "enableSubmitRequirement", true);
     Files.writeString(
-        server.getSitePath().resolve("etc").resolve("owners.config"),
+        sitePaths.etc_dir.resolve("owners.config"),
         pluginCfg.toText(),
         StandardOpenOption.CREATE,
         StandardOpenOption.APPEND);
