@@ -417,6 +417,30 @@
       },
       "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c842f5_b957abfd",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-18T08:48:27Z",
+      "side": 1,
+      "message": "Let\u0027s do it in the follow-up, WDYT?",
+      "parentUuid": "0a947bd5_fd6d6412",
+      "range": {
+        "startLine": 34,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "c5023c459f0e24034c4e2d110d94229306680d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
