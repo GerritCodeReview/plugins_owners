@@ -41,15 +41,10 @@ import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import com.googlesource.gerrit.owners.restapi.GetFilesOwners.LabelNotFoundException;
-import java.util.Arrays;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.Sets;
-import org.eclipse.jgit.internal.storage.dfs.DfsRepositoryDescription;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
-import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.transport.FetchResult;
-import org.eclipse.jgit.util.FS;
 import org.junit.Test;
 
 public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTest {
@@ -350,31 +345,6 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
   public TestRepository<InMemoryRepository> cloneProjectWithMetaRefs(Project.NameKey project)
       throws Exception {
-    String uri = registerRepoConnection(project, admin);
-    String initialRef = "refs/remotes/origin/config";
-    DfsRepositoryDescription desc = new DfsRepositoryDescription("clone of " + project.get());
-
-    InMemoryRepository.Builder b = new InMemoryRepository.Builder().setRepositoryDescription(desc);
-    if (uri.startsWith("ssh://")) {
-      // SshTransport depends on a real FS to read ~/.ssh/config, but InMemoryRepository by default
-      // uses a null FS.
-      // Avoid leaking user state into our tests.
-      b.setFS(FS.detect().setUserHome(null));
-    }
-    InMemoryRepository dest = b.build();
-    Config cfg = dest.getConfig();
-    cfg.setString("remote", "origin", "url", uri);
-    cfg.setStringList(
-        "remote",
-        "origin",
-        "fetch",
-        Arrays.asList(
-            "+refs/heads/*:refs/remotes/origin/*", "+refs/meta/config:refs/remotes/origin/config"));
-    TestRepository<InMemoryRepository> testRepo = GitUtil.newTestRepository(dest);
-    FetchResult result = testRepo.git().fetch().setRemote("origin").call();
-    if (result.getTrackingRefUpdate(initialRef) != null) {
-      testRepo.reset(initialRef);
-    }
-    return testRepo;
+    return cloneProject(project);
   }
 }
