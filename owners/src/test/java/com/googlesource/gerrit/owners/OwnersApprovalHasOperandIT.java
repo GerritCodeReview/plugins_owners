@@ -16,6 +16,7 @@
 package com.googlesource.gerrit.owners;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.gerrit.extensions.common.SubmitRequirementResultInfo.Status.ERROR;
 import static com.google.gerrit.extensions.common.SubmitRequirementResultInfo.Status.SATISFIED;
 import static com.google.gerrit.extensions.common.SubmitRequirementResultInfo.Status.UNSATISFIED;
 
@@ -23,7 +24,8 @@ import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
-import com.google.gerrit.acceptance.config.GlobalPluginConfig;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.SubmitRequirement;
 import com.google.gerrit.entities.SubmitRequirementExpression;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
@@ -44,20 +46,10 @@ public class OwnersApprovalHasOperandIT extends OwnersSubmitRequirementITAbstrac
 
   @Before
   public void setup() throws Exception {
-    configSubmitRequirement(
-        project,
-        SubmitRequirement.builder()
-            .setName(REQUIREMENT_NAME)
-            .setSubmittabilityExpression(SubmitRequirementExpression.create("has:approval_owners"))
-            .setAllowOverrideInChildProjects(false)
-            .build());
+    enableSubmitRequirementsPredicateForProject(project);
   }
 
   @Test
-  @GlobalPluginConfig(
-      pluginName = "owners",
-      name = "owners.enableSubmitRequirement",
-      value = "true")
   public void shouldOwnersRequirementBeSatisfied() throws Exception {
     TestAccount admin2 = accountCreator.admin2();
     addOwnerFileToRoot(true, LabelDefinition.parse("Code-Review,1").get(), admin2);
@@ -65,12 +57,34 @@ public class OwnersApprovalHasOperandIT extends OwnersSubmitRequirementITAbstrac
     PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
     ChangeApi changeApi = forChange(r);
     ChangeInfo changeNotReady = changeApi.get(ListChangesOption.SUBMIT_REQUIREMENTS);
-    verifySubmitRequirements(changeNotReady.submitRequirements, REQUIREMENT_NAME, UNSATISFIED);
+    verifyChangeNotReady(changeNotReady);
 
     requestScopeOperations.setApiUser(admin2.id());
     forChange(r).current().review(ReviewInput.recommend());
     ChangeInfo ownersVoteSufficient = forChange(r).get(ListChangesOption.SUBMIT_REQUIREMENTS);
-    verifySubmitRequirements(ownersVoteSufficient.submitRequirements, REQUIREMENT_NAME, SATISFIED);
+    verifyChangeReady(ownersVoteSufficient);
+  }
+
+  @Override
+  protected void verifyChangeNotReady(ChangeInfo notReady) {
+    verifySubmitRequirements(notReady.submitRequirements, REQUIREMENT_NAME, UNSATISFIED);
+  }
+
+  @Override
+  protected void verifyChangeReady(ChangeInfo ready) {
+    verifySubmitRequirements(ready.submitRequirements, REQUIREMENT_NAME, SATISFIED);
+  }
+
+  @Override
+  protected void verifyRuleError(ChangeInfo change) {
+    verifySubmitRequirements(change.submitRequirements, REQUIREMENT_NAME, ERROR);
+  }
+
+  @Override
+  protected void updateChildProjectConfiguration(NameKey childProject) throws Exception {
+    // submit requirement predicate has to be configured either on a project level or somewhere in
+    // the project hierarchy
+    enableSubmitRequirementsPredicateForProject(childProject);
   }
 
   private void verifySubmitRequirements(
@@ -89,5 +103,16 @@ public class OwnersApprovalHasOperandIT extends OwnersSubmitRequirementITAbstrac
             requirements.stream()
                 .map(r -> String.format("%s=%s", r.name, r.status))
                 .collect(toImmutableList())));
+  }
+
+  private void enableSubmitRequirementsPredicateForProject(Project.NameKey forProject)
+      throws Exception {
+    configSubmitRequirement(
+        forProject,
+        SubmitRequirement.builder()
+            .setName(REQUIREMENT_NAME)
+            .setSubmittabilityExpression(SubmitRequirementExpression.create("has:approval_owners"))
+            .setAllowOverrideInChildProjects(false)
+            .build());
   }
 }
