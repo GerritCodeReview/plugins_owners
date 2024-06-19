@@ -83,6 +83,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c92c364b_678da6c0",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-06-19T17:46:10Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a10dc21c_4276bfad",
+      "range": {
+        "startLine": 49,
+        "startChar": 12,
+        "endLine": 49,
+        "endChar": 44
+      },
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b0d5dd99_9b4b7063",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
         "patchSetId": 1
