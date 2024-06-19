@@ -16,6 +16,92 @@
       "message": "Verified locally with\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners/...\n...\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nINFO: Elapsed time: 43.943s, Critical Path: 43.49s\nINFO: 65 processes: 26 internal, 26 darwin-sandbox, 13 worker.\nINFO: Build completed successfully, 65 total actions\n//plugins/owners:owners_tests                                            PASSED in 2.4s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersApprovalHasOperandIT PASSED in 23.8s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersMetricsIT PASSED in 12.3s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersRegressionIT PASSED in 14.0s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersSubmitRequirementIT PASSED in 22.9s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersIT PASSED in 28.3s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersSubmitRequirementsIT PASSED in 29.3s\n\nExecuted 7 out of 7 tests: 7 tests pass.\n```",
       "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8466ac8_6fe7e9fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-19T17:45:21Z",
+      "side": 1,
+      "message": "Just some readability nits, feel free to ignore them :-)",
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e036d202_0c8c9b50",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-19T17:45:21Z",
+      "side": 1,
+      "message": "```suggestion\n  public void shouldNotAffectSubmittabilityWhenSubmitRequirementIsDisabledAndNotConfiguredForProject()\n```",
+      "range": {
+        "startLine": 43,
+        "startChar": 29,
+        "endLine": 43,
+        "endChar": 35
+      },
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a10dc21c_4276bfad",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-19T17:45:21Z",
+      "side": 1,
+      "message": "The code is already clear in its intention: this is redundant IMHO",
+      "range": {
+        "startLine": 49,
+        "startChar": 12,
+        "endLine": 49,
+        "endChar": 44
+      },
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d5dd99_9b4b7063",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-19T17:45:21Z",
+      "side": 1,
+      "message": "What about making this assertion more readable? So that you don\u0027t have to comment to explain what it is doing.\n\n```suggestion\n    assertThatChangeWithNoRequirementIsSubmittable(changeNotReady).isFalse();\n```",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 54
+      },
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
