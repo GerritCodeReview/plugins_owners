@@ -58,6 +58,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f011ea_548df4c5",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-19T18:26:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e036d202_0c8c9b50",
+      "range": {
+        "startLine": 43,
+        "startChar": 29,
+        "endLine": 43,
+        "endChar": 35
+      },
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a10dc21c_4276bfad",
@@ -105,6 +129,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71bc93f7_8f7799ca",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-19T18:26:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c92c364b_678da6c0",
+      "range": {
+        "startLine": 49,
+        "startChar": 12,
+        "endLine": 49,
+        "endChar": 44
+      },
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0d5dd99_9b4b7063",
@@ -118,6 +166,30 @@
       "writtenOn": "2024-06-19T17:45:21Z",
       "side": 1,
       "message": "What about making this assertion more readable? So that you don\u0027t have to comment to explain what it is doing.\n\n```suggestion\n    assertThatChangeWithNoRequirementIsSubmittable(changeNotReady).isFalse();\n```",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 54
+      },
+      "revId": "c8c447879e490cafe95ea0641afd567625f7046d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "199cb682_e5229976",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersRegressionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-19T18:26:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0d5dd99_9b4b7063",
       "range": {
         "startLine": 55,
         "startChar": 0,
