@@ -40,13 +40,12 @@ public class OwnersModule extends AbstractModule {
         .to(OwnerPredicateProvider.class)
         .asEagerSingleton();
     install(new OwnersRestApiModule());
+    install(new OwnersApprovalHasOperand.OwnerApprovalHasOperandModule());
 
     if (pluginSettings.enableSubmitRequirement()) {
       install(new OwnersSubmitRequirement.OwnersSubmitRequirementModule());
-      install(new OwnersApprovalHasOperand.OwnerApprovalHasOperandModule());
-    } else {
-      logger.atInfo().log(
-          "OwnersSubmitRequirement is disabled therefore it will not be evaluated.");
     }
+    logger.atInfo().log(
+        "Global `owners.enableSubmitRequirement = %b`.", pluginSettings.enableSubmitRequirement());
   }
 }
