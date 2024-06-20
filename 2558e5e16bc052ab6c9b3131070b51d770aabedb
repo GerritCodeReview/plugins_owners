@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a8d3de9_a8ca87dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-06-20T07:46:59Z",
+      "side": 1,
+      "message": "nit: this is slightly wrong now, as `@SitePath` is what was being injected in patchset 1 [1].\n\nNow we are injecting `SitePaths`, we should consider updating the commit message.\n\n[1] https://gerrit-review.googlesource.com/c/plugins/owners/+/430484/1/owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersSubmitRequirementsIT.java",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "2558e5e16bc052ab6c9b3131070b51d770aabedb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1d5177c3_fdebf1c7",
