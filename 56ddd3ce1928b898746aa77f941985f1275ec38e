@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4cd8a4c_c2aaaa34",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-20T07:22:48Z",
+      "side": 1,
+      "message": "this is not enough, as name suggests it needs also to be switched to the `refs/meta/config` ref as otherwise one cannot upload `OWNERS` file there",
+      "range": {
+        "startLine": 348,
+        "startChar": 3,
+        "endLine": 348,
+        "endChar": 33
+      },
+      "revId": "56ddd3ce1928b898746aa77f941985f1275ec38e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
