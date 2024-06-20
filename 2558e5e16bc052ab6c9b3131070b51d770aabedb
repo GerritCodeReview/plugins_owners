@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d5177c3_fdebf1c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-06-20T07:31:35Z",
+      "side": 1,
+      "message": "verified locally with\n```\n$ bazel test --cache_test_results\u003dNO plugins/owners/...\n...\nINFO: Build completed successfully, 17 total actions\n//plugins/owners:owners_tests                                            PASSED in 1.5s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersApprovalHasOperandIT PASSED in 35.0s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersMetricsIT PASSED in 11.8s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_OwnersSubmitRequirementIT PASSED in 33.4s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersIT PASSED in 26.5s\n//plugins/owners:src_test_java_com_googlesource_gerrit_owners_restapi_GetFilesOwnersSubmitRequirementsIT PASSED in 27.1s\n\nExecuted 6 out of 6 tests: 6 tests pass.\n```",
+      "revId": "2558e5e16bc052ab6c9b3131070b51d770aabedb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
