@@ -103,7 +103,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     assertThat(changeNotReady.requirements).isEmpty();
 
     changeApi.current().review(ReviewInput.approve());
-    ChangeInfo changeReady = changeApi.get();
+    ChangeInfo changeReady = forChange(r).get();
     assertThat(changeReady.submittable).isTrue();
     assertThat(changeReady.requirements).isEmpty();
   }
@@ -184,9 +184,10 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
         forChange(r).get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.NEED);
 
     changeApi.current().review(new ReviewInput().label(LabelId.VERIFIED, 1));
-    assertThat(changeApi.get().submittable).isTrue();
+    ChangeInfo changeReady = forChange(r).get();
+    assertThat(changeReady.submittable).isTrue();
     verifyHasSubmitRecord(
-        changeApi.get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.OK);
+        changeReady.submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.OK);
   }
 
   @Test
@@ -316,7 +317,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
 
     requestScopeOperations.setApiUser(admin2.id());
     forChange(r).current().review(ReviewInput.recommend());
-    ChangeInfo ownersVoteNotSufficient = changeApi.get();
+    ChangeInfo ownersVoteNotSufficient = forChange(r).get();
     assertThat(ownersVoteNotSufficient.submittable).isFalse();
     assertThat(ownersVoteNotSufficient.requirements).containsExactly(READY);
     verifyHasSubmitRecord(
