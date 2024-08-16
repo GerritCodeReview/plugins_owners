@@ -148,7 +148,7 @@ building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
 > configuration is used) so that owners don't have to be granted with the
 > maximum label's score. Note that only single digit (0..9) is allowed.
 
-For example, imagine the following tree:
+For example, imagine the following tree with a default Gerrit project labels configuration:
 
 ```
 /OWNERS
@@ -200,7 +200,7 @@ owners:
 - Doug Smith
 ```
 
-### When `owners.enableSubmitRequirement = true`
+### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
 
 Then Gerrit would:
 
@@ -251,7 +251,7 @@ owners:
 - Doug Smith
 ```
 
-### When `owners.enableSubmitRequirement = true`
+### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
 
 This case is supported with the `Code-Review` label and `OWNERS` file
 modifications.
@@ -336,7 +336,7 @@ Example fo the project config changes with the new label with values
      label-Owner-Approved = -1..+1 group Registered Users
 ```
 
-### When `owners.enableSubmitRequirement = true`
+### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
 
 Given now an OWNERS configuration of:
 
@@ -386,7 +386,7 @@ This is a variant of `example 3` when no additional label is created but owners
 shouldn't be granted with `Code-Review +2` for all project files as it might be
 outside of their comptenence/comfort zone.
 
-### When `owners.enableSubmitRequirement = true`
+### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
 
 Given an OWNERS configuration of:
 
@@ -427,7 +427,7 @@ matchers:
   - Matt Designer
 ```
 
-### When `owners.enableSubmitRequirement = true`
+### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
 
 Then for any change that contains files with .sql or .css extensions, besides
 to the default Gerrit submit rules, the extra constraints on the additional
@@ -461,7 +461,7 @@ provided their Code-Review +2 feedback.
 
 ## Example 6 - Owners details on a per-file basis
 
-### When `owners.enableSubmitRequirement = true`
+### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
 
 This case is obsolete and _only_ prolog specific. The list of which file is
 owned by whom is available through the [REST API](rest-api.md).
