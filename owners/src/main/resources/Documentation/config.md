@@ -28,6 +28,11 @@ owners.expandGroups
       expandGroups = false
     ```
 
+owners.label
+:   Global override for the label and score to use by the owners of changes
+    for approving them. When defined, it overrides any other label definition
+    set by the OWNERS at any level in any project.
+
 <a name="owners.enableSubmitRequirement">owners.enableSubmitRequirement</a>
 :   If set to `true` the approvals are evaluated through the owners plugin
     provided submit rule without a need of prolog predicate being added to a

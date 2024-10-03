@@ -47,7 +47,8 @@ public class GitRefListenerTest extends GitRefListener {
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
       AutoAssignConfig cfg,
-      PathOwnersEntriesCache cache) {
+      PathOwnersEntriesCache cache,
+      PluginSettings pluginSettings) {
     super(
         api,
         patchListCache,
@@ -59,7 +60,8 @@ public class GitRefListenerTest extends GitRefListener {
         currentUserProvider,
         notesFactory,
         cfg,
-        cache);
+        cache,
+        pluginSettings);
   }
 
   @Override

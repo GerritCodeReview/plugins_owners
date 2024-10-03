@@ -90,6 +90,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   private final AutoAssignConfig cfg;
 
   private final PathOwnersEntriesCache cache;
+  private final PluginSettings pluginSettings;
 
   @Inject
   public GitRefListener(
@@ -103,7 +104,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
       Provider<CurrentUser> currentUserProvider,
       ChangeNotes.Factory notesFactory,
       AutoAssignConfig cfg,
-      PathOwnersEntriesCache cache) {
+      PathOwnersEntriesCache cache,
+      PluginSettings pluginSettings) {
     this.api = api;
     this.patchListCache = patchListCache;
     this.projectCache = projectCache;
@@ -115,6 +117,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     this.notesFactory = notesFactory;
     this.cfg = cfg;
     this.cache = cache;
+    this.pluginSettings = pluginSettings;
   }
 
   @Override
@@ -156,7 +159,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
     String projectName = event.getProjectName();
     Repository repository;
     try {
-      NameKey projectNameKey = Project.NameKey.parse(projectName);
+      NameKey projectNameKey = NameKey.parse(projectName);
       boolean autoAssignWip = cfg.autoAssignWip(projectNameKey);
       repository = repositoryManager.openRepository(projectNameKey);
       try {
@@ -211,7 +214,7 @@ public class GitRefListener implements GitReferenceUpdatedListener {
   }
 
   public void processEvent(
-      Project.NameKey projectNameKey, Repository repository, Event event, Change.Id cId)
+      NameKey projectNameKey, Repository repository, Event event, Change.Id cId)
       throws NoSuchProjectException {
     Changes changes = api.changes();
     // The provider injected by Gerrit is shared with other workers on the
@@ -241,7 +244,8 @@ public class GitRefListener implements GitReferenceUpdatedListener {
                 patchList,
                 cfg.expandGroups(),
                 projectNameKey.get(),
-                cache);
+                cache,
+                pluginSettings.globalLabel());
         Set<Account.Id> allReviewers = Sets.newHashSet();
         allReviewers.addAll(owners.get().values());
         allReviewers.addAll(owners.getReviewers().values());
