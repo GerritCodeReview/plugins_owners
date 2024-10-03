@@ -73,7 +73,8 @@ public class OwnersStoredValues {
                   patchList,
                   settings.expandGroups(),
                   projectState.getName(),
-                  cache);
+                  cache,
+                  settings.globalLabel());
             } catch (InvalidOwnersFileException e) {
               // re-throw exception as it is already logged but more importantly it is nicely
               // handled by the prolog rules evaluator and results in prolog rule error
