@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b0e29bb_9d05e132",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-10-03T18:21:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2de03f59_bb563615",
+      "revId": "6cca046b60c6feb46467be6acc46b14caf784b3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "618c5b6c_a045bffd",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-03T18:20:07Z",
       "side": 1,
       "message": "Accidental change?",
+      "revId": "6cca046b60c6feb46467be6acc46b14caf784b3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9810184d_18d50964",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-10-03T18:21:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "618c5b6c_a045bffd",
       "revId": "6cca046b60c6feb46467be6acc46b14caf784b3c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
