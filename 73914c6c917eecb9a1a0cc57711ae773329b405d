@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bebc2fb_c849c87d",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-10-07T12:07:25Z",
+      "side": 1,
+      "message": "nit: at this point it is not yet clear how to define the label in question, perhaps it makes sense the point to examples below so that reader can find it, WDYT?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 50
+      },
+      "revId": "73914c6c917eecb9a1a0cc57711ae773329b405d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
