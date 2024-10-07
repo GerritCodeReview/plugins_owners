@@ -216,7 +216,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
                 getDiff(nameKey, cd.currentPatchSet().commitId()),
                 pluginSettings.expandGroups(),
                 nameKey.get(),
-                cache);
+                cache,
+                pluginSettings.globalLabel());
 
         return pathOwners;
       }
