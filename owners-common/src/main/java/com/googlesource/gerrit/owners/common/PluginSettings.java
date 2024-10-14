@@ -15,6 +15,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -23,6 +24,8 @@ import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.Optional;
+import java.util.function.Supplier;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.Constants;
 
@@ -36,6 +39,8 @@ public class PluginSettings {
   private final boolean expandGroups;
   private final boolean enableSubmitRequirement;
 
+  private final Supplier<Optional<LabelDefinition>> globalLabel;
+
   @Inject
   public PluginSettings(PluginConfigFactory configFactory, @PluginName String ownersPluginName) {
     this.configFactory = configFactory;
@@ -48,6 +53,10 @@ public class PluginSettings {
     this.expandGroups = globalPluginConfig.getBoolean("owners", "expandGroups", true);
     this.enableSubmitRequirement =
         globalPluginConfig.getBoolean("owners", "enableSubmitRequirement", false);
+
+    this.globalLabel =
+        Suppliers.memoize(
+            () -> LabelDefinition.parse(globalPluginConfig.getString("owners", null, "label")));
   }
 
   /**
@@ -93,6 +102,19 @@ public class PluginSettings {
   public PluginConfig projectSpecificConfig(Project.NameKey projectKey)
       throws NoSuchProjectException {
     return configFactory.getFromProjectConfigWithInheritance(projectKey, ownersPluginName);
+  }
+
+  /**
+   * Global definition of the review label to use for the owners' plugin.
+   *
+   * <p>When the global label is set in the plugin.owners.label settings the value overrides any
+   * label name defined in the OWNERS files of any repository.
+   *
+   * @return the global label definition or {@link Optional#empty()} if there isn't any global label
+   *     definition.
+   */
+  public Optional<LabelDefinition> globalLabel() {
+    return globalLabel.get();
   }
 
   // Logic copied from JGit's TestRepository

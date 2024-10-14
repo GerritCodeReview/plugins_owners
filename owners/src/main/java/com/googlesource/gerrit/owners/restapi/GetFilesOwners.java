@@ -114,7 +114,8 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               changePaths,
               pluginSettings.expandGroups(),
               project.get(),
-              cache);
+              cache,
+              pluginSettings.globalLabel());
 
       Map<String, Set<GroupOwner>> fileExpandedOwners =
           Maps.transformValues(

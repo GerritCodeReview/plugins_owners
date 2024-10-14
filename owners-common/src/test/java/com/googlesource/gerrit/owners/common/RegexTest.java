@@ -31,6 +31,7 @@ import com.google.gerrit.entities.Account;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.Before;
@@ -156,7 +157,8 @@ public class RegexTest extends Config {
                 "project/file.sql"), // only .sql matching b,c
             EXPAND_GROUPS,
             "foo",
-            new PathOwnersEntriesCacheMock());
+            new PathOwnersEntriesCacheMock(),
+            Optional.empty());
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -263,7 +265,8 @@ public class RegexTest extends Config {
             Set.of("project/file.sql", "another.txt"),
             EXPAND_GROUPS,
             "foo",
-            new PathOwnersEntriesCacheMock());
+            new PathOwnersEntriesCacheMock(),
+            Optional.empty());
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");
