@@ -16,6 +16,24 @@
       "message": "Can you add one example here?",
       "revId": "3fbf1cddfc4fff5f0eecb12d568846555fa850bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa1c9d9d_f359461f",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-10-14T16:58:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d310552d_03f530e4",
+      "revId": "3fbf1cddfc4fff5f0eecb12d568846555fa850bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
