@@ -26,10 +26,17 @@ Example:
 
 ## Project configuration
 
-The project configuration `autoAssignWip` controls the automatic
-assignment of reviewers based on the OWNERS file on WIP changes.
+There are 2 project specific configurations: `autoAssignWip` and
+`autoAssignField`. `autoAssignWip` controls the automatic assignment of
+reviewers based on the OWNERS file on WIP changes, while `autoAssignField`
+controls which field these OWNERS will be assigned too. It can be one of
+`REVIEWER` or `CC`. e.g.:
 
-The setting can be inherited from the parent project by setting the value
+[plugin "owners-autoassign"]
+  autoAssignField = CC
+  autoAssignWip = TRUE
+
+Both settings can be inherited from the parent project by setting the value
 to `INHERIT`.
 
 By default, all changes are subject to auto-assignment, unless the project
