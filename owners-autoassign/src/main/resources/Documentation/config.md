@@ -32,9 +32,11 @@ reviewers based on the OWNERS file on WIP changes, while `autoAssignField`
 controls which field these OWNERS will be assigned too. It can be one of
 `REVIEWER` or `CC`. e.g.:
 
+```
 [plugin "owners-autoassign"]
   autoAssignField = CC
   autoAssignWip = TRUE
+```
 
 Both settings can be inherited from the parent project by setting the value
 to `INHERIT`.
