@@ -137,13 +137,15 @@ class SyncReviewerManager implements ReviewerManager {
         }
 
         in.ignoreAutomaticAttentionSetRules = true;
-        in.addToAttentionSet =
-            ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewersAccounts).stream()
-                .map(
-                    (reviewer) ->
-                        new AttentionSetInput(
-                            reviewer.toString(), "Selected as member of the OWNERS file"))
-                .collect(Collectors.toList());
+        if (ownersForAttentionSet != null) {
+          in.addToAttentionSet =
+              ownersForAttentionSet.get().addToAttentionSet(changeInfo, reviewersAccounts).stream()
+                  .map(
+                      (reviewer) ->
+                          new AttentionSetInput(
+                              reviewer.toString(), "Selected as member of the OWNERS file"))
+                  .collect(Collectors.toList());
+        }
 
         gApi.changes().id(changeInfo.id).current().review(in);
       }
