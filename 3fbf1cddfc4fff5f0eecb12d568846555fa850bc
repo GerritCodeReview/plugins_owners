@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d310552d_03f530e4",
+        "filename": "owners-autoassign/src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-10-14T16:34:56Z",
+      "side": 1,
+      "message": "Can you add one example here?",
+      "revId": "3fbf1cddfc4fff5f0eecb12d568846555fa850bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
