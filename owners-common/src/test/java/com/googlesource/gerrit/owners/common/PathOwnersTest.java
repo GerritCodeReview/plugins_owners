@@ -51,7 +51,11 @@ public class PathOwnersTest extends ClassicConfig {
   private static final boolean EXPAND_GROUPS = true;
   private static final boolean DO_NOT_EXPAND_GROUPS = false;
   private static final String EXPECTED_LABEL = "expected-label";
+  private static final Short EXPECTED_LABEL_SCORE = 1;
+  private static final LabelDefinition EXPECTED_LABEL_DEFINITION =
+      new LabelDefinition(EXPECTED_LABEL, EXPECTED_LABEL_SCORE);
   private static final String A_LABEL = "a-label";
+  private static final String B_LABEL = "b-label";
   private static PathOwnersEntriesCache CACHE_MOCK = new PathOwnersEntriesCacheMock();
 
   public static final String CLASSIC_FILE_TXT = "classic/file.txt";
@@ -80,12 +84,33 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of(CLASSIC_FILE_TXT),
             EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
     assertTrue(ownersSet.contains(USER_B_ID));
     assertTrue(owners.expandGroups());
+    assertThat(owners.getLabel()).isEmpty();
+  }
+
+  @Test
+  public void testGlobalLabel() throws Exception {
+    mockOwners(USER_A_EMAIL_COM, USER_B_EMAIL_COM);
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            emptyList(),
+            branch,
+            Set.of(CLASSIC_FILE_TXT),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.of(EXPECTED_LABEL_DEFINITION));
+    assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL_DEFINITION);
   }
 
   @Test
@@ -102,7 +127,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of(CLASSIC_FILE_TXT),
             DO_NOT_EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
     Set<String> ownersSet = owners.getFileGroupOwners().get(CLASSIC_FILE_TXT);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A));
@@ -124,7 +150,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of(CLASSIC_FILE_TXT),
             EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(0, ownersSet.size());
   }
@@ -149,7 +176,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of("classic/file.txt"),
             EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
     Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
@@ -161,6 +189,50 @@ public class PathOwnersTest extends ClassicConfig {
     // expect that classic configuration takes precedence over `OWNERS` file for the label
     // definition
     assertThat(owners2.getLabel().map(LabelDefinition::getName)).hasValue(EXPECTED_LABEL);
+  }
+
+  @Test
+  public void testClassicWithInheritanceAndGlobalLabel() throws Exception {
+    expectConfig("OWNERS", createConfig(true, Optional.of(A_LABEL), owners()));
+    expectConfig(CLASSIC_OWNERS, createConfig(true, Optional.of(B_LABEL), owners()));
+
+    replayAll();
+
+    PathOwners owners2 =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            emptyList(),
+            branch,
+            Set.of("classic/file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.of(EXPECTED_LABEL_DEFINITION));
+    assertThat(owners2.getLabel()).hasValue(EXPECTED_LABEL_DEFINITION);
+  }
+
+  @Test
+  public void testClassicWithoutInheritanceAndGlobalLabel() throws Exception {
+    expectConfig("OWNERS", createConfig(false, Optional.of(A_LABEL), owners()));
+    expectConfig(CLASSIC_OWNERS, createConfig(false, Optional.of(B_LABEL), owners()));
+
+    replayAll();
+
+    PathOwners owners2 =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            emptyList(),
+            branch,
+            Set.of("classic/file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.of(EXPECTED_LABEL_DEFINITION));
+    assertThat(owners2.getLabel()).hasValue(EXPECTED_LABEL_DEFINITION);
   }
 
   @Test
@@ -188,7 +260,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of(fileName),
             EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(1, fileOwners.size());
@@ -233,7 +306,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of(fileName),
             EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(fileOwners.size(), 1);
@@ -282,7 +356,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of(sqlFileName, javaFileName),
             EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(fileOwners.size(), 2);
@@ -326,7 +401,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of("dir/subdir/file.txt"),
             EXPAND_GROUPS,
             "foo",
-            CACHE_MOCK);
+            CACHE_MOCK,
+            Optional.empty());
     Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
 
     assertEquals(3, ownersSet.size());
@@ -406,7 +482,8 @@ public class PathOwnersTest extends ClassicConfig {
             Set.of("dir/subdir/file.txt"),
             EXPAND_GROUPS,
             "foo",
-            cacheMock);
+            cacheMock,
+            Optional.empty());
 
     assertThat(owners.getFileOwners()).isNotEmpty();
     int expectedCacheCalls =
