@@ -38,7 +38,9 @@ gerrit_plugin(
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
         "Gerrit-PluginName: owners",
         "Gerrit-Module: com.googlesource.gerrit.owners.OwnersModule",
+        "Gerrit-HttpModule: com.googlesource.gerrit.owners.HttpModule",
     ],
+    resource_jars = ["//plugins/owners/web:gr-owners"],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
         ":gerrit-owners-predicates",
