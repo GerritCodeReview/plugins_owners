@@ -15,11 +15,20 @@
  * limitations under the License.
  */
 
-import {OwnersService} from './owners-service';
-import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
-import {ChangeInfo} from '@gerritcodereview/typescript-api/rest-api';
+import {FilesOwners, OwnersService} from './owners-service';
+import {
+  RequestPayload,
+  RestPluginApi,
+} from '@gerritcodereview/typescript-api/rest';
+import {
+  ChangeInfo,
+  ChangeStatus,
+  HttpMethod,
+  SubmitRequirementResultInfo,
+} from '@gerritcodereview/typescript-api/rest-api';
 import {assert} from '@open-wc/testing';
 import {UserRole} from './owners-model';
+import {deepEqual} from './utils';
 
 suite('owners service tests', () => {
   const fakeRestApi = {} as unknown as RestPluginApi;
@@ -92,10 +101,202 @@ suite('owners service tests', () => {
       assert.equal(userRole, UserRole.CHANGE_OWNER);
     });
   });
+
+  suite('files owners tests', () => {
+    teardown(() => {
+      sinon.restore();
+    });
+
+    function setupRestApiForLoggedIn(loggedIn: boolean): RestPluginApi {
+      return {
+        getLoggedIn() {
+          return Promise.resolve(loggedIn);
+        },
+        send(
+          _method: HttpMethod,
+          _url: string,
+          _payload?: RequestPayload,
+          _errFn?: ErrorCallback,
+          _contentType?: string
+        ) {
+          return Promise.resolve({});
+        },
+      } as unknown as RestPluginApi;
+    }
+
+    const notLoggedInRestApiService = setupRestApiForLoggedIn(false);
+
+    function loggedInRestApiService(acc: number): RestPluginApi {
+      return {
+        ...setupRestApiForLoggedIn(true),
+        getAccount() {
+          return Promise.resolve(account(acc));
+        },
+      } as unknown as RestPluginApi;
+    }
+
+    let service: OwnersService;
+    let getApiStub: sinon.SinonStub;
+
+    function setup(
+      loggedIn: boolean,
+      changeStats: ChangeStatus = ChangeStatus.NEW,
+      submitRequirementsSatisfied?: boolean,
+      response = {}
+    ) {
+      const acc = account(1);
+      const base_change = {
+        ...fakeChange,
+        _number: 1,
+        status: changeStats,
+        project: 'test_repo',
+        owner: acc,
+      } as unknown as ChangeInfo;
+      const change =
+        submitRequirementsSatisfied === undefined
+          ? base_change
+          : {
+              ...base_change,
+              submit_requirements: [
+                {
+                  name: 'Owner-Approval',
+                  status: submitRequirementsSatisfied
+                    ? 'SATISFIED'
+                    : 'UNSATISFIED',
+                } as unknown as SubmitRequirementResultInfo,
+              ],
+            };
+      const restApi = loggedIn
+        ? loggedInRestApiService(1)
+        : notLoggedInRestApiService;
+
+      getApiStub = sinon.stub(restApi, 'send');
+      getApiStub
+        .withArgs(
+          sinon.match.any,
+          `/changes/${change.project}~${change._number}/revisions/current/owners~files-owners`,
+          sinon.match.any,
+          sinon.match.any
+        )
+        .returns(Promise.resolve(response));
+      service = OwnersService.getOwnersService(restApi, change);
+    }
+
+    const isLoggedIn = true;
+    const changeMerged = ChangeStatus.MERGED;
+    const changeNew = ChangeStatus.NEW;
+    const ownersSubmitRequirementsSatisfied = true;
+
+    function setupGetAllFilesApproved_undefined() {
+      setup(!isLoggedIn);
+    }
+
+    test('should have getAllFilesApproved `undefined` for no change owner', async () => {
+      setupGetAllFilesApproved_undefined();
+
+      const response = await service.getAllFilesApproved();
+      assert.equal(response, undefined);
+    });
+
+    test('should have getAllFilesApproved `undefined` for `MERGED` change', async () => {
+      setup(isLoggedIn, changeMerged);
+
+      const response = await service.getAllFilesApproved();
+      assert.equal(response, undefined);
+    });
+
+    test('should have getAllFilesApproved `undefined` when no submit requirements', async () => {
+      setup(isLoggedIn, changeNew);
+
+      const response = await service.getAllFilesApproved();
+      assert.equal(response, undefined);
+    });
+
+    function setupGetAllFilesApproved_false(response = {}) {
+      setup(
+        isLoggedIn,
+        changeNew,
+        !ownersSubmitRequirementsSatisfied,
+        response
+      );
+    }
+
+    test('should have getAllFilesApproved `false` when no submit requirements are not satisfied', async () => {
+      setupGetAllFilesApproved_false();
+
+      const response = await service.getAllFilesApproved();
+      assert.equal(response, false);
+    });
+
+    function setupGetAllFilesApproved_true() {
+      setup(isLoggedIn, changeNew, ownersSubmitRequirementsSatisfied);
+    }
+    test('should have getAllFilesApproved `true` when no submit requirements are satisfied', async () => {
+      setupGetAllFilesApproved_true();
+
+      const response = await service.getAllFilesApproved();
+      assert.equal(response, true);
+    });
+
+    test('should not call getFilesOwners when getAllFilesApproved is `undefined`', async () => {
+      setupGetAllFilesApproved_undefined();
+
+      const response = await service.getFilesOwners();
+      await flush();
+      assert.equal(getApiStub.callCount, 0);
+      assert.equal(response, undefined);
+    });
+
+    test('should not call getFilesOwners when getAllFilesApproved is `true`', async () => {
+      setupGetAllFilesApproved_true();
+
+      const response = await service.getFilesOwners();
+      await flush();
+      assert.equal(getApiStub.callCount, 0);
+      assert.equal(response, undefined);
+    });
+
+    test('should call getFilesOwners when getAllFilesApproved is `false`', async () => {
+      const expected = {
+        files: {
+          'AJavaFile.java': [{name: 'Bob', id: 1000001}],
+          'Aptyhonfileroot.py': [
+            {name: 'John', id: 1000002},
+            {name: 'Bob', id: 1000001},
+            {name: 'Jack', id: 1000003},
+          ],
+        },
+        owners_labels: {
+          '1000002': {
+            Verified: 1,
+            'Code-Review': 0,
+          },
+          '1000001': {
+            'Code-Review': 2,
+          },
+        },
+      };
+      setupGetAllFilesApproved_false(expected);
+
+      const response = await service.getFilesOwners();
+      await flush();
+      assert.equal(getApiStub.callCount, 1);
+      assert.equal(
+        deepEqual(response, {...expected} as unknown as FilesOwners),
+        true
+      );
+    });
+  });
 });
 
 function account(id: number) {
   return {
     _account_id: id,
   };
+}
+
+function flush() {
+  return new Promise((resolve, _reject) => {
+    setTimeout(resolve, 0);
+  });
 }
