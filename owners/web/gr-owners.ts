@@ -22,7 +22,7 @@ import {
   ChangeInfo,
   ChangeStatus,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {OwnersService} from './owners-service';
+import {OWNERS_SUBMIT_REQUIREMENT, OwnersService} from './owners-service';
 import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
 import {ModelLoader, OwnersModel, PatchRange, UserRole} from './owners-model';
 
@@ -187,7 +187,7 @@ export function shouldHide(
   // show owners when they apply to the change and for logged in user
   if (
     change.submit_requirements &&
-    change.submit_requirements.find(r => r.name === 'Owner-Approval')
+    change.submit_requirements.find(r => r.name === OWNERS_SUBMIT_REQUIREMENT)
   ) {
     return !userRole || userRole === UserRole.ANONYMOUS;
   }
