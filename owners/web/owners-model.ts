@@ -21,7 +21,8 @@ import {
   ChangeInfo,
   RevisionPatchSetNum,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {OwnersService} from './owners-service';
+import {FilesOwners, OwnersService} from './owners-service';
+import {deepEqual} from './utils';
 
 export interface PatchRange {
   patchNum: RevisionPatchSetNum;
@@ -36,6 +37,8 @@ export enum UserRole {
 
 export interface OwnersState {
   userRole?: UserRole;
+  allFilesApproved?: boolean;
+  filesOwners?: FilesOwners;
 }
 
 let ownersModel: OwnersModel | undefined;
@@ -65,6 +68,18 @@ export class OwnersModel extends EventTarget {
     this.setState({...current, userRole});
   }
 
+  setAllFilesApproved(allFilesApproved: boolean | undefined) {
+    const current = this.subject$.getValue();
+    if (current.allFilesApproved === allFilesApproved) return;
+    this.setState({...current, allFilesApproved});
+  }
+
+  setFilesOwners(filesOwners: FilesOwners | undefined) {
+    const current = this.subject$.getValue();
+    if (deepEqual(current.filesOwners, filesOwners)) return;
+    this.setState({...current, filesOwners});
+  }
+
   static getModel(change: ChangeInfo) {
     if (!ownersModel || ownersModel.change !== change) {
       ownersModel = new OwnersModel(change);
@@ -84,6 +99,22 @@ export class ModelLoader {
       'userRole',
       () => this.service.getLoggedInUserRole(),
       value => this.model.setUserRole(value)
+    );
+  }
+
+  async loadAllFilesApproved() {
+    await this._loadProperty(
+      'allFilesApproved',
+      () => this.service.getAllFilesApproved(),
+      value => this.model.setAllFilesApproved(value)
+    );
+  }
+
+  async loadFilesOwners() {
+    await this._loadProperty(
+      'filesOwners',
+      () => this.service.getFilesOwners(),
+      value => this.model.setFilesOwners(value)
     );
   }
 
