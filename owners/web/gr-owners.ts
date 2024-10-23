@@ -22,7 +22,11 @@ import {
   ChangeInfo,
   ChangeStatus,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {OWNERS_SUBMIT_REQUIREMENT, OwnersService} from './owners-service';
+import {
+  FilesOwners,
+  OWNERS_SUBMIT_REQUIREMENT,
+  OwnersService,
+} from './owners-service';
 import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
 import {ModelLoader, OwnersModel, PatchRange, UserRole} from './owners-model';
 
@@ -35,6 +39,8 @@ interface CommonInterface {
   patchRange?: PatchRange;
   restApi?: RestPluginApi;
   userRole?: UserRole;
+  allFilesApproved?: boolean;
+  filesOwners?: FilesOwners;
 
   onModelUpdate(): void;
 }
@@ -52,6 +58,12 @@ const CommonMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
     @state()
     userRole?: UserRole;
+
+    @state()
+    allFilesApproved?: boolean;
+
+    @state()
+    filesOwners?: FilesOwners;
 
     private _model?: OwnersModel;
 
@@ -75,6 +87,18 @@ const CommonMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       this.subscriptions.push(
         model.state$.subscribe(s => {
           this.userRole = s.userRole;
+        })
+      );
+
+      this.subscriptions.push(
+        model.state$.subscribe(s => {
+          this.allFilesApproved = s.allFilesApproved;
+        })
+      );
+
+      this.subscriptions.push(
+        model.state$.subscribe(s => {
+          this.filesOwners = s.filesOwners;
         })
       );
 
@@ -104,6 +128,8 @@ const CommonMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
     protected onModelUpdate() {
       this.modelLoader?.loadUserRole();
+      this.modelLoader?.loadAllFilesApproved();
+      this.modelLoader?.loadFilesOwners();
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -126,11 +152,7 @@ export class FileOwnersColumnHeader extends common {
 
   override render() {
     console.log(
-      `hidden: ${shouldHide(
-        this.change,
-        this.patchRange,
-        this.userRole
-      )}, userRole: ${this.userRole}`
+      `hidden: ${this.hidden}, userRole: ${this.userRole}, allFilesApproved: ${this.allFilesApproved}`
     );
     return nothing;
   }
@@ -151,7 +173,11 @@ export class FileOwnersColumnContent extends common {
 
   override render() {
     console.log(
-      `hidden: ${this.hidden}, userRole: ${this.userRole}, path: ${this.path}, oldPath: ${this.oldPath}`
+      `hidden: ${this.hidden}, userRole: ${this.userRole}, path: ${
+        this.path
+      }, oldPath: ${this.oldPath}, filesOwners: ${JSON.stringify(
+        this.filesOwners
+      )}`
     );
     return nothing;
   }
