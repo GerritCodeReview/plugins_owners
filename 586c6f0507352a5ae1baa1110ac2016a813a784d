@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c44b53d0_cbd44392",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-10-23T22:12:40Z",
+      "side": 1,
+      "message": "Linted locally with:\n```\nnode_modules/eslint/bin/eslint.js --ext .html,.ts --fix plugins/owners/web\n```\nVerified locally with:\n```\nbazel test //plugins/owners/web:karma_test\n```",
+      "revId": "586c6f0507352a5ae1baa1110ac2016a813a784d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
