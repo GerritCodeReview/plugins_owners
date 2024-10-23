@@ -17,15 +17,19 @@
 
 import {assert} from '@open-wc/testing';
 
-import {shouldHide} from './gr-owners';
-import {PatchRange, UserRole} from './owners-model';
+import {getFileOwnership, shouldHide} from './gr-owners';
+import {FileOwnership, FileStatus, PatchRange, UserRole} from './owners-model';
 import {
   ChangeInfo,
   ChangeStatus,
   SubmitRequirementResultInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
+import {FilesOwners} from './owners-service';
+import {deepEqual} from './utils';
 
 suite('owners status tests', () => {
+  const allFilesApproved = true;
+
   suite('shouldHide tests', () => {
     const loggedIn = getRandom(UserRole.CHANGE_OWNER, UserRole.OTHER);
 
@@ -33,7 +37,12 @@ suite('owners status tests', () => {
       const undefinedChange = undefined;
       const definedPatchRange = {} as unknown as PatchRange;
       assert.equal(
-        shouldHide(undefinedChange, definedPatchRange, loggedIn),
+        shouldHide(
+          undefinedChange,
+          definedPatchRange,
+          allFilesApproved,
+          loggedIn
+        ),
         true
       );
     });
@@ -42,7 +51,12 @@ suite('owners status tests', () => {
       const definedChange = {} as unknown as ChangeInfo;
       const undefinedPatchRange = undefined;
       assert.equal(
-        shouldHide(definedChange, undefinedPatchRange, loggedIn),
+        shouldHide(
+          definedChange,
+          undefinedPatchRange,
+          allFilesApproved,
+          loggedIn
+        ),
         true
       );
     });
@@ -53,7 +67,12 @@ suite('owners status tests', () => {
       } as unknown as ChangeInfo;
       const definedPatchRange = {} as unknown as PatchRange;
       assert.equal(
-        shouldHide(abandonedChange, definedPatchRange, loggedIn),
+        shouldHide(
+          abandonedChange,
+          definedPatchRange,
+          allFilesApproved,
+          loggedIn
+        ),
         true
       );
     });
@@ -63,7 +82,10 @@ suite('owners status tests', () => {
         status: ChangeStatus.MERGED,
       } as unknown as ChangeInfo;
       const definedPatchRange = {} as unknown as PatchRange;
-      assert.equal(shouldHide(mergedChange, definedPatchRange, loggedIn), true);
+      assert.equal(
+        shouldHide(mergedChange, definedPatchRange, allFilesApproved, loggedIn),
+        true
+      );
     });
 
     test('shouldHide - should be `true` if not on the latest PS', () => {
@@ -75,7 +97,10 @@ suite('owners status tests', () => {
         current_revision: 'current_rev',
       } as unknown as ChangeInfo;
       const patchRangeOnPs1 = {patchNum: 1} as unknown as PatchRange;
-      assert.equal(shouldHide(changeWithPs2, patchRangeOnPs1, loggedIn), true);
+      assert.equal(
+        shouldHide(changeWithPs2, patchRangeOnPs1, allFilesApproved, loggedIn),
+        true
+      );
     });
 
     const change = {
@@ -88,7 +113,10 @@ suite('owners status tests', () => {
     const patchRange = {patchNum: 1} as unknown as PatchRange;
 
     test('shouldHide - should be `true` when change has no submit requirements', () => {
-      assert.equal(shouldHide(change, patchRange, loggedIn), true);
+      assert.equal(
+        shouldHide(change, patchRange, !allFilesApproved, loggedIn),
+        true
+      );
     });
 
     test('shouldHide - should be `true` when change has no `Owner-Approval` submit requirements', () => {
@@ -99,34 +127,56 @@ suite('owners status tests', () => {
         ] as unknown as SubmitRequirementResultInfo[],
       };
       assert.equal(
-        shouldHide(changeWithDifferentSubmitReqs, patchRange, loggedIn),
+        shouldHide(
+          changeWithDifferentSubmitReqs,
+          patchRange,
+          !allFilesApproved,
+          loggedIn
+        ),
         true
       );
     });
 
-    test('shouldHide - should be `true` when user is not logged in', () => {
-      const changeWithSubmitRequirements = {
-        ...change,
-        submit_requirements: [
-          {name: 'Owner-Approval'},
-        ] as unknown as SubmitRequirementResultInfo[],
-      };
+    const changeWithSubmitRequirements = {
+      ...change,
+      submit_requirements: [
+        {name: 'Owner-Approval'},
+      ] as unknown as SubmitRequirementResultInfo[],
+    };
+
+    test('shouldHide - should be `true` when user is not change owner', () => {
       const anonymous = UserRole.ANONYMOUS;
       assert.equal(
-        shouldHide(changeWithSubmitRequirements, patchRange, anonymous),
+        shouldHide(
+          changeWithSubmitRequirements,
+          patchRange,
+          !allFilesApproved,
+          anonymous
+        ),
         true
       );
     });
 
-    test('shouldHide - should be `false` when change has submit requirements and user is logged in', () => {
-      const changeWithSubmitRequirements = {
-        ...change,
-        submit_requirements: [
-          {name: 'Owner-Approval'},
-        ] as unknown as SubmitRequirementResultInfo[],
-      };
+    test('shouldHide - should be `true` when change has submit requirements and has all files approved even if user is logged in', () => {
       assert.equal(
-        shouldHide(changeWithSubmitRequirements, patchRange, loggedIn),
+        shouldHide(
+          changeWithSubmitRequirements,
+          patchRange,
+          allFilesApproved,
+          loggedIn
+        ),
+        true
+      );
+    });
+
+    test('shouldHide - should be `false` when change has submit requirements, has no all files approved and user is logged in', () => {
+      assert.equal(
+        shouldHide(
+          changeWithSubmitRequirements,
+          patchRange,
+          !allFilesApproved,
+          loggedIn
+        ),
         false
       );
     });
@@ -134,8 +184,66 @@ suite('owners status tests', () => {
     test('shouldHide - should be `false` when in edit mode', () => {
       const patchRangeWithoutPatchNum = {} as unknown as PatchRange;
       assert.equal(
-        shouldHide(change, patchRangeWithoutPatchNum, loggedIn),
+        shouldHide(
+          change,
+          patchRangeWithoutPatchNum,
+          allFilesApproved,
+          loggedIn
+        ),
         false
+      );
+    });
+  });
+
+  suite('getFileOwnership tests', () => {
+    const path = 'readme.md';
+    const emptyFilesOwners = {} as unknown as FilesOwners;
+    const fileOwnersWithPath = {
+      files: {[path]: [{name: 'John', id: 1}]},
+    } as unknown as FilesOwners;
+
+    test('getFileOwnership - should be `undefined` when path is `undefined', () => {
+      const undefinedPath = undefined;
+      assert.equal(
+        getFileOwnership(undefinedPath, allFilesApproved, emptyFilesOwners),
+        undefined
+      );
+    });
+
+    test('getFileOwnership - should be `undefined` when file owners are `undefined', () => {
+      const undefinedFileOwners = undefined;
+      assert.equal(
+        getFileOwnership(path, allFilesApproved, undefinedFileOwners),
+        undefined
+      );
+    });
+
+    test('getFileOwnership - should return `FileOwnership` with `NOT_OWNED_OR_APPROVED` fileStatus when `allFilesApproved`', () => {
+      assert.equal(
+        deepEqual(
+          getFileOwnership(path, allFilesApproved, fileOwnersWithPath),
+          {fileStatus: FileStatus.NOT_OWNED_OR_APPROVED} as FileOwnership
+        ),
+        true
+      );
+    });
+
+    test('getFileOwnership - should return `FileOwnership` with `NOT_OWNED_OR_APPROVED` fileStatus when file has no owner', () => {
+      assert.equal(
+        deepEqual(getFileOwnership(path, !allFilesApproved, emptyFilesOwners), {
+          fileStatus: FileStatus.NOT_OWNED_OR_APPROVED,
+        } as FileOwnership),
+        true
+      );
+    });
+
+    test('getFileOwnership - should return `FileOwnership` with `NEEDS_APPROVAL` fileStatus when file has owner', () => {
+      assert.equal(
+        deepEqual(
+          getFileOwnership(path, !allFilesApproved, fileOwnersWithPath),
+          {fileStatus: FileStatus.NEEDS_APPROVAL} as FileOwnership
+        ),
+        true
       );
     });
   });
