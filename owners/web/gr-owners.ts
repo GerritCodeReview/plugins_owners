@@ -19,10 +19,11 @@ import {Subscription} from 'rxjs';
 import {css, html, LitElement, nothing, PropertyValues} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
 import {
+  AccountInfo,
   ChangeInfo,
   ChangeStatus,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {FilesOwners, OwnersService} from './owners-service';
+import {FilesOwners, isOwner, OwnersService} from './owners-service';
 import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
 import {
   FileOwnership,
@@ -41,17 +42,11 @@ const STATUS_ICON = {
   [STATUS_CODE.MISSING]: 'schedule',
 };
 
-const STATUS_SUMMARY = {
-  [STATUS_CODE.MISSING]: 'Missing',
-};
-
-const STATUS_TOOLTIP = {
-  [STATUS_CODE.MISSING]: 'Missing owner approval',
-};
-
 const FILE_STATUS = {
   [FileStatus.NEEDS_APPROVAL]: STATUS_CODE.MISSING,
 };
+
+const DISPLAY_OWNERS_FOR_FILE = 5;
 
 // Lit mixin definition as described in https://lit.dev/docs/composition/mixins/
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -212,6 +207,11 @@ export class FileOwnersColumnContent extends common {
   @property({type: String, reflect: true, attribute: 'file-status'})
   fileStatus?: string;
 
+  private owners?: AccountInfo[];
+
+  // taken from Gerrit's common-utils.ts
+  private uniqueId = Math.random().toString(36).substring(2);
+
   static override get styles() {
     return [
       css`
@@ -239,19 +239,71 @@ export class FileOwnersColumnContent extends common {
       return nothing;
     }
 
-    const info = STATUS_SUMMARY[this.fileStatus];
-    const tooltip = STATUS_TOOLTIP[this.fileStatus];
     const icon = STATUS_ICON[this.fileStatus];
     return html`
-    <gr-tooltip-content
-        title=${tooltip}
-        aria-label=${info}
-        aria-description=${info}
-        has-tooltip
-      >
-        <gr-icon class="status" icon=${icon} aria-hidden="true"></gr-icon>
-      </gt-tooltip-content>
+      <gr-icon
+        id="${this.pathId()}"
+        class="status"
+        icon=${icon}
+        aria-hidden="true"
+      ></gr-icon>
+      ${this.renderFileOwners()}
     `;
+  }
+
+  private pathId(): string {
+    return `path-${this.uniqueId}`;
+  }
+
+  private renderFileOwners() {
+    // inlining <style> here is ugly but an alternative would be to copy the `HovercardMixin` from Gerrit and implement hoover from scratch
+    return html`<gr-hovercard for="${this.pathId()}">
+      <style>
+        #file-owners-hoovercard {
+          min-width: 256px;
+          max-width: 256px;
+          margin: -10px;
+          padding: var(--spacing-xl) 0 var(--spacing-m) 0;
+        }
+        .row {
+          display: flex;
+        }
+        div.section {
+          margin: 0 var(--spacing-xl) var(--spacing-m) var(--spacing-xl);
+          display: flex;
+          align-items: center;
+        }
+        div.sectionIcon {
+          flex: 0 0 30px;
+        }
+        div.sectionIcon gr-icon {
+          position: relative;
+        }
+      </style>
+      <div id="file-owners-hoovercard">
+        <div class="section">
+          <div class="sectionIcon">
+            <gr-icon class="status" icon="info" aria-hidden="true"></gr-icon>
+          </div>
+          <div class="sectionContent">
+            <h3 class="name heading-3">
+              <span>Needs Owners' Approval</span>
+            </h3>
+          </div>
+        </div>
+        <div class="section">
+          <div class="sectionContent">
+            ${(this.owners ?? []).splice(0, DISPLAY_OWNERS_FOR_FILE).map(
+              owner => html`
+                <div class="row">
+                  <gr-account-label .account=${owner}></gr-account-label>
+                </div>
+              `
+            )}
+          </div>
+        </div>
+      </div>
+    </gr-hovercard>`;
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
@@ -270,10 +322,15 @@ export class FileOwnersColumnContent extends common {
       fileOwnership.fileStatus === FileStatus.NOT_OWNED_OR_APPROVED
     ) {
       this.fileStatus = undefined;
+      this.owners = undefined;
       return;
     }
 
     this.fileStatus = FILE_STATUS[fileOwnership.fileStatus];
+    // TODO for the time being filter out or group owners - to be decided what/how to display them
+    this.owners = (fileOwnership.owners ?? [])
+      .filter(isOwner)
+      .map(o => ({_account_id: o.id} as unknown as AccountInfo));
   }
 }
 
@@ -325,9 +382,11 @@ export function getFileOwnership(
     return undefined;
   }
 
-  const status =
-    allFilesApproved || !(filesOwners.files ?? {})[path]
-      ? FileStatus.NOT_OWNED_OR_APPROVED
-      : FileStatus.NEEDS_APPROVAL;
-  return {fileStatus: status} as unknown as FileOwnership;
+  const fileOwners = (filesOwners.files ?? {})[path];
+  return (allFilesApproved || !fileOwners
+    ? {fileStatus: FileStatus.NOT_OWNED_OR_APPROVED}
+    : {
+        fileStatus: FileStatus.NEEDS_APPROVAL,
+        owners: fileOwners,
+      }) as unknown as FileOwnership;
 }
