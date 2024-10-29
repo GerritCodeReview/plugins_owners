@@ -241,7 +241,10 @@ suite('owners status tests', () => {
       assert.equal(
         deepEqual(
           getFileOwnership(path, !allFilesApproved, fileOwnersWithPath),
-          {fileStatus: FileStatus.NEEDS_APPROVAL} as FileOwnership
+          {
+            fileStatus: FileStatus.NEEDS_APPROVAL,
+            owners: [{name: 'John', id: 1}],
+          } as FileOwnership
         ),
         true
       );
