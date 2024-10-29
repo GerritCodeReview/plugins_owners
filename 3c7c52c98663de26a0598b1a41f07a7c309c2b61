@@ -16,6 +16,29 @@
       "message": "Linted locally with GJF and:\n```\nnode_modules/eslint/bin/eslint.js --ext .html,.ts --fix plugins/owners/web\n```\nVerified locally with:\n```\nbazel test --cache_test_results\u003dNO plugins/owners/...\nbazel test //plugins/owners/web:karma_test\n```",
       "revId": "3c7c52c98663de26a0598b1a41f07a7c309c2b61",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e1c60f0_b9f383a8",
+        "filename": "owners/web/gr-owners.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-10-29T22:56:26Z",
+      "side": 1,
+      "message": "What is the rationale behind this choice?\nWith this check, the owners\u0027 labelling will be visible only to the change owner, which does not facilitate the speedup and merging of the change.",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 3
+      },
+      "revId": "3c7c52c98663de26a0598b1a41f07a7c309c2b61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
