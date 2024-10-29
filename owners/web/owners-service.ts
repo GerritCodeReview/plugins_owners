@@ -34,6 +34,11 @@ export interface Owner extends GroupOwner {
   id: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isOwner(o: any): o is Owner {
+  return o && typeof o.id === 'number' && typeof o.name === 'string';
+}
+
 export type FileOwner = Owner | GroupOwner;
 
 export interface OwnedFiles {
