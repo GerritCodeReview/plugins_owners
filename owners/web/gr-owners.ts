@@ -20,10 +20,18 @@ import {css, html, LitElement, nothing, PropertyValues, CSSResult} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
 import {
   AccountInfo,
+  ApprovalInfo,
   ChangeInfo,
   ChangeStatus,
+  LabelInfo,
+  isDetailedLabelInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {FilesOwners, isOwner, OwnersService} from './owners-service';
+import {
+  FilesOwners,
+  isOwner,
+  OwnersLabels,
+  OwnersService,
+} from './owners-service';
 import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
 import {
   FileOwnership,
@@ -192,6 +200,58 @@ export class FileOwnersColumnHeader extends common {
   }
 }
 
+/**
+ * It has to be part of this file as components defined in dedicated files are not visible
+ */
+@customElement('gr-owner')
+export class GrOwner extends LitElement {
+  @property({type: Object})
+  owner?: AccountInfo;
+
+  @property({type: Object})
+  approval?: ApprovalInfo;
+
+  @property({type: Object})
+  info?: LabelInfo;
+
+  static override get styles() {
+    return [
+      css`
+        .container {
+          display: flex;
+        }
+        gr-vote-chip {
+          margin-left: 5px;
+          --gr-vote-chip-width: 14px;
+          --gr-vote-chip-height: 14px;
+        }
+      `,
+    ];
+  }
+
+  override render() {
+    if (!this.owner) {
+      return nothing;
+    }
+
+    const voteChip = this.approval
+      ? html` <gr-vote-chip
+          slot="vote-chip"
+          .vote=${this.approval}
+          .label=${this.info}
+          circle-shape
+        ></gr-vote-chip>`
+      : nothing;
+
+    return html`
+      <div class="container">
+        <gr-account-label .account=${this.owner}></gr-account-label>
+        ${voteChip}
+      </div>
+    `;
+  }
+}
+
 export const FILE_OWNERS_COLUMN_CONTENT = 'file-owners-column-content';
 @customElement(FILE_OWNERS_COLUMN_CONTENT)
 export class FileOwnersColumnContent extends common {
@@ -313,17 +373,27 @@ export class FileOwnersColumnContent extends common {
         </div>
         <div class="section">
           <div class="sectionContent">
-            ${splicedOwners.map(
-              (owner, idx) => html`
+            ${splicedOwners.map((owner, idx) => {
+              const [approval, info] =
+                computeApprovalAndInfo(
+                  owner,
+                  this.filesOwners?.owners_labels ?? {},
+                  this.change
+                ) ?? [];
+              return html`
                 <div
                   class="row ${showEllipsis || idx + 1 < splicedOwners.length
                     ? 'notLast'
                     : ''}"
                 >
-                  <gr-account-label .account=${owner}></gr-account-label>
+                  <gr-owner
+                    .owner=${owner}
+                    .approval=${approval}
+                    .info=${info}
+                  ></gr-owner>
                 </div>
-              `
-            )}
+              `;
+            })}
             ${showEllipsis
               ? html`
                 <gr-tooltip-content
@@ -424,4 +494,38 @@ export function getFileOwnership(
         fileStatus: FileStatus.NEEDS_APPROVAL,
         owners: fileOwners,
       }) as unknown as FileOwnership;
+}
+
+export function computeApprovalAndInfo(
+  fileOwner: AccountInfo,
+  labels: OwnersLabels,
+  change?: ChangeInfo
+): [ApprovalInfo, LabelInfo] | undefined {
+  if (!change?.labels) {
+    return;
+  }
+  const ownersLabel = labels[`${fileOwner._account_id}`];
+  if (!ownersLabel) {
+    return;
+  }
+
+  for (const label of Object.keys(ownersLabel)) {
+    const info = change.labels[label];
+    if (!info || !isDetailedLabelInfo(info)) {
+      return;
+    }
+
+    const vote = ownersLabel[label];
+    if ((info.default_value && info.default_value === vote) || vote === 0) {
+      // ignore default value
+      return;
+    }
+
+    const approval = info.all?.filter(
+      x => x._account_id === fileOwner._account_id
+    )[0];
+    return approval ? [approval, info] : undefined;
+  }
+
+  return;
 }
