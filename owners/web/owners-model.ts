@@ -21,7 +21,7 @@ import {
   ChangeInfo,
   RevisionPatchSetNum,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {FilesOwners, OwnersService} from './owners-service';
+import {FileOwner, FilesOwners, OwnersService} from './owners-service';
 import {deepEqual} from './utils';
 
 export interface PatchRange {
@@ -56,6 +56,7 @@ export enum FileStatus {
  */
 export interface FileOwnership {
   fileStatus: FileStatus;
+  owners?: FileOwner[];
 }
 
 let ownersModel: OwnersModel | undefined;
