@@ -16,6 +16,29 @@
       "message": "Linted locally with:\n```\nnode_modules/eslint/bin/eslint.js --ext .html,.ts --fix plugins/owners/web\n```\nVerified locally with:\n```\nbazel test //plugins/owners/web:karma_test\n```",
       "revId": "926ff3235dc809e0fcc22f048d7be162dc7704a6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47a726ca_8e12ed81",
+        "filename": "owners/web/owners-service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-10-29T22:53:11Z",
+      "side": 1,
+      "message": "Why shouldn\u0027t we get the owners\u0027 approval status if the change isn\u0027t owned by the current user?",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 5
+      },
+      "revId": "926ff3235dc809e0fcc22f048d7be162dc7704a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
