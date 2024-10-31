@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ec4ff3_afbe8437",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntriesCacheImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-10-31T00:18:05Z",
+      "side": 1,
+      "message": "This needs to be normalised, otherwise we risk to populate the cache with an abbreviated name and evict with the full name.\n\n```suggestion\n    return new StringBuilder(project).append(\u0027@\u0027).append(RefNames.fullName(branch)).toString();\n```\n\nFixed with If6039a23b.",
+      "range": {
+        "startLine": 90,
+        "startChar": 57,
+        "endLine": 90,
+        "endChar": 63
+      },
+      "revId": "943c5b65f0642043a2d6847151dbbb82eebba738",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
