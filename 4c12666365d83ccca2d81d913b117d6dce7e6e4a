@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd11a466_d6ed256b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-01T15:53:54Z",
+      "side": 1,
+      "message": "All changes up to this point were verified manually and by running both lint and karma tests",
+      "revId": "4c12666365d83ccca2d81d913b117d6dce7e6e4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
