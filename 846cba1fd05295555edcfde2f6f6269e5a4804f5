@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d300c4_6512df7d",
+        "filename": "owners/web/gr-owners.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-01T11:45:00Z",
+      "side": 1,
+      "message": "the same check is performed two times",
+      "range": {
+        "startLine": 87,
+        "startChar": 6,
+        "endLine": 91,
+        "endChar": 11
+      },
+      "revId": "846cba1fd05295555edcfde2f6f6269e5a4804f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
