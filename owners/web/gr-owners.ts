@@ -26,6 +26,7 @@ import {
   LabelInfo,
   isDetailedLabelInfo,
   EmailAddress,
+  ReviewerState,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {
   FilesOwners,
@@ -427,6 +428,7 @@ export class FileOwnersColumnContent extends common {
                     .owner=${owner}
                     .approval=${approval}
                     .info=${info}
+                    .email=${owner.email}
                   ></gr-owner>
                 </div>
               `;
@@ -469,10 +471,15 @@ export class FileOwnersColumnContent extends common {
     }
 
     this.fileStatus = FILE_STATUS[fileOwnership.fileStatus];
+    const accounts = getChangeAccounts(this.change);
+
     // TODO for the time being filter out or group owners - to be decided what/how to display them
     this.owners = (fileOwnership.owners ?? [])
       .filter(isOwner)
-      .map(o => ({_account_id: o.id} as unknown as AccountInfo));
+      .map(
+        o =>
+          accounts.get(o.id) ?? ({_account_id: o.id} as unknown as AccountInfo)
+      );
   }
 }
 
@@ -565,4 +572,21 @@ export function computeApprovalAndInfo(
   }
 
   return;
+}
+
+export function getChangeAccounts(
+  change?: ChangeInfo
+): Map<number, AccountInfo> {
+  const accounts = new Map();
+  if (!change) {
+    return accounts;
+  }
+
+  [
+    change.owner,
+    ...(change.submitter ? [change.submitter] : []),
+    ...(change.reviewers[ReviewerState.REVIEWER] ?? []),
+    ...(change.reviewers[ReviewerState.CC] ?? []),
+  ].forEach(account => accounts.set(account._account_id, account));
+  return accounts;
 }

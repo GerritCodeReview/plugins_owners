@@ -19,6 +19,7 @@ import {assert} from '@open-wc/testing';
 
 import {
   computeApprovalAndInfo,
+  getChangeAccounts,
   getFileOwnership,
   shouldHide,
 } from './gr-owners';
@@ -30,6 +31,7 @@ import {
   ChangeStatus,
   DetailedLabelInfo,
   SubmitRequirementResultInfo,
+  ReviewerState,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {FilesOwners, OwnersLabels} from './owners-service';
 import {deepEqual} from './utils';
@@ -352,9 +354,61 @@ suite('owners status tests', () => {
       );
     });
   });
+
+  suite('getChangeAccounts tests', () => {
+    test('getChangeAccounts - should return empty map when change is `undefined', () => {
+      const undefinedChange = undefined;
+      assert.equal(getChangeAccounts(undefinedChange).size, 0);
+    });
+
+    test('getChangeAccounts - should return map with owner when change has only owner and empty reviewers defined', () => {
+      const owner = account(1);
+      const changeWithOwner = {
+        owner,
+        reviewers: {},
+      } as unknown as ChangeInfo;
+      assert.equal(
+        deepEqual(getChangeAccounts(changeWithOwner), new Map([[1, owner]])),
+        true
+      );
+    });
+
+    test('getChangeAccounts - should return map with owner, submitter and reviewers', () => {
+      const owner = account(1);
+      const submitter = account(2);
+      const reviewer = account(3);
+      const ccReviewer = account(4);
+      const change = {
+        owner,
+        submitter,
+        reviewers: {
+          [ReviewerState.REVIEWER]: [reviewer],
+          [ReviewerState.CC]: [ccReviewer],
+        },
+      } as unknown as ChangeInfo;
+      assert.equal(
+        deepEqual(
+          getChangeAccounts(change),
+          new Map([
+            [1, owner],
+            [2, submitter],
+            [3, reviewer],
+            [4, ccReviewer],
+          ])
+        ),
+        true
+      );
+    });
+  });
 });
 
 function getRandom<T>(...values: T[]): T {
   const idx = Math.floor(Math.random() * values.length);
   return values[idx];
+}
+
+function account(id: number) {
+  return {
+    _account_id: id,
+  } as unknown as AccountInfo;
 }
