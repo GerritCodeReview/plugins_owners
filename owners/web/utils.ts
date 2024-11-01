@@ -54,3 +54,18 @@ export function deepEqual<T>(a: T, b: T): boolean {
 
   return false;
 }
+
+/**
+ * Queries for child element specified with a selector. Copied from Gerrit's common-util.ts.
+ */
+export function query<E extends Element = Element>(
+  el: Element | null | undefined,
+  selector: string
+): E | undefined {
+  if (!el) return undefined;
+  if (el.shadowRoot) {
+    const r = el.shadowRoot.querySelector<E>(selector);
+    if (r) return r;
+  }
+  return el.querySelector<E>(selector) ?? undefined;
+}
