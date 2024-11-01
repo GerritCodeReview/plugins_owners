@@ -25,6 +25,7 @@ import {
   ChangeStatus,
   LabelInfo,
   isDetailedLabelInfo,
+  EmailAddress,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {
   FilesOwners,
@@ -42,6 +43,8 @@ import {
   PatchRange,
   UserRole,
 } from './owners-model';
+import {query} from './utils';
+import {GrAccountLabel} from './gerrit-model';
 
 const STATUS_CODE = {
   MISSING: 'missing',
@@ -215,6 +218,9 @@ export class GrOwner extends LitElement {
   @property({type: Object})
   info?: LabelInfo;
 
+  @property({type: String})
+  email?: EmailAddress;
+
   static override get styles() {
     return [
       css`
@@ -225,6 +231,9 @@ export class GrOwner extends LitElement {
           margin-left: 5px;
           --gr-vote-chip-width: 14px;
           --gr-vote-chip-height: 14px;
+        }
+        gr-tooltip-content {
+          display: inline-block;
         }
       `,
     ];
@@ -244,12 +253,39 @@ export class GrOwner extends LitElement {
         ></gr-vote-chip>`
       : nothing;
 
+    const copyEmail = this.email
+      ? html` <gr-copy-clipboard
+          .text=${this.email}
+          hasTooltip
+          hideinput
+          buttonTitle=${"Copy owner's email to clipboard"}
+        ></gr-copy-clipboard>`
+      : nothing;
+
     return html`
       <div class="container">
         <gr-account-label .account=${this.owner}></gr-account-label>
-        ${voteChip}
+        ${voteChip} ${copyEmail}
       </div>
     `;
+  }
+
+  override async updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('owner')) {
+      if (this.owner && !this.email) {
+        const accountLabel = query<GrAccountLabel>(this, 'gr-account-label');
+        if (!accountLabel) {
+          return;
+        }
+
+        const updateOwner = await accountLabel
+          ?.getAccountsModel()
+          ?.fillDetails(this.owner);
+        this.email = updateOwner?.email;
+      }
+    }
   }
 }
 
