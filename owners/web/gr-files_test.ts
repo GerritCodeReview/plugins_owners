@@ -22,7 +22,7 @@ import {
   getChangeAccounts,
   getFileOwnership,
   shouldHide,
-} from './gr-owners';
+} from './gr-files';
 import {FileOwnership, FileStatus, PatchRange, UserRole} from './owners-model';
 import {
   AccountInfo,

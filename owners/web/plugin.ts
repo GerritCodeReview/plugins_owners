@@ -16,11 +16,11 @@
  */
 import '@gerritcodereview/typescript-api/gerrit';
 import {
-  FILE_OWNERS_COLUMN_CONTENT,
-  FILE_OWNERS_COLUMN_HEADER,
-  FileOwnersColumnContent,
-  FileOwnersColumnHeader,
-} from './gr-owners';
+  FILES_OWNERS_COLUMN_CONTENT,
+  FILES_OWNERS_COLUMN_HEADER,
+  FilesColumnContent,
+  FilesColumnHeader,
+} from './gr-files';
 
 window.Gerrit.install(plugin => {
   const restApi = plugin.restApi();
@@ -28,17 +28,17 @@ window.Gerrit.install(plugin => {
   plugin
     .registerDynamicCustomComponent(
       'change-view-file-list-header-prepend',
-      FILE_OWNERS_COLUMN_HEADER
+      FILES_OWNERS_COLUMN_HEADER
     )
     .onAttached(view => {
-      (view as unknown as FileOwnersColumnHeader).restApi = restApi;
+      (view as unknown as FilesColumnHeader).restApi = restApi;
     });
   plugin
     .registerDynamicCustomComponent(
       'change-view-file-list-content-prepend',
-      FILE_OWNERS_COLUMN_CONTENT
+      FILES_OWNERS_COLUMN_CONTENT
     )
     .onAttached(view => {
-      (view as unknown as FileOwnersColumnContent).restApi = restApi;
+      (view as unknown as FilesColumnContent).restApi = restApi;
     });
 });

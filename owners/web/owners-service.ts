@@ -87,12 +87,13 @@ class OwnersApi {
    */
   getFilesOwners(
     repoName: RepoName,
-    changeId: NumericChangeId
+    changeId: NumericChangeId,
+    revision: String
   ): Promise<FilesOwners> {
     return this.get(
       `/changes/${encodeURIComponent(
         repoName
-      )}~${changeId}/revisions/current/owners~files-owners`
+      )}~${changeId}/revisions/${revision}/owners~files-owners`
     ) as Promise<FilesOwners>;
   }
 
@@ -167,7 +168,11 @@ export class OwnersService {
       return Promise.resolve(undefined);
     }
 
-    return this.api.getFilesOwners(this.change.project, this.change._number);
+    return this.api.getFilesOwners(
+      this.change.project,
+      this.change._number,
+      this.change.current_revision ?? 'current'
+    );
   }
 
   private async isLoggedIn(): Promise<boolean> {
