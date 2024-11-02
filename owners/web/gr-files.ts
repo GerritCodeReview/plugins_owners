@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-import {Subscription} from 'rxjs';
 import {css, html, LitElement, nothing, PropertyValues, CSSResult} from 'lit';
-import {customElement, property, state} from 'lit/decorators';
+import {customElement, property} from 'lit/decorators';
 import {
   AccountInfo,
   ApprovalInfo,
@@ -33,19 +32,11 @@ import {
   isOwner,
   OwnersLabels,
   OWNERS_SUBMIT_REQUIREMENT,
-  OwnersService,
 } from './owners-service';
-import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
-import {
-  FileOwnership,
-  FileStatus,
-  ModelLoader,
-  OwnersModel,
-  PatchRange,
-  UserRole,
-} from './owners-model';
+import {FileOwnership, FileStatus, PatchRange, UserRole} from './owners-model';
 import {query} from './utils';
 import {GrAccountLabel} from './gerrit-model';
+import {OwnersMixin} from './owners-mixin';
 
 const STATUS_CODE = {
   MISSING: 'missing',
@@ -62,127 +53,24 @@ const FILE_STATUS = {
 const DISPLAY_OWNERS_FOR_FILE_LIMIT = 5;
 const LIMITED_FILES_OWNERS_TOOLTIP = `File owners limited to first ${DISPLAY_OWNERS_FOR_FILE_LIMIT} accounts.`;
 
-// Lit mixin definition as described in https://lit.dev/docs/composition/mixins/
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Constructor<T> = new (...args: any[]) => T;
+const common = OwnersMixin(LitElement);
 
-interface CommonInterface extends LitElement {
-  change?: ChangeInfo;
-  patchRange?: PatchRange;
-  restApi?: RestPluginApi;
-  userRole?: UserRole;
-  allFilesApproved?: boolean;
-  filesOwners?: FilesOwners;
+class FilesCommon extends common {
+  protected override willUpdate(changedProperties: PropertyValues): void {
+    super.willUpdate(changedProperties);
 
-  onModelUpdate(): void;
+    this.hidden = shouldHide(
+      this.change,
+      this.patchRange,
+      this.allFilesApproved,
+      this.userRole
+    );
+  }
 }
 
-const CommonMixin = <T extends Constructor<LitElement>>(superClass: T) => {
-  class Mixin extends superClass {
-    @property({type: Object})
-    change?: ChangeInfo;
-
-    @property({type: Object})
-    patchRange?: PatchRange;
-
-    @property({type: Object})
-    restApi?: RestPluginApi;
-
-    @state()
-    userRole?: UserRole;
-
-    @state()
-    allFilesApproved?: boolean;
-
-    @state()
-    filesOwners?: FilesOwners;
-
-    private _model?: OwnersModel;
-
-    modelLoader?: ModelLoader;
-
-    private subscriptions: Array<Subscription> = [];
-
-    get model() {
-      return this._model;
-    }
-
-    set model(model: OwnersModel | undefined) {
-      if (this._model === model) return;
-      for (const s of this.subscriptions) {
-        s.unsubscribe();
-      }
-      this.subscriptions = [];
-      this._model = model;
-      if (!model) return;
-
-      this.subscriptions.push(
-        model.state$.subscribe(s => {
-          this.userRole = s.userRole;
-        })
-      );
-
-      this.subscriptions.push(
-        model.state$.subscribe(s => {
-          this.allFilesApproved = s.allFilesApproved;
-        })
-      );
-
-      this.subscriptions.push(
-        model.state$.subscribe(s => {
-          this.filesOwners = s.filesOwners;
-        })
-      );
-
-      this.onModelUpdate();
-    }
-
-    protected override willUpdate(changedProperties: PropertyValues): void {
-      super.willUpdate(changedProperties);
-
-      if (changedProperties.has('change') || changedProperties.has('restApi')) {
-        if (!this.restApi || !this.change) {
-          this.model = undefined;
-          this.modelLoader = undefined;
-          return;
-        }
-        const service = OwnersService.getOwnersService(
-          this.restApi,
-          this.change
-        );
-        const model = OwnersModel.getModel(this.change);
-        this.modelLoader = new ModelLoader(service, model);
-        this.model = model;
-      }
-
-      this.hidden = shouldHide(
-        this.change,
-        this.patchRange,
-        this.allFilesApproved,
-        this.userRole
-      );
-    }
-
-    protected onModelUpdate() {
-      this.modelLoader?.loadUserRole();
-      this.modelLoader?.loadAllFilesApproved();
-      this.modelLoader?.loadFilesOwners();
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
-  }
-
-  return Mixin as unknown as T & Constructor<CommonInterface>;
-};
-
-const common = CommonMixin(LitElement);
-
-export const FILE_OWNERS_COLUMN_HEADER = 'file-owners-column-header';
-@customElement(FILE_OWNERS_COLUMN_HEADER)
-export class FileOwnersColumnHeader extends common {
+export const FILES_OWNERS_COLUMN_HEADER = 'files-owners-column-header';
+@customElement(FILES_OWNERS_COLUMN_HEADER)
+export class FilesColumnHeader extends FilesCommon {
   static override get styles() {
     return [
       window?.Gerrit?.styles.font as CSSResult,
@@ -290,9 +178,9 @@ export class GrOwner extends LitElement {
   }
 }
 
-export const FILE_OWNERS_COLUMN_CONTENT = 'file-owners-column-content';
-@customElement(FILE_OWNERS_COLUMN_CONTENT)
-export class FileOwnersColumnContent extends common {
+export const FILES_OWNERS_COLUMN_CONTENT = 'files-owners-column-content';
+@customElement(FILES_OWNERS_COLUMN_CONTENT)
+export class FilesColumnContent extends FilesCommon {
   @property({type: String})
   path?: string;
 
