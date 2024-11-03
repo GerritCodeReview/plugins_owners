@@ -21,7 +21,10 @@ ts_project(
     name = "owners-ts",
     srcs = glob(
         ["**/*.ts"],
-        exclude = ["**/*test*"],
+        exclude = [
+            "**/*test*",
+            "**/test-utils.ts",
+        ],
     ),
     incremental = True,
     out_dir = "_bazel_ts_out",
@@ -36,7 +39,10 @@ ts_project(
 
 ts_project(
     name = "owners-ts-tests",
-    srcs = glob(["**/*.ts"]),
+    srcs = glob([
+        "**/*.ts",
+        "**/test-utils.ts",
+    ]),
     incremental = True,
     out_dir = "_bazel_ts_out_tests",
     tsc = "//tools/node_tools:tsc-bin",
