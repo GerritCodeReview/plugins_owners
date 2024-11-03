@@ -35,3 +35,20 @@ export interface AccountsModel {
 export interface GrAccountLabel extends Element {
   getAccountsModel: Provider<AccountsModel>;
 }
+
+/**
+ * Partial Gerrit's `SpecialFilePath` enum
+ */
+export enum SpecialFilePath {
+  COMMIT_MESSAGE = '/COMMIT_MSG',
+  MERGE_LIST = '/MERGE_LIST',
+}
+
+/**
+ * Partial Gerrit's `Window` interface defintion so that `getBaseUrl` function can work.
+ */
+declare global {
+  interface Window {
+    CANONICAL_PATH?: string;
+  }
+}
