@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import {html, LitElement, PropertyValues, nothing, CSSResult} from 'lit';
+import {css, html, LitElement, PropertyValues, nothing, CSSResult} from 'lit';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import {OwnersMixin} from './owners-mixin';
 import {customElement, property} from 'lit/decorators';
 import {
@@ -27,6 +28,13 @@ import {
 } from '@gerritcodereview/typescript-api/rest-api';
 import {User, UserRole} from './owners-model';
 import {isOwner, OwnedFiles, OWNERS_SUBMIT_REQUIREMENT} from './owners-service';
+import {
+  computeDisplayPath,
+  diffFilePaths,
+  encodeURL,
+  getBaseUrl,
+  truncatePath,
+} from './utils';
 
 const common = OwnersMixin(LitElement);
 
@@ -49,7 +57,7 @@ class OwnedFilesCommon extends common {
     );
   }
 
-  protected static commonStyles(): CSSResult[] {
+  static commonStyles(): CSSResult[] {
     return [window?.Gerrit?.styles.font as CSSResult];
   }
 
@@ -71,18 +79,179 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
   }
 }
 
+@customElement('gr-owned-files-list')
+export class GrOwnedFilesList extends LitElement {
+  @property({type: Object})
+  change?: ChangeInfo;
+
+  @property({type: Object})
+  revision?: RevisionInfo;
+
+  @property({type: Array})
+  ownedFiles?: string[];
+
+  static override get styles() {
+    return [
+      ...OwnedFilesCommon.commonStyles(),
+      css`
+        :host {
+          display: block;
+        }
+        .row {
+          align-items: center;
+          border-top: 1px solid var(--border-color);
+          display: flex;
+          min-height: calc(var(--line-height-normal) + 2 * var(--spacing-s));
+          padding: var(--spacing-xs) var(--spacing-l);
+        }
+        .header-row {
+          background-color: var(--background-color-secondary);
+        }
+        .file-row {
+          cursor: pointer;
+        }
+        .file-row:hover {
+          background-color: var(--hover-background-color);
+        }
+        .file-row.selected {
+          background-color: var(--selection-background-color);
+        }
+        .path {
+          cursor: pointer;
+          flex: 1;
+          /* Wrap it into multiple lines if too long. */
+          white-space: normal;
+          word-break: break-word;
+        }
+        .matchingFilePath {
+          color: var(--deemphasized-text-color);
+        }
+        .newFilePath {
+          color: var(--primary-text-color);
+        }
+        .fileName {
+          color: var(--link-color);
+        }
+        .truncatedFileName {
+          display: none;
+        }
+        .row:focus {
+          outline: none;
+        }
+        .row:hover {
+          opacity: 100;
+        }
+        .pathLink {
+          display: inline-block;
+          margin: -2px 0;
+          padding: var(--spacing-s) 0;
+          text-decoration: none;
+        }
+        .pathLink:hover span.fullFileName,
+        .pathLink:hover span.truncatedFileName {
+          text-decoration: underline;
+        }
+      `,
+    ];
+  }
+
+  override render() {
+    if (!this.change || !this.revision || !this.ownedFiles) return nothing;
+
+    return html`
+      <div id="container" role="grid" aria-label="Owned files list">
+        ${this.renderOwnedFilesHeaderRow()}
+        ${this.ownedFiles?.map((ownedFile, index) =>
+          this.renderOwnedFileRow(ownedFile, index)
+        )}
+      </div>
+    `;
+  }
+
+  private renderOwnedFilesHeaderRow() {
+    return html`
+      <div class="header-row row" role="row">
+        <div class="path" role="columnheader">File</div>
+      </div>
+    `;
+  }
+
+  private renderOwnedFileRow(ownedFile: string, index: number) {
+    return html`
+      <div
+        class="file-row row"
+        tabindex="-1"
+        role="row"
+        aria-label=${ownedFile}
+      >
+        ${this.renderFilePath(ownedFile, index)}
+      </div>
+    `;
+  }
+
+  private renderFilePath(file: string, index: number) {
+    const displayPath = computeDisplayPath(file);
+    const previousFile = (this.ownedFiles ?? [])[index - 1];
+    return html`
+      <span class="path" role="gridcell">
+        <a
+          class="pathLink"
+          href=${ifDefined(computeDiffUrl(file, this.change, this.revision))}
+        >
+          <span title=${displayPath} class="fullFileName">
+            ${this.renderStyledPath(file, previousFile)}
+          </span>
+          <span title=${displayPath} class="truncatedFileName">
+            ${truncatePath(displayPath)}
+          </span>
+        </a>
+      </span>
+    `;
+  }
+
+  private renderStyledPath(filePath: string, previousFilePath?: string) {
+    const {matchingFolders, newFolders, fileName} = diffFilePaths(
+      filePath,
+      previousFilePath
+    );
+    return [
+      matchingFolders.length > 0
+        ? html`<span class="matchingFilePath">${matchingFolders}</span>`
+        : nothing,
+      newFolders.length > 0
+        ? html`<span class="newFilePath">${newFolders}</span>`
+        : nothing,
+      html`<span class="fileName">${fileName}</span>`,
+    ];
+  }
+}
+
 export const OWNED_FILES_TAB_CONTENT = 'owned-files-tab-content';
 @customElement(OWNED_FILES_TAB_CONTENT)
 export class OwnedFilesTabContent extends OwnedFilesCommon {
   static override get styles() {
-    return [...OwnedFilesCommon.commonStyles()];
+    return [
+      ...OwnedFilesCommon.commonStyles(),
+      css`
+        :host {
+          display: block;
+        }
+      `,
+    ];
   }
 
   override render() {
-    if (this.hidden || !this.ownedFiles) return nothing;
-    return html`<div>
-      ${this.ownedFiles.map(ownedFile => html`<div>${ownedFile}</div>`)}
-    </div>`;
+    if (this.hidden) return nothing;
+
+    return html`
+      <gr-owned-files-list
+        id="ownedFilesList"
+        .change=${this.change}
+        .revision=${this.revision}
+        .ownedFiles=${this.ownedFiles}
+      >
+      </gr-owned-files-list>
+    `;
   }
 }
 
@@ -139,4 +308,24 @@ export function ownedFiles(
   }
 
   return ownedFiles;
+}
+
+export function computeDiffUrl(
+  file: string,
+  change?: ChangeInfo,
+  revision?: RevisionInfo
+) {
+  if (change === undefined || revision?._number === undefined) {
+    return;
+  }
+
+  let repo = '';
+  if (change.project) repo = `${encodeURL(change.project)}/+/`;
+
+  // TODO it can be a range of patchsets but `PatchRange` is not passed to the `change-view-tab-content` :/ fix in Gerrit?
+  const range = `/${revision._number}`;
+
+  const path = `/${encodeURL(file)}`;
+
+  return `${getBaseUrl()}/c/${repo}${change._number}${range}${path}`;
 }
