@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aa12a9b_f28fd362",
+        "filename": "owners/web/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-03T15:15:35Z",
+      "side": 1,
+      "message": "run buildifier against the file",
+      "revId": "070a6e29386439f8f000bb2327c0f05b257934fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
