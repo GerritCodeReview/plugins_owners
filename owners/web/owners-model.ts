@@ -17,6 +17,7 @@
 
 import {BehaviorSubject, Observable} from 'rxjs';
 import {
+  AccountInfo,
   BasePatchSetNum,
   ChangeInfo,
   RevisionPatchSetNum,
@@ -35,8 +36,13 @@ export enum UserRole {
   OTHER = 'OTHER',
 }
 
+export interface User {
+  account?: AccountInfo;
+  role: UserRole;
+}
+
 export interface OwnersState {
-  userRole?: UserRole;
+  user?: User;
   allFilesApproved?: boolean;
   filesOwners?: FilesOwners;
 }
@@ -80,10 +86,10 @@ export class OwnersModel extends EventTarget {
     this.subject$.next(Object.freeze(state));
   }
 
-  setUserRole(userRole: UserRole) {
+  setUser(user: User) {
     const current = this.subject$.getValue();
-    if (current.userRole === userRole) return;
-    this.setState({...current, userRole});
+    if (current.user === user) return;
+    this.setState({...current, user});
   }
 
   setAllFilesApproved(allFilesApproved: boolean | undefined) {
@@ -112,11 +118,11 @@ export class ModelLoader {
     private readonly model: OwnersModel
   ) {}
 
-  async loadUserRole() {
+  async loadUser() {
     await this._loadProperty(
-      'userRole',
-      () => this.service.getLoggedInUserRole(),
-      value => this.model.setUserRole(value)
+      'user',
+      () => this.service.getLoggedInUser(),
+      value => this.model.setUser(value)
     );
   }
 

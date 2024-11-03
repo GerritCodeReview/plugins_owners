@@ -24,7 +24,7 @@ import {
   RepoName,
   SubmitRequirementStatus,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {UserRole} from './owners-model';
+import {User, UserRole} from './owners-model';
 
 export interface GroupOwner {
   name: string;
@@ -126,15 +126,16 @@ export class OwnersService {
     this.api = new OwnersApi(restApi);
   }
 
-  async getLoggedInUserRole(): Promise<UserRole> {
+  async getLoggedInUser(): Promise<User> {
     const account = await this.api.getAccount();
     if (!account) {
-      return UserRole.ANONYMOUS;
+      return {role: UserRole.ANONYMOUS} as unknown as User;
     }
-    if (this.change.owner._account_id === account._account_id) {
-      return UserRole.CHANGE_OWNER;
-    }
-    return UserRole.OTHER;
+    const role =
+      this.change.owner._account_id === account._account_id
+        ? UserRole.CHANGE_OWNER
+        : UserRole.OTHER;
+    return {account, role} as unknown as User;
   }
 
   async getAllFilesApproved(): Promise<boolean | undefined> {
@@ -176,8 +177,8 @@ export class OwnersService {
   }
 
   private async isLoggedIn(): Promise<boolean> {
-    const userRole = await this.getLoggedInUserRole();
-    return userRole && userRole !== UserRole.ANONYMOUS;
+    const user = await this.getLoggedInUser();
+    return user && user.role !== UserRole.ANONYMOUS;
   }
 
   static getOwnersService(restApi: RestPluginApi, change: ChangeInfo) {

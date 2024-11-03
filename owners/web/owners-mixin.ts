@@ -21,7 +21,7 @@ import {property, state} from 'lit/decorators';
 import {ChangeInfo} from '@gerritcodereview/typescript-api/rest-api';
 import {FilesOwners, OwnersService} from './owners-service';
 import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
-import {ModelLoader, OwnersModel, PatchRange, UserRole} from './owners-model';
+import {ModelLoader, OwnersModel, PatchRange, User} from './owners-model';
 
 // Lit mixin definition as described in https://lit.dev/docs/composition/mixins/
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,7 +31,7 @@ export interface OwnersInterface extends LitElement {
   change?: ChangeInfo;
   patchRange?: PatchRange;
   restApi?: RestPluginApi;
-  userRole?: UserRole;
+  user?: User;
   allFilesApproved?: boolean;
   filesOwners?: FilesOwners;
 
@@ -52,7 +52,7 @@ export const OwnersMixin = <T extends Constructor<LitElement>>(
     restApi?: RestPluginApi;
 
     @state()
-    userRole?: UserRole;
+    user?: User;
 
     @state()
     allFilesApproved?: boolean;
@@ -81,7 +81,7 @@ export const OwnersMixin = <T extends Constructor<LitElement>>(
 
       this.subscriptions.push(
         model.state$.subscribe(s => {
-          this.userRole = s.userRole;
+          this.user = s.user;
         })
       );
 
@@ -120,7 +120,7 @@ export const OwnersMixin = <T extends Constructor<LitElement>>(
     }
 
     protected onModelUpdate() {
-      this.modelLoader?.loadUserRole();
+      this.modelLoader?.loadUser();
       this.modelLoader?.loadAllFilesApproved();
       this.modelLoader?.loadFilesOwners();
     }

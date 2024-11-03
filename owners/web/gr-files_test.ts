@@ -35,6 +35,7 @@ import {
 } from '@gerritcodereview/typescript-api/rest-api';
 import {FilesOwners, OwnersLabels} from './owners-service';
 import {deepEqual} from './utils';
+import {getRandom} from './test-utils';
 
 suite('owners status tests', () => {
   const allFilesApproved = true;
@@ -401,11 +402,6 @@ suite('owners status tests', () => {
     });
   });
 });
-
-function getRandom<T>(...values: T[]): T {
-  const idx = Math.floor(Math.random() * values.length);
-  return values[idx];
-}
 
 function account(id: number) {
   return {

@@ -63,7 +63,7 @@ class FilesCommon extends common {
       this.change,
       this.patchRange,
       this.allFilesApproved,
-      this.userRole
+      this.user?.role
     );
   }
 
