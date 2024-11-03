@@ -21,6 +21,12 @@ import {
   FilesColumnContent,
   FilesColumnHeader,
 } from './gr-files';
+import {
+  OWNED_FILES_TAB_CONTENT,
+  OWNED_FILES_TAB_HEADER,
+  OwnedFilesTabContent,
+  OwnedFilesTabHeader,
+} from './gr-owned-files';
 
 window.Gerrit.install(plugin => {
   const restApi = plugin.restApi();
@@ -40,5 +46,21 @@ window.Gerrit.install(plugin => {
     )
     .onAttached(view => {
       (view as unknown as FilesColumnContent).restApi = restApi;
+    });
+  plugin
+    .registerDynamicCustomComponent(
+      'change-view-tab-header',
+      OWNED_FILES_TAB_HEADER
+    )
+    .onAttached(view => {
+      (view as unknown as OwnedFilesTabHeader).restApi = restApi;
+    });
+  plugin
+    .registerDynamicCustomComponent(
+      'change-view-tab-content',
+      OWNED_FILES_TAB_CONTENT
+    )
+    .onAttached(view => {
+      (view as unknown as OwnedFilesTabContent).restApi = restApi;
     });
 });

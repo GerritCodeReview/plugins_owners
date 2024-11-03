@@ -21,6 +21,7 @@ import {
   RestPluginApi,
 } from '@gerritcodereview/typescript-api/rest';
 import {
+  AccountInfo,
   ChangeInfo,
   ChangeStatus,
   HttpMethod,
@@ -51,7 +52,7 @@ suite('owners service tests', () => {
   });
 
   suite('user role tests', () => {
-    test('getLoggedInUserRole - returns ANONYMOUS when user not logged in', async () => {
+    test('getLoggedInUser - returns ANONYMOUS when user not logged in', async () => {
       const notLoggedInApi = {
         getLoggedIn() {
           return Promise.resolve(false);
@@ -62,43 +63,48 @@ suite('owners service tests', () => {
         notLoggedInApi,
         fakeChange
       );
-      const userRole = await service.getLoggedInUserRole();
-      assert.equal(userRole, UserRole.ANONYMOUS);
+      const user = await service.getLoggedInUser();
+      assert.equal(user.role, UserRole.ANONYMOUS);
+      assert.equal(user.account, undefined);
     });
 
-    test('getLoggedInUserRole - returns OTHER for logged in user that is NOT change owner', async () => {
+    test('getLoggedInUser - returns OTHER for logged in user that is NOT change owner', async () => {
+      const loggedUser = account(2);
       const userLoggedInApi = {
         getLoggedIn() {
           return Promise.resolve(true);
         },
         getAccount() {
-          return Promise.resolve(account(2));
+          return Promise.resolve(loggedUser);
         },
       } as unknown as RestPluginApi;
       const change = {owner: account(1)} as unknown as ChangeInfo;
 
       const service = OwnersService.getOwnersService(userLoggedInApi, change);
-      const userRole = await service.getLoggedInUserRole();
-      assert.equal(userRole, UserRole.OTHER);
+      const user = await service.getLoggedInUser();
+      assert.equal(user.role, UserRole.OTHER);
+      assert.equal(user.account, loggedUser);
     });
 
-    test('getLoggedInUserRole - returns CHANGE_OWNER for logged in user that is a change owner', async () => {
+    test('getLoggedInUser - returns CHANGE_OWNER for logged in user that is a change owner', async () => {
+      const owner = account(1);
       const changeOwnerLoggedInApi = {
         getLoggedIn() {
           return Promise.resolve(true);
         },
         getAccount() {
-          return Promise.resolve(account(1));
+          return Promise.resolve(owner);
         },
       } as unknown as RestPluginApi;
-      const change = {owner: account(1)} as unknown as ChangeInfo;
+      const change = {owner} as unknown as ChangeInfo;
 
       const service = OwnersService.getOwnersService(
         changeOwnerLoggedInApi,
         change
       );
-      const userRole = await service.getLoggedInUserRole();
-      assert.equal(userRole, UserRole.CHANGE_OWNER);
+      const user = await service.getLoggedInUser();
+      assert.equal(user.role, UserRole.CHANGE_OWNER);
+      assert.equal(user.account, owner);
     });
   });
 
@@ -289,10 +295,10 @@ suite('owners service tests', () => {
   });
 });
 
-function account(id: number) {
+function account(id: number): AccountInfo {
   return {
     _account_id: id,
-  };
+  } as unknown as AccountInfo;
 }
 
 function flush() {
