@@ -1,7 +1,8 @@
 # Rest API
 
-The @PLUGIN@ exposes a Rest API endpoint to list the owners associated to each file that
-needs a review, and, for each owner, its current labels and votes:
+The @PLUGIN@ exposes a Rest API endpoint to list the owners associated with each file that
+needs approval (`file` field), is approved (`files_approved`) and, for each owner,
+its current labels and votes (`owners_labels`):
 
 ```bash
 GET /changes/{change-id}/revisions/{revision-id}/owners~files-owners
@@ -16,6 +17,12 @@ GET /changes/{change-id}/revisions/{revision-id}/owners~files-owners
       { "name":"John", "id": 1000002 },
       { "name":"Bob", "id": 1000001 },
       { "name":"Jack", "id": 1000003 }
+    ]
+  },
+  "files_approved": {
+    "NewBuild.build":[
+      { "name":"John", "id": 1000004 },
+      { "name":"Release Engineer", "id": 1000001 }
     ]
   },
   "owners_labels" : {

@@ -42,6 +42,7 @@ import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import com.googlesource.gerrit.owners.restapi.GetFilesOwners.LabelNotFoundException;
 import java.util.Arrays;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.Sets;
 import org.eclipse.jgit.internal.storage.dfs.DfsRepositoryDescription;
@@ -102,7 +103,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
   }
 
   @Test
-  public void shouldReturnOwnersLabelsWhenNotApprovedByOwners() throws Exception {
+  public void shouldReturnEmptyOwnersLabelsWhenNotApprovedByOwners() throws Exception {
     addOwnerFileToRoot(true);
     String changeId = createChange().getChangeId();
 
@@ -116,7 +117,21 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
   }
 
   @Test
-  public void shouldReturnEmptyResponseWhenApprovedByOwners() throws Exception {
+  public void shouldReturnNonEmptyOwnersLabelsWhenApprovedByOwners() throws Exception {
+    addOwnerFileToRoot(true);
+    String changeId = createChange().getChangeId();
+    approve(changeId);
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().ownersLabels)
+        .containsExactly(admin.id().get(), Map.of(LabelId.CODE_REVIEW, 2));
+  }
+
+  @Test
+  public void shouldReturnEmptyFilesAndNonEmptyFilesApprovedResponseWhenApprovedByOwners()
+      throws Exception {
     addOwnerFileToRoot(true);
     String changeId = createChange().getChangeId();
     approve(changeId);
@@ -125,6 +140,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
     assertThat(resp.value().files).isEmpty();
+    assertThat(resp.value().filesApproved)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
   }
 
   @Test
@@ -138,12 +155,14 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     assertThat(resp.value().files)
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
+    assertThat(resp.value().filesApproved).isEmpty();
   }
 
   @Test
   @GlobalPluginConfig(pluginName = "owners", name = "owners.expandGroups", value = "false")
-  public void shouldReturnEmptyResponseWhenApprovedByOwnersWithUnexpandedFileOwners()
-      throws Exception {
+  public void
+      shouldReturnEmptyFilesAndNonEmptyFilesApprovedResponseWhenApprovedByOwnersWithUnexpandedFileOwners()
+          throws Exception {
     addOwnerFileToRoot(true);
     String changeId = createChange().getChangeId();
     approve(changeId);
@@ -152,6 +171,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
     assertThat(resp.value().files).isEmpty();
+    assertThat(resp.value().filesApproved)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
   }
 
   @Test
@@ -165,6 +186,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     assertThat(resp.value().files)
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
+    assertThat(resp.value().filesApproved).isEmpty();
   }
 
   @Test
@@ -192,6 +214,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     addOwnerFileToProjectConfig(allProjects, true, user);
     resp = assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
     assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(projectOwner));
+    assertThat(resp.value().filesApproved).isEmpty();
   }
 
   @Test
@@ -265,6 +288,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
     assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(rootOwner));
+    assertThat(resp.value().filesApproved).isEmpty();
   }
 
   private void assertInheritFromProject(Project.NameKey projectNameKey) throws Exception {
@@ -277,6 +301,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     assertThat(resp.value().files)
         .containsExactly("a.txt", Sets.newHashSet(rootOwner, projectOwner));
+    assertThat(resp.value().filesApproved).isEmpty();
   }
 
   private void addBrokenOwnersFileToRoot() throws Exception {
