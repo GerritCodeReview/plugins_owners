@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ef62f12_bc1137c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-06T07:43:20Z",
+      "side": 1,
+      "message": "add note about tab being selectable even when there is no content 😞 to be investigated if anything could be done about it",
+      "range": {
+        "startLine": 18,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 12
+      },
+      "revId": "f5ad5f20638e9ff8dbabc5165a2209a30ac4dbca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a26fbe0_98745f1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-06T07:43:20Z",
+      "side": 1,
+      "message": "nit: `s/re-used/reused`",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 9
+      },
+      "revId": "f5ad5f20638e9ff8dbabc5165a2209a30ac4dbca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5d666ca_1339db7a",
@@ -14,6 +60,30 @@
       "writtenOn": "2024-11-06T00:34:28Z",
       "side": 1,
       "message": "Should all of these be collapsed in a single if?",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 3
+      },
+      "revId": "f5ad5f20638e9ff8dbabc5165a2209a30ac4dbca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf215784_c971daf0",
+        "filename": "owners/web/gr-owned-files.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-06T07:43:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5d666ca_1339db7a",
       "range": {
         "startLine": 96,
         "startChar": 0,
