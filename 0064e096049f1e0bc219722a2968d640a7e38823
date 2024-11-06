@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b38c33cf_f3cee623",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-06T08:32:32Z",
+      "side": 1,
+      "message": "TODOs typically involve fixes still to be done in the current change. Maybe phrase it as _\"NOTE: The patchset selector is going to be addressed in a follow-up change\"_",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 27
+      },
+      "revId": "0064e096049f1e0bc219722a2968d640a7e38823",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
