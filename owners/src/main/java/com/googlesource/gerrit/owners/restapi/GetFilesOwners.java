@@ -145,7 +145,14 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                   !isApprovedByOwner(
                       fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
 
-      return Response.ok(new FilesOwnersResponse(ownersLabels, filesWithPendingOwners));
+      Map<String, Set<GroupOwner>> filesApprovedByOwners =
+              Maps.filterEntries(
+                      fileToOwners,
+                      (fileOwnerEntry) ->
+                              isApprovedByOwner(
+                                      fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
+
+      return Response.ok(new FilesOwnersResponse(ownersLabels, filesWithPendingOwners, filesApprovedByOwners));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
