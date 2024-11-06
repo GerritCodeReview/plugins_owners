@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02693b4b_0901ddc8",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/FilesOwnersResponse.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-06T08:24:52Z",
+      "side": 1,
+      "message": "nit: call GJF on the file",
+      "revId": "39b4cab1e0e7ef0dc81f9608597bd5ce3ce4bf34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05326f7a_ceeeba0d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/FilesOwnersResponse.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-06T08:24:52Z",
+      "side": 1,
+      "message": "nit: make it `public` so that it can be covered in IT tests",
+      "range": {
+        "startLine": 27,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 9
+      },
+      "revId": "39b4cab1e0e7ef0dc81f9608597bd5ce3ce4bf34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
