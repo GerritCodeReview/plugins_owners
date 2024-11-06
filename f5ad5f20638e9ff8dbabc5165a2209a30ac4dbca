@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5d666ca_1339db7a",
+        "filename": "owners/web/gr-owned-files.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-06T00:34:28Z",
+      "side": 1,
+      "message": "Should all of these be collapsed in a single if?",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 3
+      },
+      "revId": "f5ad5f20638e9ff8dbabc5165a2209a30ac4dbca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
