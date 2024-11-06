@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27eaaf8a_99482a60",
+        "filename": "owners/web/gr-owners.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-06T00:15:06Z",
+      "side": 1,
+      "message": "```suggestion\n  // taken from Gerrit\u0027s common-util.ts\n```",
+      "range": {
+        "startLine": 214,
+        "startChar": 25,
+        "endLine": 214,
+        "endChar": 40
+      },
+      "revId": "bc8abe07ada623cd12f8574c209931c74b5f3526",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
