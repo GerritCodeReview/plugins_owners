@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67dfbd11_7ccb2bd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-06T00:21:10Z",
+      "side": 1,
+      "message": "I don\u0027t see this vote rendered in the follow-up changes: should this just be removed then?",
+      "revId": "0b2ae80d44ad99aeacdd69be60784a988182308b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
