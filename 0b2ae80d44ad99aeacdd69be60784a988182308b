@@ -16,6 +16,24 @@
       "message": "I don\u0027t see this vote rendered in the follow-up changes: should this just be removed then?",
       "revId": "0b2ae80d44ad99aeacdd69be60784a988182308b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb813f63_f4fab540",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-06T07:43:20Z",
+      "side": 1,
+      "message": "Considering the way that REST API works - at the moment it returns only the files that still a review votes are only shown for two cases:\n* owner voted but not sufficiently enough to approve e.g. gave `CR+1`\n* gave negative feedback e.g. `CR-1` and file is not approved",
+      "parentUuid": "67dfbd11_7ccb2bd8",
+      "revId": "0b2ae80d44ad99aeacdd69be60784a988182308b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
