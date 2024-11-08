@@ -3,6 +3,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d0c13ecd_f317f1f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-08T17:43:29Z",
+      "side": 1,
+      "message": "nit: it seems that I wasn\u0027t on the top of the `stable-3.10` branch - redoing the merge again",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 0
+      },
+      "revId": "8df7a378d9cd5cf60e8d4f8012cfb758920a37dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9ed31bbc_034d90de",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
         "patchSetId": 2
