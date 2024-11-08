@@ -227,7 +227,7 @@ suite('owners service tests', () => {
       );
     }
 
-    test('should have getAllFilesApproved `false` when no submit requirements are not satisfied', async () => {
+    test('should have getAllFilesApproved `false` when submit requirements are not satisfied', async () => {
       setupGetAllFilesApproved_false();
 
       const response = await service.getAllFilesApproved();
@@ -237,32 +237,14 @@ suite('owners service tests', () => {
     function setupGetAllFilesApproved_true() {
       setup(isLoggedIn, changeNew, ownersSubmitRequirementsSatisfied);
     }
-    test('should have getAllFilesApproved `true` when no submit requirements are satisfied', async () => {
+    test('should have getAllFilesApproved `true` when submit requirements are satisfied', async () => {
       setupGetAllFilesApproved_true();
 
       const response = await service.getAllFilesApproved();
       assert.equal(response, true);
     });
 
-    test('should not call getFilesOwners when getAllFilesApproved is `undefined`', async () => {
-      setupGetAllFilesApproved_undefined();
-
-      const response = await service.getFilesOwners();
-      await flush();
-      assert.equal(getApiStub.callCount, 0);
-      assert.equal(response, undefined);
-    });
-
-    test('should not call getFilesOwners when getAllFilesApproved is `true`', async () => {
-      setupGetAllFilesApproved_true();
-
-      const response = await service.getFilesOwners();
-      await flush();
-      assert.equal(getApiStub.callCount, 0);
-      assert.equal(response, undefined);
-    });
-
-    test('should call getFilesOwners when getAllFilesApproved is `false`', async () => {
+    test('should call getFilesOwners', async () => {
       const expected = {
         files: {
           'AJavaFile.java': [{name: 'Bob', id: 1000001}],
