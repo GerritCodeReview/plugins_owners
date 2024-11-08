@@ -53,6 +53,7 @@ export interface OwnersLabels {
 
 export interface FilesOwners {
   files: OwnedFiles;
+  files_approved: OwnedFiles;
   owners_labels: OwnersLabels;
 }
 
@@ -163,12 +164,6 @@ export class OwnersService {
   }
 
   async getFilesOwners(): Promise<FilesOwners | undefined> {
-    const allFilesApproved = await this.getAllFilesApproved();
-
-    if (allFilesApproved === undefined || allFilesApproved) {
-      return Promise.resolve(undefined);
-    }
-
     return this.api.getFilesOwners(
       this.change.project,
       this.change._number,
