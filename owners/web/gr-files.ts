@@ -40,14 +40,22 @@ import {OwnersMixin} from './owners-mixin';
 
 const STATUS_CODE = {
   MISSING: 'missing',
+  APPROVED: 'approved',
 };
 
 const STATUS_ICON = {
   [STATUS_CODE.MISSING]: 'schedule',
+  [STATUS_CODE.APPROVED]: 'check',
 };
 
 const FILE_STATUS = {
   [FileStatus.NEEDS_APPROVAL]: STATUS_CODE.MISSING,
+  [FileStatus.APPROVED]: STATUS_CODE.APPROVED,
+};
+
+const HOVER_HEADING = {
+  [STATUS_CODE.MISSING]: "Needs Owners' Approval",
+  [STATUS_CODE.APPROVED]: 'Approved by Owners',
 };
 
 const DISPLAY_OWNERS_FOR_FILE_LIMIT = 5;
@@ -62,7 +70,7 @@ class FilesCommon extends common {
     this.hidden = shouldHide(
       this.change,
       this.patchRange,
-      this.allFilesApproved,
+      this.filesOwners,
       this.user?.role
     );
   }
@@ -216,6 +224,9 @@ export class FilesColumnContent extends FilesCommon {
           padding: var(--spacing-xs) 0px;
           margin-left: 9px;
         }
+        :host([file-status='approved']) gr-icon.status {
+          color: var(--positive-green-text-color);
+        }
         :host([file-status='missing']) gr-icon.status {
           color: #ffa62f;
         }
@@ -248,6 +259,7 @@ export class FilesColumnContent extends FilesCommon {
     const owners = this.owners ?? [];
     const splicedOwners = owners.splice(0, DISPLAY_OWNERS_FOR_FILE_LIMIT);
     const showEllipsis = owners.length > DISPLAY_OWNERS_FOR_FILE_LIMIT;
+    const heading = HOVER_HEADING[this.fileStatus ?? STATUS_CODE.MISSING];
     // inlining <style> here is ugly but an alternative would be to copy the `HovercardMixin` from Gerrit and implement hoover from scratch
     return html`<gr-hovercard for="${this.pathId()}">
       <style>
@@ -298,7 +310,7 @@ export class FilesColumnContent extends FilesCommon {
           </div>
           <div class="sectionContent">
             <h3 class="name heading-3">
-              <span>Needs Owners' Approval</span>
+              <span>${heading}</span>
             </h3>
           </div>
         </div>
@@ -349,15 +361,8 @@ export class FilesColumnContent extends FilesCommon {
   }
 
   private computeFileState(): void {
-    const fileOwnership = getFileOwnership(
-      this.path,
-      this.allFilesApproved,
-      this.filesOwners
-    );
-    if (
-      !fileOwnership ||
-      fileOwnership.fileStatus === FileStatus.NOT_OWNED_OR_APPROVED
-    ) {
+    const fileOwnership = getFileOwnership(this.path, this.filesOwners);
+    if (!fileOwnership || fileOwnership.fileStatus === FileStatus.NOT_OWNED) {
       this.fileStatus = undefined;
       this.owners = undefined;
       return;
@@ -379,7 +384,7 @@ export class FilesColumnContent extends FilesCommon {
 export function shouldHide(
   change?: ChangeInfo,
   patchRange?: PatchRange,
-  allFilesApproved?: boolean,
+  filesOwners?: FilesOwners,
   userRole?: UserRole
 ): boolean {
   // don't show owners when no change or change is merged
@@ -406,9 +411,12 @@ export function shouldHide(
 
   // show owners when they apply to the change and for logged in user
   if (
-    !allFilesApproved &&
     change.submit_requirements &&
-    change.submit_requirements.find(r => r.name === OWNERS_SUBMIT_REQUIREMENT)
+    change.submit_requirements.find(
+      r => r.name === OWNERS_SUBMIT_REQUIREMENT
+    ) &&
+    filesOwners &&
+    (filesOwners.files || filesOwners.files_approved)
   ) {
     return !userRole || userRole === UserRole.ANONYMOUS;
   }
@@ -417,7 +425,6 @@ export function shouldHide(
 
 export function getFileOwnership(
   path?: string,
-  allFilesApproved?: boolean,
   filesOwners?: FilesOwners
 ): FileOwnership | undefined {
   if (path === undefined || filesOwners === undefined) {
@@ -425,12 +432,20 @@ export function getFileOwnership(
   }
 
   const fileOwners = (filesOwners.files ?? {})[path];
-  return (allFilesApproved || !fileOwners
-    ? {fileStatus: FileStatus.NOT_OWNED_OR_APPROVED}
-    : {
-        fileStatus: FileStatus.NEEDS_APPROVAL,
-        owners: fileOwners,
-      }) as unknown as FileOwnership;
+  const fileApprovers = (filesOwners.files_approved ?? {})[path];
+  if (fileApprovers) {
+    return {
+      fileStatus: FileStatus.APPROVED,
+      owners: fileApprovers,
+    };
+  } else if (fileOwners) {
+    return {
+      fileStatus: FileStatus.NEEDS_APPROVAL,
+      owners: fileOwners,
+    };
+  } else {
+    return {fileStatus: FileStatus.NOT_OWNED};
+  }
 }
 
 export function computeApprovalAndInfo(
