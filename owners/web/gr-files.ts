@@ -214,6 +214,7 @@ export class FilesColumnContent extends FilesCommon {
         }
         gr-icon {
           padding: var(--spacing-xs) 0px;
+          margin-left: 9px;
         }
         :host([file-status='missing']) gr-icon.status {
           color: #ffa62f;
