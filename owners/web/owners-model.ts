@@ -47,19 +47,12 @@ export interface OwnersState {
   filesOwners?: FilesOwners;
 }
 
-/**
- * TODO: The plugin's REST endpoint returns only files that still need to be reviewed which means that file can only have two states:
- * * needs approval
- * * was not subject of OWNERS file or is already approved
- */
 export enum FileStatus {
   NEEDS_APPROVAL = 'NEEDS_APPROVAL',
-  NOT_OWNED_OR_APPROVED = 'NOT_OWNED_OR_APPROVED',
+  APPROVED = 'APPROVED',
+  NOT_OWNED = 'NOT_OWNED',
 }
 
-/**
- * TODO: extend FileOwnership with owners when it will be used by UI elements
- */
 export interface FileOwnership {
   fileStatus: FileStatus;
   owners?: FileOwner[];
