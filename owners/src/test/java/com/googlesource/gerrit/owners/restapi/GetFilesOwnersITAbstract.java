@@ -172,7 +172,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     assertThat(resp.value().files).isEmpty();
     assertThat(resp.value().filesApproved)
-        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+        .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
   }
 
   @Test
