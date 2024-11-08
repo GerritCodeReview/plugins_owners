@@ -18,6 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfigFactory;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.Constants;
 import org.junit.Test;
@@ -80,5 +81,22 @@ public class PluginSettingsTest {
     assertThat(pluginSettings.disabledBranchPatterns()).contains(branchRefRegex);
     assertThat(pluginSettings.isBranchDisabled(branchName1)).isTrue();
     assertThat(pluginSettings.isBranchDisabled(branchName2)).isTrue();
+  }
+
+  @Test
+  public void globalLabelIsEmptyByDefault() {
+    setupMocks(new Config());
+
+    assertThat(pluginSettings.globalLabel()).isEqualTo(Optional.empty());
+  }
+
+  @Test
+  public void globalLabelSetByConfig() {
+    LabelDefinition globalLabelName = new LabelDefinition("Custom-Label", (short) 2);
+    Config pluginConfig = new Config();
+    pluginConfig.setString("owners", null, "label", "Custom-Label,2");
+    setupMocks(pluginConfig);
+
+    assertThat(pluginSettings.globalLabel()).isEqualTo(Optional.of(globalLabelName));
   }
 }

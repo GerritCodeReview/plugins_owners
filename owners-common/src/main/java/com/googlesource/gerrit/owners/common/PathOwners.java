@@ -103,7 +103,8 @@ public class PathOwners {
       Map<String, FileDiffOutput> fileDiffMap,
       boolean expandGroups,
       String project,
-      PathOwnersEntriesCache cache)
+      PathOwnersEntriesCache cache,
+      Optional<LabelDefinition> globalLabel)
       throws InvalidOwnersFileException {
     this(
         accounts,
@@ -114,7 +115,8 @@ public class PathOwners {
         getModifiedPaths(fileDiffMap),
         expandGroups,
         project,
-        cache);
+        cache,
+        globalLabel);
   }
 
   public PathOwners(
@@ -126,7 +128,8 @@ public class PathOwners {
       DiffSummary diffSummary,
       boolean expandGroups,
       String project,
-      PathOwnersEntriesCache cache)
+      PathOwnersEntriesCache cache,
+      Optional<LabelDefinition> globalLabel)
       throws InvalidOwnersFileException {
     this(
         accounts,
@@ -137,7 +140,8 @@ public class PathOwners {
         ImmutableSet.copyOf(diffSummary.getPaths()),
         expandGroups,
         project,
-        cache);
+        cache,
+        globalLabel);
   }
 
   public PathOwners(
@@ -149,7 +153,8 @@ public class PathOwners {
       Set<String> modifiedPaths,
       boolean expandGroups,
       String project,
-      PathOwnersEntriesCache cache)
+      PathOwnersEntriesCache cache,
+      Optional<LabelDefinition> globalLabel)
       throws InvalidOwnersFileException {
     this.repositoryManager = repositoryManager;
     this.repository = repository;
@@ -170,7 +175,7 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
-    label = map.getLabel();
+    label = globalLabel.or(map::getLabel);
   }
   /**
    * Returns a read only view of the paths to owners mapping.
