@@ -74,6 +74,7 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
     assertThat(resp.value().files)
         .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
     assertThat(resp.value().ownersLabels).isEmpty();
+    assertThat(resp.value().filesApproved).isEmpty();
 
     // give CR+1 as requested
     recommend(changeId);
@@ -82,6 +83,8 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
     assertThat(resp.value().files).isEmpty();
     assertThat(resp.value().ownersLabels)
         .containsExactly(admin.id().get(), Map.of(LabelId.CODE_REVIEW, 1));
+    assertThat(resp.value().filesApproved)
+        .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
   }
 
   @Test
@@ -98,6 +101,7 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
     assertThat(resp.value().files)
         .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
     assertThat(resp.value().ownersLabels).isEmpty();
+    assertThat(resp.value().filesApproved).isEmpty();
 
     // give LabelFoo+1 as requested
     gApi.changes().id(changeId).current().review(new ReviewInput().label(label, 1));
@@ -105,6 +109,8 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
     resp = assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
     assertThat(resp.value().files).isEmpty();
     assertThat(resp.value().ownersLabels).containsEntry(admin.id().get(), Map.of(label, 1));
+    assertThat(resp.value().filesApproved)
+        .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
   }
 
   private void addOwnerFileToRoot(LabelDefinition label, TestAccount u) throws Exception {
