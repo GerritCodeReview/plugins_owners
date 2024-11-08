@@ -24,11 +24,15 @@ public class FilesOwnersResponse {
 
   public final Map<String, Set<GroupOwner>> files;
   public final Map<Integer, Map<String, Integer>> ownersLabels;
+  public final Map<String, Set<GroupOwner>> filesApproved;
 
   public FilesOwnersResponse(
-      Map<Integer, Map<String, Integer>> ownersLabels, Map<String, Set<GroupOwner>> files) {
+      Map<Integer, Map<String, Integer>> ownersLabels,
+      Map<String, Set<GroupOwner>> files,
+      Map<String, Set<GroupOwner>> filesApproved) {
     this.ownersLabels = ownersLabels;
     this.files = files;
+    this.filesApproved = filesApproved;
   }
 
   @Override
@@ -36,16 +40,25 @@ public class FilesOwnersResponse {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     FilesOwnersResponse that = (FilesOwnersResponse) o;
-    return Objects.equal(files, that.files) && Objects.equal(ownersLabels, that.ownersLabels);
+    return Objects.equal(files, that.files)
+        && Objects.equal(ownersLabels, that.ownersLabels)
+        && Objects.equal(filesApproved, that.filesApproved);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(files, ownersLabels);
+    return Objects.hashCode(files, ownersLabels, filesApproved);
   }
 
   @Override
   public String toString() {
-    return "FilesOwnersResponse{" + "files=" + files + ", ownersLabels=" + ownersLabels + '}';
+    return "FilesOwnersResponse{"
+        + "files="
+        + files
+        + ", ownersLabels="
+        + ownersLabels
+        + ", filesApproved="
+        + filesApproved
+        + '}';
   }
 }
