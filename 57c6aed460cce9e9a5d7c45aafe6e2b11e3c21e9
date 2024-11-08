@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a10cf2eb_c6dfcfa9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-08T18:09:54Z",
+      "side": 1,
+      "message": "re-do merge and include I389ecb944f",
+      "revId": "57c6aed460cce9e9a5d7c45aafe6e2b11e3c21e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
