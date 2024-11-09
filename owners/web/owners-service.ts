@@ -118,16 +118,36 @@ class OwnersApi {
   }
 }
 
-let service: OwnersService | undefined;
+/**
+ * Calls to REST API can be safely cached cuz:
+ * 1. Gerrit doesn't update the existing change object but obtains and passes new instead
+ * 2. `OwnersService.getOwnersService` guarantees that whenever new change object is retrieved the new service instance is created (and cache is created with it)
+ */
+class OwnersApiCache {
+  private loggedInUser?: Promise<User>;
 
-export class OwnersService {
-  private api: OwnersApi;
+  private filesOwners?: Promise<FilesOwners | undefined>;
 
-  constructor(readonly restApi: RestPluginApi, readonly change: ChangeInfo) {
-    this.api = new OwnersApi(restApi);
+  constructor(
+    private readonly api: OwnersApi,
+    private readonly change: ChangeInfo
+  ) {}
+
+  getLoggedInUser(): Promise<User> {
+    if (this.loggedInUser === undefined) {
+      this.loggedInUser = this.getLoggedInUserImpl();
+    }
+    return this.loggedInUser;
   }
 
-  async getLoggedInUser(): Promise<User> {
+  getFilesOwners(): Promise<FilesOwners | undefined> {
+    if (this.filesOwners === undefined) {
+      this.filesOwners = this.getFilesOwnersImpl();
+    }
+    return this.filesOwners;
+  }
+
+  private async getLoggedInUserImpl(): Promise<User> {
     const account = await this.api.getAccount();
     if (!account) {
       return {role: UserRole.ANONYMOUS} as unknown as User;
@@ -137,6 +157,28 @@ export class OwnersService {
         ? UserRole.CHANGE_OWNER
         : UserRole.OTHER;
     return {account, role} as unknown as User;
+  }
+
+  private async getFilesOwnersImpl(): Promise<FilesOwners | undefined> {
+    return this.api.getFilesOwners(
+      this.change.project,
+      this.change._number,
+      this.change.current_revision ?? 'current'
+    );
+  }
+}
+
+let service: OwnersService | undefined;
+
+export class OwnersService {
+  private apiCache: OwnersApiCache;
+
+  constructor(readonly restApi: RestPluginApi, readonly change: ChangeInfo) {
+    this.apiCache = new OwnersApiCache(new OwnersApi(restApi), change);
+  }
+
+  getLoggedInUser(): Promise<User> {
+    return this.apiCache.getLoggedInUser();
   }
 
   async getAllFilesApproved(): Promise<boolean | undefined> {
@@ -163,12 +205,8 @@ export class OwnersService {
     );
   }
 
-  async getFilesOwners(): Promise<FilesOwners | undefined> {
-    return this.api.getFilesOwners(
-      this.change.project,
-      this.change._number,
-      this.change.current_revision ?? 'current'
-    );
+  getFilesOwners(): Promise<FilesOwners | undefined> {
+    return this.apiCache.getFilesOwners();
   }
 
   private async isLoggedIn(): Promise<boolean> {
