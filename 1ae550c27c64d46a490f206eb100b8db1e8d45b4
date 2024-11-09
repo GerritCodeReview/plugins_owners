@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0124f5ca_94c3f7fc",
+        "filename": "owners/web/owners-service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-09T08:02:02Z",
+      "side": 1,
+      "message": "nit: update function description as it returns also the list of approved files",
+      "range": {
+        "startLine": 83,
+        "startChar": 3,
+        "endLine": 84,
+        "endChar": 55
+      },
+      "revId": "1ae550c27c64d46a490f206eb100b8db1e8d45b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
