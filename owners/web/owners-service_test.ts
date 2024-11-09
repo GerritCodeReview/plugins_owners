@@ -106,6 +106,25 @@ suite('owners service tests', () => {
       assert.equal(user.role, UserRole.CHANGE_OWNER);
       assert.equal(user.account, owner);
     });
+
+    test('getLoggedInUser - should fetch response from plugin only once', async () => {
+      let calls = 0;
+      const notLoggedInApi = {
+        getLoggedIn() {
+          calls++;
+          return Promise.resolve(false);
+        },
+      } as unknown as RestPluginApi;
+
+      const service = OwnersService.getOwnersService(
+        notLoggedInApi,
+        fakeChange
+      );
+
+      await service.getLoggedInUser();
+      await service.getLoggedInUser();
+      assert.equal(calls, 1);
+    });
   });
 
   suite('files owners tests', () => {
@@ -273,6 +292,18 @@ suite('owners service tests', () => {
         deepEqual(response, {...expected} as unknown as FilesOwners),
         true
       );
+    });
+
+    test('should fetch response from plugin only once', async () => {
+      setupGetAllFilesApproved_true();
+
+      await service.getFilesOwners();
+      await flush();
+
+      await service.getFilesOwners();
+      await flush();
+
+      assert.equal(getApiStub.callCount, 1);
     });
   });
 });
