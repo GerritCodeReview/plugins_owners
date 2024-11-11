@@ -47,6 +47,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8794231_8e70af66",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-11T08:35:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5e61b6d_bc8d3aed",
+      "range": {
+        "startLine": 10,
+        "startChar": 11,
+        "endLine": 10,
+        "endChar": 18
+      },
+      "revId": "ae783231a77fd262b03accbf7634d08e8f67ef04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25bdadbd_d6a19581",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-11T08:35:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c27918f9_f6c785d3",
+      "range": {
+        "startLine": 10,
+        "startChar": 41,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "ae783231a77fd262b03accbf7634d08e8f67ef04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce7e4e1e_c003b79a",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-11-08T17:54:35Z",
       "side": 1,
       "message": "Do we need to worry about different size displays?",
+      "range": {
+        "startLine": 217,
+        "startChar": 23,
+        "endLine": 217,
+        "endChar": 27
+      },
+      "revId": "ae783231a77fd262b03accbf7634d08e8f67ef04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6332cf92_4f711514",
+        "filename": "owners/web/gr-files.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-11T08:35:18Z",
+      "side": 1,
+      "message": "Nope, I have checked it up to state where the whole row has 171px width (each letter in file name is displayed in a separate line) and it behaves as expected as the `Status` header preserves the cell width",
+      "parentUuid": "ce7e4e1e_c003b79a",
       "range": {
         "startLine": 217,
         "startChar": 23,
