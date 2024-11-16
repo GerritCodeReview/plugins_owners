@@ -20,6 +20,7 @@ import {
   AccountInfo,
   BasePatchSetNum,
   ChangeInfo,
+  GroupInfo,
   RevisionPatchSetNum,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {FileOwner, FilesOwners, OwnersService} from './owners-service';
@@ -56,6 +57,11 @@ export enum FileStatus {
 export interface FileOwnership {
   fileStatus: FileStatus;
   owners?: FileOwner[];
+}
+
+export interface OwnerOrGroupOwner {
+  owner?: AccountInfo;
+  groupOwner?: GroupInfo;
 }
 
 let ownersModel: OwnersModel | undefined;

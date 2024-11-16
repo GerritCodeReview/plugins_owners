@@ -23,7 +23,13 @@ import {
   getFileOwnership,
   shouldHide,
 } from './gr-files';
-import {FileOwnership, FileStatus, PatchRange, UserRole} from './owners-model';
+import {
+  FileOwnership,
+  FileStatus,
+  OwnerOrGroupOwner,
+  PatchRange,
+  UserRole,
+} from './owners-model';
 import {
   AccountInfo,
   ApprovalInfo,
@@ -273,7 +279,9 @@ suite('owners status tests', () => {
 
   suite('computeApprovalAndInfo tests', () => {
     const account = 1;
-    const fileOwner = {_account_id: account} as unknown as AccountInfo;
+    const fileOwner = {
+      owner: {_account_id: account} as unknown as AccountInfo,
+    } as unknown as OwnerOrGroupOwner;
     const label = 'Code-Review';
     const crPlus1OwnersVote = {
       [`${account}`]: {[label]: 1},
@@ -369,7 +377,10 @@ suite('owners status tests', () => {
   suite('getChangeAccounts tests', () => {
     test('getChangeAccounts - should return empty map when change is `undefined', () => {
       const undefinedChange = undefined;
-      assert.equal(getChangeAccounts(undefinedChange).size, 0);
+      const accounts = getChangeAccounts(undefinedChange);
+      assert.equal(accounts.byAccountId.size, 0);
+      assert.equal(accounts.byEmailWithoutDomain.size, 0);
+      assert.equal(accounts.byFullName.size, 0);
     });
 
     test('getChangeAccounts - should return map with owner when change has only owner and empty reviewers defined', () => {
@@ -378,8 +389,17 @@ suite('owners status tests', () => {
         owner,
         reviewers: {},
       } as unknown as ChangeInfo;
+      const accounts = getChangeAccounts(changeWithOwner);
       assert.equal(
-        deepEqual(getChangeAccounts(changeWithOwner), new Map([[1, owner]])),
+        deepEqual(accounts.byAccountId, new Map([[1, owner]])),
+        true
+      );
+      assert.equal(
+        deepEqual(accounts.byEmailWithoutDomain, new Map([['1_email', owner]])),
+        true
+      );
+      assert.equal(
+        deepEqual(accounts.byFullName, new Map([['1_name', owner]])),
         true
       );
     });
@@ -397,14 +417,39 @@ suite('owners status tests', () => {
           [ReviewerState.CC]: [ccReviewer],
         },
       } as unknown as ChangeInfo;
+      const accounts = getChangeAccounts(change);
       assert.equal(
         deepEqual(
-          getChangeAccounts(change),
+          accounts.byAccountId,
           new Map([
             [1, owner],
             [2, submitter],
             [3, reviewer],
             [4, ccReviewer],
+          ])
+        ),
+        true
+      );
+      assert.equal(
+        deepEqual(
+          accounts.byEmailWithoutDomain,
+          new Map([
+            ['1_email', owner],
+            ['2_email', submitter],
+            ['3_email', reviewer],
+            ['4_email', ccReviewer],
+          ])
+        ),
+        true
+      );
+      assert.equal(
+        deepEqual(
+          accounts.byFullName,
+          new Map([
+            ['1_name', owner],
+            ['2_name', submitter],
+            ['3_name', reviewer],
+            ['4_name', ccReviewer],
           ])
         ),
         true
@@ -416,5 +461,7 @@ suite('owners status tests', () => {
 function account(id: number) {
   return {
     _account_id: id,
+    email: `${id}_email@example.com`,
+    name: `${id}_name`,
   } as unknown as AccountInfo;
 }
