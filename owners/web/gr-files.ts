@@ -22,6 +22,7 @@ import {
   ApprovalInfo,
   ChangeInfo,
   ChangeStatus,
+  GroupInfo,
   LabelInfo,
   isDetailedLabelInfo,
   EmailAddress,
@@ -33,7 +34,13 @@ import {
   OwnersLabels,
   OWNERS_SUBMIT_REQUIREMENT,
 } from './owners-service';
-import {FileOwnership, FileStatus, PatchRange, UserRole} from './owners-model';
+import {
+  FileOwnership,
+  FileStatus,
+  OwnerOrGroupOwner,
+  PatchRange,
+  UserRole,
+} from './owners-model';
 import {query} from './utils';
 import {GrAccountLabel} from './gerrit-model';
 import {OwnersMixin} from './owners-mixin';
@@ -114,6 +121,9 @@ export class GrOwner extends LitElement {
   owner?: AccountInfo;
 
   @property({type: Object})
+  groupOwner?: GroupInfo;
+
+  @property({type: Object})
   approval?: ApprovalInfo;
 
   @property({type: Object})
@@ -141,31 +151,47 @@ export class GrOwner extends LitElement {
   }
 
   override render() {
-    if (!this.owner) {
+    if (!this.owner && !this.groupOwner) {
       return nothing;
     }
 
-    const voteChip = this.approval
-      ? html` <gr-vote-chip
-          .vote=${this.approval}
-          .label=${this.info}
-        ></gr-vote-chip>`
-      : nothing;
+    const isAccountOwner = this.owner !== undefined;
+    const ownerLabel = isAccountOwner
+      ? this.owner?._account_id
+        ? html`<gr-account-label .account=${this.owner}></gr-account-label>`
+        : html`<span>${this.owner?.display_name}</span>`
+      : html`<span>Group: ${this.groupOwner?.name}</span>`;
 
-    const copyEmail = this.email
+    const voteChip =
+      isAccountOwner && this.approval
+        ? html` <gr-vote-chip
+            .vote=${this.approval}
+            .label=${this.info}
+          ></gr-vote-chip>`
+        : nothing;
+
+    // allow user to copy what is available:
+    // * email or name (if available) for AccountInfo owner type
+    // * group name for GroupInfo owner type
+    const [copyText, copyTooltip] = isAccountOwner
+      ? this.email || this.owner?.display_name
+        ? [
+            this.email ?? this.owner?.display_name,
+            this.email ? 'email' : 'name',
+          ]
+        : [nothing, nothing]
+      : [this.groupOwner?.name, 'group name'];
+    const copy = copyText
       ? html` <gr-copy-clipboard
-          .text=${this.email}
+          .text=${copyText}
           hasTooltip
           hideinput
-          buttonTitle=${"Copy owner's email to clipboard"}
+          buttonTitle="Copy owner's ${copyTooltip} to clipboard"
         ></gr-copy-clipboard>`
       : nothing;
 
     return html`
-      <div class="container">
-        <gr-account-label .account=${this.owner}></gr-account-label>
-        ${voteChip} ${copyEmail}
-      </div>
+      <div class="container">${ownerLabel} ${voteChip} ${copy}</div>
     `;
   }
 
@@ -200,7 +226,7 @@ export class FilesColumnContent extends FilesCommon {
   @property({type: String, reflect: true, attribute: 'file-status'})
   fileStatus?: string;
 
-  private owners?: AccountInfo[];
+  private owners?: OwnerOrGroupOwner[];
 
   // taken from Gerrit's common-util.ts
   private uniqueId = Math.random().toString(36).substring(2);
@@ -328,10 +354,11 @@ export class FilesColumnContent extends FilesCommon {
                     : ''}"
                 >
                   <gr-owner
-                    .owner=${owner}
+                    .owner=${owner.owner}
+                    .groupOwner=${owner.groupOwner}
                     .approval=${approval}
                     .info=${info}
-                    .email=${owner.email}
+                    .email=${owner.owner ? owner.owner.email : nothing}
                   ></gr-owner>
                 </div>
               `;
@@ -367,15 +394,38 @@ export class FilesColumnContent extends FilesCommon {
     }
 
     this.fileStatus = FILE_STATUS[fileOwnership.fileStatus];
-    const accounts = getChangeAccounts(this.change);
+    const [accountsByIds, accountsByEmailWithoutDomain, accountsByFullName] =
+      getChangeAccounts(this.change);
 
     // TODO for the time being filter out or group owners - to be decided what/how to display them
-    this.owners = (fileOwnership.owners ?? [])
-      .filter(isOwner)
-      .map(
-        o =>
-          accounts.get(o.id) ?? ({_account_id: o.id} as unknown as AccountInfo)
-      );
+    this.owners = (fileOwnership.owners ?? []).map(owner => {
+      if (isOwner(owner)) {
+        return {
+          owner:
+            accountsByIds.get(owner.id) ??
+            ({_account_id: owner.id} as unknown as AccountInfo),
+        } as unknown as OwnerOrGroupOwner;
+      }
+
+      const groupPrefix = 'group/';
+      if (owner.name.startsWith(groupPrefix)) {
+        return {
+          groupOwner: {
+            name: owner.name.substring(groupPrefix.length),
+          } as unknown as GroupInfo,
+        } as unknown as OwnerOrGroupOwner;
+      }
+
+      // when `owners.expandGroups = false` then neither group nor account
+      // will be expanded therefore try to match account with change's available
+      // accounts through email without domain or by full name
+      // finally construct `AccountInfo` just with a `name` property
+      const accountOwner =
+        accountsByEmailWithoutDomain.get(owner.name) ??
+        accountsByFullName.get(owner.name) ??
+        ({display_name: owner.name} as unknown as AccountInfo);
+      return {owner: accountOwner} as unknown as OwnerOrGroupOwner;
+    });
   }
 }
 
@@ -447,14 +497,15 @@ export function getFileOwnership(
 }
 
 export function computeApprovalAndInfo(
-  fileOwner: AccountInfo,
+  fileOwner: OwnerOrGroupOwner,
   labels: OwnersLabels,
   change?: ChangeInfo
 ): [ApprovalInfo, LabelInfo] | undefined {
-  if (!change?.labels) {
+  if (!change?.labels || !fileOwner?.owner) {
     return;
   }
-  const ownersLabel = labels[`${fileOwner._account_id}`];
+  const accountId = fileOwner.owner._account_id;
+  const ownersLabel = labels[`${accountId}`];
   if (!ownersLabel) {
     return;
   }
@@ -471,21 +522,25 @@ export function computeApprovalAndInfo(
       return;
     }
 
-    const approval = info.all?.filter(
-      x => x._account_id === fileOwner._account_id
-    )[0];
+    const approval = info.all?.filter(x => x._account_id === accountId)[0];
     return approval ? [approval, info] : undefined;
   }
 
   return;
 }
 
-export function getChangeAccounts(
-  change?: ChangeInfo
-): Map<number, AccountInfo> {
-  const accounts = new Map();
+export type AvailableAccounts = [
+  Map<number, AccountInfo>,
+  Map<string, AccountInfo>,
+  Map<string, AccountInfo>
+];
+
+export function getChangeAccounts(change?: ChangeInfo): AvailableAccounts {
+  const accountsById = new Map();
+  const accountsByEmailWithoutDomain = new Map();
+  const accountsByFullName = new Map();
   if (!change) {
-    return accounts;
+    return [accountsById, accountsByEmailWithoutDomain, accountsByFullName];
   }
 
   [
@@ -493,6 +548,22 @@ export function getChangeAccounts(
     ...(change.submitter ? [change.submitter] : []),
     ...(change.reviewers[ReviewerState.REVIEWER] ?? []),
     ...(change.reviewers[ReviewerState.CC] ?? []),
-  ].forEach(account => accounts.set(account._account_id, account));
-  return accounts;
+  ].forEach(account => {
+    accountsById.set(account._account_id, account);
+
+    if (account.email && account.email.indexOf('@') > 0) {
+      accountsByEmailWithoutDomain.set(
+        account.email.substring(
+          0,
+          account.email.indexOf('@')
+        ) as unknown as string,
+        account
+      );
+    }
+
+    if (account.name) {
+      accountsByFullName.set(account.name, account);
+    }
+  });
+  return [accountsById, accountsByEmailWithoutDomain, accountsByFullName];
 }
