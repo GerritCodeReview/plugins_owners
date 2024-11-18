@@ -139,10 +139,8 @@ export class GrOwner extends LitElement {
 
     const voteChip = this.approval
       ? html` <gr-vote-chip
-          slot="vote-chip"
           .vote=${this.approval}
           .label=${this.info}
-          circle-shape
         ></gr-vote-chip>`
       : nothing;
 
