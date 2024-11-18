@@ -22,6 +22,30 @@
       },
       "revId": "2ee1f393321a1243f01e1798e742450ca2dbfb8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8f54301_6340c7fb",
+        "filename": "owners/web/gr-files.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-18T07:50:05Z",
+      "side": 1,
+      "message": "It doesn\u0027t match the look \u0026 feel of vote chip in change\u0027s `Submit requirements` section but does with `Change Info` section\u0027s account and as such it was inspired by that. Having said that it makes more sense to match with `Submit Requirements` section (each account is displayed in a single row, there is an extra copy button) therefore I have modified it in the prepending change.",
+      "parentUuid": "1072cd99_aadf5f72",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 22
+      },
+      "revId": "2ee1f393321a1243f01e1798e742450ca2dbfb8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
