@@ -22,6 +22,30 @@
       },
       "revId": "cb85f197582481204674340cb42e54300e4c82b4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f73dfb2_5a09af92",
+        "filename": "owners/web/owners-service.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-18T14:05:28Z",
+      "side": 1,
+      "message": "nope, it also caches data for `getLoggedInUser` call IOW it would have to contain also `User` IOW would get vague...",
+      "parentUuid": "f46907d8_6fdcf42b",
+      "range": {
+        "startLine": 134,
+        "startChar": 51,
+        "endLine": 134,
+        "endChar": 58
+      },
+      "revId": "cb85f197582481204674340cb42e54300e4c82b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
