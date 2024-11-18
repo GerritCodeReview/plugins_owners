@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07679201_9108b0d5",
+        "filename": "owners/web/gr-files.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-18T09:06:48Z",
+      "side": 1,
+      "message": "Is this TODO obsolete now?",
+      "range": {
+        "startLine": 400,
+        "startChar": 4,
+        "endLine": 400,
+        "endChar": 98
+      },
+      "revId": "4ed78b3241bb6a9614a6eeafefa512a4ef997cef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "849dcfa7_73d56d63",
+        "filename": "owners/web/gr-files.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-18T09:06:48Z",
+      "side": 1,
+      "message": "It would be clearer to expose a proper type with fields, rather than a generic array of three types.",
+      "range": {
+        "startLine": 532,
+        "startChar": 32,
+        "endLine": 536,
+        "endChar": 2
+      },
+      "revId": "4ed78b3241bb6a9614a6eeafefa512a4ef997cef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
