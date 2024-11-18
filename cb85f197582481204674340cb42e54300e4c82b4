@@ -70,6 +70,30 @@
       },
       "revId": "cb85f197582481204674340cb42e54300e4c82b4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abbdf12d_af7f4245",
+        "filename": "owners/web/owners-service.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-18T17:30:37Z",
+      "side": 1,
+      "message": "ATM it caches two calls:\n* `getLoggedInUser`\n* `getFilesOwners`\n\nI can keep them as separate variables and check each one individually if they already have a value...",
+      "parentUuid": "a6086612_c290ce87",
+      "range": {
+        "startLine": 134,
+        "startChar": 51,
+        "endLine": 134,
+        "endChar": 58
+      },
+      "revId": "cb85f197582481204674340cb42e54300e4c82b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
