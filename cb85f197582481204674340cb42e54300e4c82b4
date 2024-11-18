@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46907d8_6fdcf42b",
+        "filename": "owners/web/owners-service.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-18T08:56:48Z",
+      "side": 1,
+      "message": "Can this be `FilesOwners | undefined`?",
+      "range": {
+        "startLine": 134,
+        "startChar": 51,
+        "endLine": 134,
+        "endChar": 58
+      },
+      "revId": "cb85f197582481204674340cb42e54300e4c82b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
