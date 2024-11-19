@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f289818_2902f1f7",
+        "filename": "owners/web/gr-files.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-19T07:28:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07679201_9108b0d5",
+      "range": {
+        "startLine": 400,
+        "startChar": 4,
+        "endLine": 400,
+        "endChar": 98
+      },
+      "revId": "4ed78b3241bb6a9614a6eeafefa512a4ef997cef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "849dcfa7_73d56d63",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-11-18T09:06:48Z",
       "side": 1,
       "message": "It would be clearer to expose a proper type with fields, rather than a generic array of three types.",
+      "range": {
+        "startLine": 532,
+        "startChar": 32,
+        "endLine": 536,
+        "endChar": 2
+      },
+      "revId": "4ed78b3241bb6a9614a6eeafefa512a4ef997cef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2368eb4_718eba57",
+        "filename": "owners/web/gr-files.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-19T07:28:29Z",
+      "side": 1,
+      "message": "Reworked",
+      "parentUuid": "849dcfa7_73d56d63",
       "range": {
         "startLine": 532,
         "startChar": 32,
