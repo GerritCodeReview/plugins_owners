@@ -22,6 +22,7 @@ import {
   ApprovalInfo,
   ChangeInfo,
   ChangeStatus,
+  GroupInfo,
   LabelInfo,
   isDetailedLabelInfo,
   EmailAddress,
@@ -33,21 +34,35 @@ import {
   OwnersLabels,
   OWNERS_SUBMIT_REQUIREMENT,
 } from './owners-service';
-import {FileOwnership, FileStatus, PatchRange, UserRole} from './owners-model';
+import {
+  FileOwnership,
+  FileStatus,
+  OwnerOrGroupOwner,
+  PatchRange,
+  UserRole,
+} from './owners-model';
 import {query} from './utils';
 import {GrAccountLabel} from './gerrit-model';
 import {OwnersMixin} from './owners-mixin';
 
 const STATUS_CODE = {
   MISSING: 'missing',
+  APPROVED: 'approved',
 };
 
 const STATUS_ICON = {
   [STATUS_CODE.MISSING]: 'schedule',
+  [STATUS_CODE.APPROVED]: 'check',
 };
 
 const FILE_STATUS = {
   [FileStatus.NEEDS_APPROVAL]: STATUS_CODE.MISSING,
+  [FileStatus.APPROVED]: STATUS_CODE.APPROVED,
+};
+
+const HOVER_HEADING = {
+  [STATUS_CODE.MISSING]: "Needs Owners' Approval",
+  [STATUS_CODE.APPROVED]: 'Approved by Owners',
 };
 
 const DISPLAY_OWNERS_FOR_FILE_LIMIT = 5;
@@ -62,7 +77,7 @@ class FilesCommon extends common {
     this.hidden = shouldHide(
       this.change,
       this.patchRange,
-      this.allFilesApproved,
+      this.filesOwners,
       this.user?.role
     );
   }
@@ -106,6 +121,9 @@ export class GrOwner extends LitElement {
   owner?: AccountInfo;
 
   @property({type: Object})
+  groupOwner?: GroupInfo;
+
+  @property({type: Object})
   approval?: ApprovalInfo;
 
   @property({type: Object})
@@ -133,33 +151,47 @@ export class GrOwner extends LitElement {
   }
 
   override render() {
-    if (!this.owner) {
+    if (!this.owner && !this.groupOwner) {
       return nothing;
     }
 
-    const voteChip = this.approval
-      ? html` <gr-vote-chip
-          slot="vote-chip"
-          .vote=${this.approval}
-          .label=${this.info}
-          circle-shape
-        ></gr-vote-chip>`
-      : nothing;
+    const isAccountOwner = this.owner !== undefined;
+    const ownerLabel = isAccountOwner
+      ? this.owner?._account_id
+        ? html`<gr-account-label .account=${this.owner}></gr-account-label>`
+        : html`<span>${this.owner?.display_name}</span>`
+      : html`<span>Group: ${this.groupOwner?.name}</span>`;
 
-    const copyEmail = this.email
+    const voteChip =
+      isAccountOwner && this.approval
+        ? html` <gr-vote-chip
+            .vote=${this.approval}
+            .label=${this.info}
+          ></gr-vote-chip>`
+        : nothing;
+
+    // allow user to copy what is available:
+    // * email or name (if available) for AccountInfo owner type
+    // * group name for GroupInfo owner type
+    const [copyText, copyTooltip] = isAccountOwner
+      ? this.email || this.owner?.display_name
+        ? [
+            this.email ?? this.owner?.display_name,
+            this.email ? 'email' : 'name',
+          ]
+        : [nothing, nothing]
+      : [this.groupOwner?.name, 'group name'];
+    const copy = copyText
       ? html` <gr-copy-clipboard
-          .text=${this.email}
+          .text=${copyText}
           hasTooltip
           hideinput
-          buttonTitle=${"Copy owner's email to clipboard"}
+          buttonTitle="Copy owner's ${copyTooltip} to clipboard"
         ></gr-copy-clipboard>`
       : nothing;
 
     return html`
-      <div class="container">
-        <gr-account-label .account=${this.owner}></gr-account-label>
-        ${voteChip} ${copyEmail}
-      </div>
+      <div class="container">${ownerLabel} ${voteChip} ${copy}</div>
     `;
   }
 
@@ -194,7 +226,7 @@ export class FilesColumnContent extends FilesCommon {
   @property({type: String, reflect: true, attribute: 'file-status'})
   fileStatus?: string;
 
-  private owners?: AccountInfo[];
+  private owners?: OwnerOrGroupOwner[];
 
   // taken from Gerrit's common-util.ts
   private uniqueId = Math.random().toString(36).substring(2);
@@ -214,6 +246,10 @@ export class FilesColumnContent extends FilesCommon {
         }
         gr-icon {
           padding: var(--spacing-xs) 0px;
+          margin-left: 9px;
+        }
+        :host([file-status='approved']) gr-icon.status {
+          color: var(--positive-green-text-color);
         }
         :host([file-status='missing']) gr-icon.status {
           color: #ffa62f;
@@ -247,6 +283,7 @@ export class FilesColumnContent extends FilesCommon {
     const owners = this.owners ?? [];
     const splicedOwners = owners.splice(0, DISPLAY_OWNERS_FOR_FILE_LIMIT);
     const showEllipsis = owners.length > DISPLAY_OWNERS_FOR_FILE_LIMIT;
+    const heading = HOVER_HEADING[this.fileStatus ?? STATUS_CODE.MISSING];
     // inlining <style> here is ugly but an alternative would be to copy the `HovercardMixin` from Gerrit and implement hoover from scratch
     return html`<gr-hovercard for="${this.pathId()}">
       <style>
@@ -297,7 +334,7 @@ export class FilesColumnContent extends FilesCommon {
           </div>
           <div class="sectionContent">
             <h3 class="name heading-3">
-              <span>Needs Owners' Approval</span>
+              <span>${heading}</span>
             </h3>
           </div>
         </div>
@@ -317,10 +354,11 @@ export class FilesColumnContent extends FilesCommon {
                     : ''}"
                 >
                   <gr-owner
-                    .owner=${owner}
+                    .owner=${owner.owner}
+                    .groupOwner=${owner.groupOwner}
                     .approval=${approval}
                     .info=${info}
-                    .email=${owner.email}
+                    .email=${owner.owner ? owner.owner.email : nothing}
                   ></gr-owner>
                 </div>
               `;
@@ -348,15 +386,8 @@ export class FilesColumnContent extends FilesCommon {
   }
 
   private computeFileState(): void {
-    const fileOwnership = getFileOwnership(
-      this.path,
-      this.allFilesApproved,
-      this.filesOwners
-    );
-    if (
-      !fileOwnership ||
-      fileOwnership.fileStatus === FileStatus.NOT_OWNED_OR_APPROVED
-    ) {
+    const fileOwnership = getFileOwnership(this.path, this.filesOwners);
+    if (!fileOwnership || fileOwnership.fileStatus === FileStatus.NOT_OWNED) {
       this.fileStatus = undefined;
       this.owners = undefined;
       return;
@@ -365,20 +396,41 @@ export class FilesColumnContent extends FilesCommon {
     this.fileStatus = FILE_STATUS[fileOwnership.fileStatus];
     const accounts = getChangeAccounts(this.change);
 
-    // TODO for the time being filter out or group owners - to be decided what/how to display them
-    this.owners = (fileOwnership.owners ?? [])
-      .filter(isOwner)
-      .map(
-        o =>
-          accounts.get(o.id) ?? ({_account_id: o.id} as unknown as AccountInfo)
-      );
+    this.owners = (fileOwnership.owners ?? []).map(owner => {
+      if (isOwner(owner)) {
+        return {
+          owner:
+            accounts.byAccountId.get(owner.id) ??
+            ({_account_id: owner.id} as unknown as AccountInfo),
+        } as unknown as OwnerOrGroupOwner;
+      }
+
+      const groupPrefix = 'group/';
+      if (owner.name.startsWith(groupPrefix)) {
+        return {
+          groupOwner: {
+            name: owner.name.substring(groupPrefix.length),
+          } as unknown as GroupInfo,
+        } as unknown as OwnerOrGroupOwner;
+      }
+
+      // when `owners.expandGroups = false` then neither group nor account
+      // will be expanded therefore try to match account with change's available
+      // accounts through email without domain or by full name
+      // finally construct `AccountInfo` just with a `name` property
+      const accountOwner =
+        accounts.byEmailWithoutDomain.get(owner.name) ??
+        accounts.byFullName.get(owner.name) ??
+        ({display_name: owner.name} as unknown as AccountInfo);
+      return {owner: accountOwner} as unknown as OwnerOrGroupOwner;
+    });
   }
 }
 
 export function shouldHide(
   change?: ChangeInfo,
   patchRange?: PatchRange,
-  allFilesApproved?: boolean,
+  filesOwners?: FilesOwners,
   userRole?: UserRole
 ): boolean {
   // don't show owners when no change or change is merged
@@ -405,9 +457,12 @@ export function shouldHide(
 
   // show owners when they apply to the change and for logged in user
   if (
-    !allFilesApproved &&
     change.submit_requirements &&
-    change.submit_requirements.find(r => r.name === OWNERS_SUBMIT_REQUIREMENT)
+    change.submit_requirements.find(
+      r => r.name === OWNERS_SUBMIT_REQUIREMENT
+    ) &&
+    filesOwners &&
+    (filesOwners.files || filesOwners.files_approved)
   ) {
     return !userRole || userRole === UserRole.ANONYMOUS;
   }
@@ -416,7 +471,6 @@ export function shouldHide(
 
 export function getFileOwnership(
   path?: string,
-  allFilesApproved?: boolean,
   filesOwners?: FilesOwners
 ): FileOwnership | undefined {
   if (path === undefined || filesOwners === undefined) {
@@ -424,23 +478,32 @@ export function getFileOwnership(
   }
 
   const fileOwners = (filesOwners.files ?? {})[path];
-  return (allFilesApproved || !fileOwners
-    ? {fileStatus: FileStatus.NOT_OWNED_OR_APPROVED}
-    : {
-        fileStatus: FileStatus.NEEDS_APPROVAL,
-        owners: fileOwners,
-      }) as unknown as FileOwnership;
+  const fileApprovers = (filesOwners.files_approved ?? {})[path];
+  if (fileApprovers) {
+    return {
+      fileStatus: FileStatus.APPROVED,
+      owners: fileApprovers,
+    };
+  } else if (fileOwners) {
+    return {
+      fileStatus: FileStatus.NEEDS_APPROVAL,
+      owners: fileOwners,
+    };
+  } else {
+    return {fileStatus: FileStatus.NOT_OWNED};
+  }
 }
 
 export function computeApprovalAndInfo(
-  fileOwner: AccountInfo,
+  fileOwner: OwnerOrGroupOwner,
   labels: OwnersLabels,
   change?: ChangeInfo
 ): [ApprovalInfo, LabelInfo] | undefined {
-  if (!change?.labels) {
+  if (!change?.labels || !fileOwner?.owner) {
     return;
   }
-  const ownersLabel = labels[`${fileOwner._account_id}`];
+  const accountId = fileOwner.owner._account_id;
+  const ownersLabel = labels[`${accountId}`];
   if (!ownersLabel) {
     return;
   }
@@ -457,19 +520,26 @@ export function computeApprovalAndInfo(
       return;
     }
 
-    const approval = info.all?.filter(
-      x => x._account_id === fileOwner._account_id
-    )[0];
+    const approval = info.all?.filter(x => x._account_id === accountId)[0];
     return approval ? [approval, info] : undefined;
   }
 
   return;
 }
 
-export function getChangeAccounts(
-  change?: ChangeInfo
-): Map<number, AccountInfo> {
-  const accounts = new Map();
+export interface ChangeAccounts {
+  byAccountId: Map<number, AccountInfo>;
+  byEmailWithoutDomain: Map<string, AccountInfo>;
+  byFullName: Map<string, AccountInfo>;
+}
+
+export function getChangeAccounts(change?: ChangeInfo): ChangeAccounts {
+  const accounts = {
+    byAccountId: new Map(),
+    byEmailWithoutDomain: new Map(),
+    byFullName: new Map(),
+  } as unknown as ChangeAccounts;
+
   if (!change) {
     return accounts;
   }
@@ -479,6 +549,24 @@ export function getChangeAccounts(
     ...(change.submitter ? [change.submitter] : []),
     ...(change.reviewers[ReviewerState.REVIEWER] ?? []),
     ...(change.reviewers[ReviewerState.CC] ?? []),
-  ].forEach(account => accounts.set(account._account_id, account));
+  ].forEach(account => {
+    if (account._account_id) {
+      accounts.byAccountId.set(account._account_id, account);
+    }
+
+    if (account.email && account.email.indexOf('@') > 0) {
+      accounts.byEmailWithoutDomain.set(
+        account.email.substring(
+          0,
+          account.email.indexOf('@')
+        ) as unknown as string,
+        account
+      );
+    }
+
+    if (account.name) {
+      accounts.byFullName.set(account.name, account);
+    }
+  });
   return accounts;
 }

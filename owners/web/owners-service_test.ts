@@ -106,6 +106,25 @@ suite('owners service tests', () => {
       assert.equal(user.role, UserRole.CHANGE_OWNER);
       assert.equal(user.account, owner);
     });
+
+    test('getLoggedInUser - should fetch response from plugin only once', async () => {
+      let calls = 0;
+      const notLoggedInApi = {
+        getLoggedIn() {
+          calls++;
+          return Promise.resolve(false);
+        },
+      } as unknown as RestPluginApi;
+
+      const service = OwnersService.getOwnersService(
+        notLoggedInApi,
+        fakeChange
+      );
+
+      await service.getLoggedInUser();
+      await service.getLoggedInUser();
+      assert.equal(calls, 1);
+    });
   });
 
   suite('files owners tests', () => {
@@ -227,7 +246,7 @@ suite('owners service tests', () => {
       );
     }
 
-    test('should have getAllFilesApproved `false` when no submit requirements are not satisfied', async () => {
+    test('should have getAllFilesApproved `false` when submit requirements are not satisfied', async () => {
       setupGetAllFilesApproved_false();
 
       const response = await service.getAllFilesApproved();
@@ -237,32 +256,14 @@ suite('owners service tests', () => {
     function setupGetAllFilesApproved_true() {
       setup(isLoggedIn, changeNew, ownersSubmitRequirementsSatisfied);
     }
-    test('should have getAllFilesApproved `true` when no submit requirements are satisfied', async () => {
+    test('should have getAllFilesApproved `true` when submit requirements are satisfied', async () => {
       setupGetAllFilesApproved_true();
 
       const response = await service.getAllFilesApproved();
       assert.equal(response, true);
     });
 
-    test('should not call getFilesOwners when getAllFilesApproved is `undefined`', async () => {
-      setupGetAllFilesApproved_undefined();
-
-      const response = await service.getFilesOwners();
-      await flush();
-      assert.equal(getApiStub.callCount, 0);
-      assert.equal(response, undefined);
-    });
-
-    test('should not call getFilesOwners when getAllFilesApproved is `true`', async () => {
-      setupGetAllFilesApproved_true();
-
-      const response = await service.getFilesOwners();
-      await flush();
-      assert.equal(getApiStub.callCount, 0);
-      assert.equal(response, undefined);
-    });
-
-    test('should call getFilesOwners when getAllFilesApproved is `false`', async () => {
+    test('should call getFilesOwners', async () => {
       const expected = {
         files: {
           'AJavaFile.java': [{name: 'Bob', id: 1000001}],
@@ -291,6 +292,18 @@ suite('owners service tests', () => {
         deepEqual(response, {...expected} as unknown as FilesOwners),
         true
       );
+    });
+
+    test('should fetch response from plugin only once', async () => {
+      setupGetAllFilesApproved_true();
+
+      await service.getFilesOwners();
+      await flush();
+
+      await service.getFilesOwners();
+      await flush();
+
+      assert.equal(getApiStub.callCount, 1);
     });
   });
 });

@@ -23,7 +23,13 @@ import {
   getFileOwnership,
   shouldHide,
 } from './gr-files';
-import {FileOwnership, FileStatus, PatchRange, UserRole} from './owners-model';
+import {
+  FileOwnership,
+  FileStatus,
+  OwnerOrGroupOwner,
+  PatchRange,
+  UserRole,
+} from './owners-model';
 import {
   AccountInfo,
   ApprovalInfo,
@@ -38,7 +44,12 @@ import {deepEqual} from './utils';
 import {getRandom} from './test-utils';
 
 suite('owners status tests', () => {
-  const allFilesApproved = true;
+  const path = 'readme.md';
+  const approvedPath = 'db.sql';
+  const filesOwners = {
+    files: {[path]: [{name: 'John', id: 1}]},
+    files_approved: {[approvedPath]: [{name: 'Merry', id: 2}]},
+  } as unknown as FilesOwners;
 
   suite('shouldHide tests', () => {
     const loggedIn = getRandom(UserRole.CHANGE_OWNER, UserRole.OTHER);
@@ -47,12 +58,7 @@ suite('owners status tests', () => {
       const undefinedChange = undefined;
       const definedPatchRange = {} as unknown as PatchRange;
       assert.equal(
-        shouldHide(
-          undefinedChange,
-          definedPatchRange,
-          allFilesApproved,
-          loggedIn
-        ),
+        shouldHide(undefinedChange, definedPatchRange, filesOwners, loggedIn),
         true
       );
     });
@@ -61,12 +67,7 @@ suite('owners status tests', () => {
       const definedChange = {} as unknown as ChangeInfo;
       const undefinedPatchRange = undefined;
       assert.equal(
-        shouldHide(
-          definedChange,
-          undefinedPatchRange,
-          allFilesApproved,
-          loggedIn
-        ),
+        shouldHide(definedChange, undefinedPatchRange, filesOwners, loggedIn),
         true
       );
     });
@@ -77,12 +78,7 @@ suite('owners status tests', () => {
       } as unknown as ChangeInfo;
       const definedPatchRange = {} as unknown as PatchRange;
       assert.equal(
-        shouldHide(
-          abandonedChange,
-          definedPatchRange,
-          allFilesApproved,
-          loggedIn
-        ),
+        shouldHide(abandonedChange, definedPatchRange, filesOwners, loggedIn),
         true
       );
     });
@@ -93,7 +89,7 @@ suite('owners status tests', () => {
       } as unknown as ChangeInfo;
       const definedPatchRange = {} as unknown as PatchRange;
       assert.equal(
-        shouldHide(mergedChange, definedPatchRange, allFilesApproved, loggedIn),
+        shouldHide(mergedChange, definedPatchRange, filesOwners, loggedIn),
         true
       );
     });
@@ -108,7 +104,7 @@ suite('owners status tests', () => {
       } as unknown as ChangeInfo;
       const patchRangeOnPs1 = {patchNum: 1} as unknown as PatchRange;
       assert.equal(
-        shouldHide(changeWithPs2, patchRangeOnPs1, allFilesApproved, loggedIn),
+        shouldHide(changeWithPs2, patchRangeOnPs1, filesOwners, loggedIn),
         true
       );
     });
@@ -123,10 +119,7 @@ suite('owners status tests', () => {
     const patchRange = {patchNum: 1} as unknown as PatchRange;
 
     test('shouldHide - should be `true` when change has no submit requirements', () => {
-      assert.equal(
-        shouldHide(change, patchRange, !allFilesApproved, loggedIn),
-        true
-      );
+      assert.equal(shouldHide(change, patchRange, filesOwners, loggedIn), true);
     });
 
     test('shouldHide - should be `true` when change has no `Owner-Approval` submit requirements', () => {
@@ -140,7 +133,7 @@ suite('owners status tests', () => {
         shouldHide(
           changeWithDifferentSubmitReqs,
           patchRange,
-          !allFilesApproved,
+          filesOwners,
           loggedIn
         ),
         true
@@ -154,20 +147,39 @@ suite('owners status tests', () => {
       ] as unknown as SubmitRequirementResultInfo[],
     };
 
-    test('shouldHide - should be `true` when user is not change owner', () => {
+    test('shouldHide - should be `true` when user is anonymous', () => {
       const anonymous = UserRole.ANONYMOUS;
       assert.equal(
         shouldHide(
           changeWithSubmitRequirements,
           patchRange,
-          !allFilesApproved,
+          filesOwners,
           anonymous
         ),
         true
       );
     });
 
-    test('shouldHide - should be `true` when change has submit requirements and has all files approved even if user is logged in', () => {
+    test('shouldHide - should be `true` when files owners are `undefined`', () => {
+      const undefinedFilesOwners = getRandom(
+        undefined,
+        {}
+      ) as unknown as FilesOwners;
+      assert.equal(
+        shouldHide(
+          changeWithSubmitRequirements,
+          patchRange,
+          undefinedFilesOwners,
+          loggedIn
+        ),
+        true
+      );
+    });
+
+    test('shouldHide - should be `false` when change has all files approved', () => {
+      const allFilesApproved = {
+        approved_files: {[approvedPath]: [{name: 'Merry', id: 2}]},
+      } as unknown as FilesOwners;
       assert.equal(
         shouldHide(
           changeWithSubmitRequirements,
@@ -179,12 +191,27 @@ suite('owners status tests', () => {
       );
     });
 
-    test('shouldHide - should be `false` when change has submit requirements, has no all files approved and user is logged in', () => {
+    test('shouldHide - should be `false` when change has no files approved', () => {
+      const noApprovedFiles = {
+        files: {[path]: [{name: 'John', id: 1}]},
+      } as unknown as FilesOwners;
       assert.equal(
         shouldHide(
           changeWithSubmitRequirements,
           patchRange,
-          !allFilesApproved,
+          noApprovedFiles,
+          loggedIn
+        ),
+        false
+      );
+    });
+
+    test('shouldHide - should be `false` when change has both approved and not approved files', () => {
+      assert.equal(
+        shouldHide(
+          changeWithSubmitRequirements,
+          patchRange,
+          filesOwners,
           loggedIn
         ),
         false
@@ -194,68 +221,57 @@ suite('owners status tests', () => {
     test('shouldHide - should be `false` when in edit mode', () => {
       const patchRangeWithoutPatchNum = {} as unknown as PatchRange;
       assert.equal(
-        shouldHide(
-          change,
-          patchRangeWithoutPatchNum,
-          allFilesApproved,
-          loggedIn
-        ),
+        shouldHide(change, patchRangeWithoutPatchNum, filesOwners, loggedIn),
         false
       );
     });
   });
 
   suite('getFileOwnership tests', () => {
-    const path = 'readme.md';
     const emptyFilesOwners = {} as unknown as FilesOwners;
-    const fileOwnersWithPath = {
-      files: {[path]: [{name: 'John', id: 1}]},
-    } as unknown as FilesOwners;
 
     test('getFileOwnership - should be `undefined` when path is `undefined', () => {
       const undefinedPath = undefined;
       assert.equal(
-        getFileOwnership(undefinedPath, allFilesApproved, emptyFilesOwners),
+        getFileOwnership(undefinedPath, emptyFilesOwners),
         undefined
       );
     });
 
     test('getFileOwnership - should be `undefined` when file owners are `undefined', () => {
       const undefinedFileOwners = undefined;
-      assert.equal(
-        getFileOwnership(path, allFilesApproved, undefinedFileOwners),
-        undefined
-      );
+      assert.equal(getFileOwnership(path, undefinedFileOwners), undefined);
     });
 
-    test('getFileOwnership - should return `FileOwnership` with `NOT_OWNED_OR_APPROVED` fileStatus when `allFilesApproved`', () => {
+    test('getFileOwnership - should return `FileOwnership` with `APPROVED` fileStatus when file is approved', () => {
       assert.equal(
-        deepEqual(
-          getFileOwnership(path, allFilesApproved, fileOwnersWithPath),
-          {fileStatus: FileStatus.NOT_OWNED_OR_APPROVED} as FileOwnership
-        ),
+        deepEqual(getFileOwnership(approvedPath, filesOwners), {
+          fileStatus: FileStatus.APPROVED,
+          owners: [{name: 'Merry', id: 2}],
+        } as FileOwnership),
         true
       );
     });
 
-    test('getFileOwnership - should return `FileOwnership` with `NOT_OWNED_OR_APPROVED` fileStatus when file has no owner', () => {
+    test('getFileOwnership - should return `FileOwnership` with `NOT_OWNED` fileStatus when file has no owner', () => {
       assert.equal(
-        deepEqual(getFileOwnership(path, !allFilesApproved, emptyFilesOwners), {
-          fileStatus: FileStatus.NOT_OWNED_OR_APPROVED,
+        deepEqual(getFileOwnership(path, emptyFilesOwners), {
+          fileStatus: FileStatus.NOT_OWNED,
         } as FileOwnership),
         true
       );
     });
 
     test('getFileOwnership - should return `FileOwnership` with `NEEDS_APPROVAL` fileStatus when file has owner', () => {
+      const fileOwnersWithPathOwner = {
+        files: {[path]: [{name: 'John', id: 1}]},
+      } as unknown as FilesOwners;
+
       assert.equal(
-        deepEqual(
-          getFileOwnership(path, !allFilesApproved, fileOwnersWithPath),
-          {
-            fileStatus: FileStatus.NEEDS_APPROVAL,
-            owners: [{name: 'John', id: 1}],
-          } as FileOwnership
-        ),
+        deepEqual(getFileOwnership(path, fileOwnersWithPathOwner), {
+          fileStatus: FileStatus.NEEDS_APPROVAL,
+          owners: [{name: 'John', id: 1}],
+        } as FileOwnership),
         true
       );
     });
@@ -263,7 +279,9 @@ suite('owners status tests', () => {
 
   suite('computeApprovalAndInfo tests', () => {
     const account = 1;
-    const fileOwner = {_account_id: account} as unknown as AccountInfo;
+    const fileOwner = {
+      owner: {_account_id: account} as unknown as AccountInfo,
+    } as unknown as OwnerOrGroupOwner;
     const label = 'Code-Review';
     const crPlus1OwnersVote = {
       [`${account}`]: {[label]: 1},
@@ -359,7 +377,10 @@ suite('owners status tests', () => {
   suite('getChangeAccounts tests', () => {
     test('getChangeAccounts - should return empty map when change is `undefined', () => {
       const undefinedChange = undefined;
-      assert.equal(getChangeAccounts(undefinedChange).size, 0);
+      const accounts = getChangeAccounts(undefinedChange);
+      assert.equal(accounts.byAccountId.size, 0);
+      assert.equal(accounts.byEmailWithoutDomain.size, 0);
+      assert.equal(accounts.byFullName.size, 0);
     });
 
     test('getChangeAccounts - should return map with owner when change has only owner and empty reviewers defined', () => {
@@ -368,8 +389,17 @@ suite('owners status tests', () => {
         owner,
         reviewers: {},
       } as unknown as ChangeInfo;
+      const accounts = getChangeAccounts(changeWithOwner);
       assert.equal(
-        deepEqual(getChangeAccounts(changeWithOwner), new Map([[1, owner]])),
+        deepEqual(accounts.byAccountId, new Map([[1, owner]])),
+        true
+      );
+      assert.equal(
+        deepEqual(accounts.byEmailWithoutDomain, new Map([['1_email', owner]])),
+        true
+      );
+      assert.equal(
+        deepEqual(accounts.byFullName, new Map([['1_name', owner]])),
         true
       );
     });
@@ -387,14 +417,39 @@ suite('owners status tests', () => {
           [ReviewerState.CC]: [ccReviewer],
         },
       } as unknown as ChangeInfo;
+      const accounts = getChangeAccounts(change);
       assert.equal(
         deepEqual(
-          getChangeAccounts(change),
+          accounts.byAccountId,
           new Map([
             [1, owner],
             [2, submitter],
             [3, reviewer],
             [4, ccReviewer],
+          ])
+        ),
+        true
+      );
+      assert.equal(
+        deepEqual(
+          accounts.byEmailWithoutDomain,
+          new Map([
+            ['1_email', owner],
+            ['2_email', submitter],
+            ['3_email', reviewer],
+            ['4_email', ccReviewer],
+          ])
+        ),
+        true
+      );
+      assert.equal(
+        deepEqual(
+          accounts.byFullName,
+          new Map([
+            ['1_name', owner],
+            ['2_name', submitter],
+            ['3_name', reviewer],
+            ['4_name', ccReviewer],
           ])
         ),
         true
@@ -406,5 +461,7 @@ suite('owners status tests', () => {
 function account(id: number) {
   return {
     _account_id: id,
+    email: `${id}_email@example.com`,
+    name: `${id}_name`,
   } as unknown as AccountInfo;
 }
