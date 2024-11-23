@@ -17,6 +17,7 @@
 
 import {assert} from '@open-wc/testing';
 import {
+  AccountId,
   AccountInfo,
   ChangeInfo,
   ChangeStatus,
@@ -25,7 +26,7 @@ import {
   SubmitRequirementResultInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {ownedFiles, shouldHide} from './gr-owned-files';
-import {OwnedFiles, Owner} from './owners-service';
+import {GroupOwner, OwnedFiles, Owner} from './owners-service';
 import {deepEqual} from './utils';
 import {User, UserRole} from './owners-model';
 import {getRandom} from './test-utils';
@@ -58,6 +59,27 @@ suite('owned files tests', () => {
 
     test('ownedFiles - should return owned files', () => {
       assert.equal(deepEqual(ownedFiles(owner, files), [ownedFile]), true);
+    });
+
+    test('ownedFiles - should match file owner through email without domain name', () => {
+      const files = {
+        [ownedFile]: [fileOwnerWithNameOnly(`${ownerAccountId}_email`)],
+        'some.text': [fileOwnerWithNameOnly('random_joe')],
+      } as unknown as OwnedFiles;
+      assert.equal(deepEqual(ownedFiles(owner, files), [ownedFile]), true);
+    });
+
+    test('ownedFiles - should match file owner through full name', () => {
+      const files = {
+        [ownedFile]: [fileOwnerWithNameOnly(`${ownerAccountId}_name`)],
+        'some.text': [fileOwnerWithNameOnly('random_joe')],
+      } as unknown as OwnedFiles;
+      assert.equal(deepEqual(ownedFiles(owner, files), [ownedFile]), true);
+    });
+
+    test('ownedFiles - should NOT match file owner over email without domain or full name when account id is different', () => {
+      const notFileOwner = {...owner, _account_id: 2 as unknown as AccountId};
+      assert.equal(deepEqual(ownedFiles(notFileOwner, files), []), true);
     });
   });
 
@@ -174,12 +196,18 @@ suite('owned files tests', () => {
 function account(id: number): AccountInfo {
   return {
     _account_id: id,
+    email: `${id}_email@example.com`,
+    name: `${id}_name`,
   } as unknown as AccountInfo;
 }
 
 function fileOwner(id: number): Owner {
   return {
     id,
-    name: `name for account: ${id}`,
+    name: `${id}_name`,
   } as unknown as Owner;
+}
+
+function fileOwnerWithNameOnly(name: string): GroupOwner {
+  return {name} as unknown as GroupOwner;
 }
