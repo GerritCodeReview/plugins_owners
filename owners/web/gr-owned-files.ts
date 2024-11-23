@@ -23,6 +23,7 @@ import {
   AccountInfo,
   ChangeInfo,
   ChangeStatus,
+  EmailAddress,
   RevisionInfo,
   EDIT,
 } from '@gerritcodereview/typescript-api/rest-api';
@@ -296,12 +297,22 @@ export function ownedFiles(
     return;
   }
 
+  const groupPrefix = 'group/';
+  const emailWithoutDomain = toEmailWithoutDomain(owner.email);
   const ownedFiles = [];
   for (const file of Object.keys(files)) {
     if (
-      files[file].find(
-        fileOwner => isOwner(fileOwner) && fileOwner.id === owner._account_id
-      )
+      files[file].find(fileOwner => {
+        if (isOwner(fileOwner)) {
+          return fileOwner.id === owner._account_id;
+        }
+
+        return (
+          !fileOwner.name?.startsWith(groupPrefix) &&
+          (fileOwner.name === emailWithoutDomain ||
+            fileOwner.name === owner.name)
+        );
+      })
     ) {
       ownedFiles.push(file);
     }
@@ -328,4 +339,9 @@ export function computeDiffUrl(
   const path = `/${encodeURL(file)}`;
 
   return `${getBaseUrl()}/c/${repo}${change._number}${range}${path}`;
+}
+
+function toEmailWithoutDomain(email?: EmailAddress): string | undefined {
+  const startDomainIndex = email?.indexOf('@');
+  return startDomainIndex ? email?.substring(0, startDomainIndex) : undefined;
 }
