@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5922638_6e079b90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-23T08:12:57Z",
+      "side": 1,
+      "message": "Built and verified locally against `stable-3.9`",
+      "revId": "5ef862d663c0fdbffd5bbe9547cd3e55ef86e333",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
