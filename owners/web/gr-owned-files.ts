@@ -71,11 +71,36 @@ export const OWNED_FILES_TAB_HEADER = 'owned-files-tab-header';
 @customElement(OWNED_FILES_TAB_HEADER)
 export class OwnedFilesTabHeader extends OwnedFilesCommon {
   static override get styles() {
-    return [...OwnedFilesCommon.commonStyles()];
+    return [
+      ...OwnedFilesCommon.commonStyles(),
+      css`
+        [hidden] {
+          display: none;
+        }
+      `,
+    ];
   }
 
   override render() {
-    if (this.hidden) return nothing;
+    // even if `nothing` is returned Gerrit still shows the pointer and allows
+    // clicking at it, redirecting to the empty tab when done; traverse through
+    // the shadowRoots down to the tab and disable/enable it when needed
+    const tabParent = document
+      .querySelector('#pg-app')
+      ?.shadowRoot?.querySelector('#app-element')
+      ?.shadowRoot?.querySelector('main > gr-change-view')
+      ?.shadowRoot?.querySelector(
+        '#tabs > paper-tab[data-name="change-view-tab-header-owners"]'
+      );
+    if (this.hidden) {
+      if (tabParent && !tabParent.getAttribute('disabled')) {
+        tabParent.setAttribute('disabled', 'disabled');
+      }
+      return nothing;
+    }
+    if (tabParent && tabParent.getAttribute('disabled')) {
+      tabParent.removeAttribute('disabled');
+    }
     return html`<div>Owned Files</div>`;
   }
 }
