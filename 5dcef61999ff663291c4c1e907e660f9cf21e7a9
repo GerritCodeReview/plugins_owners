@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1462112_110bcd3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-11-25T08:09:28Z",
+      "side": 1,
+      "message": "Is it possible to add a small widget that says something like \"No files owned\" so the user understands why the tab isn\u0027t selectable?",
+      "range": {
+        "startLine": 14,
+        "startChar": 16,
+        "endLine": 15,
+        "endChar": 20
+      },
+      "revId": "5dcef61999ff663291c4c1e907e660f9cf21e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
