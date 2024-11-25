@@ -22,6 +22,30 @@
       },
       "revId": "5dcef61999ff663291c4c1e907e660f9cf21e7a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcef59ef_60495d44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-25T15:01:54Z",
+      "side": 1,
+      "message": "There is no tab then, previously there was an empty space that one could select - no need for warning",
+      "parentUuid": "b1462112_110bcd3a",
+      "range": {
+        "startLine": 14,
+        "startChar": 16,
+        "endLine": 15,
+        "endChar": 20
+      },
+      "revId": "5dcef61999ff663291c4c1e907e660f9cf21e7a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
