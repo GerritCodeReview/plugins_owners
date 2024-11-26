@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33cb7b3a_d46a2c5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-26T08:20:50Z",
+      "side": 1,
+      "message": "Should we cherry-pick it to the `stable-3.8`?",
+      "revId": "17c154d6ae757a7f4350bf8aef296c5a52b60bc1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
