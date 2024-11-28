@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cf18586_2d8f208c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-11-28T10:40:06Z",
+      "side": 1,
+      "message": "That would be confusing, though: imagine I see one change in the \"Owned Files\" tab. Then someone pushes another patch-set, would my tab just disappear?",
+      "revId": "3f053adb768f073e6cc5429ce02bd830d3f6c5fc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
