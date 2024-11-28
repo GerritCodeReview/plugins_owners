@@ -69,7 +69,7 @@ owners.label
     > Please also note, that project's `rules.pl` should be removed in this
     > case so that it doesn't interfere with a change evaluation.
     >
-    > The minial configuration looks like below (see
+    > The minimal configuration looks like below (see
     > [submit requirements documentation](/Documentation/config-submit-requirements.html) for more details):
     > ```
     > [submit-requirement "Owner-Approval"]
