@@ -21,6 +21,7 @@ import {
   AccountInfo,
   ChangeInfo,
   ChangeStatus,
+  CommitId,
   RevisionInfo,
   EDIT,
   SubmitRequirementResultInfo,
@@ -84,13 +85,18 @@ suite('owned files tests', () => {
   });
 
   suite('shouldHide tests', () => {
+    const current_revision = 'commit-1' as unknown as CommitId;
     const change = {
       status: ChangeStatus.NEW,
       submit_requirements: [
         {name: 'Owner-Approval'},
       ] as unknown as SubmitRequirementResultInfo[],
+      current_revision,
     } as unknown as ChangeInfo;
-    const revisionInfo = {_number: 1} as unknown as RevisionInfo;
+    const revisionInfo = {
+      _number: 1,
+      commit: {commit: current_revision},
+    } as unknown as RevisionInfo;
     const allFilesApproved = true;
     const user = {account: account(1), role: UserRole.OTHER};
     const ownedFiles = ['README.md'];
@@ -134,6 +140,23 @@ suite('owned files tests', () => {
         shouldHide(
           change,
           undefinedOrEditRevisionInfo,
+          !allFilesApproved,
+          user,
+          ownedFiles
+        ),
+        true
+      );
+    });
+
+    test('shouldHide - should be `true` when NOT current_revision is viewed', () => {
+      const notCurrentRevisionInfo = {
+        _number: 0,
+        commit: {commit: 'not-current' as unknown as CommitId},
+      } as unknown as RevisionInfo;
+      assert.equal(
+        shouldHide(
+          change,
+          notCurrentRevisionInfo,
           !allFilesApproved,
           user,
           ownedFiles

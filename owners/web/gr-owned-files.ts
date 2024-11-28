@@ -288,13 +288,14 @@ export function shouldHide(
   user?: User,
   ownedFiles?: string[]
 ) {
-  // don't show owned files when no change or change is abandoned/merged or being edited
+  // don't show owned files when no change or change is abandoned/merged or being edited or viewing not current PS
   if (
     change === undefined ||
     change.status === ChangeStatus.ABANDONED ||
     change.status === ChangeStatus.MERGED ||
     revision === undefined ||
-    revision._number === EDIT
+    revision._number === EDIT ||
+    change.current_revision !== revision.commit?.commit
   ) {
     return true;
   }
