@@ -34,6 +34,24 @@
       "parentUuid": "4cf18586_2d8f208c",
       "revId": "3f053adb768f073e6cc5429ce02bd830d3f6c5fc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f5fd3ac_3c072680",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-11-29T12:14:31Z",
+      "side": 1,
+      "message": "Can confirm it works as @geminica.programs@gmail.com says. The page is not reloaded automatically so it shouldn\u0027t cause too much confusion.",
+      "parentUuid": "3704861b_848457f3",
+      "revId": "3f053adb768f073e6cc5429ce02bd830d3f6c5fc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
