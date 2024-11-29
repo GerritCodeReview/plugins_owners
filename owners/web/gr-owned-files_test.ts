@@ -27,7 +27,7 @@ import {
   SubmitRequirementResultInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {ownedFiles, shouldHide} from './gr-owned-files';
-import {GroupOwner, OwnedFiles, Owner} from './owners-service';
+import {FilesOwners, GroupOwner, Owner} from './owners-service';
 import {deepEqual} from './utils';
 import {User, UserRole} from './owners-model';
 import {getRandom} from './test-utils';
@@ -38,49 +38,73 @@ suite('owned files tests', () => {
     const owner = account(ownerAccountId);
 
     const ownedFile = 'README.md';
+    const ownedApprovedFile = 'db.sql';
     const files = {
       [ownedFile]: [fileOwner(1)],
       'some.text': [fileOwner(6)],
-    } as unknown as OwnedFiles;
+    };
+    const files_approved = {
+      [ownedApprovedFile]: [fileOwner(1)],
+    };
+    const filesOwners = {
+      files,
+      files_approved,
+    } as unknown as FilesOwners;
 
     test('ownedFiles - should be `undefined` when owner is `undefined`', () => {
       const undefinedOwner = undefined;
-      assert.equal(ownedFiles(undefinedOwner, files), undefined);
+      assert.equal(ownedFiles(undefinedOwner, filesOwners), undefined);
     });
 
-    test('ownedFiles - should be `undefined` when files are `undefined`', () => {
-      const undefinedFiles = undefined;
-      assert.equal(ownedFiles(owner, undefinedFiles), undefined);
+    test('ownedFiles - should be `undefined` when filesOwners are `undefined`', () => {
+      const undefinedFilesOwners = undefined;
+      assert.equal(ownedFiles(owner, undefinedFilesOwners), undefined);
     });
 
     test('ownedFiles - should return empty owned file when no files are owned by user', () => {
       const user = account(2);
-      assert.equal(deepEqual(ownedFiles(user, files), []), true);
+      assert.equal(deepEqual(ownedFiles(user, filesOwners), []), true);
     });
 
     test('ownedFiles - should return owned files', () => {
-      assert.equal(deepEqual(ownedFiles(owner, files), [ownedFile]), true);
+      assert.equal(
+        deepEqual(ownedFiles(owner, filesOwners), [
+          ownedFile,
+          ownedApprovedFile,
+        ]),
+        true
+      );
     });
 
     test('ownedFiles - should match file owner through email without domain name', () => {
-      const files = {
-        [ownedFile]: [fileOwnerWithNameOnly(`${ownerAccountId}_email`)],
-        'some.text': [fileOwnerWithNameOnly('random_joe')],
-      } as unknown as OwnedFiles;
-      assert.equal(deepEqual(ownedFiles(owner, files), [ownedFile]), true);
+      const filesOwners = {
+        files: {
+          [ownedFile]: [fileOwnerWithNameOnly(`${ownerAccountId}_email`)],
+          'some.text': [fileOwnerWithNameOnly('random_joe')],
+        },
+      } as unknown as FilesOwners;
+      assert.equal(
+        deepEqual(ownedFiles(owner, filesOwners), [ownedFile]),
+        true
+      );
     });
 
     test('ownedFiles - should match file owner through full name', () => {
-      const files = {
-        [ownedFile]: [fileOwnerWithNameOnly(`${ownerAccountId}_name`)],
-        'some.text': [fileOwnerWithNameOnly('random_joe')],
-      } as unknown as OwnedFiles;
-      assert.equal(deepEqual(ownedFiles(owner, files), [ownedFile]), true);
+      const filesOwners = {
+        files_approved: {
+          [ownedFile]: [fileOwnerWithNameOnly(`${ownerAccountId}_name`)],
+          'some.text': [fileOwnerWithNameOnly('random_joe')],
+        },
+      } as unknown as FilesOwners;
+      assert.equal(
+        deepEqual(ownedFiles(owner, filesOwners), [ownedFile]),
+        true
+      );
     });
 
     test('ownedFiles - should NOT match file owner over email without domain or full name when account id is different', () => {
       const notFileOwner = {...owner, _account_id: 2 as unknown as AccountId};
-      assert.equal(deepEqual(ownedFiles(notFileOwner, files), []), true);
+      assert.equal(deepEqual(ownedFiles(notFileOwner, filesOwners), []), true);
     });
   });
 
@@ -97,20 +121,13 @@ suite('owned files tests', () => {
       _number: 1,
       commit: {commit: current_revision},
     } as unknown as RevisionInfo;
-    const allFilesApproved = true;
     const user = {account: account(1), role: UserRole.OTHER};
     const ownedFiles = ['README.md'];
 
     test('shouldHide - should be `true` when change is `undefined`', () => {
       const undefinedChange = undefined;
       assert.equal(
-        shouldHide(
-          undefinedChange,
-          revisionInfo,
-          !allFilesApproved,
-          user,
-          ownedFiles
-        ),
+        shouldHide(undefinedChange, revisionInfo, user, ownedFiles),
         true
       );
     });
@@ -121,13 +138,7 @@ suite('owned files tests', () => {
         status: getRandom(ChangeStatus.ABANDONED, ChangeStatus.MERGED),
       };
       assert.equal(
-        shouldHide(
-          abandonedOrMergedChange,
-          revisionInfo,
-          !allFilesApproved,
-          user,
-          ownedFiles
-        ),
+        shouldHide(abandonedOrMergedChange, revisionInfo, user, ownedFiles),
         true
       );
     });
@@ -137,13 +148,7 @@ suite('owned files tests', () => {
         _number: EDIT,
       } as unknown as RevisionInfo);
       assert.equal(
-        shouldHide(
-          change,
-          undefinedOrEditRevisionInfo,
-          !allFilesApproved,
-          user,
-          ownedFiles
-        ),
+        shouldHide(change, undefinedOrEditRevisionInfo, user, ownedFiles),
         true
       );
     });
@@ -154,13 +159,7 @@ suite('owned files tests', () => {
         commit: {commit: 'not-current' as unknown as CommitId},
       } as unknown as RevisionInfo;
       assert.equal(
-        shouldHide(
-          change,
-          notCurrentRevisionInfo,
-          !allFilesApproved,
-          user,
-          ownedFiles
-        ),
+        shouldHide(change, notCurrentRevisionInfo, user, ownedFiles),
         true
       );
     });
@@ -176,17 +175,9 @@ suite('owned files tests', () => {
         shouldHide(
           changeWithOtherSubmitRequirements,
           revisionInfo,
-          !allFilesApproved,
           user,
           ownedFiles
         ),
-        true
-      );
-    });
-
-    test('shouldHide - should be `true` when all files are approved', () => {
-      assert.equal(
-        shouldHide(change, revisionInfo, allFilesApproved, user, ownedFiles),
         true
       );
     });
@@ -196,22 +187,13 @@ suite('owned files tests', () => {
         role: UserRole.ANONYMOUS,
       } as unknown as User);
       assert.equal(
-        shouldHide(
-          change,
-          revisionInfo,
-          !allFilesApproved,
-          undefinedOrAnonymousUser,
-          ownedFiles
-        ),
+        shouldHide(change, revisionInfo, undefinedOrAnonymousUser, ownedFiles),
         true
       );
     });
 
     test('shouldHide - should be `false` when user owns files', () => {
-      assert.equal(
-        shouldHide(change, revisionInfo, !allFilesApproved, user, ownedFiles),
-        false
-      );
+      assert.equal(shouldHide(change, revisionInfo, user, ownedFiles), false);
     });
   });
 });

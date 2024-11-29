@@ -28,7 +28,12 @@ import {
   EDIT,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {User, UserRole} from './owners-model';
-import {isOwner, OwnedFiles, OWNERS_SUBMIT_REQUIREMENT} from './owners-service';
+import {
+  FilesOwners,
+  isOwner,
+  OwnedFiles,
+  OWNERS_SUBMIT_REQUIREMENT,
+} from './owners-service';
 import {
   computeDisplayPath,
   diffFilePaths,
@@ -52,7 +57,6 @@ class OwnedFilesCommon extends common {
     this.hidden = shouldHide(
       this.change,
       this.revision,
-      this.allFilesApproved,
       this.user,
       this.ownedFiles
     );
@@ -63,7 +67,7 @@ class OwnedFilesCommon extends common {
   }
 
   private computeOwnedFiles() {
-    this.ownedFiles = ownedFiles(this.user?.account, this.filesOwners?.files);
+    this.ownedFiles = ownedFiles(this.user?.account, this.filesOwners);
   }
 }
 
@@ -284,7 +288,6 @@ export class OwnedFilesTabContent extends OwnedFilesCommon {
 export function shouldHide(
   change?: ChangeInfo,
   revision?: RevisionInfo,
-  allFilesApproved?: boolean,
   user?: User,
   ownedFiles?: string[]
 ) {
@@ -302,7 +305,6 @@ export function shouldHide(
 
   // show owned files if user owns anything
   if (
-    !allFilesApproved &&
     change.submit_requirements &&
     change.submit_requirements.find(r => r.name === OWNERS_SUBMIT_REQUIREMENT)
   ) {
@@ -315,18 +317,14 @@ export function shouldHide(
   return true;
 }
 
-export function ownedFiles(
-  owner?: AccountInfo,
-  files?: OwnedFiles
-): string[] | undefined {
-  if (!owner || !files) {
-    return;
-  }
-
-  const groupPrefix = 'group/';
-  const emailWithoutDomain = toEmailWithoutDomain(owner.email);
+function collectOwnedFiles(
+  owner: AccountInfo,
+  groupPrefix: string,
+  files: OwnedFiles,
+  emailWithoutDomain?: string
+) {
   const ownedFiles = [];
-  for (const file of Object.keys(files)) {
+  for (const file of Object.keys(files ?? [])) {
     if (
       files[file].find(fileOwner => {
         if (isOwner(fileOwner)) {
@@ -345,6 +343,36 @@ export function ownedFiles(
   }
 
   return ownedFiles;
+}
+
+export function ownedFiles(
+  owner?: AccountInfo,
+  filesOwners?: FilesOwners
+): string[] | undefined {
+  if (
+    !owner ||
+    !filesOwners ||
+    (!filesOwners.files && !filesOwners.files_approved)
+  ) {
+    return;
+  }
+
+  const groupPrefix = 'group/';
+  const emailWithoutDomain = toEmailWithoutDomain(owner.email);
+  return [
+    ...collectOwnedFiles(
+      owner,
+      groupPrefix,
+      filesOwners.files,
+      emailWithoutDomain
+    ),
+    ...collectOwnedFiles(
+      owner,
+      groupPrefix,
+      filesOwners.files_approved,
+      emailWithoutDomain
+    ),
+  ];
 }
 
 export function computeDiffUrl(
