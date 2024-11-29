@@ -16,6 +16,24 @@
       "message": "That would be confusing, though: imagine I see one change in the \"Owned Files\" tab. Then someone pushes another patch-set, would my tab just disappear?",
       "revId": "3f053adb768f073e6cc5429ce02bd830d3f6c5fc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3704861b_848457f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-11-29T07:31:50Z",
+      "side": 1,
+      "message": "AFAICT nope. AFAIK Gerrit doesn\u0027t reload the change behind the user\u0027s back but when user views the latest PS (change link doesn\u0027t contain a specific PS number) and newer PS is uploaded then it displays `A newer patch set has been uploaded RELOAD DISMISS` message. When user:\n1. selects `RELOAD` then change is reloaded but user lands on the latest PS again hence tab is visible\n2. selects `DISMISS` then change is not reloaded but from UI perspective user is still on the latest PS (was not reloaded) and tab is still visible",
+      "parentUuid": "4cf18586_2d8f208c",
+      "revId": "3f053adb768f073e6cc5429ce02bd830d3f6c5fc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
