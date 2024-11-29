@@ -19,10 +19,8 @@ import {HttpMethod, RestPluginApi} from '@gerritcodereview/typescript-api/rest';
 import {
   AccountDetailInfo,
   ChangeInfo,
-  ChangeStatus,
   NumericChangeId,
   RepoName,
-  SubmitRequirementStatus,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {User, UserRole} from './owners-model';
 
@@ -181,37 +179,8 @@ export class OwnersService {
     return this.apiCache.getLoggedInUser();
   }
 
-  async getAllFilesApproved(): Promise<boolean | undefined> {
-    if (!(await this.isLoggedIn())) {
-      return Promise.resolve(undefined);
-    }
-
-    if (
-      this.change?.status === ChangeStatus.ABANDONED ||
-      this.change?.status === ChangeStatus.MERGED
-    ) {
-      return Promise.resolve(undefined);
-    }
-
-    const ownersSr = this.change?.submit_requirements?.find(
-      r => r.name === OWNERS_SUBMIT_REQUIREMENT
-    );
-    if (!ownersSr) {
-      return Promise.resolve(undefined);
-    }
-
-    return Promise.resolve(
-      ownersSr.status === SubmitRequirementStatus.SATISFIED
-    );
-  }
-
   getFilesOwners(): Promise<FilesOwners | undefined> {
     return this.apiCache.getFilesOwners();
-  }
-
-  private async isLoggedIn(): Promise<boolean> {
-    const user = await this.getLoggedInUser();
-    return user && user.role !== UserRole.ANONYMOUS;
   }
 
   static getOwnersService(restApi: RestPluginApi, change: ChangeInfo) {
