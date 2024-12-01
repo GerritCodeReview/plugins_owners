@@ -36,6 +36,7 @@ import {
   ChangeInfo,
   ChangeStatus,
   DetailedLabelInfo,
+  SubmitRecordInfo,
   SubmitRequirementResultInfo,
   ReviewerState,
 } from '@gerritcodereview/typescript-api/rest-api';
@@ -140,18 +141,28 @@ suite('owners status tests', () => {
       );
     });
 
-    const changeWithSubmitRequirements = {
+    const submitRequirementOrRecord = getRandom(
+      {
+        submit_requirements: [
+          {name: 'Owner-Approval'},
+        ] as unknown as SubmitRequirementResultInfo[],
+      },
+      {
+        submit_records: [
+          {rule_name: 'owners~OwnersSubmitRequirement'},
+        ] as unknown as SubmitRecordInfo[],
+      }
+    );
+    const changeWithSubmitRequirementOrRecord = {
       ...change,
-      submit_requirements: [
-        {name: 'Owner-Approval'},
-      ] as unknown as SubmitRequirementResultInfo[],
+      ...submitRequirementOrRecord,
     };
 
     test('shouldHide - should be `true` when user is anonymous', () => {
       const anonymous = UserRole.ANONYMOUS;
       assert.equal(
         shouldHide(
-          changeWithSubmitRequirements,
+          changeWithSubmitRequirementOrRecord,
           patchRange,
           filesOwners,
           anonymous
@@ -167,7 +178,7 @@ suite('owners status tests', () => {
       ) as unknown as FilesOwners;
       assert.equal(
         shouldHide(
-          changeWithSubmitRequirements,
+          changeWithSubmitRequirementOrRecord,
           patchRange,
           undefinedFilesOwners,
           loggedIn
@@ -182,7 +193,7 @@ suite('owners status tests', () => {
       } as unknown as FilesOwners;
       assert.equal(
         shouldHide(
-          changeWithSubmitRequirements,
+          changeWithSubmitRequirementOrRecord,
           patchRange,
           allFilesApproved,
           loggedIn
@@ -197,7 +208,7 @@ suite('owners status tests', () => {
       } as unknown as FilesOwners;
       assert.equal(
         shouldHide(
-          changeWithSubmitRequirements,
+          changeWithSubmitRequirementOrRecord,
           patchRange,
           noApprovedFiles,
           loggedIn
@@ -209,7 +220,7 @@ suite('owners status tests', () => {
     test('shouldHide - should be `false` when change has both approved and not approved files', () => {
       assert.equal(
         shouldHide(
-          changeWithSubmitRequirements,
+          changeWithSubmitRequirementOrRecord,
           patchRange,
           filesOwners,
           loggedIn

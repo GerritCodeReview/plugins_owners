@@ -15,7 +15,11 @@
  * limitations under the License.
  */
 
-import {FilesOwners, OwnersService} from './owners-service';
+import {
+  FilesOwners,
+  hasOwnersSubmitRequirementOrRecord,
+  OwnersService,
+} from './owners-service';
 import {
   RequestPayload,
   RestPluginApi,
@@ -224,6 +228,47 @@ suite('owners service tests', () => {
       await flush();
 
       assert.equal(getApiStub.callCount, 1);
+    });
+  });
+
+  suite('hasOwnersSubmitRequirementOrRecord tests', () => {
+    test('hasOwnersSubmitRequirementOrRecord - should be `false` when change has no submit requirement or record', () => {
+      const noSubmitRequirementOrRecordChange = {} as unknown as ChangeInfo;
+      assert.equal(
+        hasOwnersSubmitRequirementOrRecord(noSubmitRequirementOrRecordChange),
+        false
+      );
+    });
+
+    test('hasOwnersSubmitRequirementOrRecord - should be `false` when change has different submit requirement or record', () => {
+      const differentSubmitRequirementAndRecord = {
+        submit_requirements: [{name: 'Code-Review'}],
+        submit_records: [{rule_name: 'gerrit~DefaultSubmitRule'}],
+      } as unknown as ChangeInfo;
+      assert.equal(
+        hasOwnersSubmitRequirementOrRecord(differentSubmitRequirementAndRecord),
+        false
+      );
+    });
+
+    test('hasOwnersSubmitRequirementOrRecord - should be `true` when change has owners submit requirement', () => {
+      const ownersSubmitRequirement = {
+        submit_requirements: [{name: 'Owner-Approval'}],
+      } as unknown as ChangeInfo;
+      assert.equal(
+        hasOwnersSubmitRequirementOrRecord(ownersSubmitRequirement),
+        true
+      );
+    });
+
+    test('hasOwnersSubmitRequirementOrRecord - should be `true` when change has owners submit record', () => {
+      const ownersSubmitRecord = {
+        submit_records: [{rule_name: 'owners~OwnersSubmitRequirement'}],
+      } as unknown as ChangeInfo;
+      assert.equal(
+        hasOwnersSubmitRequirementOrRecord(ownersSubmitRecord),
+        true
+      );
     });
   });
 });
