@@ -30,9 +30,9 @@ import {
 import {User, UserRole} from './owners-model';
 import {
   FilesOwners,
+  hasOwnersSubmitRequirementOrRecord,
   isOwner,
   OwnedFiles,
-  OWNERS_SUBMIT_REQUIREMENT,
 } from './owners-service';
 import {
   computeDisplayPath,
@@ -304,10 +304,7 @@ export function shouldHide(
   }
 
   // show owned files if user owns anything
-  if (
-    change.submit_requirements &&
-    change.submit_requirements.find(r => r.name === OWNERS_SUBMIT_REQUIREMENT)
-  ) {
+  if (hasOwnersSubmitRequirementOrRecord(change)) {
     return (
       !user ||
       user.role === UserRole.ANONYMOUS ||
