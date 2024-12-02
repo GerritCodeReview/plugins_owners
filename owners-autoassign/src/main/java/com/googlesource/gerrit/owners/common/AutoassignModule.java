@@ -37,6 +37,7 @@ public class AutoassignModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    install(PathOwnersEntriesCache.module());
     bind(ReviewerManager.class)
         .to(config.isAsyncReviewers() ? AsyncReviewerManager.class : SyncReviewerManager.class);
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);

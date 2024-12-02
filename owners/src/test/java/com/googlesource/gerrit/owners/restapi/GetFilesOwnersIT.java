@@ -45,7 +45,7 @@ import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.util.FS;
 import org.junit.Test;
 
-@TestPlugin(name = "owners", httpModule = "com.googlesource.gerrit.owners.OwnersRestApiModule")
+@TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
 @UseLocalDisk
 public class GetFilesOwnersIT extends LightweightPluginDaemonTest {
 

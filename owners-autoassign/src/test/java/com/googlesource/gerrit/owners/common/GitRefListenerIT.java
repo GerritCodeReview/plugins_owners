@@ -35,12 +35,9 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.owners.common.AutoassignConfigModule;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.StreamSupport;
-import com.googlesource.gerrit.owners.common.ReviewerManager;
-
 import org.eclipse.jgit.transport.ReceiveCommand.Type;
 import org.junit.Test;
 
@@ -59,6 +56,7 @@ public class GitRefListenerIT extends LightweightPluginDaemonTest {
   public static class TestModule extends AbstractModule {
     @Override
     protected void configure() {
+      install(PathOwnersEntriesCache.module());
       DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListenerTest.class);
       install(new AutoassignConfigModule());
     }
