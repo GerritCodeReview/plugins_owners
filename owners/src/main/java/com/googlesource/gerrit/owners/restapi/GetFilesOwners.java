@@ -41,6 +41,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.PathOwners;
+import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
@@ -68,6 +69,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final GitRepositoryManager repositoryManager;
   private final PluginSettings pluginSettings;
   private final GerritApi gerritApi;
+  private final PathOwnersEntriesCache cache;
 
   @Inject
   GetFilesOwners(
@@ -77,7 +79,8 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       ProjectCache projectCache,
       GitRepositoryManager repositoryManager,
       PluginSettings pluginSettings,
-      GerritApi gerritApi) {
+      GerritApi gerritApi,
+      PathOwnersEntriesCache cache) {
     this.patchListCache = patchListCache;
     this.accounts = accounts;
     this.accountCache = accountCache;
@@ -85,6 +88,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     this.repositoryManager = repositoryManager;
     this.pluginSettings = pluginSettings;
     this.gerritApi = gerritApi;
+    this.cache = cache;
   }
 
   @Override
@@ -101,16 +105,17 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
             .getMaxPositive();
     int id = revision.getChangeResource().getChange().getChangeId();
 
+    Project.NameKey project = change.getProject();
     List<Project.NameKey> projectParents =
         projectCache
-            .get(change.getProject())
+            .get(project)
             .map(Stream::of)
             .orElse(Stream.empty())
             .flatMap(s -> s.parents().stream())
             .map(ProjectState::getNameKey)
             .collect(Collectors.toList());
 
-    try (Repository repository = repositoryManager.openRepository(change.getProject())) {
+    try (Repository repository = repositoryManager.openRepository(project)) {
       PatchList patchList = patchListCache.get(change, ps);
 
       String branch = change.getDest().branch();
@@ -122,7 +127,9 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               projectParents,
               pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
               patchList,
-              pluginSettings.expandGroups());
+              pluginSettings.expandGroups(),
+              project.get(),
+              cache);
 
       Map<String, Set<GroupOwner>> fileExpandedOwners =
           Maps.transformValues(

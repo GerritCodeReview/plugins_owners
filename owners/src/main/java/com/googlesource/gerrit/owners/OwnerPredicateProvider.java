@@ -21,14 +21,16 @@ import com.google.gerrit.extensions.annotations.Listen;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.Accounts;
+import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 import com.googlesource.gerrit.owners.common.PluginSettings;
 
 /** Gerrit OWNERS Prolog Predicate Provider. */
 @Listen
 public class OwnerPredicateProvider implements PredicateProvider {
   @Inject
-  public OwnerPredicateProvider(Accounts accounts, PluginSettings config) {
-    OwnersStoredValues.initialize(accounts, config);
+  public OwnerPredicateProvider(
+      Accounts accounts, PluginSettings config, PathOwnersEntriesCache cache) {
+    OwnersStoredValues.initialize(accounts, config, cache);
   }
 
   @Override

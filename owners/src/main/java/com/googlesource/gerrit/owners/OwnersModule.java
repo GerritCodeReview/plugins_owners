@@ -18,10 +18,12 @@ package com.googlesource.gerrit.owners;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.rules.PredicateProvider;
 import com.google.inject.AbstractModule;
+import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
 
 public class OwnersModule extends AbstractModule {
   @Override
   protected void configure() {
+    install(PathOwnersEntriesCache.module());
     DynamicSet.bind(binder(), PredicateProvider.class)
         .to(OwnerPredicateProvider.class)
         .asEagerSingleton();
