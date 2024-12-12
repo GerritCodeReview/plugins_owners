@@ -42,6 +42,8 @@ import {
   truncatePath,
 } from './utils';
 
+import * as grFiles from './gr-files'
+
 const common = OwnersMixin(LitElement);
 
 class OwnedFilesCommon extends common {
@@ -105,7 +107,10 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
     if (tabParent && tabParent.getAttribute('disabled')) {
       tabParent.removeAttribute('disabled');
     }
-    return html`<div>Owned Files</div>`;
+
+    const filesColumnContent = new grFiles.FilesColumnContent();
+    const ownedFilesIcon = filesColumnContent.render();
+    return html`<div>Owned Files ${ownedFilesIcon}</div>`;
   }
 }
 
@@ -271,8 +276,10 @@ export class OwnedFilesTabContent extends OwnedFilesCommon {
   }
 
   override render() {
+
     if (this.hidden) return nothing;
 
+    
     return html`
       <gr-owned-files-list
         id="ownedFilesList"
