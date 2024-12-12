@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d51b593_9d769a0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-12T07:05:52Z",
+      "side": 1,
+      "message": "Verified by building plugin and opening its documentation in the browser.",
+      "revId": "7c99993285a5176b61c7e8e0a3e31ef02ff5dc3d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
