@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7b17f4a_f5131548",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-12T18:49:26Z",
+      "side": 1,
+      "message": "This doesn\u0027t work only because fileStatus seems to not be set when this is called.\nTrying to understand why still.",
+      "revId": "a0fd54d59c5a3ae05e8d8329333300e8f7d4e683",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
