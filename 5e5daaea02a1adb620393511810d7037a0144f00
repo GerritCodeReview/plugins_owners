@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5341a16f_2be8e764",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-13T13:50:42Z",
+      "side": 1,
+      "message": "I need to handle the case subset of files owned by the current user is owned by someone else. We should still display watch icon but tooltip should be different",
+      "revId": "5e5daaea02a1adb620393511810d7037a0144f00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
