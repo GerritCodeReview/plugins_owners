@@ -26,7 +26,7 @@ import {
   EDIT,
   SubmitRequirementResultInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {ownedFiles, shouldHide} from './gr-owned-files';
+import {ownedFiles, OwnedFilesInfo, shouldHide} from './gr-owned-files';
 import {FilesOwners, GroupOwner, Owner} from './owners-service';
 import {deepEqual} from './utils';
 import {User, UserRole} from './owners-model';
@@ -50,6 +50,11 @@ suite('owned files tests', () => {
       files,
       files_approved,
     } as unknown as FilesOwners;
+    const emptyOwnerFilesInfo = {
+      ownedFiles: [],
+      numberOfApproved: 0,
+      numberOfPending: 0,
+    } as unknown as OwnedFilesInfo;
 
     test('ownedFiles - should be `undefined` when owner is `undefined`', () => {
       const undefinedOwner = undefined;
@@ -63,15 +68,19 @@ suite('owned files tests', () => {
 
     test('ownedFiles - should return empty owned file when no files are owned by user', () => {
       const user = account(2);
-      assert.equal(deepEqual(ownedFiles(user, filesOwners), []), true);
+      assert.equal(
+        deepEqual(ownedFiles(user, filesOwners), emptyOwnerFilesInfo),
+        true
+      );
     });
 
     test('ownedFiles - should return owned files', () => {
       assert.equal(
-        deepEqual(ownedFiles(owner, filesOwners), [
-          ownedFile,
-          ownedApprovedFile,
-        ]),
+        deepEqual(ownedFiles(owner, filesOwners), {
+          ownedFiles: [ownedFile, ownedApprovedFile],
+          numberOfApproved: 1,
+          numberOfPending: 1,
+        }),
         true
       );
     });
@@ -84,7 +93,11 @@ suite('owned files tests', () => {
         },
       } as unknown as FilesOwners;
       assert.equal(
-        deepEqual(ownedFiles(owner, filesOwners), [ownedFile]),
+        deepEqual(ownedFiles(owner, filesOwners), {
+          ownedFiles: [ownedFile],
+          numberOfApproved: 0,
+          numberOfPending: 1,
+        }),
         true
       );
     });
@@ -97,14 +110,21 @@ suite('owned files tests', () => {
         },
       } as unknown as FilesOwners;
       assert.equal(
-        deepEqual(ownedFiles(owner, filesOwners), [ownedFile]),
+        deepEqual(ownedFiles(owner, filesOwners), {
+          ownedFiles: [ownedFile],
+          numberOfApproved: 1,
+          numberOfPending: 0,
+        }),
         true
       );
     });
 
     test('ownedFiles - should NOT match file owner over email without domain or full name when account id is different', () => {
       const notFileOwner = {...owner, _account_id: 2 as unknown as AccountId};
-      assert.equal(deepEqual(ownedFiles(notFileOwner, filesOwners), []), true);
+      assert.equal(
+        deepEqual(ownedFiles(notFileOwner, filesOwners), emptyOwnerFilesInfo),
+        true
+      );
     });
   });
 

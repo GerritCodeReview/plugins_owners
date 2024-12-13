@@ -42,13 +42,29 @@ import {
   truncatePath,
 } from './utils';
 
+const STATUS_CODE = {
+  MISSING: 'missing',
+  APPROVED: 'approved',
+};
+
+const STATUS_ICON = {
+  [STATUS_CODE.MISSING]: 'schedule',
+  [STATUS_CODE.APPROVED]: 'check',
+};
+
+export interface OwnedFilesInfo {
+  ownedFiles: string[];
+  numberOfPending: number;
+  numberOfApproved: number;
+}
+
 const common = OwnersMixin(LitElement);
 
 class OwnedFilesCommon extends common {
   @property({type: Object})
   revision?: RevisionInfo;
 
-  protected ownedFiles?: string[];
+  protected ownedFilesInfo?: OwnedFilesInfo;
 
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
@@ -58,7 +74,7 @@ class OwnedFilesCommon extends common {
       this.change,
       this.revision,
       this.user,
-      this.ownedFiles
+      this.ownedFilesInfo?.ownedFiles
     );
   }
 
@@ -67,13 +83,18 @@ class OwnedFilesCommon extends common {
   }
 
   private computeOwnedFiles() {
-    this.ownedFiles = ownedFiles(this.user?.account, this.filesOwners);
+    this.ownedFilesInfo = ownedFiles(this.user?.account, this.filesOwners);
   }
 }
 
 export const OWNED_FILES_TAB_HEADER = 'owned-files-tab-header';
 @customElement(OWNED_FILES_TAB_HEADER)
 export class OwnedFilesTabHeader extends OwnedFilesCommon {
+  @property({type: String, reflect: true, attribute: 'files-status'})
+  filesStatus?: string;
+
+  private ownedFiles: number | undefined;
+
   static override get styles() {
     return [
       ...OwnedFilesCommon.commonStyles(),
@@ -81,8 +102,32 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
         [hidden] {
           display: none;
         }
+        gr-icon {
+          padding: var(--spacing-xs) 0px;
+          margin-left: 3px;
+        }
+        :host([files-status='approved']) gr-icon.status {
+          color: var(--positive-green-text-color);
+        }
+        :host([files-status='missing']) gr-icon.status {
+          color: #ffa62f;
+        }
       `,
     ];
+  }
+
+  protected override willUpdate(changedProperties: PropertyValues): void {
+    super.willUpdate(changedProperties);
+
+    if (this.hidden || this.ownedFilesInfo === undefined) {
+      this.filesStatus = undefined;
+      this.ownedFiles = undefined;
+    } else {
+      [this.filesStatus, this.ownedFiles] =
+        this.ownedFilesInfo.numberOfPending > 0
+          ? [STATUS_CODE.MISSING, this.ownedFilesInfo.numberOfPending]
+          : [STATUS_CODE.APPROVED, this.ownedFilesInfo.numberOfApproved];
+    }
   }
 
   override render() {
@@ -105,7 +150,65 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
     if (tabParent && tabParent.getAttribute('disabled')) {
       tabParent.removeAttribute('disabled');
     }
-    return html`<div>Owned Files</div>`;
+
+    if (
+      this.ownedFilesInfo === undefined ||
+      this.filesStatus === undefined ||
+      this.ownedFiles === undefined
+    ) {
+      return html`<div>Owned Files</div>`;
+    }
+
+    const icon = STATUS_ICON[this.filesStatus];
+    const [info, summary] = this.buildInfoAndSummary(
+      this.filesStatus,
+      this.ownedFilesInfo.numberOfApproved,
+      this.ownedFilesInfo.numberOfPending
+    );
+    return html` <div>
+      Owned Files
+      <gr-tooltip-content
+        title=${info}
+        aria-label=${summary}
+        aria-description=${info}
+        has-tooltip
+      >
+        <gr-icon
+          id="owned-files-status"
+          class="status"
+          icon=${icon}
+          aria-hidden="true"
+        ></gr-icon>
+      </gr-tooltip-content>
+    </div>`;
+  }
+
+  private buildInfoAndSummary(
+    filesStatus: string,
+    filesApproved: number,
+    filesPending: number
+  ): [string, string] {
+    const pendingInfo =
+      filesPending > 0
+        ? `Missing approval for ${filesPending} file${
+            filesPending > 1 ? 's' : ''
+          }`
+        : '';
+    const approvedInfo =
+      filesApproved > 0
+        ? `${filesApproved} file${
+            filesApproved > 1 ? 's' : ''
+          } already approved.`
+        : '';
+    const info = `${
+      STATUS_CODE.APPROVED === filesStatus
+        ? approvedInfo
+        : `${pendingInfo}${filesApproved > 0 ? ` and ${approvedInfo}` : '.'}`
+    }`;
+    const summary = `${
+      STATUS_CODE.APPROVED === filesStatus ? 'Approved' : 'Missing'
+    }`;
+    return [info, summary];
   }
 }
 
@@ -278,7 +381,7 @@ export class OwnedFilesTabContent extends OwnedFilesCommon {
         id="ownedFilesList"
         .change=${this.change}
         .revision=${this.revision}
-        .ownedFiles=${this.ownedFiles}
+        .ownedFiles=${this.ownedFilesInfo?.ownedFiles}
       >
       </gr-owned-files-list>
     `;
@@ -319,7 +422,7 @@ function collectOwnedFiles(
   groupPrefix: string,
   files: OwnedFiles,
   emailWithoutDomain?: string
-) {
+): string[] {
   const ownedFiles = [];
   for (const file of Object.keys(files ?? [])) {
     if (
@@ -345,7 +448,7 @@ function collectOwnedFiles(
 export function ownedFiles(
   owner?: AccountInfo,
   filesOwners?: FilesOwners
-): string[] | undefined {
+): OwnedFilesInfo | undefined {
   if (
     !owner ||
     !filesOwners ||
@@ -356,20 +459,23 @@ export function ownedFiles(
 
   const groupPrefix = 'group/';
   const emailWithoutDomain = toEmailWithoutDomain(owner.email);
-  return [
-    ...collectOwnedFiles(
-      owner,
-      groupPrefix,
-      filesOwners.files,
-      emailWithoutDomain
-    ),
-    ...collectOwnedFiles(
-      owner,
-      groupPrefix,
-      filesOwners.files_approved,
-      emailWithoutDomain
-    ),
-  ];
+  const pendingFiles = collectOwnedFiles(
+    owner,
+    groupPrefix,
+    filesOwners.files,
+    emailWithoutDomain
+  );
+  const approvedFiles = collectOwnedFiles(
+    owner,
+    groupPrefix,
+    filesOwners.files_approved,
+    emailWithoutDomain
+  );
+  return {
+    ownedFiles: [...pendingFiles, ...approvedFiles],
+    numberOfPending: pendingFiles.length,
+    numberOfApproved: approvedFiles.length,
+  } as OwnedFilesInfo;
 }
 
 export function computeDiffUrl(
