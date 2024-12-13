@@ -124,9 +124,9 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
       this.ownedFiles = undefined;
     } else {
       [this.filesStatus, this.ownedFiles] =
-        this.ownedFilesInfo.numberOfApproved > 0
-          ? [STATUS_CODE.APPROVED, this.ownedFilesInfo.numberOfApproved]
-          : [STATUS_CODE.MISSING, this.ownedFilesInfo.numberOfPending];
+        this.ownedFilesInfo.numberOfPending > 0
+          ? [STATUS_CODE.MISSING, this.ownedFilesInfo.numberOfPending]
+          : [STATUS_CODE.APPROVED, this.ownedFilesInfo.numberOfApproved];
     }
   }
 
@@ -188,12 +188,22 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
     filesApproved: number,
     filesPending: number
   ): [string, string] {
-    const count = filesApproved + filesPending;
-    const plural = count === 1 ? '' : 's';
+    const pendingInfo =
+      filesPending > 0
+        ? `Missing approval for ${filesPending} file${
+            filesPending > 1 ? 's' : ''
+          }`
+        : '';
+    const approvedInfo =
+      filesApproved > 0
+        ? `${filesApproved} file${
+            filesApproved > 1 ? 's' : ''
+          } already approved.`
+        : '';
     const info = `${
       STATUS_CODE.APPROVED === filesStatus
-        ? `${count} file${plural} already approved.`
-        : `Missing approval for ${count} file${plural}.`
+        ? approvedInfo
+        : `${pendingInfo}${filesApproved > 0 ? ` and ${approvedInfo}` : '.'}`
     }`;
     const summary = `${
       STATUS_CODE.APPROVED === filesStatus ? 'Approved' : 'Missing'
