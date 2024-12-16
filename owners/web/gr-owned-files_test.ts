@@ -113,7 +113,7 @@ suite('owned files tests', () => {
     const change = {
       status: ChangeStatus.NEW,
       submit_requirements: [
-        {name: 'Owner-Approval'},
+        {submittability_expression_result: {expression: 'has:approval_owners'}},
       ] as unknown as SubmitRequirementResultInfo[],
       current_revision,
     } as unknown as ChangeInfo;
@@ -168,7 +168,11 @@ suite('owned files tests', () => {
       const changeWithOtherSubmitRequirements = {
         ...change,
         submit_requirements: [
-          {name: 'Other'},
+          {
+            submittability_expression_result: {
+              expression: 'has:other_predicate',
+            },
+          },
         ] as unknown as SubmitRequirementResultInfo[],
       };
       assert.equal(

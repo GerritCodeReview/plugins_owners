@@ -55,20 +55,19 @@ export interface FilesOwners {
   owners_labels: OwnersLabels;
 }
 
-const OWNERS_SUBMIT_REQUIREMENT = 'Owner-Approval';
-const OWNERS_SUBMIT_RECORD = 'owners~OwnersSubmitRequirement';
+const OWNERS_SUBMIT_REQUIREMENT = 'has:approval_owners';
+const OWNERS_SUBMIT_RULE = 'owners~OwnersSubmitRequirement';
 
-export function hasOwnersSubmitRequirementOrRecord(
-  change: ChangeInfo
-): boolean {
+export function hasOwnersSubmitRequirement(change: ChangeInfo): boolean {
   return (
-    (change.submit_requirements !== undefined &&
-      change.submit_requirements.find(
-        r => r.name === OWNERS_SUBMIT_REQUIREMENT
-      ) !== undefined) ||
-    (change.submit_records !== undefined &&
-      change.submit_records.find(r => r.rule_name === OWNERS_SUBMIT_RECORD) !==
-        undefined)
+    change.submit_requirements !== undefined &&
+    change.submit_requirements.find(r => {
+      const expression = r.submittability_expression_result.expression;
+      return (
+        expression.includes(OWNERS_SUBMIT_REQUIREMENT) ||
+        expression.includes(OWNERS_SUBMIT_RULE)
+      );
+    }) !== undefined
   );
 }
 
