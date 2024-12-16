@@ -30,7 +30,7 @@ import {
 import {User, UserRole} from './owners-model';
 import {
   FilesOwners,
-  hasOwnersSubmitRequirementOrRecord,
+  hasOwnersSubmitRequirement,
   isOwner,
   OwnedFiles,
 } from './owners-service';
@@ -304,7 +304,7 @@ export function shouldHide(
   }
 
   // show owned files if user owns anything
-  if (hasOwnersSubmitRequirementOrRecord(change)) {
+  if (hasOwnersSubmitRequirement(change)) {
     return (
       !user ||
       user.role === UserRole.ANONYMOUS ||

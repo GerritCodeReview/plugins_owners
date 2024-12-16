@@ -36,7 +36,6 @@ import {
   ChangeInfo,
   ChangeStatus,
   DetailedLabelInfo,
-  SubmitRecordInfo,
   SubmitRequirementResultInfo,
   ReviewerState,
 } from '@gerritcodereview/typescript-api/rest-api';
@@ -127,7 +126,7 @@ suite('owners status tests', () => {
       const changeWithDifferentSubmitReqs = {
         ...change,
         submit_requirements: [
-          {name: 'other'},
+          {submittability_expression_result: {expression: 'other'}},
         ] as unknown as SubmitRequirementResultInfo[],
       };
       assert.equal(
@@ -141,21 +140,19 @@ suite('owners status tests', () => {
       );
     });
 
-    const submitRequirementOrRecord = getRandom(
-      {
-        submit_requirements: [
-          {name: 'Owner-Approval'},
-        ] as unknown as SubmitRequirementResultInfo[],
-      },
-      {
-        submit_records: [
-          {rule_name: 'owners~OwnersSubmitRequirement'},
-        ] as unknown as SubmitRecordInfo[],
-      }
-    );
+    const submitRequirements = getRandom({
+      submit_requirements: [
+        {submittability_expression_result: {expression: 'has:approval_owners'}},
+        {
+          submittability_expression_result: {
+            expression: 'rule:owners~OwnersSubmitRequirement',
+          },
+        },
+      ] as unknown as SubmitRequirementResultInfo[],
+    });
     const changeWithSubmitRequirementOrRecord = {
       ...change,
-      ...submitRequirementOrRecord,
+      ...submitRequirements,
     };
 
     test('shouldHide - should be `true` when user is anonymous', () => {

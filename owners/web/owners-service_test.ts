@@ -17,7 +17,7 @@
 
 import {
   FilesOwners,
-  hasOwnersSubmitRequirementOrRecord,
+  hasOwnersSubmitRequirement,
   OwnersService,
 } from './owners-service';
 import {
@@ -231,44 +231,56 @@ suite('owners service tests', () => {
     });
   });
 
-  suite('hasOwnersSubmitRequirementOrRecord tests', () => {
-    test('hasOwnersSubmitRequirementOrRecord - should be `false` when change has no submit requirement or record', () => {
+  suite('hasOwnersSubmitRequirement tests', () => {
+    test('hasOwnersSubmitRequirement - should be `false` when change has no owners submit requirement', () => {
       const noSubmitRequirementOrRecordChange = {} as unknown as ChangeInfo;
       assert.equal(
-        hasOwnersSubmitRequirementOrRecord(noSubmitRequirementOrRecordChange),
+        hasOwnersSubmitRequirement(noSubmitRequirementOrRecordChange),
         false
       );
     });
 
-    test('hasOwnersSubmitRequirementOrRecord - should be `false` when change has different submit requirement or record', () => {
+    test('hasOwnersSubmitRequirement - should be `false` when change has different submit requirements', () => {
       const differentSubmitRequirementAndRecord = {
-        submit_requirements: [{name: 'Code-Review'}],
-        submit_records: [{rule_name: 'gerrit~DefaultSubmitRule'}],
+        submit_requirements: [
+          {
+            submittability_expression_result: {
+              expression: 'has:other_predicated',
+            },
+          },
+        ],
       } as unknown as ChangeInfo;
       assert.equal(
-        hasOwnersSubmitRequirementOrRecord(differentSubmitRequirementAndRecord),
+        hasOwnersSubmitRequirement(differentSubmitRequirementAndRecord),
         false
       );
     });
 
-    test('hasOwnersSubmitRequirementOrRecord - should be `true` when change has owners submit requirement', () => {
+    test('hasOwnersSubmitRequirement - should be `true` when change has owners submit requirement', () => {
       const ownersSubmitRequirement = {
-        submit_requirements: [{name: 'Owner-Approval'}],
+        submit_requirements: [
+          {
+            submittability_expression_result: {
+              expression: 'has:approval_owners',
+            },
+          },
+        ],
       } as unknown as ChangeInfo;
-      assert.equal(
-        hasOwnersSubmitRequirementOrRecord(ownersSubmitRequirement),
-        true
-      );
+      assert.equal(hasOwnersSubmitRequirement(ownersSubmitRequirement), true);
     });
 
-    test('hasOwnersSubmitRequirementOrRecord - should be `true` when change has owners submit record', () => {
-      const ownersSubmitRecord = {
-        submit_records: [{rule_name: 'owners~OwnersSubmitRequirement'}],
+    test('hasOwnersSubmitRequirement - should be `true` when change has owners submit rule', () => {
+      const ownersSubmitRule = {
+        submit_requirements: [
+          {
+            submittability_expression_result: {
+              expression:
+                'label:Code-Review from owners\u003downers~OwnersSubmitRequirement',
+            },
+          },
+        ],
       } as unknown as ChangeInfo;
-      assert.equal(
-        hasOwnersSubmitRequirementOrRecord(ownersSubmitRecord),
-        true
-      );
+      assert.equal(hasOwnersSubmitRequirement(ownersSubmitRule), true);
     });
   });
 });
