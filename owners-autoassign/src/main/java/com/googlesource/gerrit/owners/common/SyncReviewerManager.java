@@ -108,7 +108,10 @@ class SyncReviewerManager implements ReviewerManager {
         in.reviewers = new ArrayList<>(accountsIds.size());
         Collection<Account.Id> validOwnersForAttentionSet = new ArrayList<>(accountsIds.size());
         for (Account.Id account : accountsIds) {
-          if (!currentReviewers.contains(account.get()) && isVisibleTo(changeInfo, account)) {
+          if (currentReviewers.contains(account.get())) {
+            continue;
+          }
+          if (isVisibleTo(changeInfo, account)) {
             AddReviewerInput addReviewerInput = new AddReviewerInput();
             addReviewerInput.reviewer = account.toString();
             addReviewerInput.state = reviewerState;
