@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04066d0e_294329ce",
+        "filename": "owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/ReviewerManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-16T20:45:46Z",
+      "side": 1,
+      "message": "This warning message is now stale, as you may end up here if one of the two conditions apply:\n- Change is not visible to the account (existing condition before this change)\n- Change is visible, but the reviewer is already included\n\nFixed with I7f15643634abc.",
+      "range": {
+        "startLine": 120,
+        "startChar": 16,
+        "endLine": 120,
+        "endChar": 106
+      },
+      "revId": "bbb210eb91160287461454ee2878daa51f2cb9cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
@@ -14,26 +38,15 @@
       },
       "applicabilityExpressionResult": {},
       "submittabilityExpressionResult": {
-        "expression": {
-          "expressionString": "label:Code-Review\u003dMAX,user\u003dnon_uploader -label:Code-Review\u003dMIN"
-        },
-        "status": "PASS",
-        "errorMessage": {},
-        "passingAtoms": [
-          "label:Code-Review\u003dMAX,user\u003dnon_uploader",
-          "-label:Code-Review\u003dMIN"
-        ],
-        "failingAtoms": []
+        "value": {"expression":{"expressionString":"label:Code-Review=MAX,user=non_uploader -label:Code-Review=MIN"},"status":"PASS","errorMessage":{"value":null},"passingAtoms":["label:Code-Review=MAX,user=non_uploader","-label:Code-Review=MIN"],"failingAtoms":[]}
       },
       "overrideExpressionResult": {},
-      "patchSetCommitId": {
-        "w1": -1145958165,
-        "w2": -1860828537,
-        "w3": 1175737582,
-        "w4": 679008933,
-        "w5": 523024844
+      "patchSetCommitId": "bbb210eb91160287461454ee2878daa51f2cb9cc",
+      "legacy": {
+        "value": true
       },
-      "legacy": true
+      "forced": {},
+      "hidden": {}
     },
     {
       "submitRequirement": {
@@ -48,26 +61,15 @@
       },
       "applicabilityExpressionResult": {},
       "submittabilityExpressionResult": {
-        "expression": {
-          "expressionString": "label:Verified\u003dMAX -label:Verified\u003dMIN"
-        },
-        "status": "PASS",
-        "errorMessage": {},
-        "passingAtoms": [
-          "label:Verified\u003dMAX",
-          "-label:Verified\u003dMIN"
-        ],
-        "failingAtoms": []
+        "value": {"expression":{"expressionString":"label:Verified=MAX -label:Verified=MIN"},"status":"PASS","errorMessage":{"value":null},"passingAtoms":["label:Verified=MAX","-label:Verified=MIN"],"failingAtoms":[]}
       },
       "overrideExpressionResult": {},
-      "patchSetCommitId": {
-        "w1": -1145958165,
-        "w2": -1860828537,
-        "w3": 1175737582,
-        "w4": 679008933,
-        "w5": 523024844
+      "patchSetCommitId": "bbb210eb91160287461454ee2878daa51f2cb9cc",
+      "legacy": {
+        "value": true
       },
-      "legacy": true
+      "forced": {},
+      "hidden": {}
     },
     {
       "submitRequirement": {
@@ -82,25 +84,15 @@
       },
       "applicabilityExpressionResult": {},
       "submittabilityExpressionResult": {
-        "expression": {
-          "expressionString": "rule:checks~ChecksSubmitRule"
-        },
-        "status": "PASS",
-        "errorMessage": {},
-        "passingAtoms": [
-          "checks~ChecksSubmitRule"
-        ],
-        "failingAtoms": []
+        "value": {"expression":{"expressionString":"rule:checks~ChecksSubmitRule"},"status":"PASS","errorMessage":{"value":null},"passingAtoms":["checks~ChecksSubmitRule"],"failingAtoms":[]}
       },
       "overrideExpressionResult": {},
-      "patchSetCommitId": {
-        "w1": -1145958165,
-        "w2": -1860828537,
-        "w3": 1175737582,
-        "w4": 679008933,
-        "w5": 523024844
+      "patchSetCommitId": "bbb210eb91160287461454ee2878daa51f2cb9cc",
+      "legacy": {
+        "value": true
       },
-      "legacy": true
+      "forced": {},
+      "hidden": {}
     }
   ]
 }
