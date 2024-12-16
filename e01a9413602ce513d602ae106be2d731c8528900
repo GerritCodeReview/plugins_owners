@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b55bc74e_3cfc880b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-16T09:57:03Z",
+      "side": 1,
+      "message": "```suggestion\nUnify the check so that expression is verified if it\n```",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 66
+      },
+      "revId": "e01a9413602ce513d602ae106be2d731c8528900",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
