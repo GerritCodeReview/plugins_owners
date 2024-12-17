@@ -32,7 +32,6 @@ export interface OwnersInterface extends LitElement {
   patchRange?: PatchRange;
   restApi?: RestPluginApi;
   user?: User;
-  allFilesApproved?: boolean;
   filesOwners?: FilesOwners;
 
   onModelUpdate(): void;
@@ -53,9 +52,6 @@ export const OwnersMixin = <T extends Constructor<LitElement>>(
 
     @state()
     user?: User;
-
-    @state()
-    allFilesApproved?: boolean;
 
     @state()
     filesOwners?: FilesOwners;
@@ -82,12 +78,6 @@ export const OwnersMixin = <T extends Constructor<LitElement>>(
       this.subscriptions.push(
         model.state$.subscribe(s => {
           this.user = s.user;
-        })
-      );
-
-      this.subscriptions.push(
-        model.state$.subscribe(s => {
-          this.allFilesApproved = s.allFilesApproved;
         })
       );
 
@@ -121,7 +111,6 @@ export const OwnersMixin = <T extends Constructor<LitElement>>(
 
     protected onModelUpdate() {
       this.modelLoader?.loadUser();
-      this.modelLoader?.loadAllFilesApproved();
       this.modelLoader?.loadFilesOwners();
     }
 
