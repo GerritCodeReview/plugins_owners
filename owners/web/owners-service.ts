@@ -19,10 +19,8 @@ import {HttpMethod, RestPluginApi} from '@gerritcodereview/typescript-api/rest';
 import {
   AccountDetailInfo,
   ChangeInfo,
-  ChangeStatus,
   NumericChangeId,
   RepoName,
-  SubmitRequirementStatus,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {User, UserRole} from './owners-model';
 
@@ -57,7 +55,21 @@ export interface FilesOwners {
   owners_labels: OwnersLabels;
 }
 
-export const OWNERS_SUBMIT_REQUIREMENT = 'Owner-Approval';
+const OWNERS_SUBMIT_REQUIREMENT = 'has:approval_owners';
+const OWNERS_SUBMIT_RULE = 'owners~OwnersSubmitRequirement';
+
+export function hasOwnersSubmitRequirement(change: ChangeInfo): boolean {
+  return (
+    change.submit_requirements !== undefined &&
+    change.submit_requirements.find(r => {
+      const expression = r.submittability_expression_result.expression;
+      return (
+        expression.includes(OWNERS_SUBMIT_REQUIREMENT) ||
+        expression.includes(OWNERS_SUBMIT_RULE)
+      );
+    }) !== undefined
+  );
+}
 
 class ResponseError extends Error {
   constructor(readonly response: Response) {
@@ -181,37 +193,8 @@ export class OwnersService {
     return this.apiCache.getLoggedInUser();
   }
 
-  async getAllFilesApproved(): Promise<boolean | undefined> {
-    if (!(await this.isLoggedIn())) {
-      return Promise.resolve(undefined);
-    }
-
-    if (
-      this.change?.status === ChangeStatus.ABANDONED ||
-      this.change?.status === ChangeStatus.MERGED
-    ) {
-      return Promise.resolve(undefined);
-    }
-
-    const ownersSr = this.change?.submit_requirements?.find(
-      r => r.name === OWNERS_SUBMIT_REQUIREMENT
-    );
-    if (!ownersSr) {
-      return Promise.resolve(undefined);
-    }
-
-    return Promise.resolve(
-      ownersSr.status === SubmitRequirementStatus.SATISFIED
-    );
-  }
-
   getFilesOwners(): Promise<FilesOwners | undefined> {
     return this.apiCache.getFilesOwners();
-  }
-
-  private async isLoggedIn(): Promise<boolean> {
-    const user = await this.getLoggedInUser();
-    return user && user.role !== UserRole.ANONYMOUS;
   }
 
   static getOwnersService(restApi: RestPluginApi, change: ChangeInfo) {

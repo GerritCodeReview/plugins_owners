@@ -23,11 +23,17 @@ import {
   AccountInfo,
   ChangeInfo,
   ChangeStatus,
+  EmailAddress,
   RevisionInfo,
   EDIT,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {User, UserRole} from './owners-model';
-import {isOwner, OwnedFiles, OWNERS_SUBMIT_REQUIREMENT} from './owners-service';
+import {
+  FilesOwners,
+  hasOwnersSubmitRequirement,
+  isOwner,
+  OwnedFiles,
+} from './owners-service';
 import {
   computeDisplayPath,
   diffFilePaths,
@@ -36,13 +42,29 @@ import {
   truncatePath,
 } from './utils';
 
+const STATUS_CODE = {
+  MISSING: 'missing',
+  APPROVED: 'approved',
+};
+
+const STATUS_ICON = {
+  [STATUS_CODE.MISSING]: 'schedule',
+  [STATUS_CODE.APPROVED]: 'check',
+};
+
+export interface OwnedFilesInfo {
+  ownedFiles: string[];
+  numberOfPending: number;
+  numberOfApproved: number;
+}
+
 const common = OwnersMixin(LitElement);
 
 class OwnedFilesCommon extends common {
   @property({type: Object})
   revision?: RevisionInfo;
 
-  protected ownedFiles?: string[];
+  protected ownedFilesInfo?: OwnedFilesInfo;
 
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
@@ -51,9 +73,8 @@ class OwnedFilesCommon extends common {
     this.hidden = shouldHide(
       this.change,
       this.revision,
-      this.allFilesApproved,
       this.user,
-      this.ownedFiles
+      this.ownedFilesInfo?.ownedFiles
     );
   }
 
@@ -62,20 +83,132 @@ class OwnedFilesCommon extends common {
   }
 
   private computeOwnedFiles() {
-    this.ownedFiles = ownedFiles(this.user?.account, this.filesOwners?.files);
+    this.ownedFilesInfo = ownedFiles(this.user?.account, this.filesOwners);
   }
 }
 
 export const OWNED_FILES_TAB_HEADER = 'owned-files-tab-header';
 @customElement(OWNED_FILES_TAB_HEADER)
 export class OwnedFilesTabHeader extends OwnedFilesCommon {
+  @property({type: String, reflect: true, attribute: 'files-status'})
+  filesStatus?: string;
+
+  private ownedFiles: number | undefined;
+
   static override get styles() {
-    return [...OwnedFilesCommon.commonStyles()];
+    return [
+      ...OwnedFilesCommon.commonStyles(),
+      css`
+        [hidden] {
+          display: none;
+        }
+        gr-icon {
+          padding: var(--spacing-xs) 0px;
+          margin-left: 3px;
+        }
+        :host([files-status='approved']) gr-icon.status {
+          color: var(--positive-green-text-color);
+        }
+        :host([files-status='missing']) gr-icon.status {
+          color: #ffa62f;
+        }
+      `,
+    ];
+  }
+
+  protected override willUpdate(changedProperties: PropertyValues): void {
+    super.willUpdate(changedProperties);
+
+    if (this.hidden || this.ownedFilesInfo === undefined) {
+      this.filesStatus = undefined;
+      this.ownedFiles = undefined;
+    } else {
+      [this.filesStatus, this.ownedFiles] =
+        this.ownedFilesInfo.numberOfPending > 0
+          ? [STATUS_CODE.MISSING, this.ownedFilesInfo.numberOfPending]
+          : [STATUS_CODE.APPROVED, this.ownedFilesInfo.numberOfApproved];
+    }
   }
 
   override render() {
-    if (this.hidden) return nothing;
-    return html`<div>Owned Files</div>`;
+    // even if `nothing` is returned Gerrit still shows the pointer and allows
+    // clicking at it, redirecting to the empty tab when done; traverse through
+    // the shadowRoots down to the tab and disable/enable it when needed
+    const tabParent = document
+      .querySelector('#pg-app')
+      ?.shadowRoot?.querySelector('#app-element')
+      ?.shadowRoot?.querySelector('main > gr-change-view')
+      ?.shadowRoot?.querySelector(
+        '#tabs > paper-tab[data-name="change-view-tab-header-owners"]'
+      );
+    if (this.hidden) {
+      if (tabParent && !tabParent.getAttribute('disabled')) {
+        tabParent.setAttribute('disabled', 'disabled');
+      }
+      return nothing;
+    }
+    if (tabParent && tabParent.getAttribute('disabled')) {
+      tabParent.removeAttribute('disabled');
+    }
+
+    if (
+      this.ownedFilesInfo === undefined ||
+      this.filesStatus === undefined ||
+      this.ownedFiles === undefined
+    ) {
+      return html`<div>Owned Files</div>`;
+    }
+
+    const icon = STATUS_ICON[this.filesStatus];
+    const [info, summary] = this.buildInfoAndSummary(
+      this.filesStatus,
+      this.ownedFilesInfo.numberOfApproved,
+      this.ownedFilesInfo.numberOfPending
+    );
+    return html` <div>
+      Owned Files
+      <gr-tooltip-content
+        title=${info}
+        aria-label=${summary}
+        aria-description=${info}
+        has-tooltip
+      >
+        <gr-icon
+          id="owned-files-status"
+          class="status"
+          icon=${icon}
+          aria-hidden="true"
+        ></gr-icon>
+      </gr-tooltip-content>
+    </div>`;
+  }
+
+  private buildInfoAndSummary(
+    filesStatus: string,
+    filesApproved: number,
+    filesPending: number
+  ): [string, string] {
+    const pendingInfo =
+      filesPending > 0
+        ? `Missing approval for ${filesPending} file${
+            filesPending > 1 ? 's' : ''
+          }`
+        : '';
+    const approvedInfo =
+      filesApproved > 0
+        ? `${filesApproved} file${
+            filesApproved > 1 ? 's' : ''
+          } already approved.`
+        : '';
+    const info = `${
+      STATUS_CODE.APPROVED === filesStatus
+        ? approvedInfo
+        : `${pendingInfo}${filesApproved > 0 ? ` and ${approvedInfo}` : '.'}`
+    }`;
+    const summary = `${
+      STATUS_CODE.APPROVED === filesStatus ? 'Approved' : 'Missing'
+    }`;
+    return [info, summary];
   }
 }
 
@@ -248,7 +381,7 @@ export class OwnedFilesTabContent extends OwnedFilesCommon {
         id="ownedFilesList"
         .change=${this.change}
         .revision=${this.revision}
-        .ownedFiles=${this.ownedFiles}
+        .ownedFiles=${this.ownedFilesInfo?.ownedFiles}
       >
       </gr-owned-files-list>
     `;
@@ -258,27 +391,23 @@ export class OwnedFilesTabContent extends OwnedFilesCommon {
 export function shouldHide(
   change?: ChangeInfo,
   revision?: RevisionInfo,
-  allFilesApproved?: boolean,
   user?: User,
   ownedFiles?: string[]
 ) {
-  // don't show owned files when no change or change is abandoned/merged or being edited
+  // don't show owned files when no change or change is abandoned/merged or being edited or viewing not current PS
   if (
     change === undefined ||
     change.status === ChangeStatus.ABANDONED ||
     change.status === ChangeStatus.MERGED ||
     revision === undefined ||
-    revision._number === EDIT
+    revision._number === EDIT ||
+    change.current_revision !== revision.commit?.commit
   ) {
     return true;
   }
 
   // show owned files if user owns anything
-  if (
-    !allFilesApproved &&
-    change.submit_requirements &&
-    change.submit_requirements.find(r => r.name === OWNERS_SUBMIT_REQUIREMENT)
-  ) {
+  if (hasOwnersSubmitRequirement(change)) {
     return (
       !user ||
       user.role === UserRole.ANONYMOUS ||
@@ -288,26 +417,65 @@ export function shouldHide(
   return true;
 }
 
-export function ownedFiles(
-  owner?: AccountInfo,
-  files?: OwnedFiles
-): string[] | undefined {
-  if (!owner || !files) {
-    return;
-  }
-
+function collectOwnedFiles(
+  owner: AccountInfo,
+  groupPrefix: string,
+  files: OwnedFiles,
+  emailWithoutDomain?: string
+): string[] {
   const ownedFiles = [];
-  for (const file of Object.keys(files)) {
+  for (const file of Object.keys(files ?? [])) {
     if (
-      files[file].find(
-        fileOwner => isOwner(fileOwner) && fileOwner.id === owner._account_id
-      )
+      files[file].find(fileOwner => {
+        if (isOwner(fileOwner)) {
+          return fileOwner.id === owner._account_id;
+        }
+
+        return (
+          !fileOwner.name?.startsWith(groupPrefix) &&
+          (fileOwner.name === emailWithoutDomain ||
+            fileOwner.name === owner.name)
+        );
+      })
     ) {
       ownedFiles.push(file);
     }
   }
 
   return ownedFiles;
+}
+
+export function ownedFiles(
+  owner?: AccountInfo,
+  filesOwners?: FilesOwners
+): OwnedFilesInfo | undefined {
+  if (
+    !owner ||
+    !filesOwners ||
+    (!filesOwners.files && !filesOwners.files_approved)
+  ) {
+    return;
+  }
+
+  const groupPrefix = 'group/';
+  const emailWithoutDomain = toEmailWithoutDomain(owner.email);
+  const pendingFiles = collectOwnedFiles(
+    owner,
+    groupPrefix,
+    filesOwners.files,
+    emailWithoutDomain
+  );
+  const approvedFiles = collectOwnedFiles(
+    owner,
+    groupPrefix,
+    filesOwners.files_approved,
+    emailWithoutDomain
+  );
+  return {
+    ownedFiles: [...pendingFiles, ...approvedFiles],
+    numberOfPending: pendingFiles.length,
+    numberOfApproved: approvedFiles.length,
+  } as OwnedFilesInfo;
 }
 
 export function computeDiffUrl(
@@ -328,4 +496,9 @@ export function computeDiffUrl(
   const path = `/${encodeURL(file)}`;
 
   return `${getBaseUrl()}/c/${repo}${change._number}${range}${path}`;
+}
+
+function toEmailWithoutDomain(email?: EmailAddress): string | undefined {
+  const startDomainIndex = email?.indexOf('@');
+  return startDomainIndex ? email?.substring(0, startDomainIndex) : undefined;
 }
