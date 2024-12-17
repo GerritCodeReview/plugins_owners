@@ -44,7 +44,6 @@ export interface User {
 
 export interface OwnersState {
   user?: User;
-  allFilesApproved?: boolean;
   filesOwners?: FilesOwners;
 }
 
@@ -91,12 +90,6 @@ export class OwnersModel extends EventTarget {
     this.setState({...current, user});
   }
 
-  setAllFilesApproved(allFilesApproved: boolean | undefined) {
-    const current = this.subject$.getValue();
-    if (current.allFilesApproved === allFilesApproved) return;
-    this.setState({...current, allFilesApproved});
-  }
-
   setFilesOwners(filesOwners: FilesOwners | undefined) {
     const current = this.subject$.getValue();
     if (deepEqual(current.filesOwners, filesOwners)) return;
@@ -122,14 +115,6 @@ export class ModelLoader {
       'user',
       () => this.service.getLoggedInUser(),
       value => this.model.setUser(value)
-    );
-  }
-
-  async loadAllFilesApproved() {
-    await this._loadProperty(
-      'allFilesApproved',
-      () => this.service.getAllFilesApproved(),
-      value => this.model.setAllFilesApproved(value)
     );
   }
 
