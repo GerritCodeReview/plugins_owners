@@ -32,7 +32,7 @@ import {
   FilesOwners,
   isOwner,
   OwnersLabels,
-  OWNERS_SUBMIT_REQUIREMENT,
+  hasOwnersSubmitRequirement,
 } from './owners-service';
 import {
   FileOwnership,
@@ -457,10 +457,7 @@ export function shouldHide(
 
   // show owners when they apply to the change and for logged in user
   if (
-    change.submit_requirements &&
-    change.submit_requirements.find(
-      r => r.name === OWNERS_SUBMIT_REQUIREMENT
-    ) &&
+    hasOwnersSubmitRequirement(change) &&
     filesOwners &&
     (filesOwners.files || filesOwners.files_approved)
   ) {
