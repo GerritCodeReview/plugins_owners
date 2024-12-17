@@ -16,6 +16,24 @@
       "message": "Do we want to merge to I89bdea16f1 before merging this?",
       "revId": "a417526e63fa895cf32e78ff17cd223da5398a56",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77c9fd5_efdb172b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-12-17T14:37:51Z",
+      "side": 1,
+      "message": "Yep I will do the merge up to 3.8, free to merge that",
+      "parentUuid": "c90d80ce_9467da3f",
+      "revId": "a417526e63fa895cf32e78ff17cd223da5398a56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
