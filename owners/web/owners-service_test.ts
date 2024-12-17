@@ -15,7 +15,11 @@
  * limitations under the License.
  */
 
-import {FilesOwners, OwnersService} from './owners-service';
+import {
+  FilesOwners,
+  hasOwnersSubmitRequirement,
+  OwnersService,
+} from './owners-service';
 import {
   RequestPayload,
   RestPluginApi,
@@ -25,7 +29,6 @@ import {
   ChangeInfo,
   ChangeStatus,
   HttpMethod,
-  SubmitRequirementResultInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {assert} from '@open-wc/testing';
 import {UserRole} from './owners-model';
@@ -149,8 +152,6 @@ suite('owners service tests', () => {
       } as unknown as RestPluginApi;
     }
 
-    const notLoggedInRestApiService = setupRestApiForLoggedIn(false);
-
     function loggedInRestApiService(acc: number): RestPluginApi {
       return {
         ...setupRestApiForLoggedIn(true),
@@ -163,105 +164,28 @@ suite('owners service tests', () => {
     let service: OwnersService;
     let getApiStub: sinon.SinonStub;
 
-    function setup(
-      loggedIn: boolean,
-      changeStats: ChangeStatus = ChangeStatus.NEW,
-      submitRequirementsSatisfied?: boolean,
-      response = {}
-    ) {
+    function setup(response = {}) {
       const acc = account(1);
       const base_change = {
         ...fakeChange,
         _number: 1,
-        status: changeStats,
+        status: ChangeStatus.NEW,
         project: 'test_repo',
         owner: acc,
       } as unknown as ChangeInfo;
-      const change =
-        submitRequirementsSatisfied === undefined
-          ? base_change
-          : {
-              ...base_change,
-              submit_requirements: [
-                {
-                  name: 'Owner-Approval',
-                  status: submitRequirementsSatisfied
-                    ? 'SATISFIED'
-                    : 'UNSATISFIED',
-                } as unknown as SubmitRequirementResultInfo,
-              ],
-            };
-      const restApi = loggedIn
-        ? loggedInRestApiService(1)
-        : notLoggedInRestApiService;
+      const restApi = loggedInRestApiService(1);
 
       getApiStub = sinon.stub(restApi, 'send');
       getApiStub
         .withArgs(
           sinon.match.any,
-          `/changes/${change.project}~${change._number}/revisions/current/owners~files-owners`,
+          `/changes/${base_change.project}~${base_change._number}/revisions/current/owners~files-owners`,
           sinon.match.any,
           sinon.match.any
         )
         .returns(Promise.resolve(response));
-      service = OwnersService.getOwnersService(restApi, change);
+      service = OwnersService.getOwnersService(restApi, base_change);
     }
-
-    const isLoggedIn = true;
-    const changeMerged = ChangeStatus.MERGED;
-    const changeNew = ChangeStatus.NEW;
-    const ownersSubmitRequirementsSatisfied = true;
-
-    function setupGetAllFilesApproved_undefined() {
-      setup(!isLoggedIn);
-    }
-
-    test('should have getAllFilesApproved `undefined` for no change owner', async () => {
-      setupGetAllFilesApproved_undefined();
-
-      const response = await service.getAllFilesApproved();
-      assert.equal(response, undefined);
-    });
-
-    test('should have getAllFilesApproved `undefined` for `MERGED` change', async () => {
-      setup(isLoggedIn, changeMerged);
-
-      const response = await service.getAllFilesApproved();
-      assert.equal(response, undefined);
-    });
-
-    test('should have getAllFilesApproved `undefined` when no submit requirements', async () => {
-      setup(isLoggedIn, changeNew);
-
-      const response = await service.getAllFilesApproved();
-      assert.equal(response, undefined);
-    });
-
-    function setupGetAllFilesApproved_false(response = {}) {
-      setup(
-        isLoggedIn,
-        changeNew,
-        !ownersSubmitRequirementsSatisfied,
-        response
-      );
-    }
-
-    test('should have getAllFilesApproved `false` when submit requirements are not satisfied', async () => {
-      setupGetAllFilesApproved_false();
-
-      const response = await service.getAllFilesApproved();
-      assert.equal(response, false);
-    });
-
-    function setupGetAllFilesApproved_true() {
-      setup(isLoggedIn, changeNew, ownersSubmitRequirementsSatisfied);
-    }
-    test('should have getAllFilesApproved `true` when submit requirements are satisfied', async () => {
-      setupGetAllFilesApproved_true();
-
-      const response = await service.getAllFilesApproved();
-      assert.equal(response, true);
-    });
 
     test('should call getFilesOwners', async () => {
       const expected = {
@@ -283,7 +207,7 @@ suite('owners service tests', () => {
           },
         },
       };
-      setupGetAllFilesApproved_false(expected);
+      setup(expected);
 
       const response = await service.getFilesOwners();
       await flush();
@@ -295,7 +219,7 @@ suite('owners service tests', () => {
     });
 
     test('should fetch response from plugin only once', async () => {
-      setupGetAllFilesApproved_true();
+      setup();
 
       await service.getFilesOwners();
       await flush();
@@ -304,6 +228,59 @@ suite('owners service tests', () => {
       await flush();
 
       assert.equal(getApiStub.callCount, 1);
+    });
+  });
+
+  suite('hasOwnersSubmitRequirement tests', () => {
+    test('hasOwnersSubmitRequirement - should be `false` when change has no owners submit requirement', () => {
+      const noSubmitRequirementOrRecordChange = {} as unknown as ChangeInfo;
+      assert.equal(
+        hasOwnersSubmitRequirement(noSubmitRequirementOrRecordChange),
+        false
+      );
+    });
+
+    test('hasOwnersSubmitRequirement - should be `false` when change has different submit requirements', () => {
+      const differentSubmitRequirementAndRecord = {
+        submit_requirements: [
+          {
+            submittability_expression_result: {
+              expression: 'has:other_predicated',
+            },
+          },
+        ],
+      } as unknown as ChangeInfo;
+      assert.equal(
+        hasOwnersSubmitRequirement(differentSubmitRequirementAndRecord),
+        false
+      );
+    });
+
+    test('hasOwnersSubmitRequirement - should be `true` when change has owners submit requirement', () => {
+      const ownersSubmitRequirement = {
+        submit_requirements: [
+          {
+            submittability_expression_result: {
+              expression: 'has:approval_owners',
+            },
+          },
+        ],
+      } as unknown as ChangeInfo;
+      assert.equal(hasOwnersSubmitRequirement(ownersSubmitRequirement), true);
+    });
+
+    test('hasOwnersSubmitRequirement - should be `true` when change has owners submit rule', () => {
+      const ownersSubmitRule = {
+        submit_requirements: [
+          {
+            submittability_expression_result: {
+              expression:
+                'label:Code-Review from owners\u003downers~OwnersSubmitRequirement',
+            },
+          },
+        ],
+      } as unknown as ChangeInfo;
+      assert.equal(hasOwnersSubmitRequirement(ownersSubmitRule), true);
     });
   });
 });
