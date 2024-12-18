@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c172d755_8319e2b9",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T07:28:33Z",
+      "side": 1,
+      "message": "It is `has:approval_owners` to be precise, but other than that, good point 👍",
+      "parentUuid": "08ba5d2d_60b17058",
+      "range": {
+        "startLine": 14,
+        "startChar": 9,
+        "endLine": 14,
+        "endChar": 25
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07921c48_02c6d972",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-13T11:40:28Z",
       "side": 1,
       "message": "```suggestion\napplicable, owners status is displayed in two ways:\n```",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 17,
+        "endChar": 38
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87000db9_709067ba",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T07:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07921c48_02c6d972",
       "range": {
         "startLine": 17,
         "startChar": 12,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15ebd65f_a8956246",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T07:28:33Z",
+      "side": 1,
+      "message": "Nope, if you see that then there is an error unless you mean that _not owned by current user_ but still _owned by someone else_ case.",
+      "parentUuid": "2c22dca6_223c5af7",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 25
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2185159f_452f1243",
         "filename": "owners/src/main/resources/Documentation/how-to-use.md",
         "patchSetId": 2
@@ -83,6 +155,30 @@
       "writtenOn": "2024-12-13T11:40:28Z",
       "side": 1,
       "message": "Do we have a link to what a submit record is?",
+      "range": {
+        "startLine": 79,
+        "startChar": 40,
+        "endLine": 79,
+        "endChar": 53
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "865ae969_399e4153",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T07:28:33Z",
+      "side": 1,
+      "message": "Yes we do, added link to `/Documentation/rest-api-changes.html#submit-record`",
+      "parentUuid": "2185159f_452f1243",
       "range": {
         "startLine": 79,
         "startChar": 40,
@@ -106,6 +202,30 @@
       "writtenOn": "2024-12-13T11:40:28Z",
       "side": 1,
       "message": "Maybe a mention that this is enabled by setting `owners.enableSubmitRequirement\u003dtrue`?",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 29
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee692de5_1c0ebc56",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T07:28:33Z",
+      "side": 1,
+      "message": "Link to `replacement mode` configuration is added in line #77. Do you want to have it repeated here?",
+      "parentUuid": "1e24d852_1929fa88",
       "range": {
         "startLine": 100,
         "startChar": 4,
