@@ -26,7 +26,12 @@ import {
   EDIT,
   SubmitRequirementResultInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {ownedFiles, OwnedFilesInfo, shouldHide} from './gr-owned-files';
+import {
+  FileStatus,
+  ownedFiles,
+  OwnedFilesInfo,
+  shouldHide,
+} from './gr-owned-files';
 import {FilesOwners, GroupOwner, Owner} from './owners-service';
 import {deepEqual} from './utils';
 import {User, UserRole} from './owners-model';
@@ -77,7 +82,10 @@ suite('owned files tests', () => {
     test('ownedFiles - should return owned files', () => {
       assert.equal(
         deepEqual(ownedFiles(owner, filesOwners), {
-          ownedFiles: [ownedFile, ownedApprovedFile],
+          ownedFiles: [
+            {file: ownedFile, status: FileStatus.NEEDS_APPROVAL},
+            {file: ownedApprovedFile, status: FileStatus.APPROVED},
+          ],
           numberOfApproved: 1,
           numberOfPending: 1,
         }),
@@ -94,7 +102,7 @@ suite('owned files tests', () => {
       } as unknown as FilesOwners;
       assert.equal(
         deepEqual(ownedFiles(owner, filesOwners), {
-          ownedFiles: [ownedFile],
+          ownedFiles: [{file: ownedFile, status: FileStatus.NEEDS_APPROVAL}],
           numberOfApproved: 0,
           numberOfPending: 1,
         }),
@@ -111,7 +119,7 @@ suite('owned files tests', () => {
       } as unknown as FilesOwners;
       assert.equal(
         deepEqual(ownedFiles(owner, filesOwners), {
-          ownedFiles: [ownedFile],
+          ownedFiles: [{file: ownedFile, status: FileStatus.APPROVED}],
           numberOfApproved: 1,
           numberOfPending: 0,
         }),
@@ -142,7 +150,7 @@ suite('owned files tests', () => {
       commit: {commit: current_revision},
     } as unknown as RevisionInfo;
     const user = {account: account(1), role: UserRole.OTHER};
-    const ownedFiles = ['README.md'];
+    const ownedFiles = [{file: 'README.md', status: FileStatus.NEEDS_APPROVAL}];
 
     test('shouldHide - should be `true` when change is `undefined`', () => {
       const undefinedChange = undefined;
