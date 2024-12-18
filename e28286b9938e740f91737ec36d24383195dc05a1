@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e54b7c1_90c13a39",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T09:58:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1c60086_492f4316",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 49
+      },
+      "revId": "e28286b9938e740f91737ec36d24383195dc05a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b19e3e01_1e3b4c60",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-12-18T09:52:42Z",
       "side": 1,
       "message": "```suggestion\n* Next to all owned files, even if they are owned by someone else, (when the\n```",
+      "range": {
+        "startLine": 23,
+        "startChar": 2,
+        "endLine": 23,
+        "endChar": 64
+      },
+      "revId": "e28286b9938e740f91737ec36d24383195dc05a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3cb6850_0ffec083",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T09:58:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b19e3e01_1e3b4c60",
       "range": {
         "startLine": 23,
         "startChar": 2,
