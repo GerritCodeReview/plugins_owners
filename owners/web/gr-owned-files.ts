@@ -52,8 +52,18 @@ const STATUS_ICON = {
   [STATUS_CODE.APPROVED]: 'check',
 };
 
+export enum FileStatus {
+  NEEDS_APPROVAL = 'missing',
+  APPROVED = 'approved',
+}
+
+interface OwnedFileInfo {
+  status: FileStatus;
+  file: string;
+}
+
 export interface OwnedFilesInfo {
-  ownedFiles: string[];
+  ownedFiles: OwnedFileInfo[];
   numberOfPending: number;
   numberOfApproved: number;
 }
@@ -221,7 +231,7 @@ export class GrOwnedFilesList extends LitElement {
   revision?: RevisionInfo;
 
   @property({type: Array})
-  ownedFiles?: string[];
+  ownedFiles?: OwnedFileInfo[];
 
   static override get styles() {
     return [
@@ -238,9 +248,11 @@ export class GrOwnedFilesList extends LitElement {
           padding: var(--spacing-xs) var(--spacing-l);
         }
         .header-row {
+          padding-left: var(--spacing-m);
           background-color: var(--background-color-secondary);
         }
         .file-row {
+          padding-left: var(--spacing-m);
           cursor: pointer;
         }
         .file-row:hover {
@@ -249,12 +261,22 @@ export class GrOwnedFilesList extends LitElement {
         .file-row.selected {
           background-color: var(--selection-background-color);
         }
+        .status {
+          padding: inherit;
+        }
         .path {
+          padding: inherit;
           cursor: pointer;
           flex: 1;
           /* Wrap it into multiple lines if too long. */
           white-space: normal;
           word-break: break-word;
+        }
+        gr-icon.status.approved {
+          color: var(--positive-green-text-color);
+        }
+        gr-icon.status.missing {
+          color: #ffa62f;
         }
         .matchingFilePath {
           color: var(--deemphasized-text-color);
@@ -304,21 +326,36 @@ export class GrOwnedFilesList extends LitElement {
   private renderOwnedFilesHeaderRow() {
     return html`
       <div class="header-row row" role="row">
+        <div class="status" role="columnheader">Status</div>
         <div class="path" role="columnheader">File</div>
       </div>
     `;
   }
 
-  private renderOwnedFileRow(ownedFile: string, index: number) {
+  private renderOwnedFileRow(ownedFile: OwnedFileInfo, index: number) {
     return html`
       <div
         class="file-row row"
         tabindex="-1"
         role="row"
-        aria-label=${ownedFile}
+        aria-label=${ownedFile.file}
       >
-        ${this.renderFilePath(ownedFile, index)}
+        ${this.renderFileStatus(ownedFile.status)}
+        ${this.renderFilePath(ownedFile.file, index)}
       </div>
+    `;
+  }
+
+  private renderFileStatus(status: FileStatus) {
+    const icon = STATUS_ICON[status];
+    return html`
+      <span class="status" role="gridcell">
+        <gr-icon
+          class="status ${status}"
+          icon=${icon}
+          aria-hidden="true"
+        ></gr-icon>
+      </span>
     `;
   }
 
@@ -332,7 +369,7 @@ export class GrOwnedFilesList extends LitElement {
           href=${ifDefined(computeDiffUrl(file, this.change, this.revision))}
         >
           <span title=${displayPath} class="fullFileName">
-            ${this.renderStyledPath(file, previousFile)}
+            ${this.renderStyledPath(file, previousFile?.file)}
           </span>
           <span title=${displayPath} class="truncatedFileName">
             ${truncatePath(displayPath)}
@@ -392,7 +429,7 @@ export function shouldHide(
   change?: ChangeInfo,
   revision?: RevisionInfo,
   user?: User,
-  ownedFiles?: string[]
+  ownedFiles?: OwnedFileInfo[]
 ) {
   // don't show owned files when no change or change is abandoned/merged or being edited or viewing not current PS
   if (
@@ -421,8 +458,9 @@ function collectOwnedFiles(
   owner: AccountInfo,
   groupPrefix: string,
   files: OwnedFiles,
+  fileStatus: FileStatus,
   emailWithoutDomain?: string
-): string[] {
+): OwnedFileInfo[] {
   const ownedFiles = [];
   for (const file of Object.keys(files ?? [])) {
     if (
@@ -438,7 +476,7 @@ function collectOwnedFiles(
         );
       })
     ) {
-      ownedFiles.push(file);
+      ownedFiles.push({file, status: fileStatus} as OwnedFileInfo);
     }
   }
 
@@ -463,12 +501,14 @@ export function ownedFiles(
     owner,
     groupPrefix,
     filesOwners.files,
+    FileStatus.NEEDS_APPROVAL,
     emailWithoutDomain
   );
   const approvedFiles = collectOwnedFiles(
     owner,
     groupPrefix,
     filesOwners.files_approved,
+    FileStatus.APPROVED,
     emailWithoutDomain
   );
   return {
