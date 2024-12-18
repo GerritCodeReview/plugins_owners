@@ -166,6 +166,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c32ce7ea_bf016259",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T09:32:47Z",
+      "side": 1,
+      "message": "added `even if they are owned by someone else` to make it more specific",
+      "parentUuid": "01798932_0ea4b888",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 25
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2185159f_452f1243",
@@ -274,6 +298,30 @@
       "side": 1,
       "message": "I think so, because I don\u0027t think it\u0027s obvious from that link that `replacement mode` enalbes `Code Review from Owners`.",
       "parentUuid": "ee692de5_1c0ebc56",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 29
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ec743fb_0842fc88",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-12-18T09:32:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "861894a8_08e78f20",
       "range": {
         "startLine": 100,
         "startChar": 4,
