@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "01798932_0ea4b888",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-18T08:56:24Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s what I mean sorry.",
+      "parentUuid": "15ebd65f_a8956246",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 25
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2185159f_452f1243",
         "filename": "owners/src/main/resources/Documentation/how-to-use.md",
         "patchSetId": 2
@@ -226,6 +250,30 @@
       "side": 1,
       "message": "Link to `replacement mode` configuration is added in line #77. Do you want to have it repeated here?",
       "parentUuid": "1e24d852_1929fa88",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 29
+      },
+      "revId": "d0f7fc17da4ef8dd72a24613907516aa948ba787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "861894a8_08e78f20",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-18T08:56:24Z",
+      "side": 1,
+      "message": "I think so, because I don\u0027t think it\u0027s obvious from that link that `replacement mode` enalbes `Code Review from Owners`.",
+      "parentUuid": "ee692de5_1c0ebc56",
       "range": {
         "startLine": 100,
         "startChar": 4,
