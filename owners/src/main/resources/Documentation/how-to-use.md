@@ -1,37 +1,51 @@
-# Intro
+# How to use
+
+## Intro
 
 The `@PLUGIN@` plugin allows defining owners (individual accounts or groups)
-for files and requires their approval for changes that modify these files.
+of directories, sub-directories and files that require approval when changes
+modify them.
 
 The rules defining which user/group needs to approve which file are specified
 in the `OWNERS` file and are covered in the
 [@PLUGIN@ configuration](config.html) guide.
 
+## Context
+
+The owners plugin can be used in three different modes:
+1. Prolog rules only(deprecated since Gerrit 3.6).
+2. With plugin-provided submit requirements.
+3. With user defined custom submit requirements.
+
+When using the plugin in mode 1. the functionality is limited to the generation
+of a Prolog-based submit rule with no extra UI features.
+
+On top of providing significantly better and more predictable performances,
+using the plugin in either mode 2. or 3. provides extra capabilities like:
+- A REST-api that exposes the owners approval status with single file granularity.
+- Enhanced UI experience with much clearer explanation of who owns what files,
+  as explained below.
+
 ## <a id="ownerStatus">Owner status on change page
 
 ### <a id="ownerStatus.submitRequirements">Owners status for submit requirements
 
-When the `has:approval_owners` predicate is used in submit requirement for a
-project or hierarchy of projects (see
-[configuration notes](config.html#owners.enableSubmitRequirement)) and, if
-applicable, owners status is displayed in two ways:
+When either `has:approval_owners` predicate is used in a submit requirement or
+[enableSubmitRequirement](config.html#owners.enableSubmitRequirement) is enabled for a
+project or any of its parents and, if applicable, owners status is displayed in two ways:
 
 * As an icon prepending the submit requirement and as a text next to it
 \
 ![submit requirement](./submit-requirement.png "Submit requirement")
 
+Which then displays more detail information in a tooltip when hovered over.
+
+![submit requirement hover](./submit-requirement-hover.png "Submit requirement hover")
+
 * Next to all owned files, even if they are owned by someone else, (when the
 newest patchset is selected)
 \
 ![files owners status](./files-owners-status.png "Files owners status")
-
-#### <a id="ownersStatus.submitRequirement.ownerApproval">`Owner-Approval` submit requirement
-
-The `Owner-Approval` submit requirement provides general information if all
-owned files were approved (requirement is satisfied). When hovered, a detailed
-description is shown
-
-![submit requirement hover](./submit-requirement-hover.png "Submit requirement hover")
 
 #### <a id="ownersStatus.submitRequirement.files">Per file owners statuses
 
@@ -71,11 +85,10 @@ the icon** to get additional information displayed as a tooltip.
 
 ### <a id="ownerStatus.submitRule">Owners status for submit rule
 
-When Gerrit's submit requirement feature was not available (`3.5.x` versions),
-the `OWNERS` file could still be evaluated (without a need for the prolog
+ `OWNERS` file can still be evaluated (without a need for the prolog
 predicate being added to the project) by enabling the
-[replacement mode](config.html#owners.enableSubmitRequirement).
-In this mode, results of the `OWNERS` file evaluation are provided to
+[default submit requirements](config.html#owners.enableSubmitRequirement).
+In this way, results of the `OWNERS` file evaluation are provided to
 Gerrit's change through submit rule (as
 [submit record](/Documentation/rest-api-changes.html#submit-record)) and, if
 applicable, owners status is displayed:
