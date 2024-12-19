@@ -16,6 +16,24 @@
       "message": "`owners-autoassign` does not compile with this fix:\n\n```\nplugins/owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java:230: error: constructor PathOwners in class PathOwners cannot be applied to given types;\n            new PathOwners(\n            ^\n  required: Accounts,GitRepositoryManager,Repository,List\u003cNameKey\u003e,Optional\u003cString\u003e,PatchList,boolean,String,PathOwnersEntriesCache\n  found: Accounts,GitRepositoryManager,Repository,List\u003cNameKey\u003e,cfg.isBran[...]anch),PatchList,boolean\n  reason: actual and formal argument lists differ in length\n  Target //plugins/owners-autoassign:owners-autoassign failed to build\n  ```",
       "revId": "998dc20bbbde67301b49dcf37b23467f5317014a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a004127_5cf0ec5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-12-19T12:13:44Z",
+      "side": 1,
+      "message": "Should be just a matter of fixing the constructor at:\n\n```\nplugins/owners-autoassign/src/main/java/com/googlesource/gerrit/owners/common/GitRefListener.java (L230)\n```",
+      "parentUuid": "a2c0201b_cca74a4d",
+      "revId": "998dc20bbbde67301b49dcf37b23467f5317014a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
