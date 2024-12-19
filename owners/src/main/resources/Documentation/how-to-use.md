@@ -122,3 +122,27 @@ requirement provides general information if all owned files were approved
 
 The owners status per file in replacement mode doesn't differ from
 [submit requirements mode](#ownersStatus.submitRequirement.files).
+
+### Files that are assigned to the current user based on the OWNERS
+
+When the current user is mentioned directly or indirectly via a group
+ownership as the owner of one or more files, the change screen displays
+an additional tab called _Owned Files_.
+
+![owned_files](./owned-files.png "Owned Files")
+
+The tab indicates whether the current user has review duties  based on the icon
+displayed on the right side of the tab. If the icon is an orange clock, the current
+user is required to review the files indicated in the tab; otherwise, if the icon
+is a green tick, then the current user review input is not strictly required for
+the change to be merged.
+
+The list of files included in the _Owned Files)_ tab, a subset of the full list
+displayed contained in the _Files_ tab, are the ones assigned to the current
+user through the OWNERS file.
+
+> **NOTE**: When the `owners.config` has `owners.expandGroups = false` then the
+> association between files and the current user may not be accurate or not available
+> because of the lack of group expansion and account resolution service on the backend.
+> The _Owned Files_ tab may be absent even if the current user is effectively
+> owner of one or more files in the change.
