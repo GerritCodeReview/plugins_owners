@@ -98,9 +98,9 @@ applicable, owners status is displayed:
 ![submit rule](./submit-rule.png "Submit rule")
 
 
-    > Note that in replacement mode, owner's votes are displayed next to the
-    > `Code Review from owners` submit requirement instead of its status.
-    > It is a Gerrit's core representation of submit rule.
+    > Note that when default submit requirements are enabled, owner's votes are
+    > displayed next to the `Code Review from owners` submit requirement instead
+    > of its status. It is a Gerrit's core representation of submit rule.
 
 * Next to all owned files (when the newest patchset is selected)
 \
@@ -111,8 +111,8 @@ applicable, owners status is displayed:
 
 #### <a id="ownersStatus.submitRule.owners">`Code Review from owners` submit requirement
 
-The `Code Review from owners` (that is available only in
-[replacement mode](config.html#owners.enableSubmitRequirement)) submit
+The `Code Review from owners` (i.e. the
+[default submit requirement](config.html#owners.enableSubmitRequirement)) submit
 requirement provides general information if all owned files were approved
 (requirement is satisfied). When hovered, a detailed description is shown
 
@@ -120,5 +120,6 @@ requirement provides general information if all owned files were approved
 
 #### <a id="ownersStatus.submitRule.files">Per file owners statuses
 
-The owners status per file in replacement mode doesn't differ from
-[submit requirements mode](#ownersStatus.submitRequirement.files).
+The owners status per file when [default submit
+requirements](config.html#owners.enableSubmitRequirement) are enabled doesn't
+differ from [submit requirements mode](#ownersStatus.submitRequirement.files).
