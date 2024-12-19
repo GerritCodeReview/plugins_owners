@@ -15,7 +15,15 @@
  * limitations under the License.
  */
 
-import {css, html, LitElement, PropertyValues, nothing, CSSResult} from 'lit';
+import {
+  css,
+  html,
+  LitElement,
+  PropertyValues,
+  nothing,
+  CSSResult,
+  unsafeCSS,
+} from 'lit';
 import {ifDefined} from 'lit/directives/if-defined.js';
 import {OwnersMixin} from './owners-mixin';
 import {customElement, property} from 'lit/decorators';
@@ -84,7 +92,13 @@ class OwnedFilesCommon extends common {
   }
 
   static commonStyles(): CSSResult[] {
-    return [window?.Gerrit?.styles.font as CSSResult];
+    const template = document.querySelector(
+      'dom-module#shared-styles > template'
+    ) as HTMLTemplateElement;
+    const sharedStyles = css`
+      ${unsafeCSS(template?.content?.querySelector('style')?.textContent)}
+    `;
+    return [sharedStyles, window?.Gerrit?.styles.font as CSSResult];
   }
 
   private computeOwnedFiles() {
