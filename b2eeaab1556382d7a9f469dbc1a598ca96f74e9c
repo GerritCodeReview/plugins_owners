@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca858d97_a379ccd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "Addressed as part of I9ee44ca647",
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34135113_b6c42933",
@@ -31,6 +48,30 @@
       "writtenOn": "2024-12-19T19:56:02Z",
       "side": 1,
       "message": "This looks more than an introduction. Why not using a title compatible with the filename? (e.g. _\"How to use it\"_)",
+      "range": {
+        "startLine": 1,
+        "startChar": 2,
+        "endLine": 1,
+        "endChar": 7
+      },
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4891461e_32682c7d",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34135113_b6c42933",
       "range": {
         "startLine": 1,
         "startChar": 2,
@@ -64,6 +105,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42696db4_a6c0d971",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3275e26_df203447",
+      "range": {
+        "startLine": 4,
+        "startChar": 4,
+        "endLine": 4,
+        "endChar": 9
+      },
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe90287e_82b9632d",
@@ -77,6 +142,30 @@
       "writtenOn": "2024-12-19T19:56:02Z",
       "side": 1,
       "message": "Maybe this needs more explanation and context.\n\nWe need to say that the owners plugin can be used in three modes:\n\na) With Prolog rules\nb) With plugin-provided submit requirements\nc) With custom submit requirements\n\nWhen used in mode a) the functionality is limited to the generation of a Prolog-based submit rule.\n\nWhen used in modes b) and c), the owners plugin has additional functionality:\n- REST-API for getting the owners\u0027 approval status at file-level\n- UI for rendering the owners\u0027 approval status next to the file list",
+      "range": {
+        "startLine": 12,
+        "startChar": 43,
+        "endLine": 12,
+        "endChar": 80
+      },
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "853a163d_557c744a",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe90287e_82b9632d",
       "range": {
         "startLine": 12,
         "startChar": 43,
@@ -110,6 +199,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de3de47b_41953216",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc04bcb5_d969eb0a",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 71
+      },
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de88b199_5c87f4b5",
@@ -123,6 +236,30 @@
       "writtenOn": "2024-12-19T19:56:02Z",
       "side": 1,
       "message": "This is available only in case b) when using the plugin-provided submit requirement.",
+      "range": {
+        "startLine": 28,
+        "startChar": 58,
+        "endLine": 28,
+        "endChar": 74
+      },
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "184a8d01_2ffbefc4",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "I believe you\u0027re referring to \"Code-Review-from-owners\", but you are correct that we should not refer to `Owner-Approval` directly as that\u0027s just a name.",
+      "parentUuid": "de88b199_5c87f4b5",
       "range": {
         "startLine": 28,
         "startChar": 58,
@@ -158,6 +295,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6afb174d_8c388e05",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "In the REST API, which is already mentioned, shall we make it clearer?",
+      "parentUuid": "5f8c0e54_275de349",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 55
+      },
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a45c66fd_2beb62bb",
         "filename": "owners/src/main/resources/Documentation/how-to-use.md",
         "patchSetId": 5
@@ -169,6 +330,30 @@
       "writtenOn": "2024-12-19T19:56:02Z",
       "side": 1,
       "message": "This change is for stable-3.8, this comment isn\u0027t relevant IMHO.",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 77
+      },
+      "revId": "b2eeaab1556382d7a9f469dbc1a598ca96f74e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85af43a_05ffb127",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-19T20:57:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a45c66fd_2beb62bb",
       "range": {
         "startLine": 74,
         "startChar": 0,
