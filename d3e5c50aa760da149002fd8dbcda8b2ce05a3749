@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b06a6a_64ef248a",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-19T20:58:38Z",
+      "side": 1,
+      "message": "nit: empty space at EOL",
+      "range": {
+        "startLine": 34,
+        "startChar": 86,
+        "endLine": 34,
+        "endChar": 87
+      },
+      "revId": "d3e5c50aa760da149002fd8dbcda8b2ce05a3749",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
