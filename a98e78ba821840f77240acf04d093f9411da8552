@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a261d2_619a3a34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-12-19T17:54:49Z",
+      "side": 1,
+      "message": "✔ ~/dev/source/gerrit [stable-3.4|● 1…1]\n17:51 $ bazelisk test //plugins/owners/... //plugins/owners-autoassign/...\nINFO: Invocation ID: f44d7206-efe7-4f80-aef1-3f00da83951d\nINFO: Options provided by the client:\n  Inherited \u0027common\u0027 options: --isatty\u003d1 --terminal_columns\u003d127\nINFO: Reading rc options for \u0027test\u0027 from /home/syntonyze/dev/source/gerrit/.bazelrc:\n  Inherited \u0027build\u0027 options: --workspace_status_command\u003dpython3 ./tools/workspace_status.py --repository_cache\u003d~/.gerritcodereview/bazel-cache/repository --action_env\u003dPATH --disk_cache\u003d~/.gerritcodereview/bazel-cache/cas --java_toolchain\u003d//tools:error_prone_warnings_toolchain --incompatible_strict_action_env --announce_rc\nINFO: Reading rc options for \u0027test\u0027 from /home/syntonyze/dev/source/gerrit/.bazelrc:\n  \u0027test\u0027 options: --build_tests_only --test_output\u003derrors --java_toolchain\u003d//tools:error_prone_warnings_toolchain\nINFO: Analyzed 2 targets (68 packages loaded, 535 targets configured).\nINFO: Found 2 test targets...\nINFO: Elapsed time: 88.734s, Critical Path: 85.59s\nINFO: 163 processes: 9 internal, 69 linux-sandbox, 85 worker.\nINFO: Build completed successfully, 163 total actions\n//plugins/owners:owners_tests                                            PASSED in 35.6s\n//plugins/owners-autoassign:owners_autoassign_tests                      PASSED in 65.3s\n\nINFO: Build completed successfully, 163 total actions",
+      "revId": "a98e78ba821840f77240acf04d093f9411da8552",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
