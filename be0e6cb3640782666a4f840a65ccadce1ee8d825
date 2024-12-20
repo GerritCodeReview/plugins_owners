@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49014ad6_a48e4e2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-20T10:47:04Z",
+      "side": 1,
+      "message": "We could show an image of owned files tab with just some files approved but not all.",
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e7b4d8e_3f42bbd1",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-20T10:47:04Z",
+      "side": 1,
+      "message": "```suggestion\nuser is required to review either all or just a subset of the files indicated in the tab; otherwise, if the icon\n```",
+      "range": {
+        "startLine": 136,
+        "startChar": 20,
+        "endLine": 136,
+        "endChar": 36
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87472a23_2a7640ee",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-20T10:47:04Z",
+      "side": 1,
+      "message": "nit: extra char?",
+      "range": {
+        "startLine": 140,
+        "startChar": 46,
+        "endLine": 140,
+        "endChar": 47
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bbfb892_18131dff",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-12-20T10:47:04Z",
+      "side": 1,
+      "message": "```suggestion\n\u003e In thi case, the _Owned Files_ tab may be absent even if the current user is effectively\n```\n\nJust to be extremely clear that it\u0027s only when `owners.expandGroups \u003d false` that this could happen.",
+      "range": {
+        "startLine": 147,
+        "startChar": 2,
+        "endLine": 147,
+        "endChar": 19
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
