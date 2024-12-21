@@ -88,6 +88,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6652cee4_b8988a50",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-21T02:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87472a23_2a7640ee",
+      "range": {
+        "startLine": 140,
+        "startChar": 46,
+        "endLine": 140,
+        "endChar": 47
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bbfb892_18131dff",
@@ -101,6 +125,30 @@
       "writtenOn": "2024-12-20T10:47:04Z",
       "side": 1,
       "message": "```suggestion\n\u003e In thi case, the _Owned Files_ tab may be absent even if the current user is effectively\n```\n\nJust to be extremely clear that it\u0027s only when `owners.expandGroups \u003d false` that this could happen.",
+      "range": {
+        "startLine": 147,
+        "startChar": 2,
+        "endLine": 147,
+        "endChar": 19
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f646294c_02731dbe",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-21T02:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bbfb892_18131dff",
       "range": {
         "startLine": 147,
         "startChar": 2,
