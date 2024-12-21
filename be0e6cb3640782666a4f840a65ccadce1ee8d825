@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe6e32ab_2d781fc3",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-21T02:19:39Z",
+      "side": 1,
+      "message": "\u003e ```suggestion\n\u003e user is required to review either all or just a subset of the files indicated in the tab; otherwise, if the icon\n\u003e ```\n\nThat\u0027s not the purpose of the _Owned Files_: if you are the owner, you are required to review *at least* the files in the _Owned Files_ tab, and potentially the others on the _Files_ tab.\n\nP.S. When someone provides a review score, that applies to the whole set of files, regardless if you have reviewed them or not.",
+      "parentUuid": "0e7b4d8e_3f42bbd1",
+      "range": {
+        "startLine": 136,
+        "startChar": 20,
+        "endLine": 136,
+        "endChar": 36
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "87472a23_2a7640ee",
         "filename": "owners/src/main/resources/Documentation/how-to-use.md",
         "patchSetId": 3
