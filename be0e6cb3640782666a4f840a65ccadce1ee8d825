@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c345fcf4_d8bb146e",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-22T08:39:18Z",
+      "side": 1,
+      "message": "\u003e Take for example a situation where user A only owns .Java files, and and user B owns both .Java and .bazel files, if user A has already approved the change, then user B would only need to review the .bazel files.\n\nMore than _\"need\"_ is _\"may\"_: user B owns both .Java and .bazel files and his review is a global feedback on the change. I believe it would be the wrong message saying that the owners plugin allows to review individual files, which isn\u0027t.",
+      "parentUuid": "0da95e63_2b926d82",
+      "range": {
+        "startLine": 136,
+        "startChar": 20,
+        "endLine": 136,
+        "endChar": 36
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "87472a23_2a7640ee",
         "filename": "owners/src/main/resources/Documentation/how-to-use.md",
         "patchSetId": 3
