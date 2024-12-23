@@ -113,6 +113,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ec76eef_9a822432",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-23T12:01:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c345fcf4_d8bb146e",
+      "range": {
+        "startLine": 136,
+        "startChar": 20,
+        "endLine": 136,
+        "endChar": 36
+      },
+      "revId": "be0e6cb3640782666a4f840a65ccadce1ee8d825",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87472a23_2a7640ee",
