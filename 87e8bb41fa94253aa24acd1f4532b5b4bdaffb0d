@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae1bc04_54eebe21",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-23T13:05:17Z",
+      "side": 0,
+      "message": "This looks wrong: the only change we need to keep is the shorter default cache time. This should be kept as it was in the stable-3.5 branch.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 84
+      },
+      "revId": "87e8bb41fa94253aa24acd1f4532b5b4bdaffb0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
