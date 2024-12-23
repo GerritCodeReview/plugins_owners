@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b17de7ae_48e56f1f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-12-23T14:58:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adb83a2e_e65a828f",
+      "revId": "85b665c3eeb5d4b8abe639de8f348cdc8c94d7d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "752c750c_fec7921a",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-12-23T13:05:17Z",
       "side": 1,
       "message": "Why is this needed?",
+      "range": {
+        "startLine": 378,
+        "startChar": 13,
+        "endLine": 378,
+        "endChar": 26
+      },
+      "revId": "85b665c3eeb5d4b8abe639de8f348cdc8c94d7d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18a9f0cd_af07bfba",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-12-23T14:58:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "752c750c_fec7921a",
       "range": {
         "startLine": 378,
         "startChar": 13,

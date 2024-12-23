@@ -46,6 +46,30 @@
       },
       "revId": "87e8bb41fa94253aa24acd1f4532b5b4bdaffb0d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e5f037a_bed5c73a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-12-23T14:58:58Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "0ae1bc04_54eebe21",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 84
+      },
+      "revId": "87e8bb41fa94253aa24acd1f4532b5b4bdaffb0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
