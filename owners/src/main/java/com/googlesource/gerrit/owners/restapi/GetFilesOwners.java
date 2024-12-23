@@ -35,6 +35,7 @@ import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -46,7 +47,6 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,7 +98,13 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
 
     Project.NameKey project = change.getProject();
     List<Project.NameKey> projectParents =
-        projectCache.get(project).map(PathOwners::getParents).orElse(Collections.emptyList());
+        projectCache
+            .get(project)
+            .map(Stream::of)
+            .orElse(Stream.empty())
+            .flatMap(s -> s.parents().stream())
+            .map(ProjectState::getNameKey)
+            .collect(Collectors.toList());
 
     try (Repository repository = repositoryManager.openRepository(project)) {
       Set<String> changePaths = new HashSet<>(changeData.currentFilePaths());
@@ -146,13 +152,14 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                       fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
 
       Map<String, Set<GroupOwner>> filesApprovedByOwners =
-              Maps.filterEntries(
-                      fileToOwners,
-                      (fileOwnerEntry) ->
-                              isApprovedByOwner(
-                                      fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
+          Maps.filterEntries(
+              fileToOwners,
+              (fileOwnerEntry) ->
+                  isApprovedByOwner(
+                      fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
 
-      return Response.ok(new FilesOwnersResponse(ownersLabels, filesWithPendingOwners, filesApprovedByOwners));
+      return Response.ok(
+          new FilesOwnersResponse(ownersLabels, filesWithPendingOwners, filesApprovedByOwners));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
