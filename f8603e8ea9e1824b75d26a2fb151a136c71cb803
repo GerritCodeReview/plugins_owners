@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8f6ab34_28456537",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-12-23T11:52:15Z",
+      "side": 1,
+      "message": "Please remove one of these two, either \"displayed\" or \"contained\"",
+      "range": {
+        "startLine": 141,
+        "startChar": 5,
+        "endLine": 141,
+        "endChar": 24
+      },
+      "revId": "f8603e8ea9e1824b75d26a2fb151a136c71cb803",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
