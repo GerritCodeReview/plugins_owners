@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+import java.time.Duration;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -38,7 +39,9 @@ public interface PathOwnersEntriesCache {
     return new CacheModule() {
       @Override
       protected void configure() {
-        cache(CACHE_NAME, Key.class, new TypeLiteral<Optional<OwnersConfig>>() {});
+        cache(CACHE_NAME, Key.class, new TypeLiteral<Optional<OwnersConfig>>() {})
+            .maximumWeight(Long.MAX_VALUE)
+            .expireAfterWrite(Duration.ofSeconds(60));
         bind(PathOwnersEntriesCache.class).to(PathOwnersEntriesCacheImpl.class);
         DynamicSet.bind(binder(), GitReferenceUpdatedListener.class)
             .to(OwnersRefUpdateListener.class);

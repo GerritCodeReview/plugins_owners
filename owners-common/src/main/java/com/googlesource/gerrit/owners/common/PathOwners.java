@@ -167,6 +167,7 @@ public class PathOwners {
     fileGroupOwners = map.getFileGroupOwners();
     label = map.getLabel();
   }
+
   /**
    * Returns a read only view of the paths to owners mapping.
    *
@@ -374,7 +375,7 @@ public class PathOwners {
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
       PathOwnersEntriesCache cache)
-      throws ExecutionException {
+      throws IOException, ExecutionException {
     String[] parts = path.split("/");
     PathOwnersEntry currentEntry = rootEntry;
     StringBuilder builder = new StringBuilder();

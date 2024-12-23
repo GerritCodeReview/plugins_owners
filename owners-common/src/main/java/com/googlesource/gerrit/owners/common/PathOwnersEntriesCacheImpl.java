@@ -20,6 +20,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.gerrit.entities.RefNames;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -88,6 +89,6 @@ class PathOwnersEntriesCacheImpl implements PathOwnersEntriesCache {
   }
 
   private String indexKey(String project, String branch) {
-    return new StringBuilder(project).append('@').append(branch).toString();
+    return new StringBuilder(project).append('@').append(RefNames.fullName(branch)).toString();
   }
 }
