@@ -6,7 +6,7 @@ restart of the Gerrit service.
 
 Once the `owners-api.jar` is loaded at Gerrit startup, the `owners-autoassign.jar`
 file can be installed like a regular Gerrit plugin, by being dropped to the
-`GRRIT_SITE/plugins` directory or installed through the plugin manager.
+`GERRIT_SITE/plugins` directory or installed through the plugin manager.
 
 ## Global configuration
 
