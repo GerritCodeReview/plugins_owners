@@ -1,13 +1,3 @@
-## Setup
-
-The owners-autoassign plugin depends on the shared library `owners-api.jar`
-which needs to be installed into the `$GERRIT_SITE/lib` and requires a
-restart of the Gerrit service.
-
-Once the `owners-api.jar` is loaded at Gerrit startup, the `owners-autoassign.jar`
-file can be installed like a regular Gerrit plugin, by being dropped to the
-`GERRIT_SITE/plugins` directory or installed through the plugin manager.
-
 ## Global configuration
 
 The global plugin configuration is read from the `$GERRIT_SITE/etc/owners-autoassign.config`
