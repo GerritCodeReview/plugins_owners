@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e61655af_856b08db",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-01-14T17:27:25Z",
+      "side": 1,
+      "message": "should we mention that prolog rules were long ago deprecated and should be migrated of?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 22
+      },
+      "revId": "efcd5f1a0af6706be2bd069b71506af6bc25a420",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d28ea43e_5d1305e2",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-01-14T17:27:25Z",
+      "side": 1,
+      "message": "nit: `s/who\u0027s/whose`?",
+      "range": {
+        "startLine": 22,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "efcd5f1a0af6706be2bd069b71506af6bc25a420",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2caae9bd_fb7f5255",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-01-14T17:27:25Z",
+      "side": 1,
+      "message": "nit: `s/format/` - it parses the same file",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 6
+      },
+      "revId": "efcd5f1a0af6706be2bd069b71506af6bc25a420",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
