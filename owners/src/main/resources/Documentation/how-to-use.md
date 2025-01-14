@@ -12,19 +12,22 @@ in the `OWNERS` file and are covered in the
 
 ## Context
 
-The owners plugin can be used in three different modes:
-1. Prolog rules only(deprecated since Gerrit 3.6).
-2. With plugin-provided submit requirements.
-3. With user defined custom submit requirements.
+The owners plugin can be used in two different modes:
+1. With plugin-provided submit requirements.
+2. With user defined custom submit requirements.
 
-When using the plugin in mode 1. the functionality is limited to the generation
-of a Prolog-based submit rule with no extra UI features.
+> **NOTE**: Previous to 3.6 it was also possible to use the plugin with Prolog rules,
+> while this has not yet completely stopped working, the functionalities of Prolog
+> rules are now strongly limited and only applied on a best effort basis. It's
+> highly advised to completely remove them from your system as a matter of
+> priority.
+> To add, when using Prolog rules there are no UI features.
 
-On top of providing significantly better and more predictable performances,
-using the plugin in either mode 2. or 3. provides extra capabilities like:
-- A REST-api that exposes the owners approval status with single file granularity.
-- Enhanced UI experience with much clearer explanation of who owns what files,
-  as explained below.
+> On top of providing significantly better and more predictable performances,
+> using the plugin in either mode 1. or 2. provides extra capabilities like:
+> - A REST-api that exposes the owners approval status with single file granularity.
+> - Enhanced UI experience with much clearer explanation of who owns what files,
+>  as explained below.
 
 ## <a id="ownerStatus">Owner status on change page
 
@@ -85,7 +88,7 @@ the icon** to get additional information displayed as a tooltip.
 
 ### <a id="ownerStatus.submitRule">Owners status for submit rule
 
- `OWNERS` file can still be evaluated (without a need for the prolog
+`OWNERS` file can still be evaluated (without a need for the Prolog
 predicate being added to the project) by enabling the
 [default submit requirements](config.html#owners.enableSubmitRequirement).
 In this way, results of the `OWNERS` file evaluation are provided to
