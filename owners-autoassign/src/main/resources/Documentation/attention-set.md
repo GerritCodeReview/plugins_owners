@@ -7,20 +7,6 @@ not be ideal when the list of owners automatically assigned could be
 quite long, due to the hierarchy of the OWNERS files in the parent
 directories.
 
-The `owners-api.jar` libModule included in the owners' plugin project contains
-a generic interface that can be used to customize Gerrit's default
-attention-set behaviour.
-
-## owners-api setup
-
-Copy the `owners-api.jar` libModule into the $GERRIT_SITE/lib directory
-and add the following entry to `gerrit.config`:
-
-```
-[gerrit]
-  installModule = com.googlesource.gerrit.owners.api.OwnersApiModule
-```
-
 ## Customization of the attention-set selection
 
 The OwnersAttentionSet API, contained in the owners-api.jar libModule,
