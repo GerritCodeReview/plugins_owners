@@ -1,43 +1,42 @@
 # Gerrit OWNERS Plugin
 
-This plugin provides some Prolog predicates that can be used to add customized
-validation checks based on the approval of ‘path owners’ of a particular folder
-in the project.
+This repository comprosises of effectively two separate plugins, `owners` and
+`owners-autoassign`.
 
-That allows creating a single big project including multiple components and
-users have different roles depending on the particular path where changes are
-being proposed. A user can be “owner” in a specific directory, and thus
-influencing the approvals of changes there, but cannot do the same in others
-paths, so assuring a kind of dynamic subproject access rights.
+They share the ability to parse the same OWNERS file format, which facilitates
+the maintenance of ACLs, as there is only one source of truth.
 
-## How it works
+For details on how to configure either plugin, please refer to the docs in the
+specific plugin's folder.
 
-There are currently two main prolog public verbs:
+Here's an introduction to both plugins:
 
-`add_owner_approval/3` (UserList, InList, OutList)
-appends `label('Owner-Approval', need(_))` to InList building OutList if
-UserList has no users contained in the defined owners of this path change.
+## owners
 
-In other words, the predicate just copies InList to OutList if at least one of
-the elements in UserList is an owner.
+This plugin exposes the `has:approval_owners` predicate that can be used with
+Gerrit's own
+[submit-requirements](/Documentation/config-submit-requirements.html) to ensure
+that a change has been approved by
+the relevant users defined in the OWNERS file for the target branch of the
+change.
 
-`add_owner_approval/2` (InList, OutList)
-appends `label('Owner-Approval', need(_))` to InList building OutList if
-no owners has given a Code-Review +2  to this path change.
+This allows the creation of a single repository with multiple nested projects, each
+potentially, used by different users/teams with different roles depending on the
+particular path where changes are being proposed. A user can be “owner” in a
+specific directory, thus influencing the approvals of changes there, but not
+in others, enabling great flexibility when working on repositories shared by
+multiple teams.
 
-This predicate is similar to the first one but generates a UserList with an
-hardcoded policy.
+## owners-autoassign
 
-Since add_owner_approval/3 is not using hard coded policies, it can be suitable
-for complex customizations.
+This plugin parses the same OWNERS file format as the owners plugin. It will
+automatically assign all of the owners as reviewers to newly created or updated
+changes. It also allows for completely custom management of the attention set,
+i.e. allows, via custom integrations, to not add people on holiday to the
+attention set, or that the same user is not added to too many changes at the
+same time, etc...
 
-## Auto assigner
-
-There is a second plugin, gerrit-owners-autoassign which depends on
-gerrit-owners. It will automatically assign all of the owners to review a
-change when it's created or updated.
-
-## How to build
+## Building the plugins
 
 This plugin is built with Bazel and two build modes are supported:
 
