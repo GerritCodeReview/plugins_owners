@@ -1,38 +1,42 @@
 # Gerrit OWNERS Plugin
 
-The plugin exposes the `has:approval_owners` predicate that can be used with
+This repository comprosises of effectively two separate plugins, `owners` and
+`owners-autoassign`.
+
+They share the ability to parse the same OWNERS file format, which facilitates
+maintenance of ACLs, as there is only one source of truth.
+
+For details on how to configure either plugin, please refer to the docs in the
+specific plugin's folder.
+
+Here's an introduction to both plugins:
+
+## owners
+
+This plugin exposes the `has:approval_owners` predicate that can be used with
 Gerrit's own
 [submit-requirements](/Documentation/config-submit-requirements.html) to ensure
 that a change has been approved by
 the relevant users defined in the OWNERS file for the target branch of the
 change.
 
-That allows creating a single big project including multiple components and
-users with different roles depending on the particular path where changes are
-being proposed. A user can be “owner” in a specific directory, and thus
-influencing the approvals of changes there, but not in others, enabling great
-flexibility when working on repositories shared by multiple teams.
+This allows creating a single repository with multiple nested projects, each
+potentially, used by different users/teams with different roles depending on the
+particular path where changes are being proposed. A user can be “owner” in a
+specific directory, and thus influencing the approvals of changes there, but not
+in others, enabling great flexibility when working on repositories shared by
+multiple teams.
 
-## How it works
+## owners-autoassign
 
-Once installed, it will be possible to use the `has:approval_owners` predicate
-in Gerrit's own submit requirements. If the plugin is installed but the
-predicate isn't used, then the plugin will have no effect.
-The plugin will parse the OWNERS file located in the target branch of the change
-to compute who's approval is required, only when all the conditions are met will
-the change become submittable.
+This plugin parses the same OWNERS file format as the owners plugin. It will
+automatically assign all of the owners as reviewers to newly created or updated
+changes. It also allows for completely custom management of the attention set,
+i.e. allows, via custom integrations, to not add people on holiday to the
+attention set, or that the same user is not added to too many changes at the
+same time, etc...
 
-## Auto-assigner
-
-There is a second plugin, `owners-autoassign` which parses the same OWNERS file
-format. It will automatically assign all of the owners to review a
-change when it's created or updated.
-This plugin will require `owners-api.jar` to be in Gerrit's `lib` folder, but
-does not depend on `owners.jar` in anyway. The only thing in common between the
-two plugin is the fact that they can parse the same OWNERS file format, allowing
-users to only define and maintain it once.
-
-## How to build
+## Building the plugins
 
 This plugin is built with Bazel and two build modes are supported:
 
