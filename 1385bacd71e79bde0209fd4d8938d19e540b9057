@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8da9c9d_87220a96",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-20T15:27:19Z",
+      "side": 1,
+      "message": "```suggestion\n\u003e **NOTE**: Previous to 3.6 it was also possible to use the plugin with Prolog rules,\n```",
+      "range": {
+        "startLine": 19,
+        "startChar": 72,
+        "endLine": 19,
+        "endChar": 78
+      },
+      "revId": "1385bacd71e79bde0209fd4d8938d19e540b9057",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d65cec4_30e304a8",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-20T15:27:19Z",
+      "side": 1,
+      "message": "```suggestion\n\u003e while this has not yet completely stopped working, the functionalities of Prolog\n```",
+      "range": {
+        "startLine": 20,
+        "startChar": 76,
+        "endLine": 20,
+        "endChar": 82
+      },
+      "revId": "1385bacd71e79bde0209fd4d8938d19e540b9057",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df731218_bebf5f43",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-20T15:27:19Z",
+      "side": 1,
+      "message": "```suggestion\n\u003e To add, when using Prolog rules there are no UI features.\n```",
+      "range": {
+        "startLine": 24,
+        "startChar": 21,
+        "endLine": 24,
+        "endChar": 27
+      },
+      "revId": "1385bacd71e79bde0209fd4d8938d19e540b9057",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e04400a_5e3e8a96",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-20T15:27:19Z",
+      "side": 1,
+      "message": "```suggestion\n\u003e  as explained below.\n```",
+      "range": {
+        "startLine": 30,
+        "startChar": 22,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "1385bacd71e79bde0209fd4d8938d19e540b9057",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3e2d703_a3c471fb",
+        "filename": "owners/src/main/resources/Documentation/how-to-use.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-20T15:27:19Z",
+      "side": 1,
+      "message": "```suggestion\n`OWNERS` file can still be evaluated (without a need for the Prolog\n```",
+      "range": {
+        "startLine": 91,
+        "startChar": 61,
+        "endLine": 91,
+        "endChar": 67
+      },
+      "revId": "1385bacd71e79bde0209fd4d8938d19e540b9057",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
