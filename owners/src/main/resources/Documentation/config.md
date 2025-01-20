@@ -201,7 +201,7 @@ OWNERS is used as global default.
 If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
 in all parent projects up to All-Projects.
 
-## Example 1 - OWNERS file without matchers and default Gerrit submit rules
+## Example 1 - OWNERS file without matchers
 
 Given an OWNERS configuration of:
 
@@ -212,128 +212,31 @@ owners:
 - Doug Smith
 ```
 
-### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
+In this case the owners plugin will assume the default label configuration,`Code-Review
++2`, as indication of approval.
 
-Then Gerrit would:
-
-Evaluate default submit requirement which gives `OK` if no `Code-Review -2` is
-given and at least one `Code-Review +2` is being provided.
-
-Evaluate owners submit requirement to check if `Code-Review +2` is given by
-either 'John Doe' or 'Doug Smith'. If none of them has approved then
-`Code-Review from owners` requirement is added making the change not
-submittable.
-
-> See [notes](#owners.enableSubmitRequirement) for an example on how to enable
-> submit requirements for a specific project only.
-
-### When `owners.enableSubmitRequirement = false` (default)
-
-And sample rules.pl that uses this predicate to enable the submit rule if
-one of the owners has given a Code Review +2
-
-```prolog
-submit_rule(S) :-
-  gerrit:default_submit(D),
-  D =.. [submit | Ds],
-  findall(U, gerrit:commit_label(label('Code-Review', 2), U), Approvers),
-  gerrit_owners:add_owner_approval(Approvers, Ds, A),
-  S =.. [submit | A].
+To enforce submittability only when the specified owners have approved the
+change, you can then either enable `owners.enableSubmitRequirement = true` in
+your `gerrit.config` or define a submit requirement in your `project.config` that
+uses the `has:approval_owners` in the `applicableIf` section, like so:
+```
+[submit-requirement "Owner-Approval"]
+       description = Files needs to be approved by owners
+       submittableIf = has:approval_owners
 ```
 
-Then Gerrit would evaluate the Prolog rule as follows:
+## Example 2 - OWNERS file with custom approval label
 
-It first gets the current default on rule which gives ok() if no Code-Review -2
-and at least a Code-Review +2 is being provided.
+Sometimes, teams might wish to use a different label to signal approval from an
+owner, rather than the default `Code-Review +2`. For example, you might wish to
+have a governance team explicitly approving changes but do not wish to grant
+them code review permissions.
 
-Then it accumulates in Approvers the list of users who had given Code-Review +2
-and then checks if this list contains either 'John Doe' or 'Doug Smith'.
-
-If Approvers list does not include one of the owners, then Owner-Approval need()
-is added thus making the change not submittable.
-
-## Example 2 - OWNERS file without matchers and no default Gerrit rules
-
-Given an OWNERS configuration of:
-
-```yaml
-inherited: true
-owners:
-- John Doe
-- Doug Smith
-```
-
-### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
-
-This case is supported with the `Code-Review` label and `OWNERS` file
-modifications.
-
-The `OWNERS` file requires the label configuration to be added (here is the
-updated version):
-
-```yaml
-inherited: true
-label: Code-Review, 1
-owners:
-- John Doe
-- Doug Smith
-```
-
-But additionally one needs to modify the label on the particular project level
-to the following version:
-
-```
-[label "Code-Review"]
-	function = NoOp
-	defaultValue = 0
-	copyMinScore = true
-	copyAllScoresOnTrivialRebase = true
-	value = -2 This shall not be merged
-	value = -1 I would prefer this is not merged as is
-	value = 0 No score
-	value = +1 Looks good to me, but someone else must approve
-	value = +2 Looks good to me, approved
-```
-
-Note that `function` is set to `NoOp`.
-
-As a result Gerrit would make the change Submittable only if 'John Doe' or
-'Doug Smith' have provided at least a `Code-Review +1`.
-
-> See [notes](#owners.enableSubmitRequirement) for an example on how to enable
-> submit requirements for a specific project only.
-
-### When `owners.enableSubmitRequirement = false` (default)
-
-And a rule which makes submittable a change if at least one of the owners has
-given a +1 without taking into consideration any other label:
-
-```prolog
-submit_rule(S) :-
-     Ds = [ label(‘owners_plugin_default’,ok(user(100000))) ],
-     findall(U, gerrit:commit_label(label('Code-Review', 1), U), Approvers),
-     gerrit_owners:add_owner_approval(Approvers, Ds, A),
-     S =.. [submit | A].
-```
-
-Then Gerrit would make the change Submittable only if 'John Doe' or 'Doug Smith'
-have provided at least a Code-Review +1.
-
-## Example 3 - OWNERS file without matchers and custom _Owner-Approves_ label
-
-Sometimes to differentiate the _owners approval_ on a change from the code
-review on the entire project. The scenario could be for instance the sign-off of
-the project's build dependencies based on the Company roles-and-responsibilities
-matrix and governance process.
-
-In this case, we need to grant specific people with the _Owner-Approved_ label
-without necessarily having to give Code-Review +2 rights on the entire project.
+In this case, we need to grant specific groups with a custom label without
+necessarily giving them Code-Review +2 rights on the entire project.
 
 Amend the project.config as shown in below and add a new label; then give
-permissions to any registered user.
-
-Example fo the project config changes with the new label with values
-(label name and values are arbitrary)
+permissions to any registered user:
 
 ```
 [label "Owner-Approved"]
@@ -348,82 +251,41 @@ Example fo the project config changes with the new label with values
      label-Owner-Approved = -1..+1 group Registered Users
 ```
 
-### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
-
 Given now an OWNERS configuration of:
 
 ```yaml
 inherited: true
-label: Owner-Approved
+label: Owner-Approved, 1
 owners:
 - John Doe
 - Doug Smith
 ```
 
-A change cannot be submitted until 'John Doe' or 'Doug Smith' add a label
-`Owner-Approved`, independently from being able to provide any Code-Review.
+This will mean that, a change cannot be submitted until 'John Doe' or 'Doug
+Smith' vote +1 on the `Owner-Approved`  label, independently from whomever else
+has provided a `Code-Review +2`.
+
+Finally to enable this, you'll need to define a custom submit requirement in
+your `project.config`(as above) or enable `owners.enableSubmitRequirement = true` in your
+`gerrit.config`
+
+_NOTE: If you no longer wish to require a `Code-Review +2` and would rather only
+use the custom submit requirement, you will need to change the definition of the
+`Code-Review` label in `All-Projects`'s `project.config` so that `function = NoOp`.
 
 > See [notes](#owners.enableSubmitRequirement) for an example on how to enable
 > submit requirements for a specific project only.
 
-### When `owners.enableSubmitRequirement = false` (default)
+> See [notes](#label.Label-Name.function) for an example on how to modify
+> label functions, as by default `Code-Review` requires at least one max vote
+> from any user.
 
-Finally, define prolog rules as shown in below (an amended version of
-Example 1):
-
-```prolog
-submit_rule(S) :-
-  gerrit:default_submit(D),
-  D =.. [submit | Ds],
-  findall(U, gerrit:commit_label(label('Owner-Approved', 1), U), Approvers),
-  gerrit_owners:add_owner_approval(Approvers, Ds, A),
-  S =.. [submit | A].
-```
-
-Given now an OWNERS configuration of:
-
-```yaml
-inherited: true
-owners:
-- John Doe
-- Doug Smith
-```
-
-A change cannot be submitted until John Doe or Doug Smith add a label
-"Owner-Approved", independently from being able to provide any Code-Review.
-
-## Example 4 - OWNERS file without matchers, default Gerrit submit rules and owners Code-Review +1 required
-
-This is a variant of `example 3` when no additional label is created but owners
-shouldn't be granted with `Code-Review +2` for all project files as it might be
-outside of their comptenence/comfort zone.
-
-### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
-
-Given an OWNERS configuration of:
-
-```yaml
-inherited: true
-label: Code-Review, 1
-owners:
-- John Doe
-- Doug Smith
-```
-
-A change cannot be submitted until 'John Doe' or 'Doug Smith' add
-`Code-Review+1` score. Note that regular developers still need to cast the
-`Code-Review+2` for a change to be submittable as default submit rule is
-still evaluated.
-
-> See [notes](#owners.enableSubmitRequirement) for an example on how to enable
-> submit requirements for a specific project only.
-
-## Example 5 - Owners based on matchers
+## Example 3 - Owners based on matchers
 
 Often the ownership comes from the developer's skills and competencies and
 cannot be purely defined by the project's directory structure.
 For instance, all the files ending with .sql should be owned and signed-off by
-the DBA while all the ones ending with .css by approved by the UX Team.
+the DBA while all the ones that contain 'Test' should be reviewed by the QA team.
 
 Given an OWNERS configuration of:
 
@@ -433,81 +295,15 @@ matchers:
 - suffix: .sql
   owners:
   - Mister Dba
-- suffix: .css
+- regex: .*Test.*
   owners:
-  - John Creative
-  - Matt Designer
+  - John Bug
+  - Matt Free
 ```
 
-### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
-
-Then for any change that contains files with .sql or .css extensions, besides
-to the default Gerrit submit rules, the extra constraints on the additional
-owners of the modified files will be added. The final submit is enabled if both
-Gerrit default rules are satisfied and all the owners of the .sql files
-('Mister Dba') and the .css files (either 'John Creative' or 'Matt Designer')
-have provided their `Code-Review +2` feedback (as `Code-Review` is default
-label for owners submit requirement).
+You can then either enable `owners.enableSubmitRequirement = true` in your
+`gerrit.config` or define a submit requirement in your `project.config` that
+uses the `has:approval_owners` in the `applicableIf` section.
 
 > See [notes](#owners.enableSubmitRequirement) for an example on how to enable
 > submit requirements for a specific project only.
-
-### When `owners.enableSubmitRequirement = false` (default)
-
-And a rules.pl of:
-
-```prolog
-submit_rule(S) :-
-  gerrit:default_submit(L),
-  L =.. [submit | Sr ],
-  gerrit_owners:add_match_owner_approval(Sr,A),
-  S =.. [submit | A ].
-```
-
-Then for any change that contains files with .sql or .css extensions, besides
-to the default Gerrit submit rules, the extra constraints on the additional
-owners of the modified files will be added. The final submit is enabled if both
-Gerrit default rules are satisfied and all the owners of the .sql files
-(Mister Dba) and the .css files (either John Creative or Matt Designer) have
-provided their Code-Review +2 feedback.
-
-## Example 6 - Owners details on a per-file basis
-
-### When `owners.enableSubmitRequirement = true` with a default Gerrit project labels configuration
-
-This case is obsolete and _only_ prolog specific. The list of which file is
-owned by whom is available through the [REST API](rest-api.md).
-
-### When `owners.enableSubmitRequirement = false` (default)
-
-When using the owners with a series of matchers associated to different set of
-owners, it may not be trivial to understand exactly *why* change is not approved
-yet.
-
-We need to define one extra submit rule to scan the entire list of files in the
-change and their associated owners and cross-check with the existing Code-Review
-feedback received.
-
-Given the same OWNERS and rules.pl configuration of Example 4 with the following
-extra rule:
-
-```prolog
-submit_rule(submit(W)) :-
-  gerrit_owners:findall_match_file_user(W).
-```
-
-For every change that would include any .sql or .css file (e.g. my-update.sql
-and styles.css) Gerrit will display as additional description on the "need" code
-review labels section of the change screen:
-
-```
-Code-Review from owners
-Mister Dba owns my-update.sql
-John Creative, Matt Designer own styles.css
-```
-
-As soon as the owners reviews are provided, the corresponding entry will be
-removed from the "need" section of the change.
-
-In this way, it is always clear which owner needs to provide their feedback on
-which file of the change.
