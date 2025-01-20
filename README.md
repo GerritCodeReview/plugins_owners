@@ -9,6 +9,12 @@ the maintenance of ACLs, as there is only one source of truth.
 For details on how to configure either plugin, please refer to the docs in the
 specific plugin's folder.
 
+> **NOTE**: A comprehensive introduction to both `owners` and `owners-autoassign` has been
+> given as part of the GerritMeets series in Jan 2025, the recording can be found
+> at:
+>
+> https://www.youtube.com/watch?v=NfIHnJF30Wo
+
 Here's an introduction to both plugins:
 
 ## owners
