@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e75e62a7_f516d6b6",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-22T22:48:33Z",
+      "side": 1,
+      "message": "```suggestion\n`owners.config`\n```",
+      "range": {
+        "startLine": 270,
+        "startChar": 1,
+        "endLine": 270,
+        "endChar": 7
+      },
+      "revId": "b8827e9147bc27f404c3874ef4fb6ccb68b3431f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
