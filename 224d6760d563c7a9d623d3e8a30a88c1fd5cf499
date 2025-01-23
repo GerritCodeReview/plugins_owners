@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f4d2f94a_672fa0d4",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T09:08:18Z",
+      "side": 0,
+      "message": "It\u0027s already mentioned on L276. Specifically I removed this example as this is now the default(`label.\"Code-Review\".function-NoOp`), and so already covered in example 1.",
+      "parentUuid": "1fe57ddc_032cc6ff",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17dced52_53c17b6c",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-23T08:58:31Z",
       "side": 0,
       "message": "Why are you removing this? It refers to the Submit Requirements use-case.",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5136c395_b290c9f9",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T09:08:18Z",
+      "side": 0,
+      "message": "I believe it\u0027s already covered in the previous example.\nSpecifically adding the note at L272 I believe was enough to cover what was covered here.",
+      "parentUuid": "17dced52_53c17b6c",
       "range": {
         "startLine": 401,
         "startChar": 0,

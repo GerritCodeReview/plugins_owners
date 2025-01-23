@@ -68,6 +68,30 @@
       },
       "revId": "c801c091cd86f1eb9d93c06d0f556f6adb2a2fec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef47e849_68d59b26",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T09:08:18Z",
+      "side": 1,
+      "message": "Just wanted to have an example with a regex.",
+      "parentUuid": "0ec2281d_46aff23d",
+      "range": {
+        "startLine": 288,
+        "startChar": 0,
+        "endLine": 301,
+        "endChar": 13
+      },
+      "revId": "c801c091cd86f1eb9d93c06d0f556f6adb2a2fec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
