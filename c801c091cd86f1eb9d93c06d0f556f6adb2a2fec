@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b3ce0ca_1a7f0520",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3546858_58f1792e",
+      "range": {
+        "startLine": 221,
+        "startChar": 39,
+        "endLine": 221,
+        "endChar": 51
+      },
+      "revId": "c801c091cd86f1eb9d93c06d0f556f6adb2a2fec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3077fae9_0a9a642e",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-23T09:03:04Z",
       "side": 1,
       "message": "not necessarily grant ?",
+      "range": {
+        "startLine": 232,
+        "startChar": 59,
+        "endLine": 232,
+        "endChar": 76
+      },
+      "revId": "c801c091cd86f1eb9d93c06d0f556f6adb2a2fec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "268f0db3_dd218df9",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3077fae9_0a9a642e",
       "range": {
         "startLine": 232,
         "startChar": 59,
