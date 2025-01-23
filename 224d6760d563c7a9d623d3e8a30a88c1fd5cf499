@@ -93,6 +93,30 @@
       },
       "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bb9ee42_7b1a8ec4",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-01-23T09:15:15Z",
+      "side": 0,
+      "message": "I belive this example wanted to show that a +1 is enough, otherwise the owner wouldhave expected +2: `label: Code-Review, 1`.",
+      "parentUuid": "5136c395_b290c9f9",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
