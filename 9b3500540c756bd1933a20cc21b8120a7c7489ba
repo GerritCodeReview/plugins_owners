@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0538269e_7e4b34f3",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T07:42:14Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "50c1f1ec_e731a3ea",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "9b3500540c756bd1933a20cc21b8120a7c7489ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "927f1bf6_bac7a28e",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07dbccd6_dee96c3a",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T07:42:14Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "927f1bf6_bac7a28e",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 20
+      },
+      "revId": "9b3500540c756bd1933a20cc21b8120a7c7489ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd6b0f75_8274c8be",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-01-22T22:37:27Z",
       "side": 1,
       "message": "```suggestion\nspecific directory, thus influencing the approvals of changes there, but not\n```",
+      "range": {
+        "startLine": 26,
+        "startChar": 20,
+        "endLine": 26,
+        "endChar": 23
+      },
+      "revId": "9b3500540c756bd1933a20cc21b8120a7c7489ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee3f7a76_0d3fbb14",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T07:42:14Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "bd6b0f75_8274c8be",
       "range": {
         "startLine": 26,
         "startChar": 20,
