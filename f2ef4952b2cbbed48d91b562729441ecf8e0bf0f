@@ -22,6 +22,29 @@
       },
       "revId": "f2ef4952b2cbbed48d91b562729441ecf8e0bf0f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61ea9993_052a019b",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-01-23T10:01:22Z",
+      "side": 1,
+      "message": "You could use the overrideIF here, isn\u0027t it?",
+      "range": {
+        "startLine": 272,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 83
+      },
+      "revId": "f2ef4952b2cbbed48d91b562729441ecf8e0bf0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
