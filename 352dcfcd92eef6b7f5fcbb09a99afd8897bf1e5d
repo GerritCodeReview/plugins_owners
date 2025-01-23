@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e7f0ee1_db9a2e3a",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-23T09:00:14Z",
+      "side": 1,
+      "message": "You can render this is a proper URL in the text above.\n\n\n\n```suggestion\n\u003e **NOTE**: A comprehensive introduction to both `owners` and `owners-autoassign` has been\n\u003e given as part of the [GerritMeets series in Jan 2025](https://www.youtube.com/watch?v\u003dNfIHnJF30Wo).\n```",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 45
+      },
+      "revId": "352dcfcd92eef6b7f5fcbb09a99afd8897bf1e5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
