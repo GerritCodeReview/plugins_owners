@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3077fae9_0a9a642e",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-01-23T09:03:04Z",
+      "side": 1,
+      "message": "not necessarily grant ?",
+      "range": {
+        "startLine": 232,
+        "startChar": 59,
+        "endLine": 232,
+        "endChar": 76
+      },
+      "revId": "c801c091cd86f1eb9d93c06d0f556f6adb2a2fec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0ec2281d_46aff23d",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 10
