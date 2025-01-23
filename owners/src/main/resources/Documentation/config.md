@@ -42,9 +42,10 @@ owners.label
 
 <a name="owners.enableSubmitRequirement">owners.enableSubmitRequirement</a>
 :   If set to `true` the approvals are evaluated through the owners plugin
-    provided submit rule without a need of prolog predicate being added to a
-    project or submit requirement configured in the `project.config` as it is
-    automatically applied to all projects. Defaults to `false`.
+    default submit rule, named "Code-Review-from-Owners", without a need of
+    prolog predicate being added to a project or submit requirement configured
+    in the `project.config` as it is automatically applied to all projects.
+    Defaults to `false`.
 
     Example:
 
