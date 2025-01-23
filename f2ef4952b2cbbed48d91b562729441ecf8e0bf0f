@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48417eaf_8f71e5d2",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T10:33:55Z",
+      "side": 1,
+      "message": "Added a clarification in follow-up change.",
+      "parentUuid": "35f78846_6eab493e",
+      "range": {
+        "startLine": 219,
+        "startChar": 36,
+        "endLine": 219,
+        "endChar": 74
+      },
+      "revId": "f2ef4952b2cbbed48d91b562729441ecf8e0bf0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b47e14f_1432c9a5",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 13
