@@ -117,6 +117,30 @@
       },
       "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3573c301_6686f85c",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T09:16:37Z",
+      "side": 0,
+      "message": "Yup, I believe so, which is now covered on L258.",
+      "parentUuid": "3bb9ee42_7b1a8ec4",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
