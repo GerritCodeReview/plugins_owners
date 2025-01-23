@@ -26,6 +26,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b47e14f_1432c9a5",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T10:05:59Z",
+      "side": 1,
+      "message": "Add link to docs on how to configure submit requirements",
+      "revId": "f2ef4952b2cbbed48d91b562729441ecf8e0bf0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8ee0e64_02087c21",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-23T10:05:59Z",
+      "side": 1,
+      "message": "Add note to say that you could even use `Code-Review, 1` as definition of approval",
+      "revId": "f2ef4952b2cbbed48d91b562729441ecf8e0bf0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "61ea9993_052a019b",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 13
