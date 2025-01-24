@@ -72,6 +72,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c876cfa_b6f21559",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-24T09:56:26Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "f4d2f94a_672fa0d4",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dca75354_f288f8ff",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-24T09:56:26Z",
+      "side": 0,
+      "message": "Is the note I\u0027ve added about `label: Code-Review, 1` in case the example L261 not enough?",
+      "parentUuid": "85d7a60f_38fdfe61",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17dced52_53c17b6c",
