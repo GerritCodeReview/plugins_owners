@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85d7a60f_38fdfe61",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-01-24T06:50:48Z",
+      "side": 0,
+      "message": "Only for the sites that were green-fields. All migrated sites would still need it as they would still have no `CR` related submit requirements. Perhaps it could be somehow made clear.",
+      "parentUuid": "f4d2f94a_672fa0d4",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17dced52_53c17b6c",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 10
