@@ -1,6 +1,6 @@
 # Gerrit OWNERS Plugin
 
-This repository comprosises of effectively two separate plugins, `owners` and
+This repository comprises of effectively two separate plugins, `owners` and
 `owners-autoassign`.
 
 They share the ability to parse the same OWNERS file format, which facilitates
