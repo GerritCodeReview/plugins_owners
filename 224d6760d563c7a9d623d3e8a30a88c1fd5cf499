@@ -120,6 +120,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0ee372c_5f3486fc",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-01-24T09:58:51Z",
+      "side": 0,
+      "message": "Discard my previous comment, @geminica.programs@gmail.com I\u0027ve left quite a few indications of how to configure submit requirements. I believe it should be enough.\n\nHappy to do a follow-up if required.",
+      "parentUuid": "dca75354_f288f8ff",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 50
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17dced52_53c17b6c",
