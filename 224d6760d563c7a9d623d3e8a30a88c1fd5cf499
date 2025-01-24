@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d1c4bda_736d755f",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-01-24T06:41:45Z",
+      "side": 1,
+      "message": "nit: typo? no such word?",
+      "range": {
+        "startLine": 3,
+        "startChar": 16,
+        "endLine": 3,
+        "endChar": 27
+      },
+      "revId": "224d6760d563c7a9d623d3e8a30a88c1fd5cf499",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
