@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "716afb63_411fa95e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-10T21:17:28Z",
+      "side": 1,
+      "message": "Why? If the label is a `NoBlock` then the max label value isn\u0027t respecting it.",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 45
+      },
+      "revId": "65e4c4a21bbfdf36c55b840350864841474bf6bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1ca4e9f_c3ccaf1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-10T21:17:28Z",
+      "side": 1,
+      "message": "I would disagree with this approach, and instead I propose to just *require* the vote in the configuration as compulsory, at least on master.",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 12,
+        "endChar": 42
+      },
+      "revId": "65e4c4a21bbfdf36c55b840350864841474bf6bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a150a14f_a67828bf",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementITAbstract.java",
         "patchSetId": 5
