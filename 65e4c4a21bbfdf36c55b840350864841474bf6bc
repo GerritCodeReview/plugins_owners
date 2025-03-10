@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a150a14f_a67828bf",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementITAbstract.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-10T21:10:27Z",
+      "side": 1,
+      "message": "Why it is needed? There is already `addOwnerFileToRoot` that seems to be doing the same?",
+      "range": {
+        "startLine": 469,
+        "startChar": 17,
+        "endLine": 469,
+        "endChar": 46
+      },
+      "revId": "65e4c4a21bbfdf36c55b840350864841474bf6bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
