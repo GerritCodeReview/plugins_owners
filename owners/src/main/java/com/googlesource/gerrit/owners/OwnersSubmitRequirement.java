@@ -247,7 +247,10 @@ public class OwnersSubmitRequirement implements SubmitRule {
       LabelTypes labelTypes, LabelDefinition label, Project.NameKey project) {
     return labelTypes
         .byLabel(label.getName())
-        .map(type -> new LabelAndScore(type, label.getScore()))
+        .map(type -> {
+          Short approvalLabelValue = label.getScore().orElse(type.getMaxPositive());
+          return new LabelAndScore(type,  Optional.of(approvalLabelValue));
+        })
         .or(
             () -> {
               logger.atSevere().log(
@@ -303,20 +306,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
     }
 
     return score
-        .map(value -> approval.value() >= value)
-        .orElseGet(
-            () -> {
-              LabelFunction function = label.getFunction();
-              if (function.isMaxValueRequired()) {
-                return label.isMaxPositive(approval);
-              }
-
-              if (function.isBlock() && label.isMaxNegative(approval)) {
-                return false;
-              }
-
-              return approval.value() > label.getDefaultValue();
-            });
+        .map(value -> approval.value() >= value).orElse(false);
   }
 
   static class LabelAndScore {

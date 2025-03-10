@@ -466,6 +466,20 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
             u.email()));
   }
 
+  protected void addOwnerFileToRootWithNoLabel(boolean inherit, TestAccount u)
+      throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // owners:
+    // - u.email()
+    pushOwnersToMaster(
+        String.format(
+            "inherited: %s\nowners:\n- %s\n",
+            inherit,
+            u.email()));
+  }
+
   private void pushOwnersToMaster(String owners) throws Exception {
     pushFactory
         .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
