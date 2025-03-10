@@ -65,6 +65,22 @@ public class OwnersApprovalHasOperandIT extends OwnersSubmitRequirementITAbstrac
     verifyChangeReady(ownersVoteSufficient);
   }
 
+  @Test
+  public void hasOwnersApprovalsShouldDefaultToCodeReview2() throws Exception {
+    TestAccount admin2 = accountCreator.admin2();
+    addOwnerFileToRootWithNoLabel(true, admin2);
+
+    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
+    ChangeApi changeApi = forChange(r);
+    ChangeInfo changeNotReady = changeApi.get(ListChangesOption.SUBMIT_REQUIREMENTS);
+    verifyChangeNotReady(changeNotReady);
+
+    requestScopeOperations.setApiUser(admin2.id());
+    forChange(r).current().review(ReviewInput.approve());
+    ChangeInfo ownersVoteSufficient = forChange(r).get(ListChangesOption.SUBMIT_REQUIREMENTS);
+    verifyChangeReady(ownersVoteSufficient);
+  }
+
   @Override
   protected void verifyChangeNotReady(ChangeInfo notReady) {
     verifySubmitRequirements(notReady.submitRequirements, REQUIREMENT_NAME, UNSATISFIED);
