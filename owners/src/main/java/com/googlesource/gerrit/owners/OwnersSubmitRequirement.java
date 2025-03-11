@@ -135,8 +135,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
       LabelTypes labelTypes = projectState.getLabelTypes(notes);
-      LabelDefinition label = resolveLabel(labelTypes, pathOwners.getLabel());
-      Optional<LabelAndScore> ownersLabel = ownersLabel(labelTypes, label, project);
+      LabelDefinition label = resolveLabel(pathOwners.getLabel());
+      Optional<LabelDefinition> ownersLabel = ownersLabel(labelTypes, label, project);
 
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
           Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
@@ -161,7 +161,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
           missingApprovals.isEmpty()
               ? ok()
               : notReady(
-                  label.getName(),
+                  label.getLabelType().getName(),
                   String.format(
                       "Missing approvals for path(s): [%s]",
                       Joiner.on(", ").join(missingApprovals))));
@@ -227,26 +227,25 @@ public class OwnersSubmitRequirement implements SubmitRule {
    * The idea is to select the label type that is configured for owner to cast the vote. If nothing
    * is configured in the OWNERS file then `Code-Review` will be selected.
    *
-   * @param labelTypes labels configured for project
    * @param label and score definition that is configured in the OWNERS file
    */
-  static LabelDefinition resolveLabel(LabelTypes labelTypes, Optional<LabelDefinition> label) {
+  static LabelDefinition resolveLabel(Optional<LabelDefinition> label) {
     return label.orElse(LabelDefinition.CODE_REVIEW);
   }
 
   /**
-   * Create {@link LabelAndScore} definition with a label LabelType if label can be found or empty
+   * Create {@link LabelDefinition} definition with a label LabelType if label can be found or empty
    * otherwise. Note that score definition is copied from the OWNERS.
    *
    * @param labelTypes labels configured for project
-   * @param label and score definition (optional) that is resolved from the OWNERS file
+   * @param label and score definition that is resolved from the OWNERS file
    * @param project that change is evaluated for
    */
-  static Optional<LabelAndScore> ownersLabel(
+  static Optional<LabelDefinition> ownersLabel(
       LabelTypes labelTypes, LabelDefinition label, Project.NameKey project) {
     return labelTypes
-        .byLabel(label.getName())
-        .map(type -> new LabelAndScore(type, label.getScore()))
+        .byLabel(label.getLabelType().getName())
+        .map(type -> new LabelDefinition(type, label.getScore()))
         .or(
             () -> {
               logger.atSevere().log(
@@ -260,7 +259,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
       Map.Entry<String, Set<Account.Id>> requiredApproval,
       Account.Id uploader,
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
-      LabelAndScore ownersLabel) {
+      LabelDefinition ownersLabel) {
     return requiredApproval.getValue().stream()
         .noneMatch(
             fileOwner -> isApprovedByOwner(fileOwner, uploader, approvalsByAccount, ownersLabel));
@@ -270,7 +269,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
       Account.Id fileOwner,
       Account.Id uploader,
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
-      LabelAndScore ownersLabel) {
+      LabelDefinition ownersLabel) {
     return Optional.ofNullable(approvalsByAccount.get(fileOwner))
         .map(
             approvals ->
@@ -283,7 +282,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
   static boolean hasSufficientApproval(
       PatchSetApproval approval,
-      LabelAndScore ownersLabel,
+      LabelDefinition ownersLabel,
       Account.Id fileOwner,
       Account.Id uploader) {
     return ownersLabel.getLabelType().getLabelId().equals(approval.labelId())
@@ -293,7 +292,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
   static boolean isLabelApproved(
       LabelType label,
-      Optional<Short> score,
+      Short score,
       Account.Id fileOwner,
       Account.Id uploader,
       PatchSetApproval approval) {
@@ -301,28 +300,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
       return false;
     }
 
-    return score
-        .map(value -> approval.value() >= value)
-        .orElseGet(
-            () -> approval.value() > label.getDefaultValue());
-  }
-
-  static class LabelAndScore {
-    private final LabelType labelType;
-    private final Optional<Short> score;
-
-    LabelAndScore(LabelType labelType, Optional<Short> score) {
-      this.labelType = labelType;
-      this.score = score;
-    }
-
-    LabelType getLabelType() {
-      return labelType;
-    }
-
-    Optional<Short> getScore() {
-      return score;
-    }
+    return approval.value() >= score;
   }
 
   private Map<String, FileDiffOutput> getDiff(Project.NameKey project, ObjectId revision)
