@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * file. File owners have to give the score for change to be submittable.
  */
 public class LabelDefinition {
-  public static final LabelDefinition CODE_REVIEW = new LabelDefinition(LabelId.CODE_REVIEW, null);
+  public static final LabelDefinition CODE_REVIEW = new LabelDefinition(LabelId.CODE_REVIEW, (short)2);
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Pattern LABEL_PATTERN =
