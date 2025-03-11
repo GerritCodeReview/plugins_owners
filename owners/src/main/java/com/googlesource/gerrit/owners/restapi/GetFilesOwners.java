@@ -17,10 +17,7 @@ package com.googlesource.gerrit.owners.restapi;
 
 import com.google.common.collect.Maps;
 import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.entities.Account;
-import com.google.gerrit.entities.Change;
-import com.google.gerrit.entities.LabelId;
-import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.*;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -38,11 +35,7 @@ import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.owners.common.Accounts;
-import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
-import com.googlesource.gerrit.owners.common.PathOwners;
-import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
-import com.googlesource.gerrit.owners.common.PluginSettings;
+import com.googlesource.gerrit.owners.common.*;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
@@ -136,7 +129,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
 
       Map<Integer, Map<String, Integer>> ownersLabels = getLabels(change.getChangeId());
 
-      LabelAndScore label = getLabelDefinition(owners, changeData);
+      LabelDefinition label = getLabelDefinition(owners, changeData);
 
       Map<String, Set<GroupOwner>> filesWithPendingOwners =
           Maps.filterEntries(
@@ -159,53 +152,32 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     }
   }
 
-  private LabelAndScore getLabelDefinition(PathOwners owners, ChangeData changeData)
-      throws ResourceNotFoundException {
-
-    try {
+  private LabelDefinition getLabelDefinition(PathOwners owners, ChangeData changeData) {
       return Optional.of(pluginSettings.enableSubmitRequirement())
           .filter(Boolean::booleanValue)
           .flatMap(enabled -> getLabelFromOwners(owners, changeData))
-          .orElseGet(
-              () ->
-                  new LabelAndScore(
-                      LabelId.CODE_REVIEW, getMaxScoreForLabel(changeData, LabelId.CODE_REVIEW)));
-    } catch (LabelNotFoundException e) {
-      logger.atInfo().withCause(e).log("Invalid configuration");
-      throw new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL, e);
-    }
+          .orElse(LabelDefinition.CODE_REVIEW);
   }
 
-  private Optional<LabelAndScore> getLabelFromOwners(PathOwners owners, ChangeData changeData)
+  private Optional<LabelDefinition> getLabelFromOwners(PathOwners owners, ChangeData changeData)
       throws LabelNotFoundException {
     return owners
         .getLabel()
         .map(
             label ->
-                new LabelAndScore(
-                    label.getName(),
-                    label
-                        .getScore()
-                        .orElseGet(() -> getMaxScoreForLabel(changeData, label.getName()))));
-  }
-
-  private short getMaxScoreForLabel(ChangeData changeData, String labelId)
-      throws LabelNotFoundException {
-    return changeData
-        .getLabelTypes()
-        .byLabel(labelId)
-        .map(label -> label.getMaxPositive())
-        .orElseThrow(() -> new LabelNotFoundException(changeData.change().getProject(), labelId));
+                new LabelDefinition(
+                    label.getLabelType(),
+                    label.getScore()));
   }
 
   private boolean isApprovedByOwner(
       Set<GroupOwner> fileOwners,
       Map<Integer, Map<String, Integer>> ownersLabels,
-      LabelAndScore label) {
+      LabelDefinition label) {
     return fileOwners.stream()
         .filter(owner -> owner instanceof Owner)
         .map(owner -> ((Owner) owner).getId())
-        .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelId()))
+        .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelType().getName()))
         .anyMatch(value -> value >= label.getScore());
   }
 
@@ -269,24 +241,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
 
     LabelNotFoundException(Project.NameKey project, String labelId) {
       super(String.format("Project %s has no %s label defined", project, labelId));
-    }
-  }
-
-  private static class LabelAndScore {
-    private final String labelId;
-    private final short score;
-
-    private LabelAndScore(String labelId, short score) {
-      this.labelId = labelId;
-      this.score = score;
-    }
-
-    private String getLabelId() {
-      return labelId;
-    }
-
-    private short getScore() {
-      return score;
     }
   }
 }
