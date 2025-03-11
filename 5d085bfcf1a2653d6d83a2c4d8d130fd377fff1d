@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b06c8189_e9ca9a03",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-11T16:41:10Z",
+      "side": 0,
+      "message": "Let\u0027s investigate on the rationale behind this choice of just approving if there is any value higher than the default. Also, it should match the logic for providing the list of files that are pending approval by the owner.",
+      "range": {
+        "startLine": 318,
+        "startChar": 14,
+        "endLine": 318,
+        "endChar": 63
+      },
+      "revId": "5d085bfcf1a2653d6d83a2c4d8d130fd377fff1d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
