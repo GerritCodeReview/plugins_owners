@@ -125,7 +125,7 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
             "inherited: true\nlabel: %s\nowners:\n- %s\n",
             String.format(
                 "%s%s",
-                label.getName(),
+                label.getLabelType(),
                 label.getScore().map(value -> String.format(",%d", value)).orElse("")),
             u.email());
     pushFactory
