@@ -411,8 +411,8 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
             inherit,
             String.format(
                 "%s%s",
-                label.getName(),
-                label.getScore().map(value -> String.format(",%d", value)).orElse("")),
+                label.getLabelType().getName(),
+                String.format(",%d", label.getScore())),
             u.email()));
   }
 
