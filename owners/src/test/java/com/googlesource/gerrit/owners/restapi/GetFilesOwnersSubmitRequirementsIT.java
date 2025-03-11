@@ -125,8 +125,8 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
             "inherited: true\nlabel: %s\nowners:\n- %s\n",
             String.format(
                 "%s%s",
-                label.getName(),
-                label.getScore().map(value -> String.format(",%d", value)).orElse("")),
+                label.getLabelType().getLabelId().get(),
+                String.format(",%d", label.getScore())),
             u.email());
     pushFactory
         .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
