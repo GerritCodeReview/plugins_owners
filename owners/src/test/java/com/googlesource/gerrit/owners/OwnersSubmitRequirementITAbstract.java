@@ -193,7 +193,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   public void shouldRequireConfiguredLabelByCodeOwner() throws Exception {
     TestAccount admin2 = accountCreator.admin2();
     String labelId = "Foo";
-    addOwnerFileToRoot(true, LabelDefinition.parse(labelId).get(), admin2);
+    addOwnerFileToRoot(true, LabelDefinition.parse(String.format("%s,1", labelId)).get(), admin2);
 
     installLabel(labelId);
 
@@ -461,8 +461,8 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
             inherit,
             String.format(
                 "%s%s",
-                label.getName(),
-                label.getScore().map(value -> String.format(",%d", value)).orElse("")),
+                label.getLabelType().getName(),
+                String.format(",%d", label.getScore())),
             u.email()));
   }
 
