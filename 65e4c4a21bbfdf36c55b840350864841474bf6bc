@@ -116,6 +116,30 @@
       },
       "revId": "65e4c4a21bbfdf36c55b840350864841474bf6bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62f5f50a_f3496a9b",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementITAbstract.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-11T09:36:52Z",
+      "side": 1,
+      "message": "AFAICT the one from line #430 doesn\u0027t require any label, just scroll up a bit 😊",
+      "parentUuid": "2ac915f5_aa79f058",
+      "range": {
+        "startLine": 469,
+        "startChar": 17,
+        "endLine": 469,
+        "endChar": 46
+      },
+      "revId": "65e4c4a21bbfdf36c55b840350864841474bf6bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
