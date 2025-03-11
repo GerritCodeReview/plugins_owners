@@ -38,11 +38,7 @@ import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.owners.LabelNotFoundException;
-import com.googlesource.gerrit.owners.common.Accounts;
-import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
-import com.googlesource.gerrit.owners.common.PathOwners;
-import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
-import com.googlesource.gerrit.owners.common.PluginSettings;
+import com.googlesource.gerrit.owners.common.*;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
@@ -136,7 +132,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
 
       Map<Integer, Map<String, Integer>> ownersLabels = getLabels(change.getChangeId());
 
-      LabelAndScore label = getLabelDefinition(owners, changeData);
+      LabelDefinition label = getLabelDefinition(owners, changeData);
 
       Map<String, Set<GroupOwner>> filesWithPendingOwners =
           Maps.filterEntries(
@@ -163,42 +159,38 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     }
   }
 
-  private LabelAndScore getLabelDefinition(PathOwners owners, ChangeData changeData)
-      throws ResourceNotFoundException, LabelNotFoundException {
-
-    try {
-      return getLabelFromOwners(owners, changeData)
+  private LabelDefinition getLabelDefinition(PathOwners owners, ChangeData changeData) throws ResourceNotFoundException, LabelNotFoundException {
+      LabelDefinition labelDefinition = getLabelFromOwners(owners)
           .orElseThrow(() -> new LabelNotFoundException(changeData.project().get()));
-    } catch (LabelNotFoundException e) {
-      logger.atInfo().withCause(e).log("Invalid configuration");
-      throw new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL, e);
-    }
+      if (changeData
+        .getLabelTypes()
+        .byLabel(labelDefinition.getLabelType().getLabelId()).isPresent()) {
+        return labelDefinition;
+      } else {
+        LabelNotFoundException labelNotFoundException = new LabelNotFoundException(changeData.project().get());
+        logger.atInfo().withCause(labelNotFoundException).log("Invalid configuration");
+        throw new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL, labelNotFoundException);
+      }
   }
 
-  private Optional<LabelAndScore> getLabelFromOwners(PathOwners owners, ChangeData changeData)
-      throws LabelNotFoundException {
+  private Optional<LabelDefinition> getLabelFromOwners(PathOwners owners) {
     return owners
         .getLabel()
         .map(
             label ->
-                new LabelAndScore(
-                    label.getName(),
-                    label
-                        .getScore()
-                        .orElseThrow(
-                            () ->
-                                new RuntimeException(
-                                    new LabelNotFoundException(changeData.project().get())))));
+                new LabelDefinition(
+                    label.getLabelType(),
+                    label.getScore()));
   }
 
   private boolean isApprovedByOwner(
       Set<GroupOwner> fileOwners,
       Map<Integer, Map<String, Integer>> ownersLabels,
-      LabelAndScore label) {
+      LabelDefinition label) {
     return fileOwners.stream()
         .filter(owner -> owner instanceof Owner)
         .map(owner -> ((Owner) owner).getId())
-        .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelId()))
+        .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelType().getName()))
         .anyMatch(value -> value >= label.getScore());
   }
 
@@ -257,21 +249,4 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
         .map(as -> new Owner(as.account().fullName(), as.account().id().get()));
   }
 
-  private static class LabelAndScore {
-    private final String labelId;
-    private final short score;
-
-    private LabelAndScore(String labelId, short score) {
-      this.labelId = labelId;
-      this.score = score;
-    }
-
-    private String getLabelId() {
-      return labelId;
-    }
-
-    private short getScore() {
-      return score;
-    }
-  }
 }

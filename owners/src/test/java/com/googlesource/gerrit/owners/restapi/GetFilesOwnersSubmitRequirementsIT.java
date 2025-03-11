@@ -19,7 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowLabel;
 import static com.google.gerrit.server.group.SystemGroupBackend.REGISTERED_USERS;
 
-import com.google.gerrit.acceptance.TestAccount;
+import autovalue.shaded.com.google.common.collect.Sets;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
@@ -37,7 +37,6 @@ import com.googlesource.gerrit.owners.entities.Owner;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
-import org.apache.commons.compress.utils.Sets;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Test;
 

@@ -18,11 +18,9 @@ package com.googlesource.gerrit.owners.restapi;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
-import com.google.gerrit.acceptance.GitUtil;
-import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import autovalue.shaded.com.google.common.collect.Sets;
+import com.google.gerrit.acceptance.*;
 import com.google.gerrit.acceptance.PushOneCommit.Result;
-import com.google.gerrit.acceptance.TestAccount;
-import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
 import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
@@ -43,8 +41,6 @@ import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.compress.utils.Sets;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.transport.FetchResult;
@@ -281,7 +277,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
   }
 
   protected static <T> Response<T> assertResponseOk(Response<T> response) {
-    assertThat(response.statusCode()).isEqualTo(HttpServletResponse.SC_OK);
+    assertThat(response.statusCode()).isEqualTo(200);
     return response;
   }
 
@@ -390,8 +386,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
             "inherited: true\nlabel: %s\nowners:\n- %s\n",
             String.format(
                 "%s%s",
-                label.getName(),
-                label.getScore().map(value -> String.format(",%d", value)).orElse("")),
+                label.getLabelType().getName(),
+                String.format(",%d", label.getScore())),
             u.email());
     pushFactory
         .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)

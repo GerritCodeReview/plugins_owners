@@ -15,6 +15,11 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.LabelValue;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -25,24 +30,23 @@ import java.util.regex.Pattern;
  * file. File owners have to give the score for change to be submittable.
  */
 public class LabelDefinition {
-
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Pattern LABEL_PATTERN =
       Pattern.compile("^([a-zA-Z0-9-]+)(?:(?:\\s*,\\s*)(\\d))$");
 
-  private final String name;
-  private final Optional<Short> score;
+  private final LabelType labelType;
+  private final Short score;
 
-  LabelDefinition(String name, Short score) {
-    this.name = name;
-    this.score = Optional.ofNullable(score);
+  public LabelDefinition(LabelType name, Short score) {
+    this.labelType = name;
+    this.score = score;
   }
 
-  public String getName() {
-    return name;
+  public LabelType getLabelType() {
+    return labelType;
   }
 
-  public Optional<Short> getScore() {
+  public Short getScore() {
     return score;
   }
 
@@ -50,7 +54,7 @@ public class LabelDefinition {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("LabelDefinition [name=");
-    builder.append(name);
+    builder.append(labelType);
     builder.append(", score=");
     builder.append(score);
     builder.append("]");
@@ -59,7 +63,7 @@ public class LabelDefinition {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, score);
+    return Objects.hash(labelType, score);
   }
 
   @Override
@@ -73,7 +77,7 @@ public class LabelDefinition {
     }
 
     LabelDefinition other = (LabelDefinition) obj;
-    return Objects.equals(name, other.name) && Objects.equals(score, other.score);
+    return Objects.equals(labelType, other.labelType) && Objects.equals(score, other.score);
   }
 
   public static Optional<LabelDefinition> parse(String definition) {
@@ -88,8 +92,19 @@ public class LabelDefinition {
               }
 
               return new LabelDefinition(
-                  labelDef.group(1),
+                  LabelType.withDefaultValues(labelDef.group(1)),
                   Optional.ofNullable(labelDef.group(2)).map(Short::valueOf).orElse(null));
             });
+  }
+
+  private static List<LabelValue> defaultCodeReviewLabelMinMax() {
+    List<LabelValue> values = new ArrayList<>(2);
+    values.add(LabelValue.create((short) -2, "Rejected"));
+    values.add(LabelValue.create((short) -1, "Needs Improvement"));
+    values.add(LabelValue.create((short) 0, "Neutral"));
+    values.add(LabelValue.create((short) 1, "Needs Approval"));
+    values.add(LabelValue.create((short) 2, "Approved"));
+
+    return values;
   }
 }
