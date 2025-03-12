@@ -16,6 +16,10 @@
 package com.googlesource.gerrit.owners.entities;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.PatchSetApproval;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,11 +27,11 @@ import java.util.Set;
 public class FilesOwnersResponse {
 
   public final Map<String, Set<GroupOwner>> files;
-  public final Map<Integer, Map<String, Integer>> ownersLabels;
+  public final Map<Integer, Map<String, Short>>  ownersLabels;
   public final Map<String, Set<GroupOwner>> filesApproved;
 
   public FilesOwnersResponse(
-      Map<Integer, Map<String, Integer>> ownersLabels,
+      Map<Integer, Map<String, Short>> ownersLabels,
       Map<String, Set<GroupOwner>> files,
       Map<String, Set<GroupOwner>> filesApproved) {
     this.ownersLabels = ownersLabels;

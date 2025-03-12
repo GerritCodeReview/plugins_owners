@@ -129,9 +129,16 @@ public class OwnersSubmitRequirement implements SubmitRule {
       requireNonNull(notes, "notes");
       LabelDefinition ownerLabel = LabelDefinition.resolveLabel(pathOwners);
 
-      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
-          Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
-              .collect(Collectors.groupingBy(PatchSetApproval::accountId));
+      Map<Integer, Map<String, Short>> approvalsByAccount =
+          Streams.stream(approvalsUtil.byPatchSet(cd.notes(), cd.currentPatchSet().id()))
+              .collect(Collectors.groupingBy(
+                  psa -> psa.accountId().get(),
+                  Collectors.toMap(
+                      psa -> psa.labelId().get(), // Key: label ID
+                      PatchSetApproval::value,    // Value: approval value
+                      (v1, v2) -> v1             // Merge function: keep the first value if duplicate keys exist
+                  )
+              ));
 
       Account.Id uploader = notes.getCurrentPatchSet().uploader();
 
@@ -212,7 +219,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
   static boolean isApprovalMissing(
       Map.Entry<String, Set<Account.Id>> requiredApproval,
       Account.Id uploader,
-      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
+      Map<Integer, Map<String, Short>> approvalsByAccount,
       LabelDefinition ownersLabel) {
     return requiredApproval.getValue().stream()
         .noneMatch(
@@ -222,12 +229,12 @@ public class OwnersSubmitRequirement implements SubmitRule {
   static boolean isApprovedByOwner(
       Account.Id fileOwner,
       Account.Id uploader,
-      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
+      Map<Integer, Map<String, Short>> approvalsByAccount,
       LabelDefinition ownersLabel) {
-    return Optional.ofNullable(approvalsByAccount.get(fileOwner))
+    return Optional.ofNullable(approvalsByAccount.get(fileOwner.get()))
         .map(
             approvals ->
-                approvals.stream()
+                approvals.keySet().stream()
                     .anyMatch(
                         approval ->
                             hasSufficientApproval(approval, ownersLabel, fileOwner, uploader)))
@@ -235,11 +242,11 @@ public class OwnersSubmitRequirement implements SubmitRule {
   }
 
   static boolean hasSufficientApproval(
-      PatchSetApproval approval,
+      String approval,
       LabelDefinition ownersLabel,
       Account.Id fileOwner,
       Account.Id uploader) {
-    return ownersLabel.getLabelType().getLabelId().equals(approval.labelId())
+    return ownersLabel.getLabelType().getLabelId().get().equals(approval)
         && isLabelApproved(
             ownersLabel.getLabelType(), ownersLabel.getScore(), fileOwner, uploader, approval);
   }
@@ -249,7 +256,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
       Short score,
       Account.Id fileOwner,
       Account.Id uploader,
-      PatchSetApproval approval) {
+      String approval) {
     if (label.isIgnoreSelfApproval() && fileOwner.equals(uploader)) {
       return false;
     }
