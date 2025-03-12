@@ -15,9 +15,8 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.entities.LabelId;
-import com.google.gerrit.entities.LabelType;
-import com.google.gerrit.entities.LabelValue;
+import com.google.gerrit.entities.*;
+import com.google.gerrit.server.query.change.ChangeData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,5 +108,11 @@ public class LabelDefinition {
     values.add(LabelValue.create((short) 2, "Approved"));
 
     return values;
+  }
+  public static LabelDefinition resolveLabel(LabelTypes labelTypes, PathOwners owners) {
+    return owners.getLabel().flatMap(ownerLabel -> labelTypes
+        .byLabel(ownerLabel.getLabelType().getName())
+        .map(type -> new LabelDefinition(type, ownerLabel.getScore())))
+        .orElse(LabelDefinition.CODE_REVIEW);
   }
 }
