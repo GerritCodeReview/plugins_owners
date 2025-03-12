@@ -250,8 +250,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
         assertThrows(
             ResourceNotFoundException.class,
             () -> ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(thrown).hasMessageThat().isEqualTo(GetFilesOwners.MISSING_CODE_REVIEW_LABEL);
-    assertThat(thrown).hasCauseThat().isInstanceOf(LabelNotFoundException.class);
+    assertThat(thrown).hasMessageThat().isEqualTo(LabelDefinition.MISSING_CODE_REVIEW_LABEL);
+    assertThat(thrown).hasCauseThat().isInstanceOf(LabelDefinition.LabelNotFoundException.class);
   }
 
   @Test

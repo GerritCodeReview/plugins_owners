@@ -18,15 +18,19 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.server.project.testing.TestLabels.codeReview;
 import static com.google.gerrit.server.project.testing.TestLabels.labelBuilder;
 import static com.google.gerrit.server.project.testing.TestLabels.value;
+import static com.google.common.truth.Truth8.assertThat;
+import static com.google.gerrit.server.project.testing.TestLabels.*;
+
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.hasSufficientApproval;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovalMissing;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovedByOwner;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isLabelApproved;
-import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.ownersLabel;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.resolveLabel;
+import static com.googlesource.gerrit.owners.common.LabelDefinition.resolveLabel;
 import static org.mockito.Mockito.mock;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelId;
@@ -35,6 +39,7 @@ import com.google.gerrit.entities.LabelTypes;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import java.time.Instant;
 
@@ -43,6 +48,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.junit.Test;
 
 public class OwnersSubmitRequirementTest {
@@ -68,25 +75,9 @@ public class OwnersSubmitRequirementTest {
   }
 
   @Test
-  public void shouldOwnersLabelContainOnlyConfiguredLabelAndItsScore() {
-    // when
-    Optional<LabelDefinition> result =
-        ownersLabel(new LabelTypes(List.of(label().build())), OWNERS_LABEL_WITH_SCORE, PROJECT);
-
+  public void shouldThrowIfOwnersLabelDoesntExist() {
     // then
-    assertThat(result.map(label -> label.getLabelType().getName())).hasValue(LABEL_ID);
-    assertThat(result.map(LabelDefinition::getScore))
-        .isEqualTo(Optional.of(OWNERS_LABEL_WITH_SCORE.getScore()));
-  }
-
-  @Test
-  public void shouldOwnersLabelBeEmptyIfNonExistingLabelIsConfigured() {
-    // when
-    Optional<LabelDefinition> result =
-        ownersLabel(new LabelTypes(List.of(codeReview())), OWNERS_LABEL_WITH_SCORE, PROJECT);
-
-    // then
-    assertThat(result).isEmpty();
+    assertThrows(ResourceNotFoundException.class, () -> LabelDefinition.resolveLabel(new LabelTypes(ImmutableList.of()), Optional.of(OWNERS_LABEL_WITH_SCORE), PROJECT));
   }
 
   @Test

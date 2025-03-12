@@ -17,6 +17,10 @@ package com.googlesource.gerrit.owners.common;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.LabelValue;
+import com.google.gerrit.entities.LabelTypes;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
+import com.google.gerrit.server.query.change.ChangeData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,9 @@ public class LabelDefinition {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Pattern LABEL_PATTERN =
       Pattern.compile("^([a-zA-Z0-9-]+)(?:(?:\\s*,\\s*)(\\d))$");
+
+  public static final String MISSING_CODE_REVIEW_LABEL =
+      "Cannot calculate file owners state when review label is not configured";
 
   private final LabelType labelType;
   private final Short score;
@@ -106,5 +113,29 @@ public class LabelDefinition {
     values.add(LabelValue.create((short) 2, "Approved"));
 
     return values;
+  }
+  public static LabelDefinition resolveLabel(PathOwners owners, ChangeData changeData)
+      throws ResourceNotFoundException, LabelNotFoundException {
+    LabelDefinition labelDefinition = getLabelFromOwners(owners)
+        .orElseThrow(() -> new LabelNotFoundException(changeData.project().get()));
+    if (changeData
+        .getLabelTypes()
+        .byLabel(labelDefinition.getLabelType().getLabelId()).isPresent()) {
+      return labelDefinition;
+    } else {
+      LabelNotFoundException labelNotFoundException = new LabelNotFoundException(changeData.project().get());
+      logger.atInfo().withCause(labelNotFoundException).log("Invalid configuration");
+      throw new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL, labelNotFoundException);
+    }
+  }
+
+  private static Optional<LabelDefinition> getLabelFromOwners(PathOwners owners) {
+    return owners
+        .getLabel()
+        .map(
+            label ->
+                new LabelDefinition(
+                    label.getLabelType(),
+                    label.getScore()));
   }
 }

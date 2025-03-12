@@ -26,18 +26,18 @@ import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
-import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.account.AccountCache;
+import com.google.gerrit.server.account.Accounts;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.owners.LabelNotFoundException;
 import com.googlesource.gerrit.owners.common.*;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
@@ -50,9 +50,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.lib.Repository;
+
+import static com.google.gerrit.server.project.ProjectCache.illegalState;
 
 @Singleton
 public class GetFilesOwners implements RestReadView<RevisionResource> {
@@ -64,8 +67,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final GerritApi gerritApi;
   private final PathOwnersEntriesCache cache;
 
-  static final String MISSING_CODE_REVIEW_LABEL =
-      "Cannot calculate file owners state when review label is not configured";
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   @Inject
@@ -131,8 +132,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                       groupNames.stream().map(GroupOwner::new).collect(Collectors.toSet()));
 
       Map<Integer, Map<String, Integer>> ownersLabels = getLabels(change.getChangeId());
-
-      LabelDefinition label = getLabelDefinition(owners, changeData);
+      LabelDefinition label = LabelDefinition.resolveLabel(owners, changeData);
 
       Map<String, Set<GroupOwner>> filesWithPendingOwners =
           Maps.filterEntries(
@@ -159,30 +159,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     }
   }
 
-  private LabelDefinition getLabelDefinition(PathOwners owners, ChangeData changeData) throws ResourceNotFoundException, LabelNotFoundException {
-      LabelDefinition labelDefinition = getLabelFromOwners(owners)
-          .orElseThrow(() -> new LabelNotFoundException(changeData.project().get()));
-      if (changeData
-        .getLabelTypes()
-        .byLabel(labelDefinition.getLabelType().getLabelId()).isPresent()) {
-        return labelDefinition;
-      } else {
-        LabelNotFoundException labelNotFoundException = new LabelNotFoundException(changeData.project().get());
-        logger.atInfo().withCause(labelNotFoundException).log("Invalid configuration");
-        throw new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL, labelNotFoundException);
-      }
-  }
-
-  private Optional<LabelDefinition> getLabelFromOwners(PathOwners owners) {
-    return owners
-        .getLabel()
-        .map(
-            label ->
-                new LabelDefinition(
-                    label.getLabelType(),
-                    label.getScore()));
-  }
-
   private boolean isApprovedByOwner(
       Set<GroupOwner> fileOwners,
       Map<Integer, Map<String, Integer>> ownersLabels,
@@ -198,6 +174,17 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       Map<Integer, Map<String, Integer>> ownersLabels, int ownerId, String labelId) {
     return Stream.ofNullable(ownersLabels.get(ownerId))
         .flatMap(m -> Stream.ofNullable(m.get(labelId)));
+  }
+
+  private ProjectState getProjectState(Project.NameKey project) {
+    ProjectState projectState = projectCache.get(project).orElseThrow(illegalState(project));
+    if (projectState.hasPrologRules()) {
+      logger.atInfo().atMostEvery(1, TimeUnit.DAYS).log(
+          "Project '%s' has prolog rules enabled. "
+              + "It may interfere with the OWNERS submit requirements evaluation.",
+          project);
+    }
+    return projectState;
   }
 
   /**
@@ -248,5 +235,4 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
         .get(accountId)
         .map(as -> new Owner(as.account().fullName(), as.account().id().get()));
   }
-
 }
