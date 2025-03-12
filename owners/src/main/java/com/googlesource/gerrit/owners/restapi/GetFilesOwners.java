@@ -16,9 +16,11 @@
 package com.googlesource.gerrit.owners.restapi;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Streams;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
+import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -31,6 +33,7 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.account.Accounts;
+import com.google.gerrit.server.approval.ApprovalsUtil;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.project.ProjectCache;
@@ -67,6 +70,9 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final GerritApi gerritApi;
   private final PathOwnersEntriesCache cache;
 
+  private final ApprovalsUtil approvalsUtil;
+  static final String MISSING_CODE_REVIEW_LABEL =
+      "Cannot calculate file owners state when review label is not configured";
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   @Inject
@@ -77,7 +83,8 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       GitRepositoryManager repositoryManager,
       PluginSettings pluginSettings,
       GerritApi gerritApi,
-      PathOwnersEntriesCache cache) {
+      PathOwnersEntriesCache cache,
+      ApprovalsUtil approvalsUtil) {
     this.accounts = accounts;
     this.accountCache = accountCache;
     this.projectCache = projectCache;
@@ -85,6 +92,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     this.pluginSettings = pluginSettings;
     this.gerritApi = gerritApi;
     this.cache = cache;
+    this.approvalsUtil = approvalsUtil;
   }
 
   @Override
@@ -131,7 +139,10 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                   groupNames ->
                       groupNames.stream().map(GroupOwner::new).collect(Collectors.toSet()));
 
-      Map<Integer, Map<String, Integer>> ownersLabels = getLabels(change.getChangeId());
+      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
+          Streams.stream(approvalsUtil.byPatchSet(changeData.notes(), changeData.currentPatchSet().id()))
+              .collect(Collectors.groupingBy(PatchSetApproval::accountId));
+
       LabelDefinition label = LabelDefinition.resolveLabel(owners, changeData);
 
       Map<String, Set<GroupOwner>> filesWithPendingOwners =
@@ -139,17 +150,17 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
               fileToOwners,
               (fileOwnerEntry) ->
                   !isApprovedByOwner(
-                      fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
+                      fileExpandedOwners.get(fileOwnerEntry.getKey()), approvalsByAccount, label));
 
       Map<String, Set<GroupOwner>> filesApprovedByOwners =
           Maps.filterEntries(
-              fileToOwners,
-              (fileOwnerEntry) ->
-                  isApprovedByOwner(
-                      fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
+                  fileToOwners,
+                  (fileOwnerEntry) ->
+                          isApprovedByOwner(
+                                  fileExpandedOwners.get(fileOwnerEntry.getKey()), approvalsByAccount, label));
 
-      return Response.ok(
-          new FilesOwnersResponse(ownersLabels, filesWithPendingOwners, filesApprovedByOwners));
+
+      return Response.ok(new FilesOwnersResponse(approvalsByAccount, filesWithPendingOwners, filesApprovedByOwners));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
@@ -161,19 +172,13 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
 
   private boolean isApprovedByOwner(
       Set<GroupOwner> fileOwners,
-      Map<Integer, Map<String, Integer>> ownersLabels,
+      Map<Account.Id, List<PatchSetApproval>> ownersLabels,
       LabelDefinition label) {
     return fileOwners.stream()
         .filter(owner -> owner instanceof Owner)
         .map(owner -> ((Owner) owner).getId())
         .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelType().getName()))
         .anyMatch(value -> value >= label.getScore());
-  }
-
-  private Stream<Integer> codeReviewLabelValue(
-      Map<Integer, Map<String, Integer>> ownersLabels, int ownerId, String labelId) {
-    return Stream.ofNullable(ownersLabels.get(ownerId))
-        .flatMap(m -> Stream.ofNullable(m.get(labelId)));
   }
 
   private ProjectState getProjectState(Project.NameKey project) {
@@ -187,47 +192,12 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     return projectState;
   }
 
-  /**
-   * This method returns ta Map representing the "owners_labels" object of the response. When
-   * serialized the Map, has to to return the following JSON: the following JSON:
-   *
-   * <pre>
-   * {
-   *   "1000001" : {
-   *    "Code-Review" : 1,
-   *    "Verified" : 0
-   *   },
-   *   "1000003" : {
-   *    "Code-Review" : 2,
-   *    "Verified" : 1
-   *  }
-   * }
-   *
-   * </pre>
-   */
-  private Map<Integer, Map<String, Integer>> getLabels(int id) throws RestApiException {
-    ChangeInfo changeInfo =
-        gerritApi.changes().id(id).get(EnumSet.of(ListChangesOption.DETAILED_LABELS));
-
-    Map<Integer, Map<String, Integer>> ownerToLabels = new HashMap<>();
-
-    changeInfo.labels.forEach(
-        (label, labelInfo) -> {
-          Optional.ofNullable(labelInfo.all)
-              .ifPresent(
-                  approvalInfos -> {
-                    approvalInfos.forEach(
-                        approvalInfo -> {
-                          int currentOwnerId = approvalInfo._accountId;
-                          Map<String, Integer> currentOwnerLabels =
-                              ownerToLabels.getOrDefault(currentOwnerId, new HashMap<>());
-                          currentOwnerLabels.put(label, approvalInfo.value);
-                          ownerToLabels.put(currentOwnerId, currentOwnerLabels);
-                        });
-                  });
-        });
-
-    return ownerToLabels;
+  private Stream<Short> codeReviewLabelValue(
+      Map<Account.Id, List<PatchSetApproval>> ownersLabels, int ownerId, String labelId) {
+    return ownersLabels.getOrDefault(Account.id(ownerId), List.of())
+        .stream()
+        .filter(psa -> psa.label().equals(labelId))
+        .map(PatchSetApproval::value);
   }
 
   private Optional<Owner> getOwnerFromAccountId(Account.Id accountId) {
