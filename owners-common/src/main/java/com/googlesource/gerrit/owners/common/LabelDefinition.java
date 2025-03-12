@@ -96,4 +96,8 @@ public class LabelDefinition {
                   Optional.ofNullable(labelDef.group(2)).map(Short::valueOf).orElse(null));
             });
   }
+
+  public static LabelDefinition resolveLabel(PathOwners owners) {
+    return owners.getLabel().orElse(LabelDefinition.CODE_REVIEW);
+  }
 }
