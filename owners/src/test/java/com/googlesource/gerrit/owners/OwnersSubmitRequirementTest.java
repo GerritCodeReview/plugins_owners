@@ -16,17 +16,16 @@ package com.googlesource.gerrit.owners;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
-import static com.google.gerrit.server.project.testing.TestLabels.codeReview;
-import static com.google.gerrit.server.project.testing.TestLabels.labelBuilder;
-import static com.google.gerrit.server.project.testing.TestLabels.value;
+import static com.google.gerrit.server.project.testing.TestLabels.*;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.hasSufficientApproval;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovalMissing;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovedByOwner;
-import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isLabelApproved;
-import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.ownersLabel;
-import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.resolveLabel;
+import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isLabelApproved;;
+import static com.googlesource.gerrit.owners.common.LabelDefinition.resolveLabel;
 import static org.mockito.Mockito.mock;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelId;
@@ -35,6 +34,7 @@ import com.google.gerrit.entities.LabelTypes;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import java.time.Instant;
 import java.util.Arrays;
@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.junit.Test;
 
 public class OwnersSubmitRequirementTest {
@@ -53,46 +55,41 @@ public class OwnersSubmitRequirementTest {
   private static Project.NameKey PROJECT = Project.nameKey("project");
 
   @Test
-  public void shouldResolveLabelToConfiguredOne() {
+  public void shouldResolveLabelToConfiguredOne() throws ResourceNotFoundException {
+    LabelDefinition verifiedLabelDefinition = LabelDefinition.parse(String.format("%s,1", verified().getName())).get();
     // when
-    LabelDefinition label = resolveLabel(Optional.empty());
+    LabelDefinition label = resolveLabel(new LabelTypes(ImmutableList.of(verified())), Optional.of(verifiedLabelDefinition), PROJECT);
+
+    // then
+    assertThat(label.getLabelType().getLabelId().get()).isEqualTo(verifiedLabelDefinition.getLabelType().getLabelId().get());
+  }
+
+  @Test
+  public void shouldDefaultToCodeReviewIfNoLabelConfigured() throws ResourceNotFoundException {
+    // when
+    LabelDefinition label = resolveLabel(new LabelTypes(ImmutableList.of(codeReview())), Optional.empty(), PROJECT);
 
     // then
     assertThat(label).isEqualTo(LabelDefinition.CODE_REVIEW);
   }
 
   @Test
-  public void shouldResolveLabelToCodeReview() {
-    // given
-    Optional<LabelDefinition> noLabel = Optional.empty();
-
+  public void shouldOwnersLabelContainOnlyConfiguredLabelAndItsScore() throws ResourceNotFoundException {
     // when
-    LabelDefinition label = resolveLabel(noLabel);
+    LabelDefinition label = LabelDefinition.resolveLabel(
+        new LabelTypes(List.of(label().build())), Optional.of(OWNERS_LABEL_WITH_SCORE), PROJECT);
+
 
     // then
-    assertThat(label).isEqualTo(LabelDefinition.CODE_REVIEW);
-  }
-
-  @Test
-  public void shouldOwnersLabelContainOnlyConfiguredLabelAndItsScore() {
-    // when
-    Optional<LabelDefinition> result =
-        ownersLabel(new LabelTypes(List.of(label().build())), OWNERS_LABEL_WITH_SCORE, PROJECT);
-
-    // then
-    assertThat(result.map(label -> label.getLabelType().getName())).hasValue(LABEL_ID);
-    assertThat(result.map(LabelDefinition::getScore))
-        .isEqualTo(Optional.of(OWNERS_LABEL_WITH_SCORE.getScore()));
+    assertThat(label.getLabelType().getName()).isEqualTo(LABEL_ID);
+    assertThat(label.getScore())
+        .isEqualTo(OWNERS_LABEL_WITH_SCORE.getScore());
   }
 
   @Test
   public void shouldOwnersLabelBeEmptyIfNonExistingLabelIsConfigured() {
-    // when
-    Optional<LabelDefinition> result =
-        ownersLabel(new LabelTypes(List.of(codeReview())), OWNERS_LABEL_WITH_SCORE, PROJECT);
-
     // then
-    assertThat(result).isEmpty();
+    assertThrows(ResourceNotFoundException.class, () -> LabelDefinition.resolveLabel(new LabelTypes(ImmutableList.of()), Optional.of(OWNERS_LABEL_WITH_SCORE), PROJECT));
   }
 
   @Test
