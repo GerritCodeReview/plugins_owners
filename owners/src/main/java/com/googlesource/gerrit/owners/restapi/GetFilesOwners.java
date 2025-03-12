@@ -24,7 +24,6 @@ import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
-import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestReadView;
@@ -129,7 +128,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
 
       Map<Integer, Map<String, Integer>> ownersLabels = getLabels(change.getChangeId());
 
-      LabelDefinition label = getLabelDefinition(owners, changeData);
+      LabelDefinition label = LabelDefinition.resolveLabel(owners);
 
       Map<String, Set<GroupOwner>> filesWithPendingOwners =
           Maps.filterEntries(
@@ -150,24 +149,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
     }
-  }
-
-  private LabelDefinition getLabelDefinition(PathOwners owners, ChangeData changeData) {
-      return Optional.of(pluginSettings.enableSubmitRequirement())
-          .filter(Boolean::booleanValue)
-          .flatMap(enabled -> getLabelFromOwners(owners, changeData))
-          .orElse(LabelDefinition.CODE_REVIEW);
-  }
-
-  private Optional<LabelDefinition> getLabelFromOwners(PathOwners owners, ChangeData changeData)
-      throws LabelNotFoundException {
-    return owners
-        .getLabel()
-        .map(
-            label ->
-                new LabelDefinition(
-                    label.getLabelType(),
-                    label.getScore()));
   }
 
   private boolean isApprovedByOwner(
