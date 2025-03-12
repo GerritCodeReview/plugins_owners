@@ -15,10 +15,9 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.entities.LabelId;
-import com.google.gerrit.entities.LabelType;
-import com.google.gerrit.entities.LabelValue;
-
+import com.google.gerrit.entities.*;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
+import com.google.gerrit.server.query.change.ChangeData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +35,9 @@ public class LabelDefinition {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Pattern LABEL_PATTERN =
       Pattern.compile("^([a-zA-Z0-9-]+)(?:(?:\\s*,\\s*)(\\d))?$");
+
+  public static final String MISSING_CODE_REVIEW_LABEL =
+      "Cannot calculate file owners state when review label is not configured";
 
   private final LabelType labelType;
   private final Short score;
@@ -109,5 +111,30 @@ public class LabelDefinition {
     values.add(LabelValue.create((short) 2, "Approved"));
 
     return values;
+  }
+  public static LabelDefinition resolveLabel(LabelTypes labelTypes, PathOwners owners, ChangeData changeData)
+      throws ResourceNotFoundException {
+    LabelDefinition labelDefinition = owners.getLabel().flatMap(ownerLabel -> labelTypes
+        .byLabel(ownerLabel.getLabelType().getName())
+        .map(type -> new LabelDefinition(type, ownerLabel.getScore())))
+        .orElse(LabelDefinition.CODE_REVIEW);
+
+    if (changeData
+        .getLabelTypes()
+        .byLabel(labelDefinition.getLabelType().getLabelId()).isPresent()) {
+      return labelDefinition;
+    } else {
+      LabelNotFoundException labelNotFoundException = new LabelNotFoundException(changeData.project(), labelDefinition.getLabelType().getLabelId().get());
+      logger.atInfo().withCause(labelNotFoundException).log("Invalid configuration");
+      throw new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL, labelNotFoundException);
+    }
+  }
+
+  public static class LabelNotFoundException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    LabelNotFoundException(Project.NameKey project, String labelId) {
+      super(String.format("Project %s has no %s label defined", project, labelId));
+    }
   }
 }

@@ -22,9 +22,8 @@ import static com.google.gerrit.server.project.testing.TestLabels.value;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.hasSufficientApproval;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovalMissing;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovedByOwner;
-import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isLabelApproved;
-import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.ownersLabel;
-import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.resolveLabel;
+import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isLabelApproved;;
+import static com.googlesource.gerrit.owners.common.LabelDefinition.resolveLabel;
 import static org.mockito.Mockito.mock;
 
 import com.google.gerrit.entities.Account;
