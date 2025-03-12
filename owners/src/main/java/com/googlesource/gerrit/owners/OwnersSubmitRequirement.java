@@ -23,6 +23,7 @@ import com.google.common.collect.Streams;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.*;
 import com.google.gerrit.extensions.annotations.Exports;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.metrics.Timer0;
 import com.google.gerrit.server.approval.ApprovalsUtil;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -127,9 +128,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
-      LabelTypes labelTypes = projectState.getLabelTypes(notes);
-      LabelDefinition label = resolveLabel(pathOwners.getLabel());
-      Optional<LabelDefinition> ownersLabel = ownersLabel(labelTypes, label, project);
+      LabelDefinition ownerLabel = LabelDefinition.resolveLabel(projectState.getLabelTypes(notes), pathOwners.getLabel(), project);
 
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
           Streams.stream(approvalsUtil.byPatchSet(notes, cd.currentPatchSet().id()))
@@ -140,13 +139,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
       Set<String> missingApprovals =
           fileOwners.entrySet().stream()
               .filter(
-                  requiredApproval ->
-                      ownersLabel
-                          .map(
-                              ol ->
-                                  isApprovalMissing(
-                                      requiredApproval, uploader, approvalsByAccount, ol))
-                          .orElse(true))
+                  requiredApproval -> isApprovalMissing(requiredApproval, uploader, approvalsByAccount, ownerLabel)
+              )
               .map(Map.Entry::getKey)
               .collect(toSet());
 
@@ -154,10 +148,13 @@ public class OwnersSubmitRequirement implements SubmitRule {
           missingApprovals.isEmpty()
               ? ok()
               : notReady(
-                  label.getLabelType().getName(),
+                  ownerLabel.getLabelType().getName(),
                   String.format(
                       "Missing approvals for path(s): [%s]",
                       Joiner.on(", ").join(missingApprovals))));
+    } catch (ResourceNotFoundException e) {
+      logger.atSevere().withCause(e).log(LabelDefinition.MISSING_CODE_REVIEW_LABEL);
+      return Optional.of(ruleError(e.getMessage()));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       return Optional.of(ruleError(e.getMessage()));
@@ -214,38 +211,6 @@ public class OwnersSubmitRequirement implements SubmitRule {
         return pathOwners;
       }
     }
-  }
-
-  /**
-   * The idea is to select the label type that is configured for owner to cast the vote. If nothing
-   * is configured in the OWNERS file then `Code-Review` will be selected.
-   *
-   * @param label and score definition that is configured in the OWNERS file
-   */
-  static LabelDefinition resolveLabel(Optional<LabelDefinition> label) {
-    return label.orElse(LabelDefinition.CODE_REVIEW);
-  }
-
-  /**
-   * Create {@link LabelDefinition} definition with a label LabelType if label can be found or empty
-   * otherwise. Note that score definition is copied from the OWNERS.
-   *
-   * @param labelTypes labels configured for project
-   * @param label and score definition that is resolved from the OWNERS file
-   * @param project that change is evaluated for
-   */
-  static Optional<LabelDefinition> ownersLabel(
-      LabelTypes labelTypes, LabelDefinition label, Project.NameKey project) {
-    return labelTypes
-        .byLabel(label.getLabelType().getName())
-        .map(type -> new LabelDefinition(type, label.getScore()))
-        .or(
-            () -> {
-              logger.atSevere().log(
-                  "OWNERS label '%s' is not configured for '%s' project. Change is not submittable.",
-                  label, project);
-              return Optional.empty();
-            });
   }
 
   static boolean isApprovalMissing(
