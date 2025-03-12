@@ -37,10 +37,10 @@ import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.project.testing.TestLabels;
 import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
+import com.googlesource.gerrit.owners.common.LabelDefinition;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
-import com.googlesource.gerrit.owners.restapi.GetFilesOwners.LabelNotFoundException;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.Sets;
@@ -239,8 +239,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
         assertThrows(
             ResourceNotFoundException.class,
             () -> ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(thrown).hasMessageThat().isEqualTo(GetFilesOwners.MISSING_CODE_REVIEW_LABEL);
-    assertThat(thrown).hasCauseThat().isInstanceOf(LabelNotFoundException.class);
+    assertThat(thrown).hasMessageThat().isEqualTo(LabelDefinition.MISSING_CODE_REVIEW_LABEL);
+    assertThat(thrown).hasCauseThat().isInstanceOf(LabelDefinition.LabelNotFoundException.class);
   }
 
   @Test
