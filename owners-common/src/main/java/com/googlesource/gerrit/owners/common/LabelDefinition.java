@@ -110,4 +110,7 @@ public class LabelDefinition {
 
     return values;
   }
+  public static LabelDefinition resolveLabel(PathOwners owners) {
+    return owners.getLabel().orElse(LabelDefinition.CODE_REVIEW);
+  }
 }
