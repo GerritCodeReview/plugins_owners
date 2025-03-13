@@ -265,11 +265,10 @@ owners:
 
 ### When `owners.enableSubmitRequirement = true`
 
-This case is supported with the `Code-Review` label and `OWNERS` file
-modifications.
+This case is supported with the `Code-Review` label and `OWNERS` file or
+`owners.config` modifications.
 
-The `OWNERS` file requires the label configuration to be added (here is the
-updated version):
+If modifying the `OWNERS` file, add the label configuration like so:
 
 ```yaml
 inherited: true
@@ -278,6 +277,16 @@ owners:
 - John Doe
 - Doug Smith
 ```
+This will only take effect in the project hierarchy where this file is placed.
+
+To have a label config that applies to every project, modify `owners.config`
+like so:
+
+```
+[owners]
+  label = Code-Review, 1
+```
+Note that modifying the `owners.config` will require a restart.
 
 But additionally one needs to modify the label on the particular project level
 to the following version:
@@ -354,7 +363,7 @@ Given now an OWNERS configuration of:
 
 ```yaml
 inherited: true
-label: Owner-Approved
+label: Owner-Approved, 1
 owners:
 - John Doe
 - Doug Smith
