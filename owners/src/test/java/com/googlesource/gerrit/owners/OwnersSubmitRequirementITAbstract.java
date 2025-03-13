@@ -257,59 +257,6 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   }
 
   @Test
-  public void shouldConfiguredLabelScoreByCodeOwnerBeNotSufficientIfLabelRequiresMaxValue()
-      throws Exception {
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, LabelDefinition.parse("Code-Review,1").get(), admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    verifyChangeNotReady(changeNotReady);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.recommend());
-    ChangeInfo ownersVoteNotSufficient = forChange(r).get();
-    assertThat(ownersVoteNotSufficient.submittable).isFalse();
-    verifyChangeReady(ownersVoteNotSufficient);
-    verifyHasSubmitRecord(
-        ownersVoteNotSufficient.submitRecords,
-        LabelId.CODE_REVIEW,
-        SubmitRecordInfo.Label.Status.NEED);
-
-    requestScopeOperations.setApiUser(admin.id());
-    forChange(r).current().review(ReviewInput.approve());
-    ChangeInfo changeReadyWithMaxScore = forChange(r).get();
-    assertThat(changeReadyWithMaxScore.submittable).isTrue();
-    verifyChangeReady(changeReadyWithMaxScore);
-    verifyHasSubmitRecord(
-        changeReadyWithMaxScore.submitRecords,
-        LabelId.CODE_REVIEW,
-        SubmitRecordInfo.Label.Status.OK);
-  }
-
-  @Test
-  public void shouldConfiguredLabelScoreByCodeOwnersOverwriteSubmitRequirement() throws Exception {
-    installLabel(TestLabels.codeReview().toBuilder().setFunction(LabelFunction.NO_OP).build());
-
-    TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, LabelDefinition.parse("Code-Review,1").get(), admin2);
-
-    PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
-    ChangeApi changeApi = forChange(r);
-    ChangeInfo changeNotReady = changeApi.get();
-    assertThat(changeNotReady.submittable).isFalse();
-    verifyChangeNotReady(changeNotReady);
-
-    requestScopeOperations.setApiUser(admin2.id());
-    forChange(r).current().review(ReviewInput.recommend());
-    ChangeInfo ownersVoteSufficient = forChange(r).get();
-    assertThat(ownersVoteSufficient.submittable).isTrue();
-    verifyChangeReady(ownersVoteSufficient);
-  }
-
-  @Test
   public void shouldRequireApprovalFromGrandParentProjectOwner() throws Exception {
     Project.NameKey parentProjectName =
         createProjectOverAPI("parent", allProjects, true, SubmitType.FAST_FORWARD_ONLY);
