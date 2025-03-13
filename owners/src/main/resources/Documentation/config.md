@@ -33,6 +33,8 @@ owners.label
     the owners of changes for approving them. When defined, it overrides any
     other label definition set by the OWNERS at any level in any project.
 
+> **NOTE:** This becomes compulsory if the selected label's function is non-blocking.
+
     Example:
 
     ```
