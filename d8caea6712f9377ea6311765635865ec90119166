@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae0af4d0_6a8e3d1b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-13T22:33:56Z",
+      "side": 0,
+      "message": "Not sure how this passed, as it breaks?\n```\n shouldConfiguredLabelScoreByCodeOwnersOverwriteSubmitRequirement[default](com.googlesource.gerrit.owners.OwnersApprovalHasOperandIT)\n```\n\nWhich at the time of this change was in a different location, was moved with:\nI3c291517c6080abe50fe7a4735913b652de340f1",
+      "range": {
+        "startLine": 250,
+        "startChar": 1,
+        "endLine": 254,
+        "endChar": 0
+      },
+      "revId": "d8caea6712f9377ea6311765635865ec90119166",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
