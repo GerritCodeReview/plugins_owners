@@ -29,6 +29,15 @@ The owners plugin can be used in two different modes:
 > - Enhanced UI experience with much clearer explanation of who owns what files,
 >  as explained below.
 
+> **NOTE**: The owners plugin uses multiple subsystems of Gerrit for determining
+> the status of the submit requirement predicates or Prolog functions.
+> When running a Gerrit off-line reindex using the `java -jar $GERRIT_SITE/bin/gerrit.war reindex`
+> command, the Gerrit daemon is not active and therefore the owners plugin will not
+> be able to expose its predicates and functions.
+> To perform a full reindexing of Gerrit projects using owners' submit requirements or
+> Prolog rules with owners' functions, the changes need to be reindex online using
+> the SSH command `gerrit index changes-in-project` command when Gerrit daemon is active.
+
 ## <a id="ownerStatus">Owner status on change page
 
 ### <a id="ownerStatus.submitRequirements">Owners status for submit requirements
