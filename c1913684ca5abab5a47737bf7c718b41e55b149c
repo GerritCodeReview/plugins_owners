@@ -52,6 +52,24 @@
       "parentUuid": "756132c5_e2c8e9da",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e5f7e28_58afeba8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-14T17:40:16Z",
+      "side": 1,
+      "message": "I would agree in dropping the tests as we are not planning to work on that functionality anymore. However, @geminica.programs@gmail.com has a point: how do we check that they are still working though whilst they are deprecated?\n\nAlternatively, as we are on master, we can just decide to remove their support in the owners plugin. Let\u0027s discuss together.",
+      "parentUuid": "2a06ccf7_b71b3869",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
