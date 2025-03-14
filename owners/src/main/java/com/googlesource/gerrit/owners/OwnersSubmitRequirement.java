@@ -23,7 +23,6 @@ import com.google.common.collect.Streams;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
-import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.LabelTypes;
 import com.google.gerrit.entities.LegacySubmitRequirement;
@@ -310,18 +309,7 @@ public class OwnersSubmitRequirement implements SubmitRule {
     return score
         .map(value -> approval.value() >= value)
         .orElseGet(
-            () -> {
-              LabelFunction function = label.getFunction();
-              if (function.isMaxValueRequired()) {
-                return label.isMaxPositive(approval);
-              }
-
-              if (function.isBlock() && label.isMaxNegative(approval)) {
-                return false;
-              }
-
-              return approval.value() > label.getDefaultValue();
-            });
+            () -> approval.value() > label.getDefaultValue());
   }
 
   static class LabelAndScore {
