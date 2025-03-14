@@ -34,6 +34,24 @@
       "parentUuid": "d12067b4_39c65acd",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a06ccf7_b71b3869",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-14T09:36:09Z",
+      "side": 1,
+      "message": "Also the test name is the opposite of what we\u0027re doing?\n`shouldConfiguredLabelScoreByCodeOwnerBeNotSufficientIfLabelRequiresMaxValue`, even setting the label function, currently if a score is set for the label it will take precedence over the label function, so this tests just seems like it\u0027s testing the wrong thing?",
+      "parentUuid": "756132c5_e2c8e9da",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
