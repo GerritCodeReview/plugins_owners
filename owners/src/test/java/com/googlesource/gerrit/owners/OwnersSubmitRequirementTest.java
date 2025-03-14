@@ -67,7 +67,7 @@ public class OwnersSubmitRequirementTest {
   public void shouldResolveLabelToCodeReview() {
     // given
     LabelTypes types =
-        new LabelTypes(List.of(verified(), label().setFunction(LabelFunction.NO_BLOCK).build()));
+        new LabelTypes(List.of(verified(), label().build()));
 
     // when
     LabelDefinition label = resolveLabel(types, Optional.empty());
@@ -179,7 +179,7 @@ public class OwnersSubmitRequirementTest {
     Account.Id fileOwner = mock(Account.Id.class);
     LabelAndScore ownersLabel =
         new LabelAndScore(
-            label().setName("bar").setFunction(LabelFunction.MAX_NO_BLOCK).build(),
+            label().setName("bar").build(),
             Optional.empty());
     Map<Account.Id, List<PatchSetApproval>> fileOwnerForDifferentLabelApproval =
         Map.of(fileOwner, List.of(approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE)));
@@ -276,44 +276,6 @@ public class OwnersSubmitRequirementTest {
   }
 
   @Test
-  public void labelShouldNotBeApprovedWhenMaxValueIsRequiredButNotProvided() {
-    // given
-    LabelType maxValueRequired = label().setFunction(LabelFunction.MAX_NO_BLOCK).build();
-    Account.Id fileOwner = mock(Account.Id.class);
-
-    // when
-    boolean approved =
-        isLabelApproved(
-            maxValueRequired,
-            Optional.empty(),
-            fileOwner,
-            fileOwner,
-            approvedBy(fileOwner, LABEL_ID, 0));
-
-    // then
-    assertThat(approved).isFalse();
-  }
-
-  @Test
-  public void labelShouldBeApprovedWhenMaxValueIsRequiredAndProvided() {
-    // given
-    LabelType maxValueRequired = label().setFunction(LabelFunction.MAX_NO_BLOCK).build();
-    Account.Id fileOwner = mock(Account.Id.class);
-
-    // when
-    boolean approved =
-        isLabelApproved(
-            maxValueRequired,
-            Optional.empty(),
-            fileOwner,
-            fileOwner,
-            approvedBy(fileOwner, LABEL_ID, MAX_LABEL_VALUE));
-
-    // then
-    assertThat(approved).isTrue();
-  }
-
-  @Test
   public void labelShouldBeApprovedWhenMaxValueIsRequiredButLowerScoreIsConfiguredForOwner() {
     // given
     LabelType maxValueRequired = codeReview();
@@ -332,113 +294,6 @@ public class OwnersSubmitRequirementTest {
 
     // then
     assertThat(approved).isTrue();
-  }
-
-  @Test
-  public void
-      labelShouldNotBeApprovedWhenMaxValueIsRequiredLowerScoreIsConfiguredForOwnerAndTooLowScoreIsCast() {
-    // given
-    LabelType anyWithBlock =
-        label()
-            .setValues(
-                Arrays.asList(
-                    value(3, "Great"),
-                    value(2, "Approved"),
-                    value(1, "Maybe"),
-                    value(0, "No score"),
-                    value(-1, "Blocked")))
-            .setFunction(LabelFunction.ANY_WITH_BLOCK)
-            .build();
-    Optional<Short> requiredOwnerScore = Optional.of((short) 2);
-    Short ownersScore = 1;
-    Account.Id fileOwner = mock(Account.Id.class);
-
-    // when
-    boolean approved =
-        isLabelApproved(
-            anyWithBlock,
-            requiredOwnerScore,
-            fileOwner,
-            fileOwner,
-            approvedBy(fileOwner, LabelId.CODE_REVIEW, ownersScore));
-
-    // then
-    assertThat(approved).isFalse();
-  }
-
-  @Test
-  public void labelShouldNotBeApprovedWhenAnyValueWithBlockIsConfiguredAndMaxNegativeIsProvided() {
-    // given
-    LabelType anyWithBlock = label().setFunction(LabelFunction.ANY_WITH_BLOCK).build();
-    Account.Id fileOwner = mock(Account.Id.class);
-
-    // when
-    boolean approved =
-        isLabelApproved(
-            anyWithBlock,
-            Optional.empty(),
-            fileOwner,
-            fileOwner,
-            approvedBy(fileOwner, LABEL_ID, -1));
-
-    // then
-    assertThat(approved).isFalse();
-  }
-
-  @Test
-  public void labelShouldBeApprovedWhenAnyValueWithBlockIsConfiguredAndPositiveValueIsProvided() {
-    // given
-    LabelType anyWithBlock =
-        label()
-            .setValues(
-                Arrays.asList(
-                    value(2, "Approved"),
-                    value(1, "OK"),
-                    value(0, "No score"),
-                    value(-1, "Blocked")))
-            .setFunction(LabelFunction.ANY_WITH_BLOCK)
-            .build();
-    Account.Id fileOwner = mock(Account.Id.class);
-
-    // when
-    boolean approved =
-        isLabelApproved(
-            anyWithBlock,
-            Optional.empty(),
-            fileOwner,
-            fileOwner,
-            approvedBy(fileOwner, LABEL_ID, 1));
-
-    // then
-    assertThat(approved).isTrue();
-  }
-
-  @Test
-  public void labelShouldNotBeApprovedWhenAnyValueWithBlockIsConfiguredAndDefaultValueIsProvided() {
-    // given
-    LabelType anyWithBlock =
-        label()
-            .setValues(
-                Arrays.asList(
-                    value(2, "Approved"),
-                    value(1, "OK"),
-                    value(0, "No score"),
-                    value(-1, "Blocked")))
-            .setFunction(LabelFunction.ANY_WITH_BLOCK)
-            .build();
-    Account.Id fileOwner = mock(Account.Id.class);
-
-    // when
-    boolean approved =
-        isLabelApproved(
-            anyWithBlock,
-            Optional.empty(),
-            fileOwner,
-            fileOwner,
-            approvedBy(fileOwner, LABEL_ID, 0));
-
-    // then
-    assertThat(approved).isFalse();
   }
 
   private static final LabelAndScore maxNoBlockLabelFooOwnersLabel() {
