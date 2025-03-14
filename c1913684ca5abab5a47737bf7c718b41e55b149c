@@ -16,6 +16,24 @@
       "message": "But upgraded sites would still have `MaxWithBlock` etc. functions set. IMHO we should keep the existing functionality working as expected hence have it covered in tests. Can we perhaps add `MaxWithBlock` programmatically so that these tests would still pass?",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "756132c5_e2c8e9da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-14T09:29:38Z",
+      "side": 1,
+      "message": "So currently the SR checks for label functions, while the API doesn\u0027t.\nLabel Functions have been deprecated long so I wouldn\u0027t want to add functionality around them on the API.\nThe API and the SR should really behave the same way, no?",
+      "parentUuid": "d12067b4_39c65acd",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
