@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "653d7d21_75de2df8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-14T08:25:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "29b6280f_374b6f34",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 52
+      },
+      "revId": "af9ab5efeb8f52e845c256cfe0fb448ccf396349",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6adc149b_37ebee93",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-14T06:16:48Z",
       "side": 1,
       "message": "I\u0027m wondering if we could determine the value basing on what is actually configured for the project instead of setting it specifically for `2` as that may not be true... IOW perhaps we could just get the label\u0027a MAX value if not set when needed?",
+      "range": {
+        "startLine": 29,
+        "startChar": 93,
+        "endLine": 29,
+        "endChar": 101
+      },
+      "revId": "af9ab5efeb8f52e845c256cfe0fb448ccf396349",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e167ac11_2c14f28b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/LabelDefinition.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-14T08:25:38Z",
+      "side": 1,
+      "message": "I believe @luca.milanesio@gmail.com was keen to have this compulsory and not allow people to not set it and fall back on the label function, now that they\u0027ve been deprecated.",
+      "parentUuid": "6adc149b_37ebee93",
       "range": {
         "startLine": 29,
         "startChar": 93,
