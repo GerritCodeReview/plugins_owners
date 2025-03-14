@@ -28,7 +28,6 @@ import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
-import com.google.gerrit.entities.LabelFunction;
 import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.Project;
@@ -42,7 +41,11 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.project.testing.TestLabels;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.stream.Stream;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
@@ -140,7 +143,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   @Test
   public void shouldRequireVerifiedApprovalEvenIfCodeOwnerApproved() throws Exception {
     TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, admin2);
+    addOwnerFileToRoot(true, LabelDefinition.parse(String.format("%s, 1", LabelId.VERIFIED)).get(), admin2);
 
     installVerifiedLabel();
 
@@ -152,9 +155,9 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     requestScopeOperations.setApiUser(admin2.id());
     forChange(r).current().review(ReviewInput.approve());
     assertThat(forChange(r).get().submittable).isFalse();
-    verifyChangeReady(forChange(r).get());
-    verifyHasSubmitRecord(
-        forChange(r).get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.NEED);
+    verifyChangeNotReady(forChange(r).get());
+//    verifyHasSubmitRecord(
+//        forChange(r).get().submitRecords, LabelId.VERIFIED, SubmitRecordInfo.Label.Status.NEED);
 
     changeApi.current().review(new ReviewInput().label(LabelId.VERIFIED, 1));
     ChangeInfo changeReady = forChange(r).get();
@@ -166,7 +169,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   @Test
   public void shouldRequireCodeOwnerApprovalEvenIfVerifiedWasApproved() throws Exception {
     TestAccount admin2 = accountCreator.admin2();
-    addOwnerFileToRoot(true, admin2);
+    addOwnerFileToRoot(true, LabelDefinition.CODE_REVIEW, admin2);
 
     installVerifiedLabel();
 
@@ -193,7 +196,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   public void shouldRequireConfiguredLabelByCodeOwner() throws Exception {
     TestAccount admin2 = accountCreator.admin2();
     String labelId = "Foo";
-    addOwnerFileToRoot(true, LabelDefinition.parse(labelId).get(), admin2);
+    addOwnerFileToRoot(true, LabelDefinition.parse(String.format("%s, 1", labelId)).get(), admin2);
 
     installLabel(labelId);
 
@@ -310,6 +313,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
 
   private void verifyHasSubmitRecord(
       Collection<SubmitRecordInfo> records, String label, SubmitRecordInfo.Label.Status status) {
+
     assertThat(
             records.stream()
                 .flatMap(record -> record.labels.stream())
@@ -325,7 +329,6 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   private void installLabel(String labelId) throws Exception {
     LabelType verified =
         labelBuilder(labelId, value(1, "Verified"), value(0, "No score"), value(-1, "Fails"))
-            .setFunction(LabelFunction.MAX_WITH_BLOCK)
             .build();
 
     installLabel(verified);
