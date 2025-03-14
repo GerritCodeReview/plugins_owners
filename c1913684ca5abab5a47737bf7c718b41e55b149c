@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d12067b4_39c65acd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-14T05:57:20Z",
+      "side": 1,
+      "message": "But upgraded sites would still have `MaxWithBlock` etc. functions set. IMHO we should keep the existing functionality working as expected hence have it covered in tests. Can we perhaps add `MaxWithBlock` programmatically so that these tests would still pass?",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
