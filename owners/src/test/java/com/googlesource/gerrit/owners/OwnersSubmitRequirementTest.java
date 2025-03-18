@@ -18,7 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.server.project.testing.TestLabels.codeReview;
 import static com.google.gerrit.server.project.testing.TestLabels.labelBuilder;
 import static com.google.gerrit.server.project.testing.TestLabels.value;
-import static com.google.gerrit.server.project.testing.TestLabels.verified;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.hasSufficientApproval;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovalMissing;
 import static com.googlesource.gerrit.owners.OwnersSubmitRequirement.isApprovedByOwner;
@@ -35,6 +35,7 @@ import com.google.gerrit.entities.LabelTypes;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.googlesource.gerrit.owners.OwnersSubmitRequirement.LabelAndScore;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import java.time.Instant;
@@ -44,36 +45,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import com.googlesource.gerrit.owners.common.MissingLabelAndScoreDefinitionException;
+import com.googlesource.gerrit.owners.common.PathOwners;
 import org.junit.Test;
 
 public class OwnersSubmitRequirementTest {
   private static String LABEL_ID = "foo";
-  private static LabelDefinition OWNERS_LABEL = LabelDefinition.parse(LABEL_ID).get();
   private static LabelDefinition OWNERS_LABEL_WITH_SCORE =
       LabelDefinition.parse(String.format("%s,1", LABEL_ID)).get();
   private static int MAX_LABEL_VALUE = 1;
   private static Project.NameKey PROJECT = Project.nameKey("project");
 
   @Test
-  public void shouldResolveLabelToConfiguredOne() {
+  public void shouldResolveLabelToConfiguredOne() throws MissingLabelAndScoreDefinitionException {
     // when
-    LabelDefinition label = resolveLabel(null, Optional.of(OWNERS_LABEL));
+    LabelDefinition label = resolveLabel(Optional.of(OWNERS_LABEL_WITH_SCORE), PROJECT);
 
     // then
-    assertThat(label).isEqualTo(OWNERS_LABEL);
+    assertThat(label).isEqualTo(OWNERS_LABEL_WITH_SCORE);
   }
 
   @Test
-  public void shouldResolveLabelToCodeReview() {
+  public void shouldThrowIfNoLabelIsConfigured() {
     // given
-    LabelTypes types =
-        new LabelTypes(List.of(verified(), label().setFunction(LabelFunction.NO_BLOCK).build()));
-
-    // when
-    LabelDefinition label = resolveLabel(types, Optional.empty());
-
-    // then
-    assertThat(label).isEqualTo(LabelDefinition.CODE_REVIEW);
+    assertThrows(
+        MissingLabelAndScoreDefinitionException.class,
+        () -> resolveLabel(Optional.empty(), PROJECT));
   }
 
   @Test
@@ -92,7 +90,7 @@ public class OwnersSubmitRequirementTest {
   public void shouldOwnersLabelBeEmptyIfNonExistingLabelIsConfigured() {
     // when
     Optional<LabelAndScore> result =
-        ownersLabel(new LabelTypes(List.of(codeReview())), OWNERS_LABEL, PROJECT);
+        ownersLabel(new LabelTypes(List.of(codeReview())), OWNERS_LABEL_WITH_SCORE, PROJECT);
 
     // then
     assertThat(result).isEmpty();

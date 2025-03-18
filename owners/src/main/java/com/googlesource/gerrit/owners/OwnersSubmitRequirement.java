@@ -46,12 +46,8 @@ import com.google.gerrit.server.rules.SubmitRule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.owners.common.Accounts;
-import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
-import com.googlesource.gerrit.owners.common.LabelDefinition;
-import com.googlesource.gerrit.owners.common.PathOwners;
-import com.googlesource.gerrit.owners.common.PathOwnersEntriesCache;
-import com.googlesource.gerrit.owners.common.PluginSettings;
+import com.googlesource.gerrit.owners.common.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +55,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import com.googlesource.gerrit.owners.common.MissingLabelAndScoreDefinitionException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 
@@ -136,7 +134,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
       LabelTypes labelTypes = projectState.getLabelTypes(notes);
-      LabelDefinition label = resolveLabel(labelTypes, pathOwners.getLabel());
+      LabelDefinition label = resolveLabel(pathOwners.getLabel(), project);
+
       Optional<LabelAndScore> ownersLabel = ownersLabel(labelTypes, label, project);
 
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
@@ -169,7 +168,10 @@ public class OwnersSubmitRequirement implements SubmitRule {
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       return Optional.of(ruleError(e.getMessage()));
-    } catch (IOException e) {
+    } catch (MissingLabelAndScoreDefinitionException e) {
+      logger.atSevere().withCause(e).log("Reading/parsing OWNERS config error.");
+      return Optional.of(ruleError(e.getMessage()));
+    }catch (IOException e) {
       String msg =
           String.format(
               "Project '%s': repository cannot be opened to evaluate OWNERS submit requirements.",
@@ -226,13 +228,17 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
   /**
    * The idea is to select the label type that is configured for owner to cast the vote. If nothing
-   * is configured in the OWNERS file then `Code-Review` will be selected.
+   * is configured in either the OWNERS file or in the owners.config, then fail.
    *
-   * @param labelTypes labels configured for project
-   * @param label and score definition that is configured in the OWNERS file
+   * @param maybeLabel an Optional of the label configured for project
    */
-  static LabelDefinition resolveLabel(LabelTypes labelTypes, Optional<LabelDefinition> label) {
-    return label.orElse(LabelDefinition.CODE_REVIEW);
+  static LabelDefinition resolveLabel(Optional<LabelDefinition> maybeLabel, Project.NameKey project)
+      throws MissingLabelAndScoreDefinitionException {
+    try {
+      return maybeLabel.get();
+    } catch (Exception e) {
+      throw new MissingLabelAndScoreDefinitionException(project.get(), e);
+    }
   }
 
   /**

@@ -190,10 +190,11 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   }
 
   @Test
-  public void shouldRequireConfiguredLabelByCodeOwner() throws Exception {
+  public void shouldRequireConfiguredLabelAndScoreByCodeOwner() throws Exception {
     TestAccount admin2 = accountCreator.admin2();
     String labelId = "Foo";
-    addOwnerFileToRoot(true, LabelDefinition.parse(labelId).get(), admin2);
+    String labelIdAndScore = String.format("%s, 1", labelId);
+    addOwnerFileToRoot(true, LabelDefinition.parse(labelIdAndScore).get(), admin2);
 
     installLabel(labelId);
 
@@ -216,10 +217,10 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
   }
 
   @Test
-  public void shouldRequireConfiguredLabelByCodeOwnerEvenIfItIsNotConfiguredForProject()
+  public void shouldRequireConfiguredLabelAndScoreByCodeOwnerEvenIfItIsNotConfiguredForProject()
       throws Exception {
     TestAccount admin2 = accountCreator.admin2();
-    String notExistinglabelId = "Foo";
+    String notExistinglabelId = "Foo, 1";
     addOwnerFileToRoot(true, LabelDefinition.parse(notExistinglabelId).get(), admin2);
 
     PushOneCommit.Result r = createChange("Add a file", "foo", "bar");
@@ -383,6 +384,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     // Add OWNERS file to root:
     //
     // inherited: true
+    //label: Code-Review, 2
     // matchers:
     // - suffix: extension
     //   owners:
@@ -391,7 +393,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     //   - uN.email()
     pushOwnersToMaster(
         String.format(
-            "inherited: %s\nmatchers:\n" + "- suffix: %s\n  owners:\n%s",
+            "inherited: %s\nlabel: Code-Review, 2\nmatchers:\n" + "- suffix: %s\n  owners:\n%s",
             inherit,
             extension,
             Stream.of(users)
@@ -405,7 +407,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     // inherited: true
     // owners:
     // - u.email()
-    pushOwnersToMaster(String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()));
+    pushOwnersToMaster(String.format("inherited: %s\nlabel: Code-Review, 2\nowners:\n- %s\n", inherit, u.email()));
   }
 
   private void addOwnerFileToRefsMetaConfig(
@@ -416,7 +418,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     // owners:
     // - u.email()
     pushOwnersToRefsMetaConfig(
-        String.format("inherited: %s\nowners:\n- %s\n", inherit, u.email()), projectName);
+        String.format("inherited: %s\nlabel: Code-Review, 2\nowners:\n- %s\n", inherit, u.email()), projectName);
   }
 
   protected void addOwnerFileToRoot(boolean inherit, LabelDefinition label, TestAccount u)
@@ -424,7 +426,7 @@ abstract class OwnersSubmitRequirementITAbstract extends LightweightPluginDaemon
     // Add OWNERS file to root:
     //
     // inherited: true
-    // label: label,score # score is optional
+    // label: label,score
     // owners:
     // - u.email()
     pushOwnersToMaster(

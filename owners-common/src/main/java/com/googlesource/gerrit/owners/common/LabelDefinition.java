@@ -26,11 +26,10 @@ import java.util.regex.Pattern;
  * file. File owners have to give the score for change to be submittable.
  */
 public class LabelDefinition {
-  public static final LabelDefinition CODE_REVIEW = new LabelDefinition(LabelId.CODE_REVIEW, null);
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Pattern LABEL_PATTERN =
-      Pattern.compile("^([a-zA-Z0-9-]+)(?:(?:\\s*,\\s*)(\\d))?$");
+      Pattern.compile("^([a-zA-Z0-9-]+)(?:(?:\\s*,\\s*)(\\d))$");
 
   private final String name;
   private final Optional<Short> score;
