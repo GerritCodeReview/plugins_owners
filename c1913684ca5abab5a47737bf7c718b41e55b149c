@@ -106,6 +106,24 @@
       "parentUuid": "8876c80e_06a75444",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab82b73e_a12ec371",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-18T13:15:07Z",
+      "side": 1,
+      "message": "But we\u0027re not testing the plugin code then, we\u0027re testing whatever the default submit requirements/label functions in Gerrit core are?\n\nThe logic in owners plugin completely changed in the change I link in the commit message. Before, the label function would take precedence over the vote",
+      "parentUuid": "9c0c1e8c_5324bb33",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
