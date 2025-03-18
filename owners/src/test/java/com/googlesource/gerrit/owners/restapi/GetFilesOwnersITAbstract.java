@@ -261,6 +261,21 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     assertThat(thrown).hasCauseThat().isInstanceOf(InvalidOwnersFileException.class);
   }
 
+  @Test
+  @UseLocalDisk
+  public void shouldUseLabelInOwnersFileToCalculateApprovalStatus() throws Exception {
+    addOwnerFileWithLabelConfigToRoot("Foo", (short)1);
+    String changeId = createChange().getChangeId();
+    approve(changeId);
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName() , admin.id().get())));
+    assertThat(resp.value().filesApproved).isEmpty();
+
+  }
+
   protected void replaceCodeReviewWithLabel(LabelType label) throws Exception {
     try (ProjectConfigUpdate u = updateProject(allProjects)) {
       u.getConfig().getLabelSections().remove(LabelId.CODE_REVIEW);
@@ -343,6 +358,22 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
             "Add OWNER file",
             "OWNERS",
             String.format("inherited: %s\nowners:\n- %s\n", inherit, admin.email()),
+            ""));
+  }
+
+  private void addOwnerFileWithLabelConfigToRoot(String labelName, short score) throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // owners:
+    // - admin
+    merge(
+        createChange(
+            testRepo,
+            "master",
+            "Add OWNER file",
+            "OWNERS",
+            String.format("inherited: true\nlabel: %s,%d\nowners:\n- %s\n", labelName, score, admin.email()),
             ""));
   }
 
