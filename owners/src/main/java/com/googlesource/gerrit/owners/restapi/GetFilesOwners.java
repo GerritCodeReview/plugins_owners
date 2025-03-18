@@ -19,7 +19,6 @@ import com.google.common.collect.Maps;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
-import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -38,6 +37,7 @@ import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.owners.LabelNotFoundException;
 import com.googlesource.gerrit.owners.common.Accounts;
 import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.common.PathOwners;
@@ -157,18 +157,18 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
+    } catch (LabelNotFoundException e) {
+      logger.atSevere().withCause(e).log("Missing approval label definition");
+      throw new ResourceConflictException(e.getMessage(), e);
     }
   }
 
   private LabelAndScore getLabelDefinition(PathOwners owners, ChangeData changeData)
-      throws ResourceNotFoundException {
+      throws ResourceNotFoundException, LabelNotFoundException {
 
     try {
       return getLabelFromOwners(owners, changeData)
-          .orElseGet(
-              () ->
-                  new LabelAndScore(
-                      LabelId.CODE_REVIEW, getMaxScoreForLabel(changeData, LabelId.CODE_REVIEW)));
+          .orElseThrow(() -> new LabelNotFoundException(changeData.project().get()));
     } catch (LabelNotFoundException e) {
       logger.atInfo().withCause(e).log("Invalid configuration");
       throw new ResourceNotFoundException(MISSING_CODE_REVIEW_LABEL, e);
@@ -185,16 +185,10 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                     label.getName(),
                     label
                         .getScore()
-                        .orElseGet(() -> getMaxScoreForLabel(changeData, label.getName()))));
-  }
-
-  private short getMaxScoreForLabel(ChangeData changeData, String labelId)
-      throws LabelNotFoundException {
-    return changeData
-        .getLabelTypes()
-        .byLabel(labelId)
-        .map(label -> label.getMaxPositive())
-        .orElseThrow(() -> new LabelNotFoundException(changeData.change().getProject(), labelId));
+                        .orElseThrow(
+                            () ->
+                                new RuntimeException(
+                                    new LabelNotFoundException(changeData.project().get())))));
   }
 
   private boolean isApprovedByOwner(
@@ -261,14 +255,6 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     return accountCache
         .get(accountId)
         .map(as -> new Owner(as.account().fullName(), as.account().id().get()));
-  }
-
-  static class LabelNotFoundException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
-
-    LabelNotFoundException(Project.NameKey project, String labelId) {
-      super(String.format("Project %s has no %s label defined", project, labelId));
-    }
   }
 
   private static class LabelAndScore {
