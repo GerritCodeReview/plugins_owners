@@ -164,9 +164,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       throws ResourceNotFoundException {
 
     try {
-      return Optional.of(pluginSettings.enableSubmitRequirement())
-          .filter(Boolean::booleanValue)
-          .flatMap(enabled -> getLabelFromOwners(owners, changeData))
+      return getLabelFromOwners(owners, changeData)
           .orElseGet(
               () ->
                   new LabelAndScore(
