@@ -37,6 +37,7 @@ import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.project.testing.TestLabels;
 import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
+import com.googlesource.gerrit.owners.common.LabelDefinition;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
@@ -186,6 +187,20 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     assertThat(resp.value().files)
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
+    assertThat(resp.value().filesApproved).isEmpty();
+  }
+
+  @Test
+  public void shouldNotApproveOwnedFilesWhenCustomLabelInOwnersFileNotProvided() throws Exception {
+    addOwnerFileToRootWithLabel(LabelDefinition.parse("Foo,1").get(), admin);
+    String changeId = createChange().getChangeId();
+    approve(changeId);
+
+    Response<FilesOwnersResponse> resp =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(resp.value().files)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
     assertThat(resp.value().filesApproved).isEmpty();
   }
 
@@ -344,6 +359,28 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
             "OWNERS",
             String.format("inherited: %s\nowners:\n- %s\n", inherit, admin.email()),
             ""));
+  }
+
+  protected void addOwnerFileToRootWithLabel(LabelDefinition label, TestAccount u)
+      throws Exception {
+    // Add OWNERS file to root:
+    //
+    // inherited: true
+    // label: label,score # score is optional
+    // owners:
+    // - u.email()
+    String owners =
+        String.format(
+            "inherited: true\nlabel: %s\nowners:\n- %s\n",
+            String.format(
+                "%s%s",
+                label.getName(),
+                label.getScore().map(value -> String.format(",%d", value)).orElse("")),
+            u.email());
+    pushFactory
+        .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
+        .to(RefNames.fullName("master"))
+        .assertOkStatus();
   }
 
   private void addOwnerFileWithMatchersToRoot(boolean inherit) throws Exception {
