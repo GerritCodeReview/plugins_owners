@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ec4a828_61c0c588",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-18T18:01:44Z",
+      "side": 0,
+      "message": "This might seem unrelated but caused tests to fail as we where not falling back on `Code-Review, 2`, I really don\u0027t understand what was the logic here.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 40
+      },
+      "revId": "5e9eeaa3dc61704d359b57b113b5f80504c517fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

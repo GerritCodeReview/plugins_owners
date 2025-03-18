@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a83185a1_14532be7",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/MissingLabelAndScoreDefinitionException.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-18T18:01:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1dabeaf_05fc0b69",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "c1e516d2e59e900c1b8a9bc63c3bae743225805f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56b8d2d1_c4234e50",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-03-18T15:17:45Z",
       "side": 1,
       "message": "Can you specify what type of failure?\n- Plugin won\u0027t load\n- Submit requirements would fail\n- Prolog functions / predicates won\u0027t be defined\n\nSpecify which ones of the above would apply.",
+      "range": {
+        "startLine": 36,
+        "startChar": 85,
+        "endLine": 36,
+        "endChar": 89
+      },
+      "revId": "c1e516d2e59e900c1b8a9bc63c3bae743225805f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e157d704_c2eb90cc",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-18T18:01:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56b8d2d1_c4234e50",
       "range": {
         "startLine": 36,
         "startChar": 85,
