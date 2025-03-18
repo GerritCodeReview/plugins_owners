@@ -136,7 +136,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
       ChangeNotes notes = cd.notes();
       requireNonNull(notes, "notes");
       LabelTypes labelTypes = projectState.getLabelTypes(notes);
-      LabelDefinition label = resolveLabel(labelTypes, pathOwners.getLabel());
+      LabelDefinition label = resolveLabel(pathOwners.getLabel(), project);
+
       Optional<LabelAndScore> ownersLabel = ownersLabel(labelTypes, label, project);
 
       Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
@@ -168,6 +169,9 @@ public class OwnersSubmitRequirement implements SubmitRule {
                       Joiner.on(", ").join(missingApprovals))));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
+      return Optional.of(ruleError(e.getMessage()));
+    } catch (LabelNotFoundException e) {
+      logger.atSevere().withCause(e).log("Reading/parsing OWNERS config error.");
       return Optional.of(ruleError(e.getMessage()));
     } catch (IOException e) {
       String msg =
@@ -226,13 +230,13 @@ public class OwnersSubmitRequirement implements SubmitRule {
 
   /**
    * The idea is to select the label type that is configured for owner to cast the vote. If nothing
-   * is configured in the OWNERS file then `Code-Review` will be selected.
+   * is configured in either the OWNERS file or in the owners.config, then fail.
    *
-   * @param labelTypes labels configured for project
-   * @param label and score definition that is configured in the OWNERS file
+   * @param maybeLabel an Optional of the label configured for project
    */
-  static LabelDefinition resolveLabel(LabelTypes labelTypes, Optional<LabelDefinition> label) {
-    return label.orElse(LabelDefinition.CODE_REVIEW);
+  static LabelDefinition resolveLabel(Optional<LabelDefinition> maybeLabel, Project.NameKey project)
+      throws LabelNotFoundException {
+    return maybeLabel.orElseThrow(() -> new LabelNotFoundException(project.get()));
   }
 
   /**
@@ -251,7 +255,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
         .or(
             () -> {
               logger.atSevere().log(
-                  "OWNERS label '%s' is not configured for '%s' project. Change is not submittable.",
+                  "OWNERS label '%s' is not configured for '%s' project. Change is not"
+                      + " submittable.",
                   label, project);
               return Optional.empty();
             });
