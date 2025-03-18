@@ -33,7 +33,7 @@ owners.label
     the owners of changes for approving them. When defined, it overrides any
     other label definition set by the OWNERS at any level in any project.
 
-> **NOTE:** Compulsory when the selected label's function is NoBlock/NoOp.
+> **NOTE:** The label score is compulsory, not providing it will cause the plugin to fail
 
     Example:
 
