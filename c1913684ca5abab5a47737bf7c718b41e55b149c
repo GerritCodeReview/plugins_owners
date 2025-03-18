@@ -88,6 +88,24 @@
       "parentUuid": "8e5f7e28_58afeba8",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c0c1e8c_5324bb33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-18T09:39:36Z",
+      "side": 1,
+      "message": "They are not working cuz Gerrit\u0027s `master` was modified so that `CodeReview` label has no longer `MaxWithBlock` function.\nAlso the test `shouldConfiguredLabelScoreByCodeOwnerBeNotSufficientIfLabelRequiresMaxValue` would be precisely veryfing that even if `owners` would specify that `CodeReview +1` is sufficient but `MaxWithBlock` function was still in play it would be not enough to have the change submittable for `+1` vote on owned files.",
+      "parentUuid": "8876c80e_06a75444",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
