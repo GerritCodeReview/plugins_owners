@@ -30,7 +30,7 @@ public class LabelDefinition {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Pattern LABEL_PATTERN =
-      Pattern.compile("^([a-zA-Z0-9-]+)(?:(?:\\s*,\\s*)(\\d))?$");
+      Pattern.compile("^([a-zA-Z0-9-]+)(?:(?:\\s*,\\s*)(\\d))$");
 
   private final String name;
   private final Optional<Short> score;
