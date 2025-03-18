@@ -36,12 +36,12 @@ import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.project.testing.TestLabels;
+import com.googlesource.gerrit.owners.LabelNotFoundException;
 import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
-import com.googlesource.gerrit.owners.restapi.GetFilesOwners.LabelNotFoundException;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.Sets;
@@ -244,7 +244,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
   @Test
   @UseLocalDisk
   public void shouldThrowExceptionWhenCodeReviewLabelIsNotConfigured() throws Exception {
-    addOwnerFileToProjectConfig(project, false);
+    addOwnerWithNoLabelConfigFileToProjectConfig(project, false);
     replaceCodeReviewWithLabel(
         TestLabels.label(
             "Foo", TestLabels.value(1, "Foo is fine"), TestLabels.value(-1, "Foo is not fine")));
@@ -336,8 +336,26 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
             "Add OWNER file",
             "OWNERS",
             String.format(
-                "inherited: %s\nmatchers:\n" + "- suffix: .txt\n  owners:\n   - %s\n",
+                "inherited: %s\nlabel: Code-Review, 2\nmatchers:\n"
+                    + "- suffix: .txt\n  owners:\n   - %s\n",
                 inherit, account.email()))
+        .to(RefNames.REFS_CONFIG);
+  }
+
+  private void addOwnerWithNoLabelConfigFileToProjectConfig(
+      Project.NameKey projectNameKey, boolean inherit) throws Exception {
+    TestRepository<InMemoryRepository> project = cloneProject(projectNameKey);
+    GitUtil.fetch(project, RefNames.REFS_CONFIG + ":" + RefNames.REFS_CONFIG);
+    project.reset(RefNames.REFS_CONFIG);
+    pushFactory
+        .create(
+            admin.newIdent(),
+            project,
+            "Add OWNER file",
+            "OWNERS",
+            String.format(
+                "inherited: %s\nmatchers:\n" + "- suffix: .txt\n  owners:\n   - %s\n",
+                inherit, user.email()))
         .to(RefNames.REFS_CONFIG);
   }
 
@@ -345,6 +363,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     // Add OWNERS file to root:
     //
     // inherited: true
+    // label: Code-Review, 2
     // owners:
     // - admin
     merge(
@@ -353,7 +372,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
             "master",
             "Add OWNER file",
             "OWNERS",
-            String.format("inherited: %s\nowners:\n- %s\n", inherit, admin.email()),
+            String.format(
+                "inherited: %s\nlabel: Code-Review,2\nowners:\n- %s\n", inherit, admin.email()),
             ""));
   }
 
@@ -388,6 +408,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     // Add OWNERS file to root:
     //
     // inherited: true
+    // label: Code-Review, 2
     // matchers:
     // - suffix: .txt
     //   owners:
@@ -399,7 +420,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
             "Add OWNER file",
             "OWNERS",
             String.format(
-                "inherited: %s\nmatchers:\n" + "- suffix: .txt\n  owners:\n   - %s\n",
+                "inherited: %s\nlabel: Code-Review, 2\nmatchers:\n"
+                    + "- suffix: .txt\n  owners:\n   - %s\n",
                 inherit, admin.email()),
             "");
     changeCreated.assertOkStatus();
