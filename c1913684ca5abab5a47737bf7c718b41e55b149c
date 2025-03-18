@@ -124,6 +124,24 @@
       "parentUuid": "9c0c1e8c_5324bb33",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93c2381c_ccce0480",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-18T13:22:58Z",
+      "side": 1,
+      "message": "\u003e But we\u0027re not testing the plugin code then, we\u0027re testing whatever the default submit requirements/label functions in Gerrit core are?\n\nYes, we should leave Gerrit testing responsibility to Gerrit tests. The assertion on which label status code would Gerrit give is to be tested by Gerrit test suite, not here. As a matter of fact, this part broke in master when Gerrit functionality changed.",
+      "parentUuid": "ab82b73e_a12ec371",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
