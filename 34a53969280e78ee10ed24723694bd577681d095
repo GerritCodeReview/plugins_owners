@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e760fbe7_e1a19ddf",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementITAbstract.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-18T13:27:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81248f14_fbeeaf39",
+      "range": {
+        "startLine": 193,
+        "startChar": 14,
+        "endLine": 193,
+        "endChar": 53
+      },
+      "revId": "34a53969280e78ee10ed24723694bd577681d095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "096cee5a_24099132",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-18T13:25:16Z",
       "side": 1,
       "message": "```suggestion\n  public void shouldRequireConfiguredLabelAndScoreByCodeOwnerEvenIfItIsNotConfiguredForProject()\n```",
+      "range": {
+        "startLine": 220,
+        "startChar": 14,
+        "endLine": 220,
+        "endChar": 86
+      },
+      "revId": "34a53969280e78ee10ed24723694bd577681d095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5666c7e_0af06b9a",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/OwnersSubmitRequirementITAbstract.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-18T13:27:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "096cee5a_24099132",
       "range": {
         "startLine": 220,
         "startChar": 14,
