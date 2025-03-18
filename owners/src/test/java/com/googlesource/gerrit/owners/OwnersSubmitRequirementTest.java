@@ -48,7 +48,6 @@ import org.junit.Test;
 
 public class OwnersSubmitRequirementTest {
   private static String LABEL_ID = "foo";
-  private static LabelDefinition OWNERS_LABEL = LabelDefinition.parse(LABEL_ID).get();
   private static LabelDefinition OWNERS_LABEL_WITH_SCORE =
       LabelDefinition.parse(String.format("%s,1", LABEL_ID)).get();
   private static int MAX_LABEL_VALUE = 1;
@@ -57,10 +56,10 @@ public class OwnersSubmitRequirementTest {
   @Test
   public void shouldResolveLabelToConfiguredOne() {
     // when
-    LabelDefinition label = resolveLabel(null, Optional.of(OWNERS_LABEL));
+    LabelDefinition label = resolveLabel(null, Optional.of(OWNERS_LABEL_WITH_SCORE));
 
     // then
-    assertThat(label).isEqualTo(OWNERS_LABEL);
+    assertThat(label).isEqualTo(OWNERS_LABEL_WITH_SCORE);
   }
 
   @Test
@@ -92,7 +91,7 @@ public class OwnersSubmitRequirementTest {
   public void shouldOwnersLabelBeEmptyIfNonExistingLabelIsConfigured() {
     // when
     Optional<LabelAndScore> result =
-        ownersLabel(new LabelTypes(List.of(codeReview())), OWNERS_LABEL, PROJECT);
+        ownersLabel(new LabelTypes(List.of(codeReview())), OWNERS_LABEL_WITH_SCORE, PROJECT);
 
     // then
     assertThat(result).isEmpty();
