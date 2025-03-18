@@ -22,6 +22,30 @@
       },
       "revId": "5e9eeaa3dc61704d359b57b113b5f80504c517fe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdf33afc_5c3ace8e",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-18T18:22:15Z",
+      "side": 0,
+      "message": "This deserves of a change of it\u0027s own... The API is essentially ignoring anything that isn\u0027t `label: Code-Review, 2`\n\nAddressing now.",
+      "parentUuid": "3ec4a828_61c0c588",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 40
+      },
+      "revId": "5e9eeaa3dc61704d359b57b113b5f80504c517fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
