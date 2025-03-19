@@ -24,6 +24,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "966b2927_33cda759",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-19T10:51:39Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "8eabcd5c_4145b7b5",
+      "range": {
+        "startLine": 194,
+        "startChar": 14,
+        "endLine": 194,
+        "endChar": 65
+      },
+      "revId": "ff09ac27d99a2979dae03b5fd54f0078d4b02b61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6b404c7_36adbf3d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-19T10:51:39Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "8eabcd5c_4145b7b5",
+      "range": {
+        "startLine": 194,
+        "startChar": 14,
+        "endLine": 194,
+        "endChar": 65
+      },
+      "revId": "ff09ac27d99a2979dae03b5fd54f0078d4b02b61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fd3cf70_2a74e8a8",
@@ -37,6 +85,24 @@
       "writtenOn": "2025-03-19T10:48:14Z",
       "side": 1,
       "message": "Missing empty line.",
+      "revId": "ff09ac27d99a2979dae03b5fd54f0078d4b02b61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c00eb22_dbb2f69d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-19T10:51:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fd3cf70_2a74e8a8",
       "revId": "ff09ac27d99a2979dae03b5fd54f0078d4b02b61",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
