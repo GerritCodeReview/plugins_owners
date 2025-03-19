@@ -43,6 +43,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "812448f4_4260fdb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-19T07:18:07Z",
+      "side": 1,
+      "message": "The alternative would be to introduce sth similar to `com.googlesource.gerrit.owners.OwnersApprovalHasOperandIT` and test the same scenarios as are tested in `GetFilesOwnersSubmitRequirementsIT`, WDYT?",
+      "revId": "eae20e2e2021c9ab16b40b6d90411263b1dbf3d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39962349_113042cc",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
         "patchSetId": 4
