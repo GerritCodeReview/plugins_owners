@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40cf18fd_fb3ad447",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-19T10:22:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8baf929e_a93d48e0",
+      "range": {
+        "startLine": 15,
+        "startChar": 16,
+        "endLine": 15,
+        "endChar": 42
+      },
+      "revId": "eae20e2e2021c9ab16b40b6d90411263b1dbf3d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ec76931_db5805e4",
@@ -54,6 +78,24 @@
       "writtenOn": "2025-03-19T07:18:07Z",
       "side": 1,
       "message": "The alternative would be to introduce sth similar to `com.googlesource.gerrit.owners.OwnersApprovalHasOperandIT` and test the same scenarios as are tested in `GetFilesOwnersSubmitRequirementsIT`, WDYT?",
+      "revId": "eae20e2e2021c9ab16b40b6d90411263b1dbf3d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "368caef9_6e6a6e33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-19T10:22:53Z",
+      "side": 1,
+      "message": "Yes, I believe that would make sense as part of a separate change.",
+      "parentUuid": "812448f4_4260fdb6",
       "revId": "eae20e2e2021c9ab16b40b6d90411263b1dbf3d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
