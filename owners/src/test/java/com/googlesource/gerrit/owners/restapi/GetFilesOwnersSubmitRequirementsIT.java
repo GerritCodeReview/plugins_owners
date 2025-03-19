@@ -65,7 +65,7 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
   @Test
   public void shouldRequireConfiguredCodeReviewScore() throws Exception {
     // configure submit requirement to require CR+1 only
-    addOwnerFileToRoot(LabelDefinition.parse("Code-Review,1").get(), admin);
+    addOwnerFileToRootWithLabel(LabelDefinition.parse("Code-Review,1").get(), admin);
 
     String changeId = createChange("Add a file", "foo", "bar").getChangeId();
 
@@ -91,7 +91,7 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
   public void shouldRequireConfiguredLabelAndScore() throws Exception {
     // configure submit requirement to require LabelFoo+1
     String label = "LabelFoo";
-    addOwnerFileToRoot(LabelDefinition.parse(String.format("%s,1", label)).get(), admin);
+    addOwnerFileToRootWithLabel(LabelDefinition.parse(String.format("%s,1", label)).get(), admin);
     replaceCodeReviewWithLabel(label);
 
     String changeId = createChange("Add a file", "foo", "bar").getChangeId();
@@ -111,27 +111,6 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
     assertThat(resp.value().ownersLabels).containsEntry(admin.id().get(), Map.of(label, 1));
     assertThat(resp.value().filesApproved)
         .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
-  }
-
-  private void addOwnerFileToRoot(LabelDefinition label, TestAccount u) throws Exception {
-    // Add OWNERS file to root:
-    //
-    // inherited: true
-    // label: label,score # score is optional
-    // owners:
-    // - u.email()
-    String owners =
-        String.format(
-            "inherited: true\nlabel: %s\nowners:\n- %s\n",
-            String.format(
-                "%s%s",
-                label.getName(),
-                label.getScore().map(value -> String.format(",%d", value)).orElse("")),
-            u.email());
-    pushFactory
-        .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
-        .to(RefNames.fullName("master"))
-        .assertOkStatus();
   }
 
   private void replaceCodeReviewWithLabel(String labelId) throws Exception {
