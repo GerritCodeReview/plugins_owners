@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8baf929e_a93d48e0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-19T07:12:53Z",
+      "side": 1,
+      "message": "nit: `s/default submit requirement/enableSubmitRequirement flag being set`",
+      "range": {
+        "startLine": 15,
+        "startChar": 16,
+        "endLine": 15,
+        "endChar": 42
+      },
+      "revId": "eae20e2e2021c9ab16b40b6d90411263b1dbf3d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ec76931_db5805e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-19T07:12:53Z",
+      "side": 1,
+      "message": "❤️\nit should be formatted with GJF 1.7 but before that it should be rebased over I03cda881d4",
+      "revId": "eae20e2e2021c9ab16b40b6d90411263b1dbf3d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39962349_113042cc",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-19T07:12:53Z",
+      "side": 1,
+      "message": "nit: there is a similar function in `GetFilesOwnersSubmitRequirementsIT.addOwnerFileToRoot` (class that derives from this one) perhaps it could be copied from there (and made protected) and re-used?",
+      "range": {
+        "startLine": 362,
+        "startChar": 15,
+        "endLine": 362,
+        "endChar": 48
+      },
+      "revId": "eae20e2e2021c9ab16b40b6d90411263b1dbf3d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
