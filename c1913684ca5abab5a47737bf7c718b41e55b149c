@@ -160,6 +160,24 @@
       "parentUuid": "93c2381c_ccce0480",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f37068c_f1dc31ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-19T15:32:20Z",
+      "side": 1,
+      "message": "\u003e We have unit tests for testing the plugin - this is the integration tests that tests overall intergration of plugin and Gerrit\n\nSure, but we should assert the plugin\u0027s behaviour when integrated with Gerrit and not the Gerrit\u0027s functionality. That\u0027s why I commented on the assertions on Gerrit not the validity of the test overall.\n\n\u003e and it is OK that it fails when Gerrit moves on...\n\nWell, it is NOT OK if the plugin still works and the test fails. That means we were asserting too much and the wrong thing. But that\u0027s possibly a discussion for a talk rather than a change :-)",
+      "parentUuid": "e005530e_f4a07345",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
