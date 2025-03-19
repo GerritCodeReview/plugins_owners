@@ -142,6 +142,24 @@
       "parentUuid": "ab82b73e_a12ec371",
       "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e005530e_f4a07345",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-03-19T06:33:05Z",
+      "side": 1,
+      "message": "We have unit tests for testing the plugin - this is the integration tests that tests overall intergration of plugin and Gerrit and it is OK that it fails when Gerrit moves on...",
+      "parentUuid": "93c2381c_ccce0480",
+      "revId": "c1913684ca5abab5a47737bf7c718b41e55b149c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
