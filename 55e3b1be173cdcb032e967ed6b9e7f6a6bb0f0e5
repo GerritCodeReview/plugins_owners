@@ -45,6 +45,54 @@
       },
       "revId": "55e3b1be173cdcb032e967ed6b9e7f6a6bb0f0e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26970821_f513da2d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-21T19:34:04Z",
+      "side": 1,
+      "message": "This comes from `pathOwners.getLabel`, changing that to no longer return an optional is much much more involved, so I decided to leave the resolution of the label alone and simply check on the final result.",
+      "parentUuid": "6ea5cd8f_5985a6e1",
+      "range": {
+        "startLine": 237,
+        "startChar": 38,
+        "endLine": 237,
+        "endChar": 74
+      },
+      "revId": "55e3b1be173cdcb032e967ed6b9e7f6a6bb0f0e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0406ffe_75f288eb",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/OwnersSubmitRequirement.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-03-21T19:34:04Z",
+      "side": 1,
+      "message": "Well it essentially does a label.get(), if it\u0027s not there it throws an error instead of returning a default, so it\u0027s doing the same thing as before.\n\nI believe it improves code readability.",
+      "parentUuid": "1ea17066_ac83df3a",
+      "range": {
+        "startLine": 237,
+        "startChar": 25,
+        "endLine": 237,
+        "endChar": 37
+      },
+      "revId": "55e3b1be173cdcb032e967ed6b9e7f6a6bb0f0e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
