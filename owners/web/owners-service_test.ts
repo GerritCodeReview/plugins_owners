@@ -33,6 +33,7 @@ import {
 import {assert} from '@open-wc/testing';
 import {UserRole} from './owners-model';
 import {deepEqual} from './utils';
+import sinon from 'sinon';
 
 suite('owners service tests', () => {
   const fakeRestApi = {} as unknown as RestPluginApi;

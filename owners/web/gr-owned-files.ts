@@ -26,7 +26,7 @@ import {
 } from 'lit';
 import {ifDefined} from 'lit/directives/if-defined.js';
 import {OwnersMixin} from './owners-mixin';
-import {customElement, property} from 'lit/decorators';
+import {customElement, property} from 'lit/decorators.js';
 import {
   AccountInfo,
   ChangeInfo,

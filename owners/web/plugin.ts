@@ -28,7 +28,7 @@ import {
   OwnedFilesTabHeader,
 } from './gr-owned-files';
 
-window.Gerrit.install(plugin => {
+window.Gerrit?.install(plugin => {
   const restApi = plugin.restApi();
 
   plugin

@@ -17,7 +17,7 @@
 
 import {Subscription} from 'rxjs';
 import {LitElement, PropertyValues} from 'lit';
-import {property, state} from 'lit/decorators';
+import {property, state} from 'lit/decorators.js';
 import {ChangeInfo} from '@gerritcodereview/typescript-api/rest-api';
 import {FilesOwners, OwnersService} from './owners-service';
 import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';

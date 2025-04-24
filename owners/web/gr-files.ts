@@ -16,7 +16,7 @@
  */
 
 import {css, html, LitElement, nothing, PropertyValues, CSSResult} from 'lit';
-import {customElement, property} from 'lit/decorators';
+import {customElement, property} from 'lit/decorators.js';
 import {
   AccountInfo,
   ApprovalInfo,

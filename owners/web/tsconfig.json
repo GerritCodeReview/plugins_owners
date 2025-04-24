@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig-plugins-base.json",
+  "extends": "../../../tsconfig-plugins-base.json",
   "compilerOptions": {
     "outDir": "../../../.ts-out/plugins/owners", /* overridden by bazel */
     "lib": [
@@ -7,7 +7,7 @@
       "dom.iterable",
       "es2021",
       "webworker"
-    ],
+    ]
   },
   "include": [
     "**/*.ts"
