@@ -89,16 +89,16 @@ plugin compile command.
 Example:
 
 ```
-   $ git clone https://gerrit.googlesource.com/plugins/owners
-   $ git clone https://gerrit.googlesource.com/gerrit
-   $ cd gerrit/plugins
-   $ ln -s ../../owners/owners .
-   $ ln -s ../../owners/owners-autoassign .
-   $ ln -s ../../owners/owners-api .
-   $ ln -sf ../../owners/external_plugin_deps.bzl .
-   $ cd ..
-   $ ln -s ../owners/owners-common .
-   $ bazel build plugins/owners plugins/owners-autoassign
+  git clone https://gerrit.googlesource.com/plugins/owners
+  git clone https://gerrit.googlesource.com/gerrit
+  cd gerrit/plugins
+  ln -s ../../owners/owners .
+  ln -s ../../owners/owners-autoassign .
+  ln -s ../../owners/owners-api .
+  ln -sf ../../owners/external_plugin_deps.bzl .
+  cd ..
+  ln -s ../owners/owners-common .
+  bazel build plugins/owners plugins/owners-autoassign
 ```
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
