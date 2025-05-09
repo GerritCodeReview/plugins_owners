@@ -90,7 +90,7 @@ Example:
 
 ```
   git clone https://gerrit.googlesource.com/plugins/owners
-  git clone https://gerrit.googlesource.com/gerrit
+  git clone --recurse-submodules https://gerrit.googlesource.com/gerrit
   cd gerrit/plugins
   ln -s ../../owners/owners .
   ln -s ../../owners/owners-autoassign .
