@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig-plugins-base.json",
+  "extends": "../../tsconfig-plugins-base.json",
   "compilerOptions": {
     "outDir": "../../../.ts-out/plugins/owners", /* overridden by bazel */
     "lib": [
