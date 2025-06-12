@@ -6,100 +6,100 @@
 The global plugin configuration is read from the `$GERRIT_SITE/etc/owners.config`
 and is applied across all projects in Gerrit.
 
-owners.disable.branch
-:   List of branches regex where the resolution of owners is disabled.
+### `owners.disable.branch`
+List of branches regex where the resolution of owners is disabled.
 
-    Example:
+Example:
 
-    ```
-    [owners "disable"]
-      branch = refs/meta/config
-      branch = refs/heads/sandboxes.*
-    ```
+```
+[owners "disable"]
+    branch = refs/meta/config
+    branch = refs/heads/sandboxes.*
+```
 
-owners.expandGroups
-:   Expand owners and groups into account ids. If set to `false` all owners are left untouched, apart from e-mail
-    addresses which have the domain dropped. Defaults to `true`.
+### `owners.expandGroups`
+Expand owners and groups into account ids. If set to `false` all owners are left
+untouched, apart from e-mail addresses which have the domain dropped.  
+Defaults to `true`.
 
-    Example:
+Example:
 
-    ```
-    [owners]
-      expandGroups = false
-    ```
+```
+[owners]
+    expandGroups = false
+```
 
-owners.label
-:   Global override for the label and score, separated by a comma, to use by
-    the owners of changes for approving them. When defined, it overrides any
-    other label definition set by the OWNERS at any level in any project.
+### `owners.label`
+Global override for the label and score, separated by a comma, to use by the
+owners of changes for approving them. When defined, it overrides any other label
+definition set by the OWNERS at any level in any project.
 
 > **NOTE:** Compulsory when the selected label's function is NoBlock/NoOp.
 
-    Example:
+Example:
+```
+[owners]
+    label = Code-Review, 1
+```
 
-    ```
-    [owners]
-      label = Code-Review, 1
-    ```
+### `owners.enableSubmitRequirement`
+If set to `true` the approvals are evaluated through the owners plugin default
+submit requirement, named "Code-Review-from-Owners", without a need of prolog
+predicate being added to a project or submit requirement configured in the
+`project.config` as it is automatically applied to all projects.  
+Defaults to `false`.
 
-<a name="owners.enableSubmitRequirement">owners.enableSubmitRequirement</a>
-:   If set to `true` the approvals are evaluated through the owners plugin
-    default submit requirement, named "Code-Review-from-Owners", without a need of
-    prolog predicate being added to a project or submit requirement configured
-    in the `project.config` as it is automatically applied to all projects.
-    Defaults to `false`.
+Example:
 
-    Example:
+```
+[owners]
+    enableSubmitRequirement = true
+```
 
-    ```
-    [owners]
-      enableSubmitRequirement = true
-    ```
-
-    > **Notes:**
-    >
-    > The `owners.enableSubmitRequirement = true` is a global
-    > setting and allows for quick site switch from `prolog` submit rule to
-    > plugin's provided submit rule. It is a drop-in replacement therefore,
-    > similarly to `prolog` rule, it cannot be overridden by Gerrit. In case
-    > when one-step migration is not feasible (e.g. when `prolog` rules need to
-    > be slowly phased out or when more control is needed over rule's
-    > applicability, submitability or ability to overide) one can configure
-    > submit requirement in `project.config` for a certain project (or
-    > hierarchy of projects), without turning it on globally, as
-    > `approval_owners` predicate is _always_ available.
-    >
-    > Please also note, that project's `rules.pl` should be removed in this
-    > case so that it doesn't interfere with a change evaluation.
-    >
-    > The minimal configuration looks like below (see
-    > [submit requirements documentation](/Documentation/config-submit-requirements.html) for more details):
-    > ```
-    > [submit-requirement "Owner-Approval"]
-    >   description = Files needs to be approved by owners
-    >   submittableIf = has:approval_owners
-    > ```
+> **Notes:**
+>
+> The `owners.enableSubmitRequirement = true` is a global
+> setting and allows for quick site switch from `prolog` submit rule to
+> plugin's provided submit rule. It is a drop-in replacement therefore,
+> similarly to `prolog` rule, it cannot be overridden by Gerrit. In case
+> when one-step migration is not feasible (e.g. when `prolog` rules need to
+> be slowly phased out or when more control is needed over rule's
+> applicability, submitability or ability to overide) one can configure
+> submit requirement in `project.config` for a certain project (or
+> hierarchy of projects), without turning it on globally, as
+> `approval_owners` predicate is _always_ available.
+>
+> Please also note, that project's `rules.pl` should be removed in this
+> case so that it doesn't interfere with a change evaluation.
+>
+> The minimal configuration looks like below (see
+> [submit requirements documentation](https://gerrit-documentation.storage.googleapis.com/Documentation/3.12.0/config-submit-requirements.html) for more details):
+> ```
+> [submit-requirement "Owner-Approval"]
+>   description = Files needs to be approved by owners
+>   submittableIf = has:approval_owners
+> ```
 
 
-cache."owners.path_owners_entries".memoryLimit
-:   The cache is used to hold the parsed version of `OWNERS` files in the
-    repository so that when submit rules are calculated (either through prolog
-    or through submit requirements) it is not read over and over again. The
-    cache entry gets invalidated when `OWNERS` file branch is updated.
-    By default it follows default Gerrit's cache memory limit but it makes
-    sense to adjust it as a function of number of project that use the `owners`
-    plugin multiplied by average number of active branches (plus 1 for the
-    refs/meta/config) and average number of directories (as directory hierarchy
-    back to root is checked for the `OWNERS` file existence).
-    _Note that in opposite to the previous settings the modification needs to be
-    performed in the `$GERRIT_SITE/etc/gerrit.config` file._
+### `cache."owners.path_owners_entries".memoryLimit`
+The cache is used to hold the parsed version of `OWNERS` files in the
+repository so that when submit rules are calculated (either through prolog
+or through submit requirements) it is not read over and over again. The
+cache entry gets invalidated when `OWNERS` file branch is updated.
+By default it follows default Gerrit's cache memory limit but it makes
+sense to adjust it as a function of number of project that use the `owners`
+plugin multiplied by average number of active branches (plus 1 for the
+refs/meta/config) and average number of directories (as directory hierarchy
+back to root is checked for the `OWNERS` file existence).
+_Note that in opposite to the previous settings the modification needs to be
+performed in the `$GERRIT_SITE/etc/gerrit.config` file._
 
-    Example
+Example:
 
-    ```
-    [cache "owners.path_owners_entries"]
-      memoryLimit = 2048
-    ```
+```
+[cache "owners.path_owners_entries"]
+    memoryLimit = 2048
+```
 
 ## Configuration
 
@@ -228,7 +228,7 @@ uses the `has:approval_owners` in the `submittableIf` section, like so:
        submittableIf = has:approval_owners
 ```
 
-> See [notes](#owners.enableSubmitRequirement) for an example on how to enable
+> See [notes](#ownersenablesubmitrequirement) for an example on how to enable
 > submit requirements for a specific project only.
 
 ## Example 2 - OWNERS file with custom approval label
@@ -283,10 +283,10 @@ the custom submit requirement, you have two options:
   `project.config` so that `function = NoOp`.
 - set an `overrideIf` clause in your custom submit requirement definition
 
-> See [notes](#owners.enableSubmitRequirement) for an example on how to enable
+> See [notes](#ownersenablesubmitrequirement) for an example on how to enable
 > submit requirements for a specific project only.
 
-> See [notes](#label.Label-Name.function) for an example on how to modify
+> See [notes](https://gerrit-documentation.storage.googleapis.com/Documentation/3.12.0/config-labels.html#label_function) for an example on how to modify
 > label functions, as by default `Code-Review` requires at least one max vote
 > from any user.
 
@@ -315,5 +315,5 @@ You can then either enable `owners.enableSubmitRequirement = true` in your
 `gerrit.config` or define a submit requirement in your `project.config` that
 uses the `has:approval_owners` in the `applicableIf` section.
 
-> See [notes](#owners.enableSubmitRequirement) for an example on how to enable
+> See [notes](#ownersenablesubmitrequirement) for an example on how to enable
 > submit requirements for a specific project only.

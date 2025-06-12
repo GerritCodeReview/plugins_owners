@@ -8,7 +8,7 @@ modify them.
 
 The rules defining which user/group needs to approve which file are specified
 in the `OWNERS` file and are covered in the
-[@PLUGIN@ configuration](config.html) guide.
+[@PLUGIN@ configuration](./config.md) guide.
 
 ## Context
 
@@ -38,12 +38,12 @@ The owners plugin can be used in two different modes:
 > Prolog rules with owners' functions, the changes need to be reindex online using
 > the SSH command `gerrit index changes-in-project` command when Gerrit daemon is active.
 
-## <a id="ownerStatus">Owner status on change page
+## Owner status on change page
 
-### <a id="ownerStatus.submitRequirements">Owners status for submit requirements
+### Owners status for submit requirements
 
 When either `has:approval_owners` predicate is used in a submit requirement or
-[enableSubmitRequirement](config.html#owners.enableSubmitRequirement) is enabled for a
+[enableSubmitRequirement](./config.md#ownersenablesubmitrequirement) is enabled for a
 project or any of its parents and, if applicable, owners status is displayed in two ways:
 
 * As an icon prepending the submit requirement and as a text next to it
@@ -59,7 +59,7 @@ newest patchset is selected)
 \
 ![files owners status](./files-owners-status.png "Files owners status")
 
-#### <a id="ownersStatus.submitRequirement.files">Per file owners statuses
+#### Per file owners statuses
 
 The @PLUGIN@ plugin also shows the owners statuses per file in the file list.
 For each file, the owners status is shown as an icon. One can **hover over
@@ -95,14 +95,14 @@ the icon** to get additional information displayed as a tooltip.
     > `Copy owner's email to clipboard` button are shown, and owner's details are
     > displayed when one hovers over the name.
 
-### <a id="ownerStatus.submitRule">Owners status for submit rule
+### Owners status for submit rule
 
 `OWNERS` file can still be evaluated (without a need for the Prolog
 predicate being added to the project) by enabling the
-[default submit requirements](config.html#owners.enableSubmitRequirement).
+[default submit requirements](./config.md#ownersenablesubmitrequirement).
 In this way, results of the `OWNERS` file evaluation are provided to
 Gerrit's change through submit rule (as
-[submit record](/Documentation/rest-api-changes.html#submit-record)) and, if
+[submit record](https://gerrit-documentation.storage.googleapis.com/Documentation/rest-api-changes.html#submit-record)) and, if
 applicable, owners status is displayed:
 
 * As an icon prepending the `Code Review from owners` submit requirement
@@ -121,20 +121,20 @@ applicable, owners status is displayed:
 
     > There is no difference in this aspect between modes.
 
-#### <a id="ownersStatus.submitRule.owners">`Code Review from owners` submit requirement
+#### `Code Review from owners` submit requirement
 
 The `Code Review from owners` (i.e. the
-[default submit requirement](config.html#owners.enableSubmitRequirement)) submit
+[default submit requirement](./config.md#ownersenablesubmitrequirement)) submit
 requirement provides general information if all owned files were approved
 (requirement is satisfied). When hovered, a detailed description is shown
 
 ![submit rule hover](./submit-rule-hover.png "Submit rule hover")
 
-#### <a id="ownersStatus.submitRule.files">Per file owners statuses
+#### Per file owners statuses
 
 The owners status per file when [default submit
-requirements](config.html#owners.enableSubmitRequirement) are enabled doesn't
-differ from [submit requirements mode](#ownersStatus.submitRequirement.files).
+requirements](./config.md#ownersenablesubmitrequirement) are enabled doesn't
+differ from [submit requirements mode](#per-file-owners-statuses).
 
 ### Files that are assigned to the current user based on the OWNERS
 
