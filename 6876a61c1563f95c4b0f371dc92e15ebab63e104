@@ -16,6 +16,155 @@
       "message": "I updated Markdown in the documentation. Please take a look and accept if OK",
       "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e199728_cc957fdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-06-13T05:22:33Z",
+      "side": 1,
+      "message": "Thanks for giving it a try but:\n1. it still suffers from the misconfiguration in the `owners configuration` page - try building and running it locally\n2. perhaps in majority could be applied to the oldest supported version (3.10)?",
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f38a1c6e_f5d00ad5",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-06-13T05:22:33Z",
+      "side": 1,
+      "message": "nit: extra whitespaces at the end of introduced sections",
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96023f7e_2d92557a",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-06-13T05:22:33Z",
+      "side": 1,
+      "message": "when compiled there still some problem with this fix as this section is shown first",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 3
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dc0605b_0f683226",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-06-13T05:22:33Z",
+      "side": 1,
+      "message": "nit: extra whitespaces",
+      "range": {
+        "startLine": 22,
+        "startChar": 69,
+        "endLine": 22,
+        "endChar": 71
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5941292a_cd3cc6db",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-06-13T05:22:33Z",
+      "side": 1,
+      "message": "`master` doesn\u0027t support label functions anymore - I guess it should be reworked to SR",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 16
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "131b89f2_b9913ee6",
+        "filename": "owners/src/main/resources/Documentation/metrics.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-06-13T05:22:33Z",
+      "side": 1,
+      "message": "nit: whitespaces added at the end - was it intentional?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 44
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6701840_c3487e24",
+        "filename": "owners/src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-06-13T05:22:33Z",
+      "side": 1,
+      "message": "nit should be `example-3-owners-based-on-matchers`",
+      "range": {
+        "startLine": 42,
+        "startChar": 74,
+        "endLine": 42,
+        "endChar": 110
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
