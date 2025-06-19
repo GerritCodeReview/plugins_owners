@@ -77,6 +77,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a33d7a8c_24dc6a11",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3757754
+      },
+      "writtenOn": "2025-06-19T21:14:03Z",
+      "side": 1,
+      "message": "I\u0027m not sure what do you mean. Here is what I can see: https://gerrit.googlesource.com/plugins/owners/+/6876a61c1563f95c4b0f371dc92e15ebab63e104/owners/src/main/resources/Documentation/config.md",
+      "parentUuid": "96023f7e_2d92557a",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 3
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3dc0605b_0f683226",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 1
@@ -88,6 +112,30 @@
       "writtenOn": "2025-06-13T05:22:33Z",
       "side": 1,
       "message": "nit: extra whitespaces",
+      "range": {
+        "startLine": 22,
+        "startChar": 69,
+        "endLine": 22,
+        "endChar": 71
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dabba83_9bdd14bf",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3757754
+      },
+      "writtenOn": "2025-06-19T21:14:03Z",
+      "side": 1,
+      "message": "Two spaces at the end of a line are used in Markdown to break the line without creating new paragraph: https://www.markdownguide.org/basic-syntax/#line-breaks\n\nYet default value can be moved to separate paragraph.",
+      "parentUuid": "3dc0605b_0f683226",
       "range": {
         "startLine": 22,
         "startChar": 69,
@@ -123,6 +171,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1bf2d85_abe04a0f",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 3757754
+      },
+      "writtenOn": "2025-06-19T21:14:03Z",
+      "side": 1,
+      "message": "I was not focusing on the meaning of the content, I was just improving Markdown syntax.",
+      "parentUuid": "5941292a_cd3cc6db",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 16
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "131b89f2_b9913ee6",
         "filename": "owners/src/main/resources/Documentation/metrics.md",
         "patchSetId": 1
@@ -134,6 +206,30 @@
       "writtenOn": "2025-06-13T05:22:33Z",
       "side": 1,
       "message": "nit: whitespaces added at the end - was it intentional?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 44
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c6523b4_ac456cdd",
+        "filename": "owners/src/main/resources/Documentation/metrics.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3757754
+      },
+      "writtenOn": "2025-06-19T21:14:03Z",
+      "side": 1,
+      "message": "Yes. This is to break the line: https://www.markdownguide.org/basic-syntax/#line-breaks\nAnd in case of bullet point list it is used to continue the bullet point in new line.",
+      "parentUuid": "131b89f2_b9913ee6",
       "range": {
         "startLine": 6,
         "startChar": 0,
@@ -157,6 +253,30 @@
       "writtenOn": "2025-06-13T05:22:33Z",
       "side": 1,
       "message": "nit should be `example-3-owners-based-on-matchers`",
+      "range": {
+        "startLine": 42,
+        "startChar": 74,
+        "endLine": 42,
+        "endChar": 110
+      },
+      "revId": "6876a61c1563f95c4b0f371dc92e15ebab63e104",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ff44ba9_cd838c7c",
+        "filename": "owners/src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3757754
+      },
+      "writtenOn": "2025-06-19T21:14:03Z",
+      "side": 1,
+      "message": "Acknowledged - will be addressed in new patchset",
+      "parentUuid": "e6701840_c3487e24",
       "range": {
         "startLine": 42,
         "startChar": 74,
