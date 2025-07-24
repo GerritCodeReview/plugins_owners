@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eeb5003_1d3eeb3a",
+        "filename": "owners-api/src/main/java/com/googlesource/gerrit/owners/api/DefaultAddAllOwnersToAttentionSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-07-24T08:58:12Z",
+      "side": 1,
+      "message": "nit: remove empty line?",
+      "revId": "71e15bd5027c00aa5439ec209b3fd8c2b15a29cd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
