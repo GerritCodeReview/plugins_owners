@@ -17,11 +17,15 @@ package com.googlesource.gerrit.owners.api;
 
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
 
 public class OwnersApiModule extends AbstractModule {
 
   @Override
   protected void configure() {
     DynamicItem.itemOf(binder(), OwnersAttentionSet.class);
+    DynamicItem.bind(binder(), OwnersAttentionSet.class)
+        .to(DefaultAddAllOwnersToAttentionSet.class)
+        .in(Scopes.SINGLETON);
   }
 }

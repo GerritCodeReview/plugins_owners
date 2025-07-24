@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.owners.common;
+package com.googlesource.gerrit.owners.api;
 
 import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.extensions.common.ChangeInfo;
-import com.googlesource.gerrit.owners.api.OwnersAttentionSet;
+
 import java.util.Collection;
 
 class DefaultAddAllOwnersToAttentionSet implements OwnersAttentionSet {

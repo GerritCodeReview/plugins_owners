@@ -32,12 +32,12 @@ public class AutoassignModule extends AbstractModule {
 
   @VisibleForTesting
   AutoassignModule() {
-    this(DefaultAddAllOwnersToAttentionSet.class, new AutoAssignConfig());
+    this(new AutoAssignConfig());
   }
 
   @Inject
   AutoassignModule(AutoAssignConfig config) {
-    this(DefaultAddAllOwnersToAttentionSet.class, config);
+    this(null, config);
   }
 
   @VisibleForTesting
@@ -53,9 +53,11 @@ public class AutoassignModule extends AbstractModule {
     bind(ReviewerManager.class)
         .to(config.isAsyncReviewers() ? AsyncReviewerManager.class : SyncReviewerManager.class);
     DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(GitRefListener.class);
-    DynamicItem.bind(binder(), OwnersAttentionSet.class)
-        .to(ownersAttentionSetImpl)
-        .in(Scopes.SINGLETON);
+    if (ownersAttentionSetImpl != null) {
+      DynamicItem.bind(binder(), OwnersAttentionSet.class)
+          .to(ownersAttentionSetImpl)
+          .in(Scopes.SINGLETON);
+    }
     install(new AutoassignConfigModule());
   }
 }
