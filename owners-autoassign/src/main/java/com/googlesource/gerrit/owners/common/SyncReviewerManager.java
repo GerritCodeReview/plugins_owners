@@ -142,7 +142,7 @@ class SyncReviewerManager implements ReviewerManager {
         in.ignoreAutomaticAttentionSetRules = true;
         if (ownersForAttentionSet != null) {
           in.addToAttentionSet =
-              reviewersAccounts.stream().addToAttentionSet(changeInfo, reviewersAccounts).stream()
+              reviewersAccounts.stream()
                   .map(
                       (reviewer) ->
                           new AttentionSetInput(
