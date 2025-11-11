@@ -161,7 +161,7 @@ building an OWNERS hierarchy. It stops once it finds an OWNERS file that has
 > question.
 > The required label's score can be provided (by default label's scores
 > configuration is used) so that owners don't have to be granted with the
-> maximum label's score. Note that only single digit (0..9) is allowed.
+> maximum label's score. Note that only single digit (0..9) is allowed./
 
 For example, imagine the following tree with a default Gerrit project labels configuration:
 

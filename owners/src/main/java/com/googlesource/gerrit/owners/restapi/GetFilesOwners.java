@@ -46,6 +46,7 @@ import com.googlesource.gerrit.owners.common.PluginSettings;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
 import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -90,6 +91,16 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     this.cache = cache;
   }
 
+  public boolean isAnyFileOwnedBy(
+      Account.Id owner, Set<String> changePaths, Project.NameKey project, String branch)
+      throws IOException, InvalidOwnersFileException {
+    PathOwners owners = getPathOwners(project, branch, changePaths);
+    Map<String, Set<Account.Id>> filesWithOwner = owners.getFileOwners();
+
+    return changePaths.stream()
+        .anyMatch(filePath -> filesWithOwner.getOrDefault(filePath, Set.of()).contains(owner));
+  }
+
   @Override
   public Response<FilesOwnersResponse> apply(RevisionResource revision)
       throws AuthException, BadRequestException, ResourceConflictException, Exception {
@@ -97,25 +108,11 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     ChangeData changeData = revision.getChangeResource().getChangeData();
 
     Project.NameKey project = change.getProject();
-    List<Project.NameKey> projectParents =
-        projectCache.get(project).map(PathOwners::getParents).orElse(Collections.emptyList());
 
-    try (Repository repository = repositoryManager.openRepository(project)) {
-      Set<String> changePaths = new HashSet<>(changeData.currentFilePaths());
-
+    try {
       String branch = change.getDest().branch();
-      PathOwners owners =
-          new PathOwners(
-              accounts,
-              repositoryManager,
-              repository,
-              projectParents,
-              pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
-              changePaths,
-              pluginSettings.expandGroups(),
-              project.get(),
-              cache,
-              pluginSettings.globalLabel());
+      Set<String> changePaths = new HashSet<>(changeData.currentFilePaths());
+      PathOwners owners = getPathOwners(project, branch, changePaths);
 
       Map<String, Set<GroupOwner>> fileExpandedOwners =
           Maps.transformValues(
@@ -157,6 +154,25 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
+    }
+  }
+
+  private PathOwners getPathOwners(Project.NameKey project, String branch, Set<String> changePaths)
+      throws InvalidOwnersFileException, IOException {
+    List<Project.NameKey> projectParents =
+        projectCache.get(project).map(PathOwners::getParents).orElse(Collections.emptyList());
+    try (Repository repository = repositoryManager.openRepository(project)) {
+      return new PathOwners(
+          accounts,
+          repositoryManager,
+          repository,
+          projectParents,
+          pluginSettings.isBranchDisabled(branch) ? Optional.empty() : Optional.of(branch),
+          changePaths,
+          pluginSettings.expandGroups(),
+          project.get(),
+          cache,
+          pluginSettings.globalLabel());
     }
   }
 
