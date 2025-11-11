@@ -41,6 +41,7 @@ public class OwnersModule extends AbstractModule {
         .asEagerSingleton();
     install(new OwnersRestApiModule());
     install(new OwnersApprovalHasOperand.OwnerApprovalHasOperandModule());
+    install(new AlreadyApprovedByOperand.Module());
 
     if (pluginSettings.enableSubmitRequirement()) {
       install(new OwnersSubmitRequirement.OwnersSubmitRequirementModule());
