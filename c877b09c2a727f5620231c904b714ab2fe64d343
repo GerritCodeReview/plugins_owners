@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0cd64fc_d0a0c2cc",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d02e8562_2d8f7f72",
+      "range": {
+        "startLine": 58,
+        "startChar": 11,
+        "endLine": 58,
+        "endChar": 20
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad36a277_c36cc3c8",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3026a56_5cb9ae9a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "A rename will just be seen as a removal + addition, so it will require re-approval.\nI will add a test to cover this.",
+      "parentUuid": "ad36a277_c36cc3c8",
+      "range": {
+        "startLine": 73,
+        "startChar": 43,
+        "endLine": 73,
+        "endChar": 48
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f8e1102_bb88d1e2",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
         "patchSetId": 10
@@ -60,6 +108,30 @@
       "writtenOn": "2025-12-17T11:34:34Z",
       "side": 1,
       "message": "This is the case for example where:\n* P1 doesn\u0027t have any file I own, but I gave +2\n* P2 has some files I own\n\n\u003d\u003e I want to avoid carrying on the +2 and I have to review P2\n\nIs that correct?",
+      "range": {
+        "startLine": 91,
+        "startChar": 35,
+        "endLine": 91,
+        "endChar": 80
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71144e1d_a5e8c275",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "Yes exactly, it is a special case of \"in the new patch-set there is a change in the files I own\"",
+      "parentUuid": "6f8e1102_bb88d1e2",
       "range": {
         "startLine": 91,
         "startChar": 35,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69aef024_e4d37a8e",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "`ListOfFilesUnchangedPredicate` which is the predicate implementation for `has:unchanged-files` uses cost of `1`, like the majority of all others.\n\nI will use `1` here as well.",
+      "parentUuid": "351aca4c_2484050e",
+      "range": {
+        "startLine": 137,
+        "startChar": 11,
+        "endLine": 137,
+        "endChar": 12
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4894a404_ca4afd3b",
         "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
         "patchSetId": 10
@@ -106,6 +202,30 @@
       "writtenOn": "2025-12-17T11:34:34Z",
       "side": 1,
       "message": "```suggestion\nGiven an `OWNERS` file that split ownerships between `frontend` users and `backend` users based on\n```",
+      "range": {
+        "startLine": 32,
+        "startChar": 10,
+        "endLine": 32,
+        "endChar": 15
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04865ee4_d180e57d",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4894a404_ca4afd3b",
       "range": {
         "startLine": 32,
         "startChar": 10,
@@ -139,6 +259,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94f4396b_13c837d4",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b02be0c0_c6dd766b",
+      "range": {
+        "startLine": 50,
+        "startChar": 60,
+        "endLine": 50,
+        "endChar": 66
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37371802_aa8975e1",
@@ -162,6 +306,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c9cd82_603ae11e",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37371802_aa8975e1",
+      "range": {
+        "startLine": 59,
+        "startChar": 59,
+        "endLine": 59,
+        "endChar": 65
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fe23a6b_bb6b5fc6",
@@ -175,6 +343,24 @@
       "writtenOn": "2025-12-17T11:34:34Z",
       "side": 1,
       "message": "Can you also add the scenario where the user didn\u0027t own anything in the initiali PS. I am asking since I believe it is the trickiest one IMO. The other 2 examples are straighforward",
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d44586d8_d619a9d4",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:30:00Z",
+      "side": 1,
+      "message": "This scenario falls in the previous example where the new patchset contains the files owned by the user, so it must re-approve.\n\nWhether the previous patchset had `0` files owned by this user is irrelevant for the behaviour.\n\nHaving said that I will add a test.",
+      "parentUuid": "0fe23a6b_bb6b5fc6",
       "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
