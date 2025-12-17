@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b768dc18_a03abb82",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:33:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3026a56_5cb9ae9a",
+      "range": {
+        "startLine": 73,
+        "startChar": 43,
+        "endLine": 73,
+        "endChar": 48
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f8e1102_bb88d1e2",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "`ListOfFilesUnchangedPredicate` which is the predicate implementation for `has:unchanged-files` uses cost of `1`, like the majority of all others.\n\nI will use `1` here as well.",
       "parentUuid": "351aca4c_2484050e",
+      "range": {
+        "startLine": 137,
+        "startChar": 11,
+        "endLine": 137,
+        "endChar": 12
+      },
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b14c191a_641f7040",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:33:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69aef024_e4d37a8e",
       "range": {
         "startLine": 137,
         "startChar": 11,
@@ -361,6 +409,24 @@
       "side": 1,
       "message": "This scenario falls in the previous example where the new patchset contains the files owned by the user, so it must re-approve.\n\nWhether the previous patchset had `0` files owned by this user is irrelevant for the behaviour.\n\nHaving said that I will add a test.",
       "parentUuid": "0fe23a6b_bb6b5fc6",
+      "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82ef33e2_72c1955b",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-17T16:33:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d44586d8_d619a9d4",
       "revId": "c877b09c2a727f5620231c904b714ab2fe64d343",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
