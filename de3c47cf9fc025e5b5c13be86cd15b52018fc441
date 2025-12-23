@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54bc4985_7f812527",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-12-23T21:43:24Z",
+      "side": 1,
+      "message": "```suggestion\n- If none of the newly modified files are owned by the approver, copies the\n```",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ee2c270_b51535d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-12-23T21:43:24Z",
+      "side": 1,
+      "message": "So does that mean that we track the status of the OWNERS file throughout the history of the change?",
+      "range": {
+        "startLine": 24,
+        "startChar": 11,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c232c22_97807f79",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-12-23T21:43:24Z",
+      "side": 1,
+      "message": "I feel like this sentence is backwards, it makes it feel like limiting what\u0027s currently possible when really its expanding it. Maybe something more like?\n\n```suggestion\nIt allows owner approvals to be copied over if the owned files in the latest patch set haven\u0027t been modified.\n```",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 38
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b0a4bce_43aafd87",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-12-23T21:43:24Z",
+      "side": 1,
+      "message": "```suggestion\nGiven an `OWNERS` file that splits ownerships between `frontend` users and `backend` users based on\n```",
+      "range": {
+        "startLine": 35,
+        "startChar": 28,
+        "endLine": 35,
+        "endChar": 34
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
