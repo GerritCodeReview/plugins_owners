@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a524cd6_f5234ebd",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "Good catch, this was handled internally by DiffOperations, but it was misleading.",
+      "parentUuid": "432b1bf8_08826637",
+      "range": {
+        "startLine": 129,
+        "startChar": 39,
+        "endLine": 129,
+        "endChar": 40
+      },
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87702a8c_b46c155d",
@@ -41,6 +65,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d1accdf_1063307d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "A very similar predicate `ListOfFilesUnchangedPredicate` sets this to `1`, so I thought this was in-line with that [1].\n\nAlso, I think costs are related to search queries more than copy-condition logic, so this might be never used here.\n\n\n[1] https://gerrit-review.googlesource.com/c/plugins/owners/+/526043/comment/351aca4c_2484050e/",
+      "parentUuid": "87702a8c_b46c155d",
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3550b39e_94d90bd1",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-12-23T13:48:43Z",
       "side": 1,
       "message": "Since opening the repository is expensive and `ApprovalContext` has a `RepoView`, can we pass it all the way down?",
+      "range": {
+        "startLine": 164,
+        "startChar": 51,
+        "endLine": 164,
+        "endChar": 65
+      },
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85708969_8b9af24c",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "It would be a good idea, but unfortunately, the repoView does not expose `repository`, which is what\u0027s needed to construct a `PathOwners`.",
+      "parentUuid": "3550b39e_94d90bd1",
       "range": {
         "startLine": 164,
         "startChar": 51,
@@ -87,6 +153,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85804f6a_097aaee3",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 14
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "Good shout!",
+      "parentUuid": "b615ce44_e1bd7fcb",
+      "range": {
+        "startLine": 12,
+        "startChar": 3,
+        "endLine": 12,
+        "endChar": 13
+      },
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a7b4194_d2bbe27c",
@@ -100,6 +190,30 @@
       "writtenOn": "2025-12-23T13:48:43Z",
       "side": 1,
       "message": "approverin ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 56,
+        "endLine": 21,
+        "endChar": 66
+      },
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91dedee0_587d7fbc",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 14
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7b4194_d2bbe27c",
       "range": {
         "startLine": 21,
         "startChar": 56,
@@ -156,6 +270,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bffd26f_2cc62aa5",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnersCopyConditionIT.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fb9665df_b9c2ba7e",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 51
+      },
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91693b7d_bfe69490",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnersCopyConditionIT.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4f6b433_0cef6362",
+      "range": {
+        "startLine": 82,
+        "startChar": 52,
+        "endLine": 82,
+        "endChar": 71
+      },
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed0da48d_6697094b",
@@ -169,6 +331,30 @@
       "writtenOn": "2025-12-23T13:48:43Z",
       "side": 1,
       "message": "If there were files owned by `FRONTEND_FILES_OWNER` and there are no files owned by `FRONTEND_FILES_OWNER` in the new PS, shouldn\u0027t we keep the vote?\n\nOr we are assuming the worst? I.e.: no files have owner associated hence the change will never be reviewed.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 3
+      },
+      "revId": "934fe44e9e798029eb4437586608a807627e6aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46f660d0_54176588",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnersCopyConditionIT.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-23T16:10:21Z",
+      "side": 1,
+      "message": "\u003e If there were files owned by FRONTEND_FILES_OWNER and there are no files owned by FRONTEND_FILES_OWNER in the new PS, shouldn\u0027t we keep the vote?\n\nThis is the case of a removal, which covered by `shouldNotCopyApprovalWhenOwnedFileIsDeleted` asserting the label is NOT copied over since the set of files owned by the user has changed.\n\nIn this test, we are asserting that if there are no files owned by the approver, then her vote should not be copied over, since in this context, she is not an owner.",
+      "parentUuid": "ed0da48d_6697094b",
       "range": {
         "startLine": 109,
         "startChar": 0,
