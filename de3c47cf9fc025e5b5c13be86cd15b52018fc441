@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1914a25_e9280245",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-24T11:56:44Z",
+      "side": 1,
+      "message": "Unfortunately not.\nThe parser of the configuration uses a [string splitter](https://gerrit.googlesource.com/gerrit/+/refs/heads/master/java/com/google/gerrit/server/query/approval/ApprovalQueryBuilder.java#47) based on `_` character and it is expecting **exactly** [two tokens](https://gerrit.googlesource.com/gerrit/+/refs/heads/master/java/com/google/gerrit/server/query/approval/ApprovalQueryBuilder.java#168).\n\nSo we must have an `_`, and it has to be the only one.\n\nI think this could be made better bu just extracting **the last** token as the plugin name, without assuming there are only two of them. But this is outside the scope of this change.",
+      "parentUuid": "7a900ec7_31da8336",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 68
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54bc4985_7f812527",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-12-23T21:43:24Z",
       "side": 1,
       "message": "```suggestion\n- If none of the newly modified files are owned by the approver, copies the\n```",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2373d7e_e8803542",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-24T11:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54bc4985_7f812527",
       "range": {
         "startLine": 23,
         "startChar": 10,
@@ -93,6 +141,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd1a109_a12ce009",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-24T11:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c232c22_97807f79",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 38
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b0a4bce_43aafd87",
@@ -106,6 +178,30 @@
       "writtenOn": "2025-12-23T21:43:24Z",
       "side": 1,
       "message": "```suggestion\nGiven an `OWNERS` file that splits ownerships between `frontend` users and `backend` users based on\n```",
+      "range": {
+        "startLine": 35,
+        "startChar": 28,
+        "endLine": 35,
+        "endChar": 34
+      },
+      "revId": "de3c47cf9fc025e5b5c13be86cd15b52018fc441",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba6d7877_45977d8f",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-12-24T11:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b0a4bce_43aafd87",
       "range": {
         "startLine": 35,
         "startChar": 28,
