@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52869915_f54c8f53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-12-29T13:56:47Z",
+      "side": 1,
+      "message": "See my comments as suggestions for improvement. They could also be addressed as a follow-up as none of them are critical IMHO.",
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f38dfd38_84537ea3",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerOperand.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-12-29T13:56:47Z",
+      "side": 1,
+      "message": "I believe the class name should match the predicate operand name for consistency.\n\n```suggestion\npublic class AlreadyApprovedByOperand implements UserInOperandFactory {\n```",
+      "range": {
+        "startLine": 30,
+        "startChar": 13,
+        "endLine": 30,
+        "endChar": 42
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9659da29_c4ce3ea2",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerOperand.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-12-29T13:56:47Z",
+      "side": 1,
+      "message": "`owners` is the plugin name, if my understanding is correct.\n\nWhat if you change the plugin name? Would this still work? Should the `owners` string be injected as `@PlugiName` instead?\n\n```suggestion\n  public static String FULL_OPERAND_WITH_PLUGIN_NAME \u003d String.format(\"%s_%s\", OPERAND, \"owners\");\n```",
+      "range": {
+        "startLine": 45,
+        "startChar": 23,
+        "endLine": 45,
+        "endChar": 40
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "956a99ed_354727db",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-12-29T13:56:47Z",
+      "side": 1,
+      "message": "Would it be clearer to have this defined as a constant and avoid the comment?\n\n\n\n```suggestion\n              DISABLE_RENAME_DETECTION);\n```\n\nThen define the `DISABLE_RENAME_DETECTION` as `false`.",
+      "range": {
+        "startLine": 87,
+        "startChar": 43,
+        "endLine": 87,
+        "endChar": 48
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b4ca921_016ccc8a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-12-29T13:56:47Z",
+      "side": 1,
+      "message": "```suggestion\n                DISABLE_RENAME_DETECTIONS);\n```",
+      "range": {
+        "startLine": 115,
+        "startChar": 16,
+        "endLine": 115,
+        "endChar": 50
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f184db0e_e57ba81e",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-12-29T13:56:47Z",
+      "side": 1,
+      "message": "Is this a normal condition or something that is so serious that should even abort the whole operation?\n\nReturning `false` and then logging at `severe` level seems counterintuitive: if it is normal and you expect this to happen, then it should be a debug or max warning. Alternatively, if this is serious, it should re-throw the exception (maybe `IllegalStateException`?) and not just return `false` as it was a normal flow.",
+      "range": {
+        "startLine": 132,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 5
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3dd6ddf_e3f4669d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-12-29T13:56:47Z",
+      "side": 1,
+      "message": "Gemini says:\n_\"This is likely an underestimate. The predicate performs Git diff operations and ownership lookups, which involve I/O and cache access. Gerrit\u0027s Predicate cost usually ranges higher for I/O-bound tasks. Setting this to a higher value (e.g., 10) would help the query optimizer better order the execution of predicates.\"_\n\nI would agree with Gemini, the evaluation seems complex and should definitely be higher than 1. Have you looked at similar predicates in Gerrit and what they return as cost?",
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
