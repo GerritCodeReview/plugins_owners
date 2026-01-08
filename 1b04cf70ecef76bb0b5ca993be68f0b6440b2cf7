@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9914e8f1_91f414c0",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerOperand.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-01-08T08:59:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f38dfd38_84537ea3",
+      "range": {
+        "startLine": 30,
+        "startChar": 13,
+        "endLine": 30,
+        "endChar": 42
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9659da29_c4ce3ea2",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-12-29T13:56:47Z",
       "side": 1,
       "message": "`owners` is the plugin name, if my understanding is correct.\n\nWhat if you change the plugin name? Would this still work? Should the `owners` string be injected as `@PlugiName` instead?\n\n```suggestion\n  public static String FULL_OPERAND_WITH_PLUGIN_NAME \u003d String.format(\"%s_%s\", OPERAND, \"owners\");\n```",
+      "range": {
+        "startLine": 45,
+        "startChar": 23,
+        "endLine": 45,
+        "endChar": 40
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "864a5536_5e4c445d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerOperand.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-01-08T08:59:32Z",
+      "side": 1,
+      "message": "Renamed the variable.\n\n\u003e Should the owners string be injected as @PlugiName instead?\n\nI wanted this as a static variable, so injecting `@PluginName` won\u0027t help here.\nI will leave it as is. If we find ourselves in a situation where we have to rename the plugin, we can reconsider this approach (also, other parts of the code refer directly to the plugin via the \"owners\" string, so they will need to be addressed to).",
+      "parentUuid": "9659da29_c4ce3ea2",
       "range": {
         "startLine": 45,
         "startChar": 23,
@@ -87,6 +135,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "841a73f0_c1118d40",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-01-08T08:59:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "956a99ed_354727db",
+      "range": {
+        "startLine": 87,
+        "startChar": 43,
+        "endLine": 87,
+        "endChar": 48
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b4ca921_016ccc8a",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-12-29T13:56:47Z",
       "side": 1,
       "message": "```suggestion\n                DISABLE_RENAME_DETECTIONS);\n```",
+      "range": {
+        "startLine": 115,
+        "startChar": 16,
+        "endLine": 115,
+        "endChar": 50
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "128b6561_db8884c0",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-01-08T08:59:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b4ca921_016ccc8a",
       "range": {
         "startLine": 115,
         "startChar": 16,
@@ -133,6 +229,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "212c8d42_5e78cc6c",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-01-08T08:59:32Z",
+      "side": 1,
+      "message": "If an unchecked exception is thrown by the `match`, the result will be a label *not to be copied*, so this local handling won\u0027t change the behaviour: the label will not be copied.\n\nI agree with you, however, that the handling here is unnecessary. I will re-throw and let the caller handle the exception.",
+      "parentUuid": "f184db0e_e57ba81e",
+      "range": {
+        "startLine": 132,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 5
+      },
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3dd6ddf_e3f4669d",
@@ -146,6 +266,24 @@
       "writtenOn": "2025-12-29T13:56:47Z",
       "side": 1,
       "message": "Gemini says:\n_\"This is likely an underestimate. The predicate performs Git diff operations and ownership lookups, which involve I/O and cache access. Gerrit\u0027s Predicate cost usually ranges higher for I/O-bound tasks. Setting this to a higher value (e.g., 10) would help the query optimizer better order the execution of predicates.\"_\n\nI would agree with Gemini, the evaluation seems complex and should definitely be higher than 1. Have you looked at similar predicates in Gerrit and what they return as cost?",
+      "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1894e4b7_6bf28ff4",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByOwnerPredicate.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-01-08T08:59:32Z",
+      "side": 1,
+      "message": "Yes, please refer to [this comment](https://gerrit-review.googlesource.com/c/plugins/owners/+/526043/comment/87702a8c_b46c155d/) and [this comment](https://gerrit-review.googlesource.com/c/plugins/owners/+/526043/comment/351aca4c_2484050e/) on this subject.\n\nSince this came up a few times now, I will raise it to 10 to be more representative.",
+      "parentUuid": "b3dd6ddf_e3f4669d",
       "revId": "1b04cf70ecef76bb0b5ca993be68f0b6440b2cf7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
