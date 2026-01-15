@@ -16,6 +16,7 @@
 package com.googlesource.gerrit.owners;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allow;
 import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowLabel;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_COMMIT;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_REVISION;
@@ -25,6 +26,7 @@ import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.FULL_OPERA
 import static java.util.stream.Collectors.joining;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
@@ -34,7 +36,9 @@ import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.Permission;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.api.changes.RebaseInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -43,6 +47,8 @@ import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
+import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,6 +76,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
                 .ref(RefNames.REFS_HEADS + "*")
                 .group(REGISTERED_USERS)
                 .range(-2, 2))
+        .add(allow(Permission.REBASE).ref("refs/*").group(REGISTERED_USERS))
         .update();
 
     FRONTEND_FILES_OWNER = accountCreator.create("user-frontend");
@@ -203,6 +210,45 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     ChangeInfo c = detailedChange(changeId.toString());
 
     assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenAllEditsAreDueToRebase() throws Exception {
+    final String FILE_CONTENT =
+        IntStream.rangeClosed(1, 100)
+            .mapToObj(number -> String.format("Line %d\n", number))
+            .collect(joining());
+
+    // Create base file in master
+    PushOneCommit.Result initial =
+        createCommitAndPush(
+            testRepo, "refs/heads/master", "Create base file", BACKEND_OWNED_FILE, FILE_CONTENT);
+
+    // Create a change
+    PushOneCommit.Result amendL30 =
+        createChange(
+            "Amend L30", BACKEND_OWNED_FILE, FILE_CONTENT.replace("Line 30\n", "Line thirty\n"));
+    amendL30.assertOkStatus();
+    vote(BACKEND_FILES_OWNER, amendL30.getChangeId(), 2);
+
+    // Create sibling
+    testRepo.reset(initial.getCommit().getId());
+    PushOneCommit.Result amendL70 =
+        createChange(
+            "Amend L70", BACKEND_OWNED_FILE, FILE_CONTENT.replace("Line 70\n", "Line seventy\n"));
+    amendL70.assertOkStatus();
+
+    // Rebase
+    rebaseChangeOn(amendL30.getChangeId(), amendL70.getCommit().getId());
+
+    ChangeInfo c = detailedChange(amendL30.getChangeId());
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  private void rebaseChangeOn(String changeId, ObjectId newParent) throws Exception {
+    RebaseInput rebaseInput = new RebaseInput();
+    rebaseInput.base = newParent.getName();
+    gApi.changes().id(changeId).current().rebase(rebaseInput);
   }
 
   private ChangeInfo detailedChange(String changeId) throws Exception {
