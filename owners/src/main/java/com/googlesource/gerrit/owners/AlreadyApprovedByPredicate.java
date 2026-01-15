@@ -28,6 +28,8 @@ import com.google.gerrit.index.query.OperatorPredicate;
 import com.google.gerrit.server.git.InMemoryInserter;
 import com.google.gerrit.server.patch.DiffNotAvailableException;
 import com.google.gerrit.server.patch.DiffOperations;
+import com.google.gerrit.server.patch.DiffOptions;
+import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import com.google.gerrit.server.patch.gitdiff.ModifiedFile;
 import com.google.gerrit.server.query.approval.ApprovalContext;
 import com.google.gerrit.server.query.approval.UserInPredicate;
@@ -35,6 +37,10 @@ import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.restapi.GetFilesOwners;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -48,6 +54,8 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
   private final UserInPredicate.Field predicateField;
 
   private static final boolean DISABLE_RENAME_DETECTION = false;
+  private static final DiffOptions DO_NOT_IGNORE_REBASE =
+      DiffOptions.builder().skipFilesWithAllEditsDueToRebase(false).build();
 
   public AlreadyApprovedByPredicate(
       GetFilesOwners getFilesOwners,
@@ -81,27 +89,43 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
           ctx.sourcePatchSetId(),
           project);
 
-      Map<String, ModifiedFile> priorVsCurrent =
-          diffOperations.loadModifiedFilesIfNecessary(
-              project,
-              sourcePatchSet.commitId(),
-              targetPatchSet.commitId(),
-              ctx.repoView().getRevWalk(),
-              ctx.repoView().getConfig(),
-              DISABLE_RENAME_DETECTION);
+      Map<String, FileDiffOutput> priorVsCurrent =
+          diffOperations.listModifiedFiles(
+              project, sourcePatchSet.commitId(), targetPatchSet.commitId(), DO_NOT_IGNORE_REBASE);
 
-      boolean newPatchSetHasFilesOwnedByMe =
-          getFilesOwners.isAnyFileOwnedBy(
+      // We can't simply look at keys because it won't contain the old name of renamed-files.
+      Set<String> allFilePathsInDiff =
+          priorVsCurrent.values().stream()
+              .flatMap(v -> Stream.of(v.newPath(), v.oldPath()))
+              .filter(Optional::isPresent)
+              .map(Optional::get)
+              .collect(Collectors.toSet());
+
+      Set<String> filesOwnedByApprover =
+          getFilesOwners.filterFilesOwnedBy(
               currentApprover,
-              priorVsCurrent.keySet(),
+              allFilePathsInDiff,
               project,
               ctx.changeData().branchOrThrow().branch());
 
-      if (newPatchSetHasFilesOwnedByMe) {
+      if (!filesOwnedByApprover.isEmpty()) {
         logger.atFinest().log(
-            "Approver '%s' owns files that were changed in this new patch set, must re-approve",
-            currentApprover);
-        return false;
+            "Approver '%s' owns files that were changed in this new patch set", currentApprover);
+        boolean allChangesToOwnedFilesAreDueToRebase =
+            filesOwnedByApprover.stream()
+                .allMatch(
+                    ownedFile ->
+                        /* ownedFile key won't exist for renamed files. If a file is renamed we will require re-approval */
+                        priorVsCurrent.containsKey(ownedFile)
+                            && priorVsCurrent.get(ownedFile).allEditsDueToRebase());
+
+        String logMessage =
+            allChangesToOwnedFilesAreDueToRebase
+                ? "All changes to files owned by %s were due to a rebase. label will be copied."
+                : "Not all changes to files owned by %s were due to a rebase. Must re-approve.";
+        logger.atFinest().log(logMessage, currentApprover);
+
+        return allChangesToOwnedFilesAreDueToRebase;
       }
 
       // The new patchSet has not modified anything I own.
