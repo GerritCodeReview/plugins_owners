@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.owners;
 
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.flogger.LazyArgs.lazy;
 import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.FULL_OPERAND_WITH_PLUGIN_NAME;
 import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.OPERAND;
 
@@ -28,6 +29,8 @@ import com.google.gerrit.index.query.OperatorPredicate;
 import com.google.gerrit.server.git.InMemoryInserter;
 import com.google.gerrit.server.patch.DiffNotAvailableException;
 import com.google.gerrit.server.patch.DiffOperations;
+import com.google.gerrit.server.patch.DiffOptions;
+import com.google.gerrit.server.patch.filediff.FileDiffOutput;
 import com.google.gerrit.server.patch.gitdiff.ModifiedFile;
 import com.google.gerrit.server.query.approval.ApprovalContext;
 import com.google.gerrit.server.query.approval.UserInPredicate;
@@ -35,6 +38,10 @@ import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.restapi.GetFilesOwners;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -48,6 +55,8 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
   private final UserInPredicate.Field predicateField;
 
   private static final boolean DISABLE_RENAME_DETECTION = false;
+  private static final DiffOptions DO_NOT_IGNORE_REBASE =
+      DiffOptions.builder().skipFilesWithAllEditsDueToRebase(false).build();
 
   public AlreadyApprovedByPredicate(
       GetFilesOwners getFilesOwners,
@@ -81,27 +90,32 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
           ctx.sourcePatchSetId(),
           project);
 
-      Map<String, ModifiedFile> priorVsCurrent =
-          diffOperations.loadModifiedFilesIfNecessary(
-              project,
-              sourcePatchSet.commitId(),
-              targetPatchSet.commitId(),
-              ctx.repoView().getRevWalk(),
-              ctx.repoView().getConfig(),
-              DISABLE_RENAME_DETECTION);
+      Map<String, FileDiffOutput> priorVsCurrent =
+          diffOperations.listModifiedFiles(
+              project, sourcePatchSet.commitId(), targetPatchSet.commitId(), DO_NOT_IGNORE_REBASE);
 
-      boolean newPatchSetHasFilesOwnedByMe =
-          getFilesOwners.isAnyFileOwnedBy(
+      // We can't simply look at keys because it won't contain the old name of renamed-files.
+      Set<String> allFilePathsInDiff =
+          priorVsCurrent.values().stream()
+              .flatMap(v -> Stream.of(v.newPath(), v.oldPath()))
+              .filter(Optional::isPresent)
+              .map(Optional::get)
+              .collect(Collectors.toSet());
+
+      Set<String> filesOwnedByApprover =
+          getFilesOwners.filterFilesOwnedBy(
               currentApprover,
-              priorVsCurrent.keySet(),
+              allFilePathsInDiff,
               project,
               ctx.changeData().branchOrThrow().branch());
 
-      if (newPatchSetHasFilesOwnedByMe) {
+      if (!filesOwnedByApprover.isEmpty()) {
         logger.atFinest().log(
-            "Approver '%s' owns files that were changed in this new patch set, must re-approve",
-            currentApprover);
-        return false;
+            "Approver '%s' owns files that were changed in this new patch set: %s",
+            currentApprover, lazy(() -> String.join(",", filesOwnedByApprover)));
+
+        return shouldCopyLabelForOwnedFiles(
+            priorVsCurrent.values(), filesOwnedByApprover, currentApprover);
       }
 
       // The new patchSet has not modified anything I own.
@@ -139,6 +153,49 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
               "Failed to compute %s, label will not be copied.", FULL_OPERAND_WITH_PLUGIN_NAME),
           e);
     }
+  }
+
+  private static boolean shouldCopyLabelForOwnedFiles(
+      Iterable<FileDiffOutput> diffs, Set<String> ownedPaths, Account.Id currentApprover) {
+
+    for (FileDiffOutput diff : diffs) {
+      if (!touchesOwnedPath(diff, ownedPaths)) {
+        continue;
+      }
+
+      if (isPathChange(diff)) {
+        logger.atFinest().log(
+            "File owned by approver %s has a path change (rename/add/delete): oldPath=%s,"
+                + " newPath=%s",
+            currentApprover, diff.oldPath().orElse("<none>"), diff.newPath().orElse("<none>"));
+        return false;
+      }
+
+      // Content changes are acceptable only if they are entirely due to rebase.
+      if (!diff.allEditsDueToRebase()) {
+        logger.atFinest().log(
+            "file owned by approver %s has content edits (that are not only due to rebase):"
+                + " path=%s",
+            currentApprover, diff.newPath().orElseGet(() -> diff.oldPath().orElse("<unknown>")));
+        return false;
+      }
+    }
+
+    logger.atFinest().log(
+        "All edits for file owned by approver %s are either rebase-only or no path changes;"
+            + " approval can be copied.",
+        currentApprover);
+    return true;
+  }
+
+  private static boolean touchesOwnedPath(FileDiffOutput d, Set<String> ownedPaths) {
+    return d.newPath().filter(ownedPaths::contains).isPresent()
+        || d.oldPath().filter(ownedPaths::contains).isPresent();
+  }
+
+  private static boolean isPathChange(FileDiffOutput d) {
+    // A path change means rename/add/delete: oldPath != newPath, including empty vs present.
+    return !d.oldPath().equals(d.newPath());
   }
 
   private int getParentNum(ObjectId objectId, RevWalk revWalk) {
