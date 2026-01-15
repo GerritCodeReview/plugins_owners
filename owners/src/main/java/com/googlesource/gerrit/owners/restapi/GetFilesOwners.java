@@ -94,11 +94,18 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   public boolean isAnyFileOwnedBy(
       Account.Id owner, Set<String> changePaths, Project.NameKey project, String branch)
       throws IOException, InvalidOwnersFileException {
+    return !filterFilesOwnedBy(owner, changePaths, project, branch).isEmpty();
+  }
+
+  public Set<String> filterFilesOwnedBy(
+      Account.Id owner, Set<String> changePaths, Project.NameKey project, String branch)
+      throws IOException, InvalidOwnersFileException {
     PathOwners owners = getPathOwners(project, branch, changePaths);
     Map<String, Set<Account.Id>> filesWithOwner = owners.getFileOwners();
 
     return changePaths.stream()
-        .anyMatch(filePath -> filesWithOwner.getOrDefault(filePath, Set.of()).contains(owner));
+        .filter(filePath -> filesWithOwner.getOrDefault(filePath, Set.of()).contains(owner))
+        .collect(Collectors.toSet());
   }
 
   @Override

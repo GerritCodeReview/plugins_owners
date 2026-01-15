@@ -16,6 +16,7 @@
 package com.googlesource.gerrit.owners;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allow;
 import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowLabel;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_COMMIT;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_REVISION;
@@ -25,6 +26,7 @@ import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.FULL_OPERA
 import static java.util.stream.Collectors.joining;
 
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
@@ -34,15 +36,20 @@ import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.Permission;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.api.changes.RebaseInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
+import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.server.project.testing.TestLabels;
 import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
+import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,6 +67,11 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   private static final String BACKEND_OWNED_FILE = "foo.java";
   private static final String FILE_WITH_NO_OWNERS = "foo.txt";
 
+  private static final String FILE_CONTENT =
+      IntStream.rangeClosed(1, 10)
+          .mapToObj(number -> String.format("Line %d\n", number))
+          .collect(joining());
+
   @Before
   public void setup() throws Exception {
     projectOperations
@@ -70,6 +82,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
                 .ref(RefNames.REFS_HEADS + "*")
                 .group(REGISTERED_USERS)
                 .range(-2, 2))
+        .add(allow(Permission.REBASE).ref("refs/*").group(REGISTERED_USERS))
         .update();
 
     FRONTEND_FILES_OWNER = accountCreator.create("user-frontend");
@@ -221,6 +234,176 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     ChangeInfo c = detailedChange(changeId.toString());
 
     assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebase() throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    rebaseChangeOn(amendL3.getChangeId(), amendL7.getCommit().getId());
+
+    ChangeInfo c = detailedChange(amendL3.getChangeId());
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void
+      shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheNewBase()
+          throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(FRONTEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    Change.Id baseChangeWithUnrelatedFiles =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(FRONTEND_OWNED_FILE)
+            .content(FILE_CONTENT.replace("Line 7\n", "Line seven\n"))
+            .file("unrelated.txt")
+            .content("unrelated change")
+            .create();
+
+    rebaseChangeOn(amendL3.getChangeId(), commitOf(baseChangeWithUnrelatedFiles));
+
+    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+  }
+
+  @Test
+  public void
+      shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheRebasedChange()
+          throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    // Rebase and include an unrelated file
+    testRepo.reset(amendL7.getCommit().getId());
+    testRepo.cherryPick(amendL3.getCommit());
+    PushOneCommit.Result rebasedL30WithUnrelatedChanges =
+        amendChange(
+            amendL3.getChangeId(), "Rebased with changes", "unrelated.txt", "Unrelated change");
+    rebasedL30WithUnrelatedChanges.assertOkStatus();
+
+    ChangeInfo c = detailedChange(amendL3.getChangeId());
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void
+      shouldNotCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseButAnotherOwnedFileWasAdded()
+          throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(FRONTEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    testRepo.reset(amendL7.getCommit().getId());
+    testRepo.cherryPick(amendL3.getCommit());
+    PushOneCommit.Result rebasedL30PlusOtherChangesToOwnedFile =
+        amendChange(
+            amendL3.getChangeId(),
+            "Rebased + Add another owned file",
+            "another-owned.js",
+            "Line 1\n");
+    rebasedL30PlusOtherChangesToOwnedFile.assertOkStatus();
+
+    ChangeInfo c = detailedChange(amendL3.getChangeId());
+    assertVotes(c, FRONTEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenRebasingButFurtherAmending() throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    // Rebase and include an unrelated file
+    testRepo.reset(amendL7.getCommit().getId());
+    testRepo.cherryPick(amendL3.getCommit());
+    PushOneCommit.Result rebasedL3WithUnrelatedChanges =
+        amendChange(
+            amendL3.getChangeId(),
+            "Rebased with additional change to Line 5",
+            BACKEND_OWNED_FILE,
+            FILE_CONTENT.replace("Line 5\n", "Line five\n"));
+    rebasedL3WithUnrelatedChanges.assertOkStatus();
+
+    ChangeInfo c = detailedChange(amendL3.getChangeId());
+    assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenRemovingOwnedFileAndRebaseOnChangeThatRemovesTheSameFile()
+      throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    Change.Id removedFileChangeId =
+        changeOperations.newChange().project(project).file(BACKEND_OWNED_FILE).delete().create();
+
+    vote(BACKEND_FILES_OWNER, removedFileChangeId.toString(), 2);
+
+    testRepo.reset(initialCommitId);
+    Change.Id baseRemovedFileChangeId =
+        changeOperations.newChange().project(project).file(BACKEND_OWNED_FILE).delete().create();
+
+    rebaseChangeOn(removedFileChangeId.toString(), commitOf(baseRemovedFileChangeId));
+
+    ChangeInfo c = detailedChange(removedFileChangeId.toString());
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  private PushOneCommit.Result createChangeWithReplacedContent(
+      String file, String oldLine, String replacement) throws Exception {
+    PushOneCommit.Result r =
+        createChange(
+            String.format("Replaced '%s' with '%s'", oldLine, replacement),
+            file,
+            FILE_CONTENT.replace(oldLine, replacement));
+    r.assertOkStatus();
+    return r;
+  }
+
+  private ObjectId createInitialContentFor(String fileName) throws Exception {
+    PushOneCommit.Result initial =
+        createCommitAndPush(
+            testRepo, "refs/heads/master", "Create base file", fileName, FILE_CONTENT);
+    initial.assertOkStatus();
+    return initial.getCommit().getId();
+  }
+
+  private ObjectId commitOf(Change.Id changeId) throws Exception {
+    RevisionInfo currentRevision =
+        gApi.changes().id(project.get(), changeId.get()).get().getCurrentRevision();
+    return ObjectId.fromString(currentRevision.commit.commit);
+  }
+
+  private void rebaseChangeOn(String changeId, ObjectId newParent) throws Exception {
+    RebaseInput rebaseInput = new RebaseInput();
+    rebaseInput.base = newParent.getName();
+    gApi.changes().id(changeId).current().rebase(rebaseInput);
   }
 
   private ChangeInfo detailedChange(String changeId) throws Exception {
