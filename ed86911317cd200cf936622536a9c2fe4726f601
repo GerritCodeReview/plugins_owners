@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d2a08d_2261b5e4",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-01-16T07:36:28Z",
+      "side": 1,
+      "message": "Add test for a rebase where diff is **partially** due to a rebase only, but it is not for a different file.",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 58
+      },
+      "revId": "ed86911317cd200cf936622536a9c2fe4726f601",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
