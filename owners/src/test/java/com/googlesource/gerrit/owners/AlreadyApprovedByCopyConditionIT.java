@@ -88,6 +88,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     Change.Id changeId =
         changeOperations
             .newChange()
+            .project(project)
             .file(FRONTEND_OWNED_FILE)
             .content("some frontend change")
             .create();
@@ -112,6 +113,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     Change.Id changeId =
         changeOperations
             .newChange()
+            .project(project)
             .file(FILE_WITH_NO_OWNERS)
             .content("file with no owners")
             .create();
@@ -135,6 +137,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     Change.Id changeId =
         changeOperations
             .newChange()
+            .project(project)
             .file(FILE_WITH_NO_OWNERS)
             .content("file with no owners")
             .create();
@@ -156,7 +159,12 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsDeleted() throws Exception {
     Change.Id changeId =
-        changeOperations.newChange().file(BACKEND_OWNED_FILE).content("java content").create();
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
 
     vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
 
@@ -170,7 +178,12 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsRenamedToOwnedFile() throws Exception {
     Change.Id changeId =
-        changeOperations.newChange().file(BACKEND_OWNED_FILE).content("java content").create();
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
 
     vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
 
@@ -189,7 +202,12 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsRenamedToNonOwnedFile() throws Exception {
     Change.Id changeId =
-        changeOperations.newChange().file(BACKEND_OWNED_FILE).content("java content").create();
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
 
     vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
 
