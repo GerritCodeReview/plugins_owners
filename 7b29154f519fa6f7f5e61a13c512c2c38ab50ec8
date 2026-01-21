@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f4f42ca_ec10420c",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-01-21T13:42:53Z",
+      "side": 1,
+      "message": "IMHO, the conflicts aren\u0027t a clean rebase, but we can add a note for the sake of extra clarity.",
+      "parentUuid": "1ec0c31b_99bcf4c7",
+      "revId": "7b29154f519fa6f7f5e61a13c512c2c38ab50ec8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "86990cb1_eb76876a",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
         "patchSetId": 5
