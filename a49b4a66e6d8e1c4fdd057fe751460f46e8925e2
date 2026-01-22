@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afe349b4_17954447",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-01-22T08:57:56Z",
+      "side": 1,
+      "message": "```suggestion\nThe owners plugin currently removes approvals guarded by\n```",
+      "range": {
+        "startLine": 9,
+        "startChar": 28,
+        "endLine": 9,
+        "endChar": 34
+      },
+      "revId": "a49b4a66e6d8e1c4fdd057fe751460f46e8925e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e2308a_2fdb6195",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-01-22T08:57:56Z",
+      "side": 1,
+      "message": "If a file owned by someone has disappeared, it will be filtered out here, or I am reading the code in the wrong way?",
+      "range": {
+        "startLine": 101,
+        "startChar": 22,
+        "endLine": 101,
+        "endChar": 41
+      },
+      "revId": "a49b4a66e6d8e1c4fdd057fe751460f46e8925e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
