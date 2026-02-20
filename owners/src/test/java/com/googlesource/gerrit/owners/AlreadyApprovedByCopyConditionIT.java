@@ -38,6 +38,7 @@ import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.Permission;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.api.changes.ChangeIdentifier;
 import com.google.gerrit.extensions.api.changes.RebaseInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.common.ApprovalInfo;
@@ -98,7 +99,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   @Test
   public void shouldCopyOwnerApprovalOnlyWhenOwnedFilesAreUnchanged() throws Exception {
-    Change.Id changeId =
+    ChangeIdentifier changeId =
         changeOperations
             .newChange()
             .project(project)
@@ -123,7 +124,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   @Test
   public void shouldNotCopyApprovalForOwnerWhenNoOwnedFileExists() throws Exception {
-    Change.Id changeId =
+    ChangeIdentifier changeId =
         changeOperations
             .newChange()
             .project(project)
@@ -147,7 +148,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   @Test
   public void shouldNotCopyApprovalWhenOwnedFilesAreIntroducedInLaterPatchSet() throws Exception {
-    Change.Id changeId =
+    ChangeIdentifier changeId =
         changeOperations
             .newChange()
             .project(project)
@@ -171,7 +172,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsDeleted() throws Exception {
-    Change.Id changeId =
+    ChangeIdentifier changeId =
         changeOperations
             .newChange()
             .project(project)
@@ -190,7 +191,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsRenamedToOwnedFile() throws Exception {
-    Change.Id changeId =
+    ChangeIdentifier changeId =
         changeOperations
             .newChange()
             .project(project)
@@ -214,7 +215,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsRenamedToNonOwnedFile() throws Exception {
-    Change.Id changeId =
+    ChangeIdentifier changeId =
         changeOperations
             .newChange()
             .project(project)
@@ -263,7 +264,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
 
     testRepo.reset(initialCommitId);
-    Change.Id baseChangeWithUnrelatedFiles =
+    ChangeIdentifier baseChangeWithUnrelatedFiles =
         changeOperations
             .newChange()
             .project(project)
@@ -361,13 +362,13 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     createInitialContentFor(BACKEND_OWNED_FILE);
     ObjectId latestMasterCommitId = createInitialContentFor("another-owned.java");
 
-    Change.Id removedFileChangeId =
+    ChangeIdentifier removedFileChangeId =
         changeOperations.newChange().project(project).file("another-owned.java").delete().create();
 
     vote(BACKEND_FILES_OWNER, removedFileChangeId.toString(), 2);
 
     testRepo.reset(latestMasterCommitId);
-    Change.Id baseRemovedFileChangeId =
+    ChangeIdentifier baseRemovedFileChangeId =
         changeOperations.newChange().project(project).file(BACKEND_OWNED_FILE).delete().create();
 
     rebaseChangeOn(removedFileChangeId.toString(), commitOf(baseRemovedFileChangeId));
@@ -380,13 +381,13 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   public void shouldCopyApprovalWhenRemovingOwnedFileAndRebaseOnChangeThatRemovesTheSameFile()
       throws Exception {
     ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
-    Change.Id removedFileChangeId =
+    ChangeIdentifier removedFileChangeId =
         changeOperations.newChange().project(project).file(BACKEND_OWNED_FILE).delete().create();
 
     vote(BACKEND_FILES_OWNER, removedFileChangeId.toString(), 2);
 
     testRepo.reset(initialCommitId);
-    Change.Id baseRemovedFileChangeId =
+    ChangeIdentifier baseRemovedFileChangeId =
         changeOperations.newChange().project(project).file(BACKEND_OWNED_FILE).delete().create();
 
     rebaseChangeOn(removedFileChangeId.toString(), commitOf(baseRemovedFileChangeId));
@@ -414,9 +415,9 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     return initial.getCommit().getId();
   }
 
-  private ObjectId commitOf(Change.Id changeId) throws Exception {
+  private ObjectId commitOf(ChangeIdentifier changeId) throws Exception {
     RevisionInfo currentRevision =
-        gApi.changes().id(project.get(), changeId.get()).get().getCurrentRevision();
+        gApi.changes().id(changeId).get().getCurrentRevision();
     return ObjectId.fromString(currentRevision.commit.commit);
   }
 
