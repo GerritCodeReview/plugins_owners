@@ -19,6 +19,7 @@ package com.googlesource.gerrit.owners.common;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.entities.Account;
 import java.util.Collection;
 import java.util.Map;
@@ -45,6 +46,7 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
       Optional<LabelDefinition> inheritedLabel,
       Set<Account.Id> inheritedOwners,
       Set<Account.Id> inheritedReviewers,
+      @Nullable Boolean inheritedAutoOwnersApproved,
       Collection<Matcher> inheritedMatchers,
       Set<String> inheritedGroupOwners) {
     super(config.isInherited());
@@ -62,11 +64,15 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
             .map(PathOwnersEntry::stripOwnerDomain)
             .collect(Collectors.toSet());
     this.matchers = config.getMatchers();
+    this.autoOwnersApproved = config.getAutoOwnersApproved();
 
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
       this.groupOwners.addAll(inheritedGroupOwners);
       this.reviewers.addAll(inheritedReviewers);
+      if (this.autoOwnersApproved == null) {
+        this.autoOwnersApproved = inheritedAutoOwnersApproved;
+      }
       for (Matcher matcher : inheritedMatchers) {
         addMatcher(matcher);
       }
@@ -121,6 +127,7 @@ abstract class ReadOnlyPathOwnersEntry {
   protected String ownersPath;
   protected Map<String, Matcher> matchers = Maps.newHashMap();
   protected Set<String> groupOwners = Sets.newHashSet();
+  @Nullable protected Boolean autoOwnersApproved;
 
   protected ReadOnlyPathOwnersEntry(boolean inherited) {
     this.inherited = inherited;
@@ -153,6 +160,15 @@ abstract class ReadOnlyPathOwnersEntry {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  @Nullable
+  public Boolean getAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
+  public void setAutoOwnersApproved(@Nullable Boolean autoOwnersApproved) {
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 
   public boolean hasMatcher(String path) {
