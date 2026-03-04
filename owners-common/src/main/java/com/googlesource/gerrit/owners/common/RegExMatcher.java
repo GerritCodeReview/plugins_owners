@@ -15,6 +15,7 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
@@ -24,8 +25,8 @@ public class RegExMatcher extends Matcher {
   Pattern pattern;
 
   public RegExMatcher(
-      String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners) {
-    super(path, owners, reviewers, groupOwners);
+      String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners, @Nullable Boolean autoOwnersApproval) {
+    super(path, owners, reviewers, groupOwners, autoOwnersApproval);
     pattern = Pattern.compile(path);
   }
 
@@ -35,7 +36,7 @@ public class RegExMatcher extends Matcher {
   }
 
   @Override
-  protected Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> groupOwners) {
-    return new RegExMatcher(path, owners, reviewers, groupOwners);
+  protected Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> groupOwners, @Nullable Boolean autoOwnersApproval) {
+    return new RegExMatcher(path, owners, reviewers, groupOwners, autoOwnersApproval);
   }
 }
