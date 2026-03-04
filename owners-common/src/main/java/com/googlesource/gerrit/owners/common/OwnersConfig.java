@@ -40,6 +40,9 @@ public class OwnersConfig {
   /** Label that is required for submit. CodeReview if nothing is specified. */
   private Optional<LabelDefinition> label = Optional.empty();
 
+  /** Ability to enable or disable the owners auto approval, when configured */
+  private boolean autoOwnersApproved = true;
+
   @Override
   public String toString() {
     return "OwnersConfig [inherited="
@@ -50,6 +53,8 @@ public class OwnersConfig {
         + matchers
         + ", label="
         + label
+        + ", autoOwnersApproved="
+        + autoOwnersApproved
         + "]";
   }
 
@@ -91,5 +96,13 @@ public class OwnersConfig {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  public boolean isAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
+  public void setAutoOwnersApproved(boolean autoOwnersApproved) {
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 }
