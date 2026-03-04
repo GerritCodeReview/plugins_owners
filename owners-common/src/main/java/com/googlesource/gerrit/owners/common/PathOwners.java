@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -89,6 +90,7 @@ public class PathOwners {
   private Map<String, Set<Id>> fileOwners;
 
   private Map<String, Set<String>> fileGroupOwners;
+  private Map<String, Boolean> fileAutoOwnersApproved;
 
   private final boolean expandGroups;
 
@@ -175,6 +177,7 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
+    fileAutoOwnersApproved = map.getFileAutoOwnersApproved();
     label = globalLabel.or(map::getLabel);
   }
 
@@ -206,6 +209,10 @@ public class PathOwners {
 
   public Map<String, Set<String>> getFileGroupOwners() {
     return fileGroupOwners;
+  }
+
+  public Map<String, Boolean> getFileAutoOwnersApproved() {
+    return fileAutoOwnersApproved;
   }
 
   public boolean expandGroups() {
@@ -257,6 +264,8 @@ public class PathOwners {
         ownersMap.addFileOwners(path, currentEntry.getOwners());
         ownersMap.addFileReviewers(path, currentEntry.getReviewers());
         ownersMap.addFileGroupOwners(path, currentEntry.getGroupOwners());
+        ownersMap.addFileAutoOwnersApproved(
+            path, Objects.requireNonNullElse(currentEntry.getAutoOwnersApproved(), true));
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -337,6 +346,7 @@ public class PathOwners {
                             Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet(),
+                            null,
                             Collections.emptySet(),
                             Collections.emptySet())));
   }
@@ -372,6 +382,7 @@ public class PathOwners {
     }
 
     boolean matchingFound = false;
+    Boolean matchingAutoOwnersApproved = null;
 
     for (Matcher matcher : matchers) {
       if (matcher.matches(path)) {
@@ -379,8 +390,17 @@ public class PathOwners {
         ownersMap.addFileOwners(path, matcher.getOwners());
         ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
+        if (matcher.getAutoOwnersApproved() != null) {
+          matchingAutoOwnersApproved =
+              matchingAutoOwnersApproved == null
+                  ? matcher.getAutoOwnersApproved()
+                  : matchingAutoOwnersApproved && matcher.getAutoOwnersApproved();
+        }
         matchingFound = true;
       }
+    }
+    if (matchingAutoOwnersApproved != null) {
+      ownersMap.addFileAutoOwnersApproved(path, matchingAutoOwnersApproved);
     }
     return matchingFound;
   }
@@ -434,6 +454,8 @@ public class PathOwners {
                               Optional<LabelDefinition> label = pathFallbackEntry.getLabel();
                               final Set<Id> owners = pathFallbackEntry.getOwners();
                               final Set<Id> reviewers = pathFallbackEntry.getReviewers();
+                              final Boolean autoOwnersApproved =
+                                  pathFallbackEntry.getAutoOwnersApproved();
                               Collection<Matcher> inheritedMatchers =
                                   pathFallbackEntry.getMatchers().values();
                               Set<String> groupOwners = pathFallbackEntry.getGroupOwners();
@@ -444,6 +466,7 @@ public class PathOwners {
                                   label,
                                   owners,
                                   reviewers,
+                                  autoOwnersApproved,
                                   inheritedMatchers,
                                   groupOwners);
                             })
@@ -472,6 +495,9 @@ public class PathOwners {
       }
       if (currentEntry.getLabel().isEmpty()) {
         currentEntry.setLabel(projectEntry.getLabel());
+      }
+      if (currentEntry.getAutoOwnersApproved() == null) {
+        currentEntry.setAutoOwnersApproved(projectEntry.getAutoOwnersApproved());
       }
     }
   }

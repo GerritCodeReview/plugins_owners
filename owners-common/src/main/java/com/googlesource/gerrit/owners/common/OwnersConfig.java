@@ -18,6 +18,7 @@ package com.googlesource.gerrit.owners.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gerrit.common.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +41,9 @@ public class OwnersConfig {
   /** Label that is required for submit. CodeReview if nothing is specified. */
   private Optional<LabelDefinition> label = Optional.empty();
 
+  /** Ability to enable or disable the owners auto approval, when configured */
+  @Nullable private Boolean autoOwnersApproved = null;
+
   @Override
   public String toString() {
     return "OwnersConfig [inherited="
@@ -50,6 +54,8 @@ public class OwnersConfig {
         + matchers
         + ", label="
         + label
+        + ", autoOwnersApproved="
+        + autoOwnersApproved
         + "]";
   }
 
@@ -91,5 +97,18 @@ public class OwnersConfig {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  public boolean isAutoOwnersApproved() {
+    return Optional.ofNullable(autoOwnersApproved).orElse(true);
+  }
+
+  @Nullable
+  public Boolean getAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
+  public void setAutoOwnersApproved(@Nullable Boolean autoOwnersApproved) {
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 }
