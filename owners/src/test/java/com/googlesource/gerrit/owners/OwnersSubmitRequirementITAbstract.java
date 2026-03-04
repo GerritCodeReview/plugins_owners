@@ -39,7 +39,6 @@ import com.google.gerrit.extensions.client.SubmitType;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.SubmitRecordInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.server.project.testing.TestLabels;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import java.util.Collection;

@@ -177,6 +177,7 @@ public class PathOwners {
     fileGroupOwners = map.getFileGroupOwners();
     label = globalLabel.or(map::getLabel);
   }
+
   /**
    * Returns a read only view of the paths to owners mapping.
    *
