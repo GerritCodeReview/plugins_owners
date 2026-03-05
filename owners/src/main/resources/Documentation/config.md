@@ -204,6 +204,63 @@ OWNERS is used as global default.
 If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
 in all parent projects up to All-Projects.
 
+## auto-owners-approved
+
+The copy condition `approverin:already-approved-by_owners` applies to the whole
+repository unless configured otherwise. When working with large mono-repos this may
+be too coarse. Some paths, representing isolated components or subsystems, may be sensitive and
+therefore always require fresh owner review, while other paths benefit from keeping owner approvals
+across patch sets.
+
+The `auto-owners-approved` field lets project owners control this behavior at the
+`OWNERS` scope that resolved each file. This makes it possible to reduce review
+friction where appropriate and keep stricter review on critical paths.
+
+See [copy-conditions.md](copy-conditions.md) for predicate evaluation details.
+
+### Configuration levels
+
+This field can be configured at two levels:
+
+1. `OWNERS` file level, as a default for that `OWNERS` scope.
+2. Matcher level, as an override for files matched by that matcher.
+
+If the field is not set, it defaults to `true`.
+
+### Inheritance
+
+The usual `OWNERS` [inheritance](#global-project-owners) logic applies to `auto-owners-approved` as
+well. This includes directory `OWNERS` lookup, project `refs/meta/config` `OWNERS`, and
+parent project `OWNERS` when inheritance continues up the project hierarchy.
+
+- Matcher values are local overrides and take precedence over the `OWNERS` file
+   level value for files matched by that matcher.
+
+- If multiple regular matchers match the same file and define this field, the
+  `auto-owners-approved` is considered `true` only when all those matcher values are `true`. Any
+  false makes the effective value false.
+
+### auto-owners-approved example
+
+Enable by default, disable for java files:
+
+    inherited: true
+    matchers:
+    - suffix: .java
+      auto-owners-approved: false
+      owners:
+      - Security Team
+
+Disable at `OWNERS` level, enable for all documentation files ending with `.md`:
+
+    inherited: true
+    auto-owners-approved: false
+    matchers:
+    - suffix: .md
+      auto-owners-approved: true
+      owners:
+      - Docs Team
+
 ## Example 1 - OWNERS file without matchers
 
 Given an OWNERS configuration of:
