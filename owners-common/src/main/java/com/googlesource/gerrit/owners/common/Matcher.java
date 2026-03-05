@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
 import java.util.Set;
@@ -23,14 +24,20 @@ public abstract class Matcher {
   private Set<Account.Id> owners;
   private Set<Account.Id> reviewers;
   private Set<String> groupOwners;
+  private Boolean autoOwnersApproved = null;
   protected String path;
 
   public Matcher(
-      String key, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners) {
+      String key,
+      Set<Account.Id> owners,
+      Set<Account.Id> reviewers,
+      Set<String> groupOwners,
+      @Nullable Boolean autoOwnersApproved) {
     this.path = key;
     this.owners = owners;
     this.reviewers = reviewers;
     this.groupOwners = groupOwners;
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 
   @Override
@@ -43,6 +50,8 @@ public abstract class Matcher {
         + groupOwners
         + ", reviewers="
         + reviewers
+        + ", autoOwnersApproved="
+        + autoOwnersApproved
         + "]";
   }
 
@@ -74,6 +83,11 @@ public abstract class Matcher {
     return path;
   }
 
+  @Nullable
+  public Boolean isAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
   public abstract boolean matches(String pathToMatch);
 
   public Matcher merge(Matcher other) {
@@ -84,10 +98,15 @@ public abstract class Matcher {
     return clone(
         mergeSet(owners, other.owners),
         mergeSet(reviewers, other.reviewers),
-        mergeSet(groupOwners, other.groupOwners));
+        mergeSet(groupOwners, other.groupOwners),
+        other.autoOwnersApproved != null ? other.autoOwnersApproved : autoOwnersApproved);
   }
 
-  protected abstract Matcher clone(Set<Id> owners, Set<Id> reviewers, Set<String> groupOwners);
+  protected abstract Matcher clone(
+      Set<Id> owners,
+      Set<Id> reviewers,
+      Set<String> groupOwners,
+      @Nullable Boolean autoOwnersApproval);
 
   private <T> Set<T> mergeSet(Set<T> set1, Set<T> set2) {
     ImmutableSet.Builder<T> setBuilder = ImmutableSet.builder();

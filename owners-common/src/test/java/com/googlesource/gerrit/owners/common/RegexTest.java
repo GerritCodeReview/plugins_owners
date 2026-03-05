@@ -23,6 +23,8 @@ import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
 import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
@@ -87,6 +89,7 @@ public class RegexTest extends Config {
     OwnersConfig config = getOwnersConfig(fullConfig);
     // check classical configuration
     assertTrue(config.isInherited());
+    assertNull(config.isAutoOwnersApproved());
 
     Set<String> owners = config.getOwners();
     assertEquals(1, owners.size());
@@ -101,6 +104,7 @@ public class RegexTest extends Config {
     // suffix .sql matcher
     Matcher advMatcher = matchers.get(".sql");
     assertEquals(2, advMatcher.getOwners().size());
+    assertNull(advMatcher.isAutoOwnersApproved());
     Set<Account.Id> advOwners = advMatcher.getOwners();
     assertTrue(advOwners.contains(ACCOUNT_B_ID));
     assertTrue(advOwners.contains(ACCOUNT_C_ID));
@@ -108,14 +112,46 @@ public class RegexTest extends Config {
     // regex matcher
     Matcher dbMatcher = matchers.get(".*/a.*");
     assertEquals(1, dbMatcher.getOwners().size());
+    assertNull(dbMatcher.isAutoOwnersApproved());
     Set<Account.Id> dbOwners = dbMatcher.getOwners();
     assertTrue(dbOwners.contains(ACCOUNT_D_ID));
 
     // partial_regex matcher
     Matcher partial = matchers.get("Product.sql");
     assertEquals(1, partial.getOwners().size());
+    assertNull(partial.isAutoOwnersApproved());
     Set<Account.Id> partialOwners = partial.getOwners();
     assertTrue(partialOwners.contains(ACCOUNT_A_ID));
+  }
+
+  @Test
+  public void testParsingAutoOwnersApprovedFlags() throws Exception {
+    replayAll();
+
+    String configString =
+        "inherited: true\n"
+            + "auto-owners-approved: false\n"
+            + "owners:\n"
+            + "- a\n"
+            + "matchers:\n"
+            + "- suffix: .sql\n"
+            + "  auto-owners-approved: true\n"
+            + "  owners:\n"
+            + "  - b\n"
+            + "- exact: project/a.txt\n"
+            + "  auto-owners-approved: false\n"
+            + "  owners:\n"
+            + "  - c\n"
+            + "- regex: .*\\.md\n"
+            + "  owners:\n"
+            + "  - d\n";
+
+    OwnersConfig config = getOwnersConfig(configString);
+
+    assertFalse(config.isAutoOwnersApproved());
+    assertEquals(Boolean.TRUE, config.getMatchers().get(".sql").isAutoOwnersApproved());
+    assertEquals(Boolean.FALSE, config.getMatchers().get("project/a.txt").isAutoOwnersApproved());
+    assertNull(config.getMatchers().get(".*\\.md").isAutoOwnersApproved());
   }
 
   @Test

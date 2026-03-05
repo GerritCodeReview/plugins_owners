@@ -15,13 +15,18 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.entities.Account;
 import java.util.Set;
 
 public class GenericMatcher extends RegExMatcher {
 
   public GenericMatcher(
-      String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners) {
-    super(path, owners, reviewers, groupOwners);
+      String path,
+      Set<Account.Id> owners,
+      Set<Account.Id> reviewers,
+      Set<String> groupOwners,
+      @Nullable Boolean autoOwnersApproval) {
+    super(path, owners, reviewers, groupOwners, autoOwnersApproval);
   }
 }
