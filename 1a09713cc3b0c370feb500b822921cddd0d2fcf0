@@ -16,6 +16,24 @@
       "message": "Can we not remove Truth8 entirely? AFAIK it\u0027s deprecated.",
       "revId": "1a09713cc3b0c370feb500b822921cddd0d2fcf0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1731734b_393e9189",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-05T14:35:51Z",
+      "side": 1,
+      "message": "Good point, Truth8 is deprecated, but it\u0027s still what provides the `Optional` assertions used in these tests.\n\nIf we removed it entirely, we would need to migrate to another Optional assertion API (or rewrite the assertions to avoid Optional subjects, which would make the tests a bit more verbose).\n\nFor now, I removed the static import and made the Optional assertions explicitly use Truth8.assertThat(...). This resolves the ambiguity make the tests pass.\n\nI suggest we leave the refactoring to a different change.\nWDYT?",
+      "parentUuid": "c7257740_3900667c",
+      "revId": "1a09713cc3b0c370feb500b822921cddd0d2fcf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
