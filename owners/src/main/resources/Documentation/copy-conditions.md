@@ -118,3 +118,40 @@ The following is an example of the `approverin:already-approved-by_owners` confi
     value = +2 Looks good to me, approved
     copyCondition = approverin:already-approved-by_owners
 ```
+
+## Interaction with auto-owners-approved
+
+The `approverin:already-approved-by_owners` copy condition also checks the _effective_
+`auto-owners-approved` value for each file owned by the approver.
+
+For a specific approver vote to be copied, all files owned by that approver and
+considered during evaluation must have effective `auto-owners-approved` set to `true`.
+
+If at least one owned file has effective `auto-owners-approved` set to false, the
+vote is not copied.
+
+This is evaluated per approver. Different approvers can have different outcomes
+on the same patch set.
+
+Example:
+
+OWNERS:
+
+    inherited: true
+    matchers:
+    - suffix: .js
+      auto-owners-approved: false
+      owners:
+      - user-frontend
+    - suffix: .java
+      auto-owners-approved: true
+      owners:
+      - user-backend
+
+Patch Set 1 changes both `foo.js` and `foo.java`. Both owners vote`Code-Review +2`.
+Patch Set 2 changes only `foo.txt`.
+
+Result:
+
+1. `user-frontend` vote is not copied.
+2. `user-backend` vote is copied.
