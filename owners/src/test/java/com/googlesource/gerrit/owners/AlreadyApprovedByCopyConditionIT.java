@@ -170,6 +170,36 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
+  public void shouldNotCopyApprovalWhenPreviouslyOwnedFileHasAutoOwnersApprovedDisabled()
+      throws Exception {
+    addOwnerFileWithMatchersToRoot(
+        Map.of(
+            ".js", List.of(FRONTEND_FILES_OWNER),
+            ".java", List.of(BACKEND_FILES_OWNER)),
+        Map.of(".java", false));
+
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+    assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsDeleted() throws Exception {
     Change.Id changeId =
         changeOperations
@@ -462,6 +492,13 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   private void addOwnerFileWithMatchersToRoot(Map<String, List<TestAccount>> ownersBySuffix)
       throws Exception {
+    addOwnerFileWithMatchersToRoot(ownersBySuffix, Map.of());
+  }
+
+  private void addOwnerFileWithMatchersToRoot(
+      Map<String, List<TestAccount>> ownersBySuffix,
+      Map<String, Boolean> autoOwnersApprovedBySuffix)
+      throws Exception {
     // Example generated OWNERS:
     //
     // inherited: true
@@ -481,11 +518,18 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
                 entry -> {
                   String suffix = entry.getKey();
                   List<TestAccount> users = entry.getValue();
+                  String autoOwnersApproved =
+                      autoOwnersApprovedBySuffix.containsKey(suffix)
+                          ? String.format(
+                              "  auto-owners-approved: %s\n",
+                              autoOwnersApprovedBySuffix.get(suffix))
+                          : "";
                   String ownersYaml =
                       users.stream()
                           .map(user -> String.format("   - %s\n", user.username()))
                           .collect(joining());
-                  return String.format("- suffix: %s\n  owners:\n%s", suffix, ownersYaml);
+                  return String.format(
+                      "- suffix: %s\n%s  owners:\n%s", suffix, autoOwnersApproved, ownersYaml);
                 })
             .collect(joining());
 
