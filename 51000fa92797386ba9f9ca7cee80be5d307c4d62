@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68cf5d5a_66bd126b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "Please refer to my comment [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/557881/comment/fb0badd0_8194b8d8/)",
+      "parentUuid": "da73d134_2f180b53",
+      "range": {
+        "startLine": 12,
+        "startChar": 25,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ea3cd6a_78229df2",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-12T08:52:59Z",
       "side": 1,
       "message": "```suggestion\nthrough the constructor and clone paths so the matcher merges preserve the\n```",
+      "range": {
+        "startLine": 14,
+        "startChar": 8,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b95e549_6ca8f642",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ea3cd6a_78229df2",
       "range": {
         "startLine": 14,
         "startChar": 8,
@@ -93,6 +141,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a28b6115_daa60931",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "\u003e I believe the purpose was extending it, rather than removing it, allowing to be customisable.\n\nYes, here the _remove_ refers to the \"all or nothing\" behaviour, as in, \"we now make it configurable\". I have rephrased it.\n\n\u003e \n\u003e Also, if the `auto-ownes-approved` isn\u0027t defined, it should behave exactly as before.\n\nYes this is indeed the behaviour provided.",
+      "parentUuid": "47df5aea_f7881ab5",
+      "range": {
+        "startLine": 17,
+        "startChar": 15,
+        "endLine": 17,
+        "endChar": 21
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "155afd5b_2b4fc725",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0879da5e_8ed7df11",
+      "range": {
+        "startLine": 17,
+        "startChar": 35,
+        "endLine": 17,
+        "endChar": 49
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b0086de_bb54abb0",
@@ -106,6 +202,24 @@
       "writtenOn": "2026-03-12T08:52:59Z",
       "side": 1,
       "message": "```suggestion\nthe follow-up changes to evaluate this setting per ownership scope.\n```",
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3eb515fb_be225b65",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b0086de_bb54abb0",
       "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -129,6 +243,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8ff54675_e9b30116",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fb5e836_fb086323",
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ee63dca5_e4d9f082",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 11
@@ -140,6 +272,24 @@
       "writtenOn": "2026-03-12T08:52:59Z",
       "side": 1,
       "message": "Documentation update? Can you add one IT test that shows the behaviour E2E?",
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad67aa4_e4685711",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "There is not user facing functionality yet, this is just plumbing to add the new field and its parsing that\u0027s why I haven\u0027t added documentation nor E2E tests.",
+      "parentUuid": "ee63dca5_e4d9f082",
       "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -157,6 +307,30 @@
       "writtenOn": "2026-03-12T08:52:59Z",
       "side": 1,
       "message": "The `asBoolean` is very permissive: it considers every number that isn\u0027t `0` as a `true`. Is that wanted?",
+      "range": {
+        "startLine": 48,
+        "startChar": 27,
+        "endLine": 48,
+        "endChar": 36
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4ff4486_82401d48",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "I left the parsing of this new boolean value done in the same way as we parse the boolean `inherited`.\n\nI think you have a point though, that\u0027s not what we want.\nWe should raise an `IOException` instead, so that it will be wrapped in a `InvalidOwnersFileException` surfacing the misconfiguration.\n\nWe should also change the parsing of `inherited`, add a unit test for this and change the signature of `toMatcher` to bubble up the exception.\n\nHow do you feel if we make this a follow-up to avoid bloating this change even further?",
+      "parentUuid": "c56987d4_accbf2bf",
       "range": {
         "startLine": 48,
         "startChar": 27,
@@ -215,6 +389,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "28b36e37_12f62eac",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "Yes, the overall default is `true`.\n\nBut here we are parsing one specific `OWNERS`, and we must understand if the field is set or not.\n\n- `true` means explicitly enabled\n- `false` means explicitly disabled\n- `null` means not set\n\nIf we defaulted to true during parsing, every missing field would look like an explicit `true`, and inheritance would stop working correctly.\n\nIf after, applying inheritance, the value is still `null`, then we default to `true` in the follow-up change [here](https://gerrit.googlesource.com/plugins/owners/+/refs/changes/04/558304/5/owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java#268)",
+      "parentUuid": "fb0badd0_8194b8d8",
+      "range": {
+        "startLine": 118,
+        "startChar": 78,
+        "endLine": 118,
+        "endChar": 82
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "777a8f56_a8041ead",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "See [comment](https://gerrit-review.googlesource.com/c/plugins/owners/+/557881/comment/c56987d4_accbf2bf/)",
+      "parentUuid": "5b6dc53c_cf11fbc8",
+      "range": {
+        "startLine": 118,
+        "startChar": 60,
+        "endLine": 118,
+        "endChar": 69
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c13e3045_f4a0e18f",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
         "patchSetId": 11
@@ -226,6 +448,30 @@
       "writtenOn": "2026-03-12T08:52:59Z",
       "side": 1,
       "message": "Duplicated? Returning a `boolean` should be an `is\u003cSomething\u003e` method.",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 3
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "052607ed_9c19b3eb",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:42Z",
+      "side": 1,
+      "message": "Well spotted, this is a leftover and it is unused.\nRemoved.",
+      "parentUuid": "c13e3045_f4a0e18f",
       "range": {
         "startLine": 106,
         "startChar": 0,
