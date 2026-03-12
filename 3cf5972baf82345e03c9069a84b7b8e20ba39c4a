@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ab957f4_37b28bef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:56:16Z",
+      "side": 1,
+      "message": "Use imperative form.\n\n\n\n```suggestion\nExtend the path ownership resolution to carry a per file\n```",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88c3257a_5916234d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:56:16Z",
+      "side": 1,
+      "message": "```suggestion\nApply matcher overrides when present and resolves conflicts\n```",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6924b8_e96e473a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:56:16Z",
+      "side": 1,
+      "message": "I do not fully understand the use of `Boolean` here: are you try to mimic a three-state boolean?\n\n1. `true`\n2. `false`\n3. `inherit`",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c3625d6_41d05504",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:56:16Z",
+      "side": 1,
+      "message": "```suggestion\n  public boolean isAutoOwnersApproved() {\n    return autoOwnersApproved;\n  }\n```",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 3
+      },
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "425c9721_7b11352b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:56:16Z",
+      "side": 1,
+      "message": "```suggestion\n  public void setAutoOwnersApproved(boolean autoOwnersApproved) {\n```",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
