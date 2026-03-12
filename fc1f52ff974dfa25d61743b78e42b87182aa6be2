@@ -16,6 +16,24 @@
       "message": "Were tests broken before this change?",
       "revId": "fc1f52ff974dfa25d61743b78e42b87182aa6be2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2e1c775_4a5eff42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T08:47:39Z",
+      "side": 1,
+      "message": "yes, `owners-common` tests were broken",
+      "parentUuid": "0248897e_3abb8789",
+      "revId": "fc1f52ff974dfa25d61743b78e42b87182aa6be2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
