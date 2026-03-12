@@ -1,0 +1,302 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "450e1ba2_cdb20a47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "I am just reviewing for now the documentation, which describes the expected behaviour. Once that\u0027s agreed, we can move on to the review of the code.\n\nAt the moment, I\u0027m a bit confused about how this is supposed to work. It looks overcomplicated to me, but it could be just me missing the plot, so I apologise in advance for that.",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8a884b6_d92dd3f3",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "```suggestion\nrepository unless configured otherwise. When working with large mono-repos this may be too\n```",
+      "range": {
+        "startLine": 210,
+        "startChar": 40,
+        "endLine": 210,
+        "endChar": 60
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5fa9c8a_081b8b5f",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "```suggestion\ncoarse. Some paths, representing isolated components or subsystems, may be sensitive and therefore always require fresh owner review,\n```",
+      "range": {
+        "startLine": 211,
+        "startChar": 8,
+        "endLine": 211,
+        "endChar": 18
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4254928f_6c723f24",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "```suggestion\nIf the field is not set, it defaults to `true`.\n```",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a5c7b8_ec8322a3",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "Are we repeating how `OWNERS` file inheritance works? If yes, can we just point to the existing documentation instead?",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 24
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c6bf020_54c1203f",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "This is quite controversial though, can we rephrase differently on the _specific_ versus the generic one?\n\nHow are the other matchers\u0027 properties work? Can we align with that behaviour?",
+      "range": {
+        "startLine": 243,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 41
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a02c77_8e824fe3",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "This is redundant: the default is `true` anyway",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 30
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e4ed5e1_949867f2",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "```suggestion\nDisable at `OWNERS` level, enable for all documentation files ending with `.md`:\n```",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b582040b_25e354c5",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "```suggestion\n## Customizing the copy condition behaviour with the `auto-owners-approved` in `OWNERS`\n```",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65f41454_319dd660",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "```suggestion\nThe `approverin:already-approved-by_owners` can be fine-grained enabled/disabled using the\n`auto-owners-approved` configuration in the `OWNERS` file.\n```",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 65
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82563039_df03c005",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "This phrase is confusing: what are we trying to communicate here?",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 86
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908a65df_e1127918",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "```suggestion\nWhen the `auto-owners-approved` is set to false, at global level in the `OWNERS` file of the project or path, or for one of the files matching a section, then the\ncopy condition is not satisfied and therefore the scores are not copied over to the new patch-set.\n```",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 19
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "598e01d7_5bf00dde",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "What do you mean? I believe we check for the files and use the flag accordingly. Are you saying that I can set a file/approver matrix and enable/disable based on that?",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 22
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5eb9a01_cad3497e",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T13:19:32Z",
+      "side": 1,
+      "message": "Can we point to the existing example in `config.md` instead? I am fearing they may get out of sync in the longer term.",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 20
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
