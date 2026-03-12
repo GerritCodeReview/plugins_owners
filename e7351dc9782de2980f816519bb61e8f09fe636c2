@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4b599d6_0d563724",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "450e1ba2_cdb20a47",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8a884b6_d92dd3f3",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 7
@@ -31,6 +49,30 @@
       "writtenOn": "2026-03-12T13:19:32Z",
       "side": 1,
       "message": "```suggestion\nrepository unless configured otherwise. When working with large mono-repos this may be too\n```",
+      "range": {
+        "startLine": 210,
+        "startChar": 40,
+        "endLine": 210,
+        "endChar": 60
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06a6c123_ed7e4788",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8a884b6_d92dd3f3",
       "range": {
         "startLine": 210,
         "startChar": 40,
@@ -64,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2418dcda_0e11956e",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5fa9c8a_081b8b5f",
+      "range": {
+        "startLine": 211,
+        "startChar": 8,
+        "endLine": 211,
+        "endChar": 18
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4254928f_6c723f24",
@@ -81,6 +147,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92b532c5_5da825c6",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4254928f_6c723f24",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4a5c7b8_ec8322a3",
@@ -94,6 +178,30 @@
       "writtenOn": "2026-03-12T13:19:32Z",
       "side": 1,
       "message": "Are we repeating how `OWNERS` file inheritance works? If yes, can we just point to the existing documentation instead?",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 24
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9267eebd_63bc1500",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Yes good point, Done.",
+      "parentUuid": "e4a5c7b8_ec8322a3",
       "range": {
         "startLine": 235,
         "startChar": 0,
@@ -129,6 +237,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "706af021_fb3aea69",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "The existing matchers are cumulative AFAIU.\nThis is the first occurrence of a boolean at a matcher level.\n\nSo what I chose is that if if multiple matchers apply then `false` will win.\nI will rephrase it.",
+      "parentUuid": "8c6bf020_54c1203f",
+      "range": {
+        "startLine": 243,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 41
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51a02c77_8e824fe3",
         "filename": "owners/src/main/resources/Documentation/config.md",
         "patchSetId": 7
@@ -140,6 +272,30 @@
       "writtenOn": "2026-03-12T13:19:32Z",
       "side": 1,
       "message": "This is redundant: the default is `true` anyway",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 30
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b69f5b4e_dd10016f",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51a02c77_8e824fe3",
       "range": {
         "startLine": 252,
         "startChar": 4,
@@ -167,6 +323,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7648f55_726ce756",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e4ed5e1_949867f2",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b582040b_25e354c5",
@@ -184,6 +358,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33665f1c_2935c607",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b582040b_25e354c5",
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65f41454_319dd660",
@@ -197,6 +389,30 @@
       "writtenOn": "2026-03-12T13:19:32Z",
       "side": 1,
       "message": "```suggestion\nThe `approverin:already-approved-by_owners` can be fine-grained enabled/disabled using the\n`auto-owners-approved` configuration in the `OWNERS` file.\n```",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 65
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b660534_b8729780",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65f41454_319dd660",
       "range": {
         "startLine": 124,
         "startChar": 0,
@@ -230,6 +446,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c912932_cd03516b",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "I am trying to say that \"A vote is copied only if, after applying inheritance rules, auto owners approved is true for every relevant file owned by that approver.\" Rephrased it.",
+      "parentUuid": "82563039_df03c005",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 86
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "908a65df_e1127918",
@@ -243,6 +483,30 @@
       "writtenOn": "2026-03-12T13:19:32Z",
       "side": 1,
       "message": "```suggestion\nWhen the `auto-owners-approved` is set to false, at global level in the `OWNERS` file of the project or path, or for one of the files matching a section, then the\ncopy condition is not satisfied and therefore the scores are not copied over to the new patch-set.\n```",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 19
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f867b3d4_4fd873da",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "908a65df_e1127918",
       "range": {
         "startLine": 130,
         "startChar": 0,
@@ -276,6 +540,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d48cf5_353a6ee0",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "I simply mean that the `copyCondition` is _always_ evaluated per approver.\n\nIf a patchset has two approvers A and B for example and a new patchset is created the copy condition is evaluated for A and also for B.\n\nThe ownership of the files will be checked for A and for B and might lead to different results.\n\nI have removed this, since we also removed the example below.",
+      "parentUuid": "598e01d7_5bf00dde",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 22
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5eb9a01_cad3497e",
@@ -289,6 +577,30 @@
       "writtenOn": "2026-03-12T13:19:32Z",
       "side": 1,
       "message": "Can we point to the existing example in `config.md` instead? I am fearing they may get out of sync in the longer term.",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 20
+      },
+      "revId": "e7351dc9782de2980f816519bb61e8f09fe636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20005960_4dcbad9c",
+        "filename": "owners/src/main/resources/Documentation/copy-conditions.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5eb9a01_cad3497e",
       "range": {
         "startLine": 136,
         "startChar": 0,
