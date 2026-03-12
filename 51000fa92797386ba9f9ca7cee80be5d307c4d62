@@ -1,0 +1,239 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da73d134_2f180b53",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "`nullable`? I believe the default was supposed to be `true`.",
+      "range": {
+        "startLine": 12,
+        "startChar": 25,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ea3cd6a_78229df2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "```suggestion\nthrough the constructor and clone paths so the matcher merges preserve the\n```",
+      "range": {
+        "startLine": 14,
+        "startChar": 8,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47df5aea_f7881ab5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "I believe the purpose was extending it, rather than removing it, allowing to be customisable.\n\nAlso, if the `auto-ownes-approved` isn\u0027t defined, it should behave exactly as before.",
+      "range": {
+        "startLine": 17,
+        "startChar": 15,
+        "endLine": 17,
+        "endChar": 21
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0879da5e_8ed7df11",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "```suggestion\nThe goal is to remove the previous all-or-nothing behavior of\n```",
+      "range": {
+        "startLine": 17,
+        "startChar": 35,
+        "endLine": 17,
+        "endChar": 49
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b0086de_bb54abb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "```suggestion\nthe follow-up changes to evaluate this setting per ownership scope.\n```",
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fb5e836_fb086323",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "```suggestion\n- parsing at the OWNERS level and the matcher level\n```",
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee63dca5_e4d9f082",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "Documentation update? Can you add one IT test that shows the behaviour E2E?",
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c56987d4_accbf2bf",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "The `asBoolean` is very permissive: it considers every number that isn\u0027t `0` as a `true`. Is that wanted?",
+      "range": {
+        "startLine": 48,
+        "startChar": 27,
+        "endLine": 48,
+        "endChar": 36
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb0badd0_8194b8d8",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "Why `null`? I believe we said that default is `true`.",
+      "range": {
+        "startLine": 118,
+        "startChar": 78,
+        "endLine": 118,
+        "endChar": 82
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b6dc53c_cf11fbc8",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "Same as above on the `asBoolean`",
+      "range": {
+        "startLine": 118,
+        "startChar": 60,
+        "endLine": 118,
+        "endChar": 69
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13e3045_f4a0e18f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:52:59Z",
+      "side": 1,
+      "message": "Duplicated? Returning a `boolean` should be an `is\u003cSomething\u003e` method.",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 3
+      },
+      "revId": "51000fa92797386ba9f9ca7cee80be5d307c4d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
