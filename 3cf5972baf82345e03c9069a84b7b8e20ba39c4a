@@ -60,6 +60,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c180778c_5ca65258",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-12T08:57:01Z",
+      "side": 1,
+      "message": "I am missing the point of this change: can you show the IT test that demonstrates what it is trying to achieve?",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c3625d6_41d05504",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
         "patchSetId": 5
