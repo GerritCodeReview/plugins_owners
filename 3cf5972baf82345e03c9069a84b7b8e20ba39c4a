@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cffd7a83_5672896a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ab957f4_37b28bef",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88c3257a_5916234d",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-03-12T08:56:16Z",
       "side": 1,
       "message": "```suggestion\nApply matcher overrides when present and resolves conflicts\n```",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc175b40_1591a155",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88c3257a_5916234d",
       "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -95,6 +137,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "691b1a21_6f98d110",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:51Z",
+      "side": 1,
+      "message": "\u003e I am missing the point of this change: can you show the IT test that demonstrates what it is trying to achieve?\n\n- The previous change added the parsing of the field (no inheritance).\n- This change adds the inheritance logic.\n\nI have rephrased the commit message to make it more obvious.\n\n\u003e Why not using `InheritableBoolean` instead?\n\nWhich line are you referring to? This is a patch-level comment.",
+      "parentUuid": "c17348f4_1f23127c",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1faea7f_4189bfa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:51Z",
+      "side": 1,
+      "message": "Yes exactly,\nI explain this [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/557881/comment/fb0badd0_8194b8d8/), let\u0027s keep the conversation there.",
+      "parentUuid": "dc6924b8_e96e473a",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c3625d6_41d05504",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
         "patchSetId": 5
@@ -118,6 +196,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c04ba660_ced6a4ae",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:51Z",
+      "side": 1,
+      "message": "I have renamed the method, but we should still return a `Boolean` because we want to carry on `null` values.\n\nThe inheritance is computed at `PathOwners.resolvePathEntry`:\n\n```\n    // Inherit from Project if OWNER in root enables inheritance\n    calculateCurrentEntry(rootEntry, projectEntry, currentEntry);\n\n    // Inherit from Parent Project if OWNER in Project enables inheritance\n    for (ReadOnlyPathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {\n      calculateCurrentEntry(projectEntry, parentPathOwnersEntry, currentEntry);\n    }\n```\n\nAnd we need to understand whether to inherit the value (when we have `null`) or to use the current one (when we have `true`/`false`).\n\nSee `calculateCurrentEntry`\n```\n      if (currentEntry.isAutoOwnersApproved() \u003d\u003d null) {\n        currentEntry.setAutoOwnersApproved(projectEntry.isAutoOwnersApproved());\n      }\n```",
+      "parentUuid": "9c3625d6_41d05504",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 3
+      },
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "425c9721_7b11352b",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
         "patchSetId": 5
@@ -129,6 +231,24 @@
       "writtenOn": "2026-03-12T08:56:16Z",
       "side": 1,
       "message": "```suggestion\n  public void setAutoOwnersApproved(boolean autoOwnersApproved) {\n```",
+      "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "158765ed_9e9bcc5c",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-12T18:41:51Z",
+      "side": 1,
+      "message": "See my [answer](https://gerrit-review.googlesource.com/c/plugins/owners/+/558304/comment/9c3625d6_41d05504/)",
+      "parentUuid": "425c9721_7b11352b",
       "revId": "3cf5972baf82345e03c9069a84b7b8e20ba39c4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
