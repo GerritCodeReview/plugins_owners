@@ -170,6 +170,124 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
+  public void shouldNotCopyApprovalWhenAutoOwnersApprovedIsDisabledAtOwnersLevel()
+      throws Exception {
+    pushOwnersToMaster(
+        String.format(
+            "inherited: true\n"
+                + "auto-owners-approved: false\n"
+                + "matchers:\n"
+                + "- suffix: .js\n"
+                + "  owners:\n"
+                + "  - %s\n"
+                + "- suffix: .java\n"
+                + "  owners:\n"
+                + "  - %s\n",
+            FRONTEND_FILES_OWNER.username(), BACKEND_FILES_OWNER.username()));
+
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenAutoOwnersApprovedIsInheritedFromParentOwners()
+      throws Exception {
+    String ownedFile = "dir/file.txt";
+    pushOwnersToMaster("inherited: true\nauto-owners-approved: false\n");
+    pushOwnersFileToMaster(
+        "dir/OWNERS",
+        String.format("inherited: true\nowners:\n- %s\n", BACKEND_FILES_OWNER.username()));
+
+    Change.Id changeId =
+        changeOperations.newChange().project(project).file(ownedFile).content("owned").create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildOwnersStopsAutoOwnersApprovedInheritance()
+      throws Exception {
+    String ownedFile = "dir/file.txt";
+    pushOwnersToMaster("inherited: true\nauto-owners-approved: false\n");
+    pushOwnersFileToMaster(
+        "dir/OWNERS",
+        String.format("inherited: false\nowners:\n- %s\n", BACKEND_FILES_OWNER.username()));
+
+    Change.Id changeId =
+        changeOperations.newChange().project(project).file(ownedFile).content("owned").create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildOwnersOverridesInheritedAutoOwnersApproved()
+      throws Exception {
+    String ownedFile = "dir/file.txt";
+    pushOwnersToMaster("inherited: true\nauto-owners-approved: false\n");
+    pushOwnersFileToMaster(
+        "dir/OWNERS",
+        String.format(
+            "inherited: true\nauto-owners-approved: true\nowners:\n- %s\n",
+            BACKEND_FILES_OWNER.username()));
+
+    Change.Id changeId =
+        changeOperations.newChange().project(project).file(ownedFile).content("owned").create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsDeleted() throws Exception {
     Change.Id changeId =
         changeOperations
@@ -493,8 +611,12 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   private void pushOwnersToMaster(String owners) throws Exception {
+    pushOwnersFileToMaster("OWNERS", owners);
+  }
+
+  private void pushOwnersFileToMaster(String path, String owners) throws Exception {
     pushFactory
-        .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
+        .create(admin.newIdent(), testRepo, "Add OWNER file", path, owners)
         .to(RefNames.fullName("master"))
         .assertOkStatus();
   }
