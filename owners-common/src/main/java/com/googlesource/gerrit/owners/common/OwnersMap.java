@@ -31,6 +31,7 @@ public class OwnersMap {
   private Map<String, Set<Account.Id>> fileOwners = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileReviewers = Maps.newHashMap();
   private Map<String, Set<String>> fileGroupOwners = Maps.newHashMap();
+  private Set<String> fileOwnersBannedAutoApproval = Sets.newHashSet();
   private Optional<LabelDefinition> label = Optional.empty();
 
   @Override
@@ -86,6 +87,10 @@ public class OwnersMap {
     return fileGroupOwners;
   }
 
+  public Set<String> getFileOwnersBannedAutoApproval() {
+    return fileOwnersBannedAutoApproval;
+  }
+
   public void addFileOwners(String file, Set<Id> owners) {
     if (owners.isEmpty()) {
       return;
@@ -120,6 +125,10 @@ public class OwnersMap {
     }
 
     fileGroupOwners.computeIfAbsent(file, (f) -> Sets.newHashSet()).addAll(groupOwners);
+  }
+
+  public void banFileFromOwnersAutoApproval(String file) {
+    fileOwnersBannedAutoApproval.add(file);
   }
 
   public Optional<LabelDefinition> getLabel() {
