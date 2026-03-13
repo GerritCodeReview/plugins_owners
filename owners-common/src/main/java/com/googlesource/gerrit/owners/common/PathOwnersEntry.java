@@ -16,10 +16,13 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.google.gerrit.extensions.client.InheritableBoolean.INHERIT;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -43,6 +46,7 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
       Optional<LabelDefinition> inheritedLabel,
       Set<Account.Id> inheritedOwners,
       Set<Account.Id> inheritedReviewers,
+      Optional<Boolean> autoOwnersApproved,
       Collection<Matcher> inheritedMatchers,
       Set<String> inheritedGroupOwners) {
     super(config.isInherited());
@@ -65,12 +69,18 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
       this.owners.addAll(inheritedOwners);
       this.groupOwners.addAll(inheritedGroupOwners);
       this.reviewers.addAll(inheritedReviewers);
+      if (config.getAutoOwnersApproved() == INHERIT) {
+        autoOwnersApproved.ifPresent(this::setAutoOwnersApproved);
+      } else {
+        setAutoOwnersApproved(config.getAutoOwnersApproved() == InheritableBoolean.TRUE);
+      }
       for (Matcher matcher : inheritedMatchers) {
         addMatcher(matcher);
       }
       this.label = config.getLabel().or(() -> inheritedLabel);
     } else {
       this.label = config.getLabel();
+      this.setAutoOwnersApproved(config.getAutoOwnersApproved() != InheritableBoolean.FALSE);
     }
   }
 
@@ -119,6 +129,7 @@ abstract class ReadOnlyPathOwnersEntry {
   protected String ownersPath;
   protected Map<String, Matcher> matchers = Maps.newHashMap();
   protected Set<String> groupOwners = Sets.newHashSet();
+  protected boolean autoOwnersApproved = true;
 
   protected ReadOnlyPathOwnersEntry(boolean inherited) {
     this.inherited = inherited;
@@ -151,6 +162,14 @@ abstract class ReadOnlyPathOwnersEntry {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  public boolean isAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
+  public void setAutoOwnersApproved(boolean autoOwnersApproved) {
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 
   public boolean hasMatcher(String path) {

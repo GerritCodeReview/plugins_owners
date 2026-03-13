@@ -493,6 +493,85 @@ public class PathOwnersTest extends ClassicConfig {
     assertThat(cacheMock.hit).isEqualTo(expectedCacheCalls);
   }
 
+  @Test
+  public void testAutoOwnersApprovedInheritedFromRoot() throws Exception {
+    expectConfig(
+        "OWNERS",
+        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+    expectConfig("dir/OWNERS", "inherited: true\nowners:\n- " + USER_B_EMAIL_COM + "\n");
+
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            emptyList(),
+            branch,
+            Set.of("dir/file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.empty());
+
+    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("dir/file.txt");
+  }
+
+  @Test
+  public void testAutoOwnersApprovedDefaultsWhenInheritanceStopped() throws Exception {
+    expectConfig(
+        "OWNERS",
+        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+    expectConfig("dir/OWNERS", "inherited: false\nowners:\n- " + USER_B_EMAIL_COM + "\n");
+
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            emptyList(),
+            branch,
+            Set.of("dir/file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.empty());
+
+    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+  }
+
+  @Test
+  public void testAutoOwnersApprovedInheritedFromParentProjectOwners() throws Exception {
+    expectConfig("OWNERS", "master", createConfig(true, owners()));
+    expectConfig("OWNERS", RefNames.REFS_CONFIG, repository, createConfig(true, owners()));
+    expectConfig(
+        "OWNERS",
+        RefNames.REFS_CONFIG,
+        parentRepository1,
+        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+
+    mockParentRepository(parentRepository1NameKey, parentRepository1);
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Arrays.asList(parentRepository1NameKey),
+            branch,
+            Set.of("file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.empty());
+
+    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("file.txt");
+  }
+
   private void mockOwners(String... owners) throws IOException {
     expectNoConfig("OWNERS");
     expectConfig(CLASSIC_OWNERS, createConfig(false, owners(owners)));
