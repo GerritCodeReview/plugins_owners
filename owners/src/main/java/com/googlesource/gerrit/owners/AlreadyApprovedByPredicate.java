@@ -109,6 +109,14 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
               project,
               ctx.changeData().branchOrThrow().branch());
 
+      if (filesOwnedByApprover == null) {
+        logger.atFinest().log(
+            "Approver '%s' owns files with auto-owners-approved=false. Label will NOT be"
+                + " copied.",
+            currentApprover);
+        return false;
+      }
+
       if (!filesOwnedByApprover.isEmpty()) {
         logger.atFinest().log(
             "Approver '%s' owns files that were changed in this new patch set: %s",
@@ -131,12 +139,21 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
                 ctx.repoView(),
                 ins,
                 DISABLE_RENAME_DETECTION);
-        boolean oldPatchSetHasFilesOwnedByMe =
-            getFilesOwners.isAnyFileOwnedBy(
+        Set<String> oldPatchSetOwnedFilesWithAutoOwnersApproved =
+            getFilesOwners.filterFilesOwnedBy(
                 currentApprover,
                 baseVsPrior.keySet(),
                 project,
                 ctx.changeData().branchOrThrow().branch());
+        if (oldPatchSetOwnedFilesWithAutoOwnersApproved == null) {
+          logger.atFinest().log(
+              "Approver '%s' used to own files matched by OWNERS having auto-owners-approved=false."
+                  + " Label will NOT be copied.",
+              currentApprover);
+          return false;
+        }
+        boolean oldPatchSetHasFilesOwnedByMe =
+            !oldPatchSetOwnedFilesWithAutoOwnersApproved.isEmpty();
 
         logger.atFinest().log(
             "Has approver '%s' ever owned anything in this change? %s",
