@@ -16,6 +16,7 @@ package com.googlesource.gerrit.owners;
 
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.flogger.LazyArgs.lazy;
+import static com.google.gerrit.extensions.client.InheritableBoolean.FALSE;
 import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.FULL_OPERAND_WITH_PLUGIN_NAME;
 import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.OPERAND;
 
@@ -24,6 +25,7 @@ import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.exceptions.StorageException;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import com.google.gerrit.index.query.Matchable;
 import com.google.gerrit.index.query.OperatorPredicate;
 import com.google.gerrit.server.git.InMemoryInserter;
@@ -102,14 +104,23 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
               .map(Optional::get)
               .collect(Collectors.toSet());
 
-      Set<String> filesOwnedByApprover =
-          getFilesOwners.filterFilesOwnedBy(
+      Map<String, InheritableBoolean> filesOwnedByApproverWithAutoOwnersApproved =
+          getFilesOwners.filterFilesOwnedByWithAutoOwnersApproved(
               currentApprover,
               allFilePathsInDiff,
               project,
               ctx.changeData().branchOrThrow().branch());
+      Set<String> filesOwnedByApprover = filesOwnedByApproverWithAutoOwnersApproved.keySet();
 
       if (!filesOwnedByApprover.isEmpty()) {
+        if (filesOwnedByApproverWithAutoOwnersApproved.values().stream()
+            .anyMatch(autoOwnersApproved -> autoOwnersApproved == FALSE)) {
+          logger.atFinest().log(
+              "Approver '%s' owns files with auto-owners-approved=false. Label will NOT be"
+                  + " copied.",
+              currentApprover);
+          return false;
+        }
         logger.atFinest().log(
             "Approver '%s' owns files that were changed in this new patch set: %s",
             currentApprover, lazy(() -> String.join(",", filesOwnedByApprover)));
@@ -131,12 +142,22 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
                 ctx.repoView(),
                 ins,
                 DISABLE_RENAME_DETECTION);
-        boolean oldPatchSetHasFilesOwnedByMe =
-            getFilesOwners.isAnyFileOwnedBy(
+        Map<String, InheritableBoolean> oldPatchSetOwnedFilesWithAutoOwnersApproved =
+            getFilesOwners.filterFilesOwnedByWithAutoOwnersApproved(
                 currentApprover,
                 baseVsPrior.keySet(),
                 project,
                 ctx.changeData().branchOrThrow().branch());
+        if (oldPatchSetOwnedFilesWithAutoOwnersApproved.values().stream()
+            .anyMatch(autoOwnersApproved -> autoOwnersApproved == FALSE)) {
+          logger.atFinest().log(
+              "Approver '%s' used to own files matched by OWNERS having auto-owners-approved=false."
+                  + " Label will NOT be copied.",
+              currentApprover);
+          return false;
+        }
+        boolean oldPatchSetHasFilesOwnedByMe =
+            !oldPatchSetOwnedFilesWithAutoOwnersApproved.isEmpty();
 
         logger.atFinest().log(
             "Has approver '%s' ever owned anything in this change? %s",

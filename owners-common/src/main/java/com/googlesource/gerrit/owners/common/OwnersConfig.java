@@ -16,8 +16,11 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.google.gerrit.extensions.client.InheritableBoolean.INHERIT;
+
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +43,9 @@ public class OwnersConfig {
   /** Label that is required for submit. CodeReview if nothing is specified. */
   private Optional<LabelDefinition> label = Optional.empty();
 
+  /** Ability to enable or disable the owners auto approval, when configured */
+  private InheritableBoolean autoOwnersApproved = INHERIT;
+
   @Override
   public String toString() {
     return "OwnersConfig [inherited="
@@ -50,6 +56,8 @@ public class OwnersConfig {
         + matchers
         + ", label="
         + label
+        + ", autoOwnersApproved="
+        + autoOwnersApproved
         + "]";
   }
 
@@ -91,5 +99,13 @@ public class OwnersConfig {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  public InheritableBoolean isAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
+  public void setAutoOwnersApproved(InheritableBoolean autoOwnersApproved) {
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 }

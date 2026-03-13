@@ -20,6 +20,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Account.Id;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -31,6 +32,7 @@ public class OwnersMap {
   private Map<String, Set<Account.Id>> fileOwners = Maps.newHashMap();
   private Map<String, Set<Account.Id>> fileReviewers = Maps.newHashMap();
   private Map<String, Set<String>> fileGroupOwners = Maps.newHashMap();
+  private Map<String, InheritableBoolean> fileAutoOwnersApproved = Maps.newHashMap();
   private Optional<LabelDefinition> label = Optional.empty();
 
   @Override
@@ -86,6 +88,10 @@ public class OwnersMap {
     return fileGroupOwners;
   }
 
+  public Map<String, InheritableBoolean> getFileAutoOwnersApproved() {
+    return fileAutoOwnersApproved;
+  }
+
   public void addFileOwners(String file, Set<Id> owners) {
     if (owners.isEmpty()) {
       return;
@@ -120,6 +126,10 @@ public class OwnersMap {
     }
 
     fileGroupOwners.computeIfAbsent(file, (f) -> Sets.newHashSet()).addAll(groupOwners);
+  }
+
+  public void addFileAutoOwnersApproved(String file, InheritableBoolean autoOwnersApproved) {
+    fileAutoOwnersApproved.put(file, autoOwnersApproved);
   }
 
   public Optional<LabelDefinition> getLabel() {

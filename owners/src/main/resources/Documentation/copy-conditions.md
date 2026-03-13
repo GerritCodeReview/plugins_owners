@@ -118,3 +118,16 @@ The following is an example of the `approverin:already-approved-by_owners` confi
     value = +2 Looks good to me, approved
     copyCondition = approverin:already-approved-by_owners
 ```
+
+## Customizing the copy condition behaviour with the `auto-owners-approved` in `OWNERS`
+
+The `approverin:already-approved-by_owners` can be fine-grained enabled/disabled using the
+`auto-owners-approved` configuration in the `OWNERS` file.
+
+A vote is copied only if, after applying inheritance rules, `auto-owners-approved` is `true` for
+every relevant file owned by that approver.
+
+When the `auto-owners-approved` is set to `false`, then the copy condition is not satisfied and
+therefore the scores are not copied over to the new patch-set.
+
+Examples can be found [here](./config.md#auto-owners-approved-example).

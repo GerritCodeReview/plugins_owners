@@ -15,12 +15,14 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.google.gerrit.extensions.client.InheritableBoolean.INHERIT;
 import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.gerrit.entities.Account.Id;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
@@ -47,6 +49,12 @@ public class ConfigurationParser {
         Optional.ofNullable(jsonNode.get("label"))
             .map(JsonNode::asText)
             .flatMap(LabelDefinition::parse));
+    InheritableBoolean autoOwnersApproved =
+        Optional.ofNullable(jsonNode.get("auto-owners-approved"))
+            .map(n -> n.asBoolean() ? InheritableBoolean.TRUE : InheritableBoolean.FALSE)
+            .orElse(INHERIT);
+    ret.setAutoOwnersApproved(autoOwnersApproved);
+
     addClassicMatcher(jsonNode, ret);
     addMatchers(jsonNode, ret);
     return ret;

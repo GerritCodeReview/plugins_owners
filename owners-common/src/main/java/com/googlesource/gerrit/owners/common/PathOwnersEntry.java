@@ -16,10 +16,13 @@
 
 package com.googlesource.gerrit.owners.common;
 
+import static com.google.gerrit.extensions.client.InheritableBoolean.INHERIT;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -45,6 +48,7 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
       Optional<LabelDefinition> inheritedLabel,
       Set<Account.Id> inheritedOwners,
       Set<Account.Id> inheritedReviewers,
+      InheritableBoolean inheritedAutoOwnersApproved,
       Collection<Matcher> inheritedMatchers,
       Set<String> inheritedGroupOwners) {
     super(config.isInherited());
@@ -62,11 +66,15 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
             .map(PathOwnersEntry::stripOwnerDomain)
             .collect(Collectors.toSet());
     this.matchers = config.getMatchers();
+    this.autoOwnersApproved = config.isAutoOwnersApproved();
 
     if (config.isInherited()) {
       this.owners.addAll(inheritedOwners);
       this.groupOwners.addAll(inheritedGroupOwners);
       this.reviewers.addAll(inheritedReviewers);
+      if (this.autoOwnersApproved == INHERIT) {
+        this.autoOwnersApproved = inheritedAutoOwnersApproved;
+      }
       for (Matcher matcher : inheritedMatchers) {
         addMatcher(matcher);
       }
@@ -121,6 +129,7 @@ abstract class ReadOnlyPathOwnersEntry {
   protected String ownersPath;
   protected Map<String, Matcher> matchers = Maps.newHashMap();
   protected Set<String> groupOwners = Sets.newHashSet();
+  protected InheritableBoolean autoOwnersApproved = INHERIT;
 
   protected ReadOnlyPathOwnersEntry(boolean inherited) {
     this.inherited = inherited;
@@ -153,6 +162,14 @@ abstract class ReadOnlyPathOwnersEntry {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  public InheritableBoolean isAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
+  public void setAutoOwnersApproved(InheritableBoolean autoOwnersApproved) {
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 
   public boolean hasMatcher(String path) {

@@ -29,6 +29,7 @@ import com.google.common.truth.Truth8;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
@@ -491,6 +492,88 @@ public class PathOwnersTest extends ClassicConfig {
             + 3 /* for each parent directory of 'file.txt' */
             + 1 /* for parent's refs/meta/config/OWNERS */;
     assertThat(cacheMock.hit).isEqualTo(expectedCacheCalls);
+  }
+
+  @Test
+  public void testAutoOwnersApprovedInheritedFromRoot() throws Exception {
+    expectConfig(
+        "OWNERS",
+        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+    expectConfig("dir/OWNERS", "inherited: true\nowners:\n- " + USER_B_EMAIL_COM + "\n");
+
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            emptyList(),
+            branch,
+            Set.of("dir/file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.empty());
+
+    assertThat(owners.getFileAutoOwnersApproved())
+        .containsEntry("dir/file.txt", InheritableBoolean.FALSE);
+  }
+
+  @Test
+  public void testAutoOwnersApprovedDefaultsWhenInheritanceStopped() throws Exception {
+    expectConfig(
+        "OWNERS",
+        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+    expectConfig("dir/OWNERS", "inherited: false\nowners:\n- " + USER_B_EMAIL_COM + "\n");
+
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            emptyList(),
+            branch,
+            Set.of("dir/file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.empty());
+
+    assertThat(owners.getFileAutoOwnersApproved())
+        .containsEntry("dir/file.txt", InheritableBoolean.TRUE);
+  }
+
+  @Test
+  public void testAutoOwnersApprovedInheritedFromParentProjectOwners() throws Exception {
+    expectConfig("OWNERS", "master", createConfig(true, owners()));
+    expectConfig("OWNERS", RefNames.REFS_CONFIG, repository, createConfig(true, owners()));
+    expectConfig(
+        "OWNERS",
+        RefNames.REFS_CONFIG,
+        parentRepository1,
+        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+
+    mockParentRepository(parentRepository1NameKey, parentRepository1);
+    replayAll();
+
+    PathOwners owners =
+        new PathOwners(
+            accounts,
+            repositoryManager,
+            repository,
+            Arrays.asList(parentRepository1NameKey),
+            branch,
+            Set.of("file.txt"),
+            EXPAND_GROUPS,
+            "foo",
+            CACHE_MOCK,
+            Optional.empty());
+
+    assertThat(owners.getFileAutoOwnersApproved())
+        .containsEntry("file.txt", InheritableBoolean.FALSE);
   }
 
   private void mockOwners(String... owners) throws IOException {

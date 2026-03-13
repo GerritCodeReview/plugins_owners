@@ -18,6 +18,8 @@ package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.entities.Patch.COMMIT_MSG;
 import static com.google.gerrit.entities.Patch.MERGE_LIST;
+import static com.google.gerrit.extensions.client.InheritableBoolean.INHERIT;
+import static com.google.gerrit.extensions.client.InheritableBoolean.TRUE;
 import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
 import com.google.common.collect.ImmutableList;
@@ -32,6 +34,7 @@ import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Patch;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.DiffSummary;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
@@ -89,6 +92,7 @@ public class PathOwners {
   private Map<String, Set<Id>> fileOwners;
 
   private Map<String, Set<String>> fileGroupOwners;
+  private Map<String, InheritableBoolean> fileAutoOwnersApproved;
 
   private final boolean expandGroups;
 
@@ -175,6 +179,7 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
+    fileAutoOwnersApproved = map.getFileAutoOwnersApproved();
     label = globalLabel.or(map::getLabel);
   }
 
@@ -206,6 +211,10 @@ public class PathOwners {
 
   public Map<String, Set<String>> getFileGroupOwners() {
     return fileGroupOwners;
+  }
+
+  public Map<String, InheritableBoolean> getFileAutoOwnersApproved() {
+    return fileAutoOwnersApproved;
   }
 
   public boolean expandGroups() {
@@ -257,6 +266,11 @@ public class PathOwners {
         ownersMap.addFileOwners(path, currentEntry.getOwners());
         ownersMap.addFileReviewers(path, currentEntry.getReviewers());
         ownersMap.addFileGroupOwners(path, currentEntry.getGroupOwners());
+        ownersMap.addFileAutoOwnersApproved(
+            path,
+            currentEntry.isAutoOwnersApproved() != INHERIT
+                ? currentEntry.isAutoOwnersApproved()
+                : TRUE);
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -337,6 +351,7 @@ public class PathOwners {
                             Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet(),
+                            INHERIT,
                             Collections.emptySet(),
                             Collections.emptySet())));
   }
@@ -434,6 +449,8 @@ public class PathOwners {
                               Optional<LabelDefinition> label = pathFallbackEntry.getLabel();
                               final Set<Id> owners = pathFallbackEntry.getOwners();
                               final Set<Id> reviewers = pathFallbackEntry.getReviewers();
+                              final InheritableBoolean autoOwnersApproved =
+                                  pathFallbackEntry.isAutoOwnersApproved();
                               Collection<Matcher> inheritedMatchers =
                                   pathFallbackEntry.getMatchers().values();
                               Set<String> groupOwners = pathFallbackEntry.getGroupOwners();
@@ -444,6 +461,7 @@ public class PathOwners {
                                   label,
                                   owners,
                                   reviewers,
+                                  autoOwnersApproved,
                                   inheritedMatchers,
                                   groupOwners);
                             })
@@ -472,6 +490,9 @@ public class PathOwners {
       }
       if (currentEntry.getLabel().isEmpty()) {
         currentEntry.setLabel(projectEntry.getLabel());
+      }
+      if (currentEntry.isAutoOwnersApproved() == INHERIT) {
+        currentEntry.setAutoOwnersApproved(projectEntry.isAutoOwnersApproved());
       }
     }
   }
