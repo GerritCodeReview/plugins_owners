@@ -90,6 +90,8 @@ public class PathOwners {
 
   private Map<String, Set<String>> fileGroupOwners;
 
+  private Set<String> fileOwnersBannedAutoApproval;
+
   private final boolean expandGroups;
 
   private final Optional<LabelDefinition> label;
@@ -175,6 +177,7 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
+    fileOwnersBannedAutoApproval = map.getFileOwnersBannedAutoApproval();
     label = globalLabel.or(map::getLabel);
   }
 
@@ -208,6 +211,10 @@ public class PathOwners {
     return fileGroupOwners;
   }
 
+  public Set<String> getFileOwnersBannedAutoApproval() {
+    return fileOwnersBannedAutoApproval;
+  }
+
   public boolean expandGroups() {
     return expandGroups;
   }
@@ -233,9 +240,9 @@ public class PathOwners {
     OwnersMap ownersMap = new OwnersMap();
     try {
       // Using a `map` would have needed a try/catch inside the lamba, resulting in more code
-      List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries =
+      List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntriesOrEmpty =
           getPathOwnersEntries(parentProjectsNames, RefNames.REFS_CONFIG, cache);
-      ReadOnlyPathOwnersEntry projectEntry =
+      ReadOnlyPathOwnersEntry projectEntryOrEmpty =
           getPathOwnersEntryOrEmpty(project, repository, RefNames.REFS_CONFIG, cache);
       PathOwnersEntry rootEntry = getPathOwnersEntryOrNew(project, repository, branch, cache);
 
@@ -247,8 +254,8 @@ public class PathOwners {
                 project,
                 path,
                 branch,
-                projectEntry,
-                parentsPathOwnersEntries,
+                projectEntryOrEmpty,
+                parentsPathOwnersEntriesOrEmpty,
                 rootEntry,
                 entries,
                 cache);
@@ -257,6 +264,9 @@ public class PathOwners {
         ownersMap.addFileOwners(path, currentEntry.getOwners());
         ownersMap.addFileReviewers(path, currentEntry.getReviewers());
         ownersMap.addFileGroupOwners(path, currentEntry.getGroupOwners());
+        if (!currentEntry.isAutoOwnersApproved()) {
+          ownersMap.banFileFromOwnersAutoApproval(path);
+        }
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -337,6 +347,7 @@ public class PathOwners {
                             Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet(),
+                            Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet())));
   }
@@ -389,8 +400,8 @@ public class PathOwners {
       String project,
       String path,
       String branch,
-      ReadOnlyPathOwnersEntry projectEntry,
-      List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries,
+      ReadOnlyPathOwnersEntry projectEntryOrEmpty,
+      List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntriesOrEmpty,
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
       PathOwnersEntriesCache cache)
@@ -400,11 +411,11 @@ public class PathOwners {
     StringBuilder builder = new StringBuilder();
 
     // Inherit from Project if OWNER in root enables inheritance
-    calculateCurrentEntry(rootEntry, projectEntry, currentEntry);
+    calculateCurrentEntry(rootEntry, projectEntryOrEmpty, currentEntry);
 
     // Inherit from Parent Project if OWNER in Project enables inheritance
-    for (ReadOnlyPathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {
-      calculateCurrentEntry(projectEntry, parentPathOwnersEntry, currentEntry);
+    for (ReadOnlyPathOwnersEntry parentPathOwnersEntryOrEmpty : parentsPathOwnersEntriesOrEmpty) {
+      calculateCurrentEntry(projectEntryOrEmpty, parentPathOwnersEntryOrEmpty, currentEntry);
     }
 
     // Iterate through the parent paths, not including the file name
@@ -434,6 +445,8 @@ public class PathOwners {
                               Optional<LabelDefinition> label = pathFallbackEntry.getLabel();
                               final Set<Id> owners = pathFallbackEntry.getOwners();
                               final Set<Id> reviewers = pathFallbackEntry.getReviewers();
+                              final boolean autoOwnersApproved =
+                                  pathFallbackEntry.isAutoOwnersApproved();
                               Collection<Matcher> inheritedMatchers =
                                   pathFallbackEntry.getMatchers().values();
                               Set<String> groupOwners = pathFallbackEntry.getGroupOwners();
@@ -444,6 +457,7 @@ public class PathOwners {
                                   label,
                                   owners,
                                   reviewers,
+                                  Optional.of(autoOwnersApproved),
                                   inheritedMatchers,
                                   groupOwners);
                             })
@@ -455,24 +469,29 @@ public class PathOwners {
   }
 
   private void calculateCurrentEntry(
-      ReadOnlyPathOwnersEntry rootEntry,
-      ReadOnlyPathOwnersEntry projectEntry,
+      ReadOnlyPathOwnersEntry rootEntryOrEmpty,
+      ReadOnlyPathOwnersEntry projectEntryOrEmpty,
       PathOwnersEntry currentEntry) {
-    if (rootEntry.isInherited()) {
-      for (Matcher matcher : projectEntry.getMatchers().values()) {
+    if (rootEntryOrEmpty.isInherited()) {
+      if (projectEntryOrEmpty == PathOwnersEntry.EMPTY) {
+        return;
+      }
+
+      for (Matcher matcher : projectEntryOrEmpty.getMatchers().values()) {
         if (!currentEntry.hasMatcher(matcher.getPath())) {
           currentEntry.addMatcher(matcher);
         }
       }
       if (currentEntry.getOwners().isEmpty()) {
-        currentEntry.setOwners(projectEntry.getOwners());
+        currentEntry.setOwners(projectEntryOrEmpty.getOwners());
       }
       if (currentEntry.getOwnersPath() == null) {
-        currentEntry.setOwnersPath(projectEntry.getOwnersPath());
+        currentEntry.setOwnersPath(projectEntryOrEmpty.getOwnersPath());
       }
       if (currentEntry.getLabel().isEmpty()) {
-        currentEntry.setLabel(projectEntry.getLabel());
+        currentEntry.setLabel(projectEntryOrEmpty.getLabel());
       }
+      currentEntry.setAutoOwnersApproved(projectEntryOrEmpty.isAutoOwnersApproved());
     }
   }
 
