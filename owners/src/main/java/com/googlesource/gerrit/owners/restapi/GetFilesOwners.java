@@ -16,7 +16,9 @@
 package com.googlesource.gerrit.owners.restapi;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelId;
@@ -91,21 +93,24 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     this.cache = cache;
   }
 
-  public boolean isAnyFileOwnedBy(
-      Account.Id owner, Set<String> changePaths, Project.NameKey project, String branch)
-      throws IOException, InvalidOwnersFileException {
-    return !filterFilesOwnedBy(owner, changePaths, project, branch).isEmpty();
-  }
-
+  @Nullable
   public Set<String> filterFilesOwnedBy(
       Account.Id owner, Set<String> changePaths, Project.NameKey project, String branch)
       throws IOException, InvalidOwnersFileException {
     PathOwners owners = getPathOwners(project, branch, changePaths);
     Map<String, Set<Account.Id>> filesWithOwner = owners.getFileOwners();
+    Set<String> filesBannedFromAutoOwnersApproval = owners.getFileOwnersBannedAutoApproval();
+    Set<String> filteredFilesOwned = Sets.newHashSet();
 
-    return changePaths.stream()
-        .filter(filePath -> filesWithOwner.getOrDefault(filePath, Set.of()).contains(owner))
-        .collect(Collectors.toSet());
+    for (String filePath : changePaths) {
+      if (filesWithOwner.getOrDefault(filePath, Set.of()).contains(owner)) {
+        if (filesBannedFromAutoOwnersApproval.contains(filePath)) {
+          return null;
+        }
+        filteredFilesOwned.add(filePath);
+      }
+    }
+    return filteredFilesOwned;
   }
 
   @Override
