@@ -90,6 +90,8 @@ public class PathOwners {
 
   private Map<String, Set<String>> fileGroupOwners;
 
+  private Set<String> fileOwnersBannedAutoApproval;
+
   private final boolean expandGroups;
 
   private final Optional<LabelDefinition> label;
@@ -175,6 +177,7 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
+    fileOwnersBannedAutoApproval = map.getFileOwnersBannedAutoApproval();
     label = globalLabel.or(map::getLabel);
   }
 
@@ -206,6 +209,10 @@ public class PathOwners {
 
   public Map<String, Set<String>> getFileGroupOwners() {
     return fileGroupOwners;
+  }
+
+  public Set<String> getFileOwnersBannedAutoApproval() {
+    return fileOwnersBannedAutoApproval;
   }
 
   public boolean expandGroups() {
@@ -257,6 +264,9 @@ public class PathOwners {
         ownersMap.addFileOwners(path, currentEntry.getOwners());
         ownersMap.addFileReviewers(path, currentEntry.getReviewers());
         ownersMap.addFileGroupOwners(path, currentEntry.getGroupOwners());
+        if (!currentEntry.isAutoOwnersApproved()) {
+          ownersMap.banFileFromOwnersAutoApproval(path);
+        }
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -337,6 +347,7 @@ public class PathOwners {
                             Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet(),
+                            Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet())));
   }
@@ -403,8 +414,8 @@ public class PathOwners {
     calculateCurrentEntry(rootEntry, projectEntry, currentEntry);
 
     // Inherit from Parent Project if OWNER in Project enables inheritance
-    for (ReadOnlyPathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {
-      calculateCurrentEntry(projectEntry, parentPathOwnersEntry, currentEntry);
+    for (ReadOnlyPathOwnersEntry parentPathOwnersEntryOrEmpty : parentsPathOwnersEntries) {
+      calculateCurrentEntry(projectEntry, parentPathOwnersEntryOrEmpty, currentEntry);
     }
 
     // Iterate through the parent paths, not including the file name
@@ -444,6 +455,7 @@ public class PathOwners {
                                   label,
                                   owners,
                                   reviewers,
+                                  Optional.of(pathFallbackEntry.isAutoOwnersApproved()),
                                   inheritedMatchers,
                                   groupOwners);
                             })
@@ -473,6 +485,7 @@ public class PathOwners {
       if (currentEntry.getLabel().isEmpty()) {
         currentEntry.setLabel(projectEntry.getLabel());
       }
+      currentEntry.setAutoOwnersApproved(projectEntry.isAutoOwnersApproved());
     }
   }
 
