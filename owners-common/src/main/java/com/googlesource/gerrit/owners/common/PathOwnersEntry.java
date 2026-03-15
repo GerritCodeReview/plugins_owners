@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
  * <p>Used internally by PathOwners to represent and compute the owners at a specific path.
  */
 class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
-  static final ReadOnlyPathOwnersEntry EMPTY = new ReadOnlyPathOwnersEntry(true) {};
-
   public PathOwnersEntry() {
     super(true);
   }
