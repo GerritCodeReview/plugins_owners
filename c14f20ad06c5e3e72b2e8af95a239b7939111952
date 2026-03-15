@@ -16,6 +16,24 @@
       "message": "Add @Nullable annotation for rootEntry as well?",
       "revId": "c14f20ad06c5e3e72b2e8af95a239b7939111952",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bf29e1f_cab5b258",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-15T08:51:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "016144f3_cab0a6d7",
+      "revId": "c14f20ad06c5e3e72b2e8af95a239b7939111952",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
