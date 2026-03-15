@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "feda9254_42a8657a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-15T02:17:56Z",
+      "side": 1,
+      "message": "With the proposed modifications, the change is smaller and faster at runtime.\nThe total lines in this change are 342, of which 197 are tests, and 47 are docs ... after all, the change becomes quite small.\n\nIt can be further minimised and simplified, but it is already good enough.",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "689cd2f2_1e419bb5",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
         "patchSetId": 1
