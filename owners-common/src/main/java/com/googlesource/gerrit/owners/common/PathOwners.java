@@ -235,7 +235,7 @@ public class PathOwners {
       // Using a `map` would have needed a try/catch inside the lamba, resulting in more code
       List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries =
           getPathOwnersEntries(parentProjectsNames, RefNames.REFS_CONFIG, cache);
-      ReadOnlyPathOwnersEntry projectEntry =
+      Optional<ReadOnlyPathOwnersEntry> projectEntry =
           getPathOwnersEntryOrEmpty(project, repository, RefNames.REFS_CONFIG, cache);
       PathOwnersEntry rootEntry = getPathOwnersEntryOrNew(project, repository, branch, cache);
 
@@ -247,7 +247,7 @@ public class PathOwners {
                 project,
                 path,
                 branch,
-                projectEntry,
+                projectEntry.orElse(null),
                 parentsPathOwnersEntries,
                 rootEntry,
                 entries,
@@ -294,20 +294,20 @@ public class PathOwners {
     ImmutableList.Builder<ReadOnlyPathOwnersEntry> pathOwnersEntries = ImmutableList.builder();
     for (Project.NameKey projectName : projectNames) {
       try (Repository repo = repositoryManager.openRepository(projectName)) {
-        pathOwnersEntries =
-            pathOwnersEntries.add(
-                getPathOwnersEntryOrEmpty(projectName.get(), repo, branch, cache));
+        Optional<ReadOnlyPathOwnersEntry> pathOwnersEntry =
+            getPathOwnersEntryOrEmpty(projectName.get(), repo, branch, cache);
+        if (pathOwnersEntry.isPresent()) {
+          pathOwnersEntries = pathOwnersEntries.add(pathOwnersEntry.get());
+        }
       }
     }
     return pathOwnersEntries.build();
   }
 
-  private ReadOnlyPathOwnersEntry getPathOwnersEntryOrEmpty(
+  private Optional<ReadOnlyPathOwnersEntry> getPathOwnersEntryOrEmpty(
       String project, Repository repo, String branch, PathOwnersEntriesCache cache)
       throws InvalidOwnersFileException, ExecutionException {
-    return getPathOwnersEntry(project, repo, branch, cache)
-        .map(v -> (ReadOnlyPathOwnersEntry) v)
-        .orElse(PathOwnersEntry.EMPTY);
+    return getPathOwnersEntry(project, repo, branch, cache).map(v -> (ReadOnlyPathOwnersEntry) v);
   }
 
   private PathOwnersEntry getPathOwnersEntryOrNew(
@@ -389,7 +389,7 @@ public class PathOwners {
       String project,
       String path,
       String branch,
-      ReadOnlyPathOwnersEntry projectEntry,
+      @Nullable ReadOnlyPathOwnersEntry projectEntry,
       List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries,
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
@@ -456,9 +456,9 @@ public class PathOwners {
 
   private void calculateCurrentEntry(
       ReadOnlyPathOwnersEntry rootEntry,
-      ReadOnlyPathOwnersEntry projectEntry,
+      @Nullable ReadOnlyPathOwnersEntry projectEntry,
       PathOwnersEntry currentEntry) {
-    if (rootEntry.isInherited()) {
+    if (rootEntry.isInherited() && projectEntry != null) {
       for (Matcher matcher : projectEntry.getMatchers().values()) {
         if (!currentEntry.hasMatcher(matcher.getPath())) {
           currentEntry.addMatcher(matcher);
