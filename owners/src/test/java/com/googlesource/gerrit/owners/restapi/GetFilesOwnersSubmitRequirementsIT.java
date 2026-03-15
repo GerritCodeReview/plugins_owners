@@ -36,7 +36,7 @@ import com.googlesource.gerrit.owners.entities.Owner;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
-import org.apache.commons.compress.utils.Sets;
+import com.google.common.collect.Sets;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Test;
 
