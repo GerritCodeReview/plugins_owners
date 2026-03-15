@@ -16,6 +16,7 @@
 package com.googlesource.gerrit.owners.restapi;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
