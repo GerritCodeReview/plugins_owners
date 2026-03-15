@@ -400,11 +400,15 @@ public class PathOwners {
     StringBuilder builder = new StringBuilder();
 
     // Inherit from Project if OWNER in root enables inheritance
-    calculateCurrentEntry(rootEntry, projectEntry, currentEntry);
+    if (rootEntry.isInherited()) {
+      calculateCurrentEntry(projectEntry, currentEntry);
+    }
 
     // Inherit from Parent Project if OWNER in Project enables inheritance
     for (ReadOnlyPathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {
-      calculateCurrentEntry(projectEntry, parentPathOwnersEntry, currentEntry);
+      if (projectEntry.isInherited()) {
+        calculateCurrentEntry(parentPathOwnersEntry, currentEntry);
+      }
     }
 
     // Iterate through the parent paths, not including the file name
@@ -455,24 +459,20 @@ public class PathOwners {
   }
 
   private void calculateCurrentEntry(
-      ReadOnlyPathOwnersEntry rootEntry,
-      ReadOnlyPathOwnersEntry projectEntry,
-      PathOwnersEntry currentEntry) {
-    if (rootEntry.isInherited()) {
-      for (Matcher matcher : projectEntry.getMatchers().values()) {
-        if (!currentEntry.hasMatcher(matcher.getPath())) {
-          currentEntry.addMatcher(matcher);
-        }
+      ReadOnlyPathOwnersEntry projectEntry, PathOwnersEntry currentEntry) {
+    for (Matcher matcher : projectEntry.getMatchers().values()) {
+      if (!currentEntry.hasMatcher(matcher.getPath())) {
+        currentEntry.addMatcher(matcher);
       }
-      if (currentEntry.getOwners().isEmpty()) {
-        currentEntry.setOwners(projectEntry.getOwners());
-      }
-      if (currentEntry.getOwnersPath() == null) {
-        currentEntry.setOwnersPath(projectEntry.getOwnersPath());
-      }
-      if (currentEntry.getLabel().isEmpty()) {
-        currentEntry.setLabel(projectEntry.getLabel());
-      }
+    }
+    if (currentEntry.getOwners().isEmpty()) {
+      currentEntry.setOwners(projectEntry.getOwners());
+    }
+    if (currentEntry.getOwnersPath() == null) {
+      currentEntry.setOwnersPath(projectEntry.getOwnersPath());
+    }
+    if (currentEntry.getLabel().isEmpty()) {
+      currentEntry.setLabel(projectEntry.getLabel());
     }
   }
 
