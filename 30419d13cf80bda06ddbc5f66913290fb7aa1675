@@ -52,6 +52,60 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73538abc_78327c50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "feda9254_42a8657a",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db5d5ab4_ff8d1994",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c08e8839_78611a42",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90e5f9b0_de6c8d66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "\u003e Gemini, and I believe this change is a bit too complex for what it wants to achieve.\n\u003e \n\u003e It can be highly simplified by:\n\u003e a. Not propagating the 3-state boolean (TRUE/FALSE/INHERIT) beyond the configuration parsing + inheritance resolution\n\u003e b. Avoiding the Map\u003cString,InheritableBoolean\u003e and simply keeping a set of files banned from auto-approval\n\u003e \n\u003e See all Gemini and my suggested changes.\n\nAck\n\n\u003e \n\u003e *NOTE* There are good unit-tests but the IT test is missing some mixed conditions with combination of `OWNERS` files with `true` and `false` of the `auto-owners-approved` at different levels.\n\nAdded more tests.",
+      "parentUuid": "9530e9a8_c1ca375f",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "689cd2f2_1e419bb5",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4ef5efe_79abc464",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "689cd2f2_1e419bb5",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "360770e6_c883d500",
@@ -82,6 +154,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "[Gemini] It would be best to just use a text-to-enum conversion here, for avoiding the unwanted and unspecified non-boolean conversions implied by the `asBoolean()` method (every number that is not a `0` is a true)\n\n```suggestion\n                    .map(JsonNode::asText)\n                    .map(String::toUpperCase)\n                    .map(InheritableBoolean::valueOf)\n```",
+      "range": {
+        "startLine": 54,
+        "startChar": 22,
+        "endLine": 54,
+        "endChar": 35
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e8199a_ed9391f4",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Yes, in case of a misconfiguration however this will now throw an `IllegalArgumentException`, which in turn will cause the **entire** file to be ignored (and a `WARNING` being emitted). I have added a test to document this behaviour.",
+      "parentUuid": "360770e6_c883d500",
       "range": {
         "startLine": 54,
         "startChar": 22,
@@ -115,6 +211,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1abb014_f82a8816",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f70e8be9_8d95d149",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dba3222_efb85762",
@@ -132,6 +252,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9cda05e_f9b24243",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6dba3222_efb85762",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f95ffbda_9980d30b",
@@ -145,6 +283,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "The data type of the variable isn\u0027t a `boolean` therefore the `isSomething` form isn\u0027t justified here. Use a simple `getSomething`.\n\n\n\n```suggestion\n  public InheritableBoolean getAutoOwnersApproved() {\n```",
+      "range": {
+        "startLine": 104,
+        "startChar": 28,
+        "endLine": 104,
+        "endChar": 48
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd1f5e8b_e9853226",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f95ffbda_9980d30b",
       "range": {
         "startLine": 104,
         "startChar": 28,
@@ -195,6 +357,48 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55a68e8_dc569f7e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Good call, done.",
+      "parentUuid": "e63580fe_258daa9c",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 13
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec0a371_7e116651",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Yes this is a good point, I was also thinking the same.\nHowever this will no longer be needed as it will be superseeded by `fileOwnersBannedAutoApproval` to track only the files that are banned from having the auto-approval stickiness by the owners see [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/561401/comment/e63580fe_258daa9c/)",
+      "parentUuid": "225ea983_7d20f2f5",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f97def7_48ac7398",
@@ -218,6 +422,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6469f928_a8a30065",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "This is no longer needed, since the introduction of `fileOwnersBannedAutoApproval` to track only the files that are banned from having the auto-approval stickiness by the owners see [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/561401/comment/e63580fe_258daa9c/)",
+      "parentUuid": "3f97def7_48ac7398",
+      "range": {
+        "startLine": 91,
+        "startChar": 21,
+        "endLine": 91,
+        "endChar": 39
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f9555d0_07125986",
@@ -231,6 +459,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "```suggestion\n  public void addFileAutoOwnersApproved(String file, Boolean autoOwnersApproved) {\n```",
+      "range": {
+        "startLine": 131,
+        "startChar": 53,
+        "endLine": 131,
+        "endChar": 71
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e203f5_a30457ef",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "This is no longer needed since the introductionn of `banFileFromOwnersAutoApproval`  to track only the files that are banned from having the auto-approval stickiness by the owners see [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/561401/comment/e63580fe_258daa9c/)",
+      "parentUuid": "8f9555d0_07125986",
       "range": {
         "startLine": 131,
         "startChar": 53,
@@ -281,6 +533,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10533f27_9b34e984",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5488e031_ff7c62e9",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e56c7f71_33c0e2c5",
@@ -298,6 +568,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "305a9723_4c86129e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e56c7f71_33c0e2c5",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d1f0b84_423673ca",
@@ -311,6 +599,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "```suggestion\n  public Set\u003cString\u003e getFileOwnersBannedAutoApproval() {\n    return fileOwnersBannedAutoApproval;\n  }\n```",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 3
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff5a1c2f_e22b49c9",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4d1f0b84_423673ca",
       "range": {
         "startLine": 216,
         "startChar": 0,
@@ -344,6 +656,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f547701f_929fe722",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f840bdf5_59211af0",
+      "range": {
+        "startLine": 269,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 24
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3694ce80_8a3e08f7",
@@ -357,6 +693,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "This is quite strange: we\u0027re not in the configuration parsing anymore and there\u0027s nothing to inherit here.\n\nThe situation is different: we want to create a brand-new, empty PathOwnersEntry that contains only the `OwnersConfig` in `conf`. Rather than giving `INHERIT`, which seems strange compared to the other empty collections, we can pass an `Optional.empty()`, which seems more consistent with the other parameters.\n\n\n\n```suggestion\n                            Optional.empty(),\n```",
+      "range": {
+        "startLine": 354,
+        "startChar": 28,
+        "endLine": 354,
+        "endChar": 35
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "128d701b_75c13e74",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3694ce80_8a3e08f7",
       "range": {
         "startLine": 354,
         "startChar": 28,
@@ -390,6 +750,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7adb358b_4fc4e043",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0d0d090e_31c1a602",
+      "range": {
+        "startLine": 452,
+        "startChar": 36,
+        "endLine": 452,
+        "endChar": 54
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4337faab_a70d18bd",
@@ -403,6 +787,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "```suggestion\n                                  Optional.of(autoOwnersApproved)\n```",
+      "range": {
+        "startLine": 464,
+        "startChar": 34,
+        "endLine": 464,
+        "endChar": 52
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb0f06d3_e05653f0",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4337faab_a70d18bd",
       "range": {
         "startLine": 464,
         "startChar": 34,
@@ -436,6 +844,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f9ea1ec_aa276aa6",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6cc70782_a356f2f1",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 496,
+        "endChar": 7
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cb0c87d_f92c048a",
@@ -449,6 +881,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "This should be a plain `boolean` because the caller has already performed the hierarchy resolution of the `INHERIT` case and defaulting to `true`.\n\nSee the method `resolvePathEntry` starting from `PathOwners.java:L403`.",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 52
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed2a4440_9fe65d4f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done, this is now an `Optional\u003cBoolean\u003e instead.",
+      "parentUuid": "0cb0c87d_f92c048a",
       "range": {
         "startLine": 51,
         "startChar": 6,
@@ -476,6 +932,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "669de53a_9d88084e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ba0c3f4_d14a665a",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34a05ac0_8b3c24a0",
@@ -493,6 +967,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc70bd2_6ae82d30",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "34a05ac0_8b3c24a0",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e10a25b_d5091319",
@@ -506,6 +998,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "[Gemini] This `Map\u003c\u003e` is redundant, as its sole purpose is to check if any of the files has a `false` `autoOwnersApproved`. This check can be done directly by the `filterFilesOwnedBy()` and stop the execution at the first element encountered with a `false` value of `autoOwnersApproved`.",
+      "range": {
+        "startLine": 107,
+        "startChar": 6,
+        "endLine": 107,
+        "endChar": 38
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8326e2c_ca56914d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8e10a25b_d5091319",
       "range": {
         "startLine": 107,
         "startChar": 6,
@@ -541,6 +1057,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74251d58_aba17c78",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "I think this logic belongs to the caller, not to the \"filter\".\nPlease refer to my comment [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/561401/comment/aa2f545c_f2f299e1/)",
+      "parentUuid": "797c0f66_14f559ab",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 9
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "280a313a_3c75c7a8",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
         "patchSetId": 1
@@ -558,6 +1098,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0ef97a8_f59371d6",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "I am not sure I like this idea. The method is a `filter` and as such it should just `filter` imho.\nAny logic _based_ on that filtering belongs to the caller.\nSee my comment [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/561401/comment/aa2f545c_f2f299e1/)",
+      "parentUuid": "280a313a_3c75c7a8",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64097812_a2f9d180",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
         "patchSetId": 1
@@ -569,6 +1127,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "I am confused by this condition: if the old patch-set had some files that were banned from auto-approval, *BUT* they were not changed in the current patch-set, why do we care?",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 9
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9ee57aa_a4919ded",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "This condition at L159-160 is saying:\n\n```if this owner had voted on a patch-set in which she owned any file, then we want to copy her vote```\n\nOtherwise \n\n```yes, she had a vote on the prior patch-set, but nothing was owned by her, so the vote should not be copied```.\n\nThis is why (already in the existing code) we are looking at the `[base to previous patchset]` content.\n\nThis new code applies the `auto-owners-approved` at `directory` level, as a way to deactivate the copying of the owners vote for this directory, no matter the previous ownership state.\n\nIf we removed this we would have approvals being sticky even for directories with auto-owners-approval \u003d false`. \n\nLet\u0027s catch up.",
+      "parentUuid": "64097812_a2f9d180",
       "range": {
         "startLine": 151,
         "startChar": 0,
@@ -604,6 +1186,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "75c92a2d_b11c738e",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "I don\u0027t think this is the right place to short circuit the filtered result into an an `Optional\u003cMap\u003c\u003e\u003e` or a `null`. This is a filter and it should just filter imho.\n\n- empty set \u003d owns nothing\n- non empty set \u003d owns allowed files\n\n`Null` is effectively representing a third state and I find it awkard that `null` means \"the owner owns at least one file that is banned from auto owners approval\".\n\nI think a `Map` is the right data structure here because the auto-owners-approval policy applies per file, so preserving per file information is the cleanest model imho.\n\nThe short-circuit is a nice idea to stop early, but I suggest we optimise this only if needed.\n\nWDYT?",
+      "parentUuid": "aa2f545c_f2f299e1",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 40
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16182aaf_361bc2c6",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
         "patchSetId": 1
@@ -615,6 +1221,30 @@
       "writtenOn": "2026-03-15T00:50:30Z",
       "side": 1,
       "message": "```suggestion\n    Set\u003cString\u003e filteredFilesOwned \u003d Sets.newHashSet();\n\n    for (String filePath : changePaths) {\n      if (filesWithOwner.getOrDefault(filePath, Set.of()).contains(owner)) {\n        if (filesBannedFromAutoOwnersApproval.contains(filePath)) {\n          return null;\n        }\n        filteredFilesOwned.add(filePath);\n      }\n    }\n    return filteredFilesOwned;\n```",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 94
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49ed7479_3c637368",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "16182aaf_361bc2c6",
       "range": {
         "startLine": 100,
         "startChar": 0,
@@ -648,6 +1278,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c03c95cc_582f4d6b",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b3f9515_88af2805",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 17
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b50ad81_1b6eacd2",
@@ -661,6 +1315,30 @@
       "writtenOn": "2026-03-15T02:13:19Z",
       "side": 1,
       "message": "This can be DRYed with the next test, highlighting the different parameter `inherited \u003d true` vs. `inherited \u003d false`",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 91
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c9d0344_a0e05eca",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-16T16:48:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b50ad81_1b6eacd2",
       "range": {
         "startLine": 213,
         "startChar": 0,
