@@ -118,3 +118,11 @@ The following is an example of the `approverin:already-approved-by_owners` confi
     value = +2 Looks good to me, approved
     copyCondition = approverin:already-approved-by_owners
 ```
+
+## Customizing the copy condition behaviour with the `auto-owners-approved` in `OWNERS`
+
+The `approverin:already-approved-by_owners` can be fine-grained enabled/disabled using the
+`auto-owners-approved` configuration in the `OWNERS` file.
+
+Details on the `auto-owners-approved` behaviour can be
+found [here](./config.md#auto-owners-approved).
