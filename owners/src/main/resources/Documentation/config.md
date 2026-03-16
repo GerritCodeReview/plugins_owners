@@ -204,6 +204,43 @@ OWNERS is used as global default.
 If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
 in all parent projects up to All-Projects.
 
+## auto-owners-approved
+
+The `auto-owners-approved` field controls a specific exception to the default
+`approverin:already-approved-by_owners` behavior. It applies when an owner updates only files they
+own on their own change, in a situation where the normal `approverin:already-approved-by_owners`
+logic would otherwise drop that owner's previous vote.
+
+The rationale is simple: if an owner already approved a change that stays entirely within code they
+own, and the next patch set is uploaded by that same owner, forcing that same person to re-apply
+the same vote adds little review value.
+
+See [copy-conditions.md](copy-conditions.md) for predicate evaluation details.
+
+This field can be configured only at `OWNERS` file level.
+If the field is not set, it defaults to `true`.
+
+If `auto-owners-approved` is `false` for any touched file, the predicate does not use that
+self-update shortcut for the patch set. The usual `approverin:already-approved-by_owners` logic
+still applies.
+
+### Inheritance
+
+The usual `OWNERS` [inheritance](#global-project-owners) logic applies to `auto-owners-approved` as
+well. This includes directory `OWNERS` lookup, project `refs/meta/config` `OWNERS`, and
+parent project `OWNERS` when inheritance continues up the project hierarchy.
+
+### auto-owners-approved example
+
+Disable at `OWNERS` level:
+
+    inherited: true
+    auto-owners-approved: false
+
+With this setting, the predicate will not copy an owner's vote just because the owner is updating
+only files they own on their own change. Paths under that `OWNERS` file still participate in the
+normal copy-condition behavior.
+
 ## Example 1 - OWNERS file without matchers
 
 Given an OWNERS configuration of:
