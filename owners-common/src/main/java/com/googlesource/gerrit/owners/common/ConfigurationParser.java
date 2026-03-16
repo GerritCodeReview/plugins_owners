@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.gerrit.entities.Account.Id;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
@@ -47,6 +48,14 @@ public class ConfigurationParser {
         Optional.ofNullable(jsonNode.get("label"))
             .map(JsonNode::asText)
             .flatMap(LabelDefinition::parse));
+    Optional<InheritableBoolean> autoOwnersApproved =
+        Optional.ofNullable(jsonNode.get("auto-owners-approved"))
+            .map(JsonNode::asText)
+            .map(String::toUpperCase)
+            .map(InheritableBoolean::valueOf);
+
+    autoOwnersApproved.ifPresent(ret::setAutoOwnersApproved);
+
     addClassicMatcher(jsonNode, ret);
     addMatchers(jsonNode, ret);
     return ret;

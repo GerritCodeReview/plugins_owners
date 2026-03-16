@@ -76,6 +76,8 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
       Project.NameKey project = ctx.changeData().project();
       PatchSet targetPatchSet = ctx.targetPatchSet();
       PatchSet sourcePatchSet = ctx.changeNotes().getPatchSets().get(ctx.sourcePatchSetId());
+      Account.Id changeOwner = ctx.changeNotes().getChange().getOwner();
+      Account.Id uploader = targetPatchSet.uploader();
 
       checkState(
           predicateField == UserInPredicate.Field.APPROVER,
@@ -113,14 +115,24 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
               .map(Optional::get)
               .collect(Collectors.toSet());
 
-      Set<String> filesOwnedByApprover =
+      GetFilesOwners.OwnedFilesState ownedFilesState =
           getFilesOwners.filterFilesOwnedBy(
               currentApprover,
               allFilePathsInDiff,
               project,
               ctx.changeData().branchOrThrow().branch());
 
+      Set<String> filesOwnedByApprover = ownedFilesState.ownedFiles();
       if (!filesOwnedByApprover.isEmpty()) {
+        if (shouldCopyForAutoOwnersApproved(
+            currentApprover, changeOwner, uploader, allFilePathsInDiff, ownedFilesState)) {
+          logger.atFinest().log(
+              "Approver '%s' is change owner and uploader. only owned files have been modified and"
+                  + " ALL of them have auto-owners-approved=true. Label WILL be copied.",
+              currentApprover);
+          return true;
+        }
+
         logger.atFinest().log(
             "Approver '%s' owns files that were changed in this new patch set: %s",
             currentApprover, lazy(() -> String.join(",", filesOwnedByApprover)));
@@ -207,6 +219,22 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
   private static boolean isPathChange(FileDiffOutput d) {
     // A path change means rename/add/delete: oldPath != newPath, including empty vs present.
     return !d.oldPath().equals(d.newPath());
+  }
+
+  /**
+   * Copies the vote when the approver is updating only files they own on their own change, and all
+   * touched files allow {@code auto-owners-approved}.
+   */
+  private static boolean shouldCopyForAutoOwnersApproved(
+      Account.Id currentApprover,
+      Account.Id changeOwner,
+      Account.Id uploader,
+      Set<String> allFilePathsInDiff,
+      GetFilesOwners.OwnedFilesState ownedFilesState) {
+    return currentApprover.equals(changeOwner)
+        && currentApprover.equals(uploader)
+        && allFilePathsInDiff.size() == ownedFilesState.ownedFiles().size()
+        && !ownedFilesState.ownsBannedAutoApprovalFile();
   }
 
   private int getParentNum(ObjectId objectId, RevWalk revWalk) {
