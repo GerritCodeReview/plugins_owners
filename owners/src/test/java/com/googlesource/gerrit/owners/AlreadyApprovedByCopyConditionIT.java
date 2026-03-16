@@ -170,6 +170,158 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
+  public void shouldCopyApprovalWhenAutoOwnersApprovedIsUnsetEverywhere() throws Exception {
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenAutoOwnersApprovedIsDisabledAtOwnersLevel()
+      throws Exception {
+    pushOwnersToMaster(
+        String.format(
+            "inherited: true\n"
+                + "auto-owners-approved: false\n"
+                + "matchers:\n"
+                + "- suffix: .js\n"
+                + "  owners:\n"
+                + "  - %s\n"
+                + "- suffix: .java\n"
+                + "  owners:\n"
+                + "  - %s\n",
+            FRONTEND_FILES_OWNER.username(), BACKEND_FILES_OWNER.username()));
+
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("changes to non-owned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenDisabledAutoOwnersApprovedIsInheritedFromParentOwners()
+      throws Exception {
+    String ownedFile = pushOwnersInheritingFromDisabledAutoOwnersApproved("inherited: true\n");
+
+    Change.Id changeId =
+        changeOperations.newChange().project(project).file(ownedFile).content("owned").create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("Changes to non-owned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenParentAutoOwnersApprovedIsDisabledAndOwnedFilesAreUnchanged()
+      throws Exception {
+    String ownedFile = pushOwnersInheritingFromDisabledAutoOwnersApproved("inherited: true\n");
+
+    Change.Id changeId =
+        changeOperations.newChange().project(project).file(ownedFile).content("owned").create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("Change to not-owned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildOwnersStopsAutoOwnersApprovedInheritance()
+      throws Exception {
+    String ownedFile = pushOwnersInheritingFromDisabledAutoOwnersApproved("inherited: false\n");
+
+    Change.Id changeId =
+        changeOperations.newChange().project(project).file(ownedFile).content("owned").create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildOwnersOverridesInheritedAutoOwnersApproved()
+      throws Exception {
+    String ownedFile =
+        pushOwnersInheritingFromDisabledAutoOwnersApproved(
+            "inherited: true\nauto-owners-approved: true\n");
+
+    Change.Id changeId =
+        changeOperations.newChange().project(project).file(ownedFile).content("owned").create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(FILE_WITH_NO_OWNERS)
+        .content("unowned file")
+        .create();
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsDeleted() throws Exception {
     Change.Id changeId =
         changeOperations
@@ -238,69 +390,41 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
   @Test
   public void shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebase() throws Exception {
-    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
-    PushOneCommit.Result amendL3 =
-        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
-    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+    assertCopyApprovalWhenAllEditsToOwnedFileAreDueToRebase(2);
+  }
 
-    testRepo.reset(initialCommitId);
-    PushOneCommit.Result amendL7 =
-        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
-
-    rebaseChangeOn(amendL3.getChangeId(), amendL7.getCommit().getId());
-
-    ChangeInfo c = detailedChange(amendL3.getChangeId());
-    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  @Test
+  public void shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseButAutoOwnersApprovedIsFalse()
+      throws Exception {
+    assertCopyApprovalWhenAllEditsToOwnedFileAreDueToRebase(0);
   }
 
   @Test
   public void
       shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheNewBase()
           throws Exception {
-    ObjectId initialCommitId = createInitialContentFor(FRONTEND_OWNED_FILE);
-    PushOneCommit.Result amendL3 =
-        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 3\n", "Line three\n");
-    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+    assertCopyApprovalWhenRebaseAddsUnrelatedFileFromNewBase(2);
+  }
 
-    testRepo.reset(initialCommitId);
-    Change.Id baseChangeWithUnrelatedFiles =
-        changeOperations
-            .newChange()
-            .project(project)
-            .file(FRONTEND_OWNED_FILE)
-            .content(FILE_CONTENT.replace("Line 7\n", "Line seven\n"))
-            .file("unrelated.txt")
-            .content("unrelated change")
-            .create();
-
-    rebaseChangeOn(amendL3.getChangeId(), commitOf(baseChangeWithUnrelatedFiles));
-
-    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+  @Test
+  public void
+      shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheNewBaseButAutoOwnersApprovedIsFalse()
+          throws Exception {
+    assertCopyApprovalWhenRebaseAddsUnrelatedFileFromNewBase(0);
   }
 
   @Test
   public void
       shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheRebasedChange()
           throws Exception {
-    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
-    PushOneCommit.Result amendL3 =
-        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
-    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+    assertCopyApprovalWhenRebasedChangeAddsUnrelatedFile(2);
+  }
 
-    testRepo.reset(initialCommitId);
-    PushOneCommit.Result amendL7 =
-        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
-
-    // Rebase and include an unrelated file
-    testRepo.reset(amendL7.getCommit().getId());
-    testRepo.cherryPick(amendL3.getCommit());
-    PushOneCommit.Result rebasedL30WithUnrelatedChanges =
-        amendChange(
-            amendL3.getChangeId(), "Rebased with changes", "unrelated.txt", "Unrelated change");
-    rebasedL30WithUnrelatedChanges.assertOkStatus();
-
-    ChangeInfo c = detailedChange(amendL3.getChangeId());
-    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  @Test
+  public void
+      shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheRebasedChangeButAutoOwnersApprovedIsFalse()
+          throws Exception {
+    assertCopyApprovalWhenRebasedChangeAddsUnrelatedFile(0);
   }
 
   @Test
@@ -393,6 +517,106 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
 
     ChangeInfo c = detailedChange(removedFileChangeId.toString());
     assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  private String pushOwnersInheritingFromDisabledAutoOwnersApproved(String ownersHeader)
+      throws Exception {
+    String ownedFile = "dir/file.txt";
+    pushOwnersToMaster("inherited: true\nauto-owners-approved: false\n");
+    pushOwnersFileToMaster(
+        "dir/OWNERS",
+        String.format(ownersHeader + "owners:\n- %s\n", BACKEND_FILES_OWNER.username()));
+    return ownedFile;
+  }
+
+  private void disableAutoOwnersApprovedAtOwnersLevel() throws Exception {
+    pushOwnersToMaster(
+        String.format(
+            "inherited: true\n"
+                + "auto-owners-approved: false\n"
+                + "matchers:\n"
+                + "- suffix: .js\n"
+                + "  owners:\n"
+                + "  - %s\n"
+                + "- suffix: .java\n"
+                + "  owners:\n"
+                + "  - %s\n",
+            FRONTEND_FILES_OWNER.username(), BACKEND_FILES_OWNER.username()));
+  }
+
+  private void assertCopyApprovalWhenAllEditsToOwnedFileAreDueToRebase(int expectedVote)
+      throws Exception {
+    if (expectedVote == 0) {
+      disableAutoOwnersApprovedAtOwnersLevel();
+    }
+
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    rebaseChangeOn(amendL3.getChangeId(), amendL7.getCommit().getId());
+
+    ChangeInfo c = detailedChange(amendL3.getChangeId());
+    assertVotes(c, BACKEND_FILES_OWNER, expectedVote);
+  }
+
+  private void assertCopyApprovalWhenRebaseAddsUnrelatedFileFromNewBase(int expectedVote)
+      throws Exception {
+    if (expectedVote == 0) {
+      disableAutoOwnersApprovedAtOwnersLevel();
+    }
+
+    ObjectId initialCommitId = createInitialContentFor(FRONTEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    Change.Id baseChangeWithUnrelatedFiles =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(FRONTEND_OWNED_FILE)
+            .content(FILE_CONTENT.replace("Line 7\n", "Line seven\n"))
+            .file("unrelated.txt")
+            .content("unrelated change")
+            .create();
+
+    rebaseChangeOn(amendL3.getChangeId(), commitOf(baseChangeWithUnrelatedFiles));
+
+    ChangeInfo c = detailedChange(amendL3.getChangeId());
+    assertVotes(c, FRONTEND_FILES_OWNER, expectedVote);
+  }
+
+  private void assertCopyApprovalWhenRebasedChangeAddsUnrelatedFile(int expectedVote)
+      throws Exception {
+    if (expectedVote == 0) {
+      disableAutoOwnersApprovedAtOwnersLevel();
+    }
+
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    testRepo.reset(amendL7.getCommit().getId());
+    testRepo.cherryPick(amendL3.getCommit());
+    PushOneCommit.Result rebasedL30WithUnrelatedChanges =
+        amendChange(
+            amendL3.getChangeId(), "Rebased with changes", "unrelated.txt", "Unrelated change");
+    rebasedL30WithUnrelatedChanges.assertOkStatus();
+
+    ChangeInfo c = detailedChange(amendL3.getChangeId());
+    assertVotes(c, BACKEND_FILES_OWNER, expectedVote);
   }
 
   private PushOneCommit.Result createChangeWithReplacedContent(
@@ -493,8 +717,12 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   private void pushOwnersToMaster(String owners) throws Exception {
+    pushOwnersFileToMaster("OWNERS", owners);
+  }
+
+  private void pushOwnersFileToMaster(String path, String owners) throws Exception {
     pushFactory
-        .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
+        .create(admin.newIdent(), testRepo, "Add OWNER file", path, owners)
         .to(RefNames.fullName("master"))
         .assertOkStatus();
   }

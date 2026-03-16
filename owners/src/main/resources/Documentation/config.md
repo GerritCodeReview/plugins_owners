@@ -204,6 +204,36 @@ OWNERS is used as global default.
 If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
 in all parent projects up to All-Projects.
 
+## auto-owners-approved
+
+The copy condition `approverin:already-approved-by_owners` applies to the whole
+repository unless configured otherwise. When working with large mono-repos this may
+be too coarse. Some paths, representing isolated components or subsystems, may be sensitive and
+therefore always require fresh owner review, while other paths benefit from keeping owner approvals
+across patch sets.
+
+The `auto-owners-approved` field lets project owners control this behavior at the
+`OWNERS` scope that resolved each file. This makes it possible to reduce review
+friction where appropriate and keep stricter review on critical paths.
+
+See [copy-conditions.md](copy-conditions.md) for predicate evaluation details.
+
+This field can be configured only at `OWNERS` file level.
+If the field is not set, it defaults to `true`.
+
+### Inheritance
+
+The usual `OWNERS` [inheritance](#global-project-owners) logic applies to `auto-owners-approved` as
+well. This includes directory `OWNERS` lookup, project `refs/meta/config` `OWNERS`, and
+parent project `OWNERS` when inheritance continues up the project hierarchy.
+
+### auto-owners-approved example
+
+Disable at `OWNERS` level:
+
+    inherited: true
+    auto-owners-approved: false
+
 ## Example 1 - OWNERS file without matchers
 
 Given an OWNERS configuration of:
