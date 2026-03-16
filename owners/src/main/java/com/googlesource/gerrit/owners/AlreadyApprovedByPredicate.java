@@ -113,14 +113,23 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
               .map(Optional::get)
               .collect(Collectors.toSet());
 
-      Set<String> filesOwnedByApprover =
-          getFilesOwners.filterFilesOwnedBy(
+      Map<String, Boolean> filesOwnedByApproverWithAutoOwnersApproved =
+          getFilesOwners.filterFilesOwnedByWithAutoOwnersApproved(
               currentApprover,
               allFilePathsInDiff,
               project,
               ctx.changeData().branchOrThrow().branch());
+      Set<String> filesOwnedByApprover = filesOwnedByApproverWithAutoOwnersApproved.keySet();
 
       if (!filesOwnedByApprover.isEmpty()) {
+        if (filesOwnedByApproverWithAutoOwnersApproved.values().stream()
+            .anyMatch(autoOwnersApproved -> !autoOwnersApproved)) {
+          logger.atFinest().log(
+              "Approver '%s' owns files with auto-owners-approved=false. Label will NOT be"
+                  + " copied.",
+              currentApprover);
+          return false;
+        }
         logger.atFinest().log(
             "Approver '%s' owns files that were changed in this new patch set: %s",
             currentApprover, lazy(() -> String.join(",", filesOwnedByApprover)));
@@ -142,12 +151,24 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
                 ctx.repoView(),
                 ins,
                 DISABLE_RENAME_DETECTION);
-        boolean oldPatchSetHasFilesOwnedByMe =
-            getFilesOwners.isAnyFileOwnedBy(
+        Map<String, Boolean> oldPatchSetOwnedFilesWithAutoOwnersApproved =
+            getFilesOwners.filterFilesOwnedByWithAutoOwnersApproved(
                 currentApprover,
                 baseVsPrior.keySet(),
                 project,
                 ctx.changeData().branchOrThrow().branch());
+
+        if (oldPatchSetOwnedFilesWithAutoOwnersApproved.values().stream()
+            .anyMatch(autoOwnersApproved -> !autoOwnersApproved)) {
+          logger.atFinest().log(
+              "Approver '%s' used to own files matched by OWNERS having auto-owners-approved=false."
+                  + " Label will NOT be copied.",
+              currentApprover);
+          return false;
+        }
+
+        boolean oldPatchSetHasFilesOwnedByMe =
+            !oldPatchSetOwnedFilesWithAutoOwnersApproved.isEmpty();
 
         logger.atFinest().log(
             "Has approver '%s' ever owned anything in this change? %s",
