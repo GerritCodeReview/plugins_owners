@@ -18,8 +18,9 @@ owners.disable.branch
     ```
 
 owners.expandGroups
-:   Expand owners and groups into account ids. If set to `false` all owners are left untouched, apart from e-mail
-    addresses which have the domain dropped. Defaults to `true`.
+:   Expand owners and groups into account ids. If set to `false` all owners are left untouched,
+apart from e-mail
+addresses which have the domain dropped. Defaults to `true`.
 
     Example:
 
@@ -30,8 +31,8 @@ owners.expandGroups
 
 owners.label
 :   Global override for the label and score, separated by a comma, to use by
-    the owners of changes for approving them. When defined, it overrides any
-    other label definition set by the OWNERS at any level in any project.
+the owners of changes for approving them. When defined, it overrides any
+other label definition set by the OWNERS at any level in any project.
 
 > **NOTE:** Compulsory when the selected label's function is NoBlock/NoOp.
 
@@ -44,10 +45,10 @@ owners.label
 
 <a name="owners.enableSubmitRequirement">owners.enableSubmitRequirement</a>
 :   If set to `true` the approvals are evaluated through the owners plugin
-    default submit requirement, named "Code-Review-from-Owners", without a need of
-    prolog predicate being added to a project or submit requirement configured
-    in the `project.config` as it is automatically applied to all projects.
-    Defaults to `false`.
+default submit requirement, named "Code-Review-from-Owners", without a need of
+prolog predicate being added to a project or submit requirement configured
+in the `project.config` as it is automatically applied to all projects.
+Defaults to `false`.
 
     Example:
 
@@ -80,19 +81,18 @@ owners.label
     >   submittableIf = has:approval_owners
     > ```
 
-
 cache."owners.path_owners_entries".memoryLimit
 :   The cache is used to hold the parsed version of `OWNERS` files in the
-    repository so that when submit rules are calculated (either through prolog
-    or through submit requirements) it is not read over and over again. The
-    cache entry gets invalidated when `OWNERS` file branch is updated.
-    By default it follows default Gerrit's cache memory limit but it makes
-    sense to adjust it as a function of number of project that use the `owners`
-    plugin multiplied by average number of active branches (plus 1 for the
-    refs/meta/config) and average number of directories (as directory hierarchy
-    back to root is checked for the `OWNERS` file existence).
-    _Note that in opposite to the previous settings the modification needs to be
-    performed in the `$GERRIT_SITE/etc/gerrit.config` file._
+repository so that when submit rules are calculated (either through prolog
+or through submit requirements) it is not read over and over again. The
+cache entry gets invalidated when `OWNERS` file branch is updated.
+By default it follows default Gerrit's cache memory limit but it makes
+sense to adjust it as a function of number of project that use the `owners`
+plugin multiplied by average number of active branches (plus 1 for the
+refs/meta/config) and average number of directories (as directory hierarchy
+back to root is checked for the `OWNERS` file existence).
+_Note that in opposite to the previous settings the modification needs to be
+performed in the `$GERRIT_SITE/etc/gerrit.config` file._
 
     Example
 
@@ -112,20 +112,20 @@ The `OWNERS` file has the following YAML structure:
 inherited: true
 label: Code-Review, 1
 owners:
-- some.email@example.com
-- User Name
-- group/Group of Users
+  - some.email@example.com
+  - User Name
+  - group/Group of Users
 matchers:
-- suffix: .java
-  owners:
-      [...]
-- regex: .*/README.*
-  owners:
-      [...]
-- partial_regex: example
-  owners:
-      [...]
-- exact: path/to/file.txt
+  - suffix: .java
+    owners:
+        [ ... ]
+  - regex: .*/README.*
+    owners:
+        [ ... ]
+  - partial_regex: example
+    owners:
+        [ ... ]
+  - exact: path/to/file.txt
       [...]
 ```
 
@@ -190,9 +190,9 @@ Example of assigning every configuration files to a specific owner group:
 
 ```yaml
 matchers:
-- suffix: .config
-  owners:
-  - Configuration Managers
+  - suffix: .config
+    owners:
+      - Configuration Managers
 ```
 
 Global refs/meta/config OWNERS configuration is inherited only when the OWNERS file
@@ -204,6 +204,43 @@ OWNERS is used as global default.
 If the global project OWNERS has the 'inherited: true', it will check for a global project OWNERS
 in all parent projects up to All-Projects.
 
+## auto-owners-approved
+
+The `auto-owners-approved` field controls a specific exception to the default
+`approverin:already-approved-by_owners` behavior. It applies when an owner updates only files they
+own on their own change, in a situation where the normal `approverin:already-approved-by_owners`
+logic would otherwise drop that owner's previous vote.
+
+The rationale is simple: if an owner already approved a change that stays entirely within code they
+own, and the next patch set is uploaded by that same owner, forcing that same person to re-apply
+the same vote adds little review value.
+
+See [copy-conditions.md](copy-conditions.md) for predicate evaluation details.
+
+This field can be configured only at `OWNERS` file level.
+If the field is not set, it defaults to `true`.
+
+If `auto-owners-approved` is `false` for any touched file, the predicate does not use that
+self-update shortcut for the patch set. The usual `approverin:already-approved-by_owners` logic
+still applies.
+
+### Inheritance
+
+The usual `OWNERS` [inheritance](#global-project-owners) logic applies to `auto-owners-approved` as
+well. This includes directory `OWNERS` lookup, project `refs/meta/config` `OWNERS`, and
+parent project `OWNERS` when inheritance continues up the project hierarchy.
+
+### auto-owners-approved example
+
+Disable at `OWNERS` level:
+
+    inherited: true
+    auto-owners-approved: false
+
+With this setting, the predicate will not copy an owner's vote just because the owner is updating
+only files they own on their own change. Paths under that `OWNERS` file still participate in the
+normal copy-condition behavior.
+
 ## Example 1 - OWNERS file without matchers
 
 Given an OWNERS configuration of:
@@ -211,8 +248,8 @@ Given an OWNERS configuration of:
 ```yaml
 inherited: true
 owners:
-- John Doe
-- Doug Smith
+  - John Doe
+  - Doug Smith
 ```
 
 In this case the owners plugin will assume the default label configuration,`Code-Review
@@ -222,6 +259,7 @@ To enforce submittability only when the specified owners have approved the
 change, you can then either enable `owners.enableSubmitRequirement = true` in
 your `gerrit.config` or define a submit requirement in your `project.config` that
 uses the `has:approval_owners` in the `submittableIf` section, like so:
+
 ```
 [submit-requirement "Owner-Approval"]
        description = Files needs to be approved by owners
@@ -263,8 +301,8 @@ Given now an OWNERS configuration of:
 inherited: true
 label: Owner-Approved, 1
 owners:
-- John Doe
-- Doug Smith
+  - John Doe
+  - Doug Smith
 ```
 
 This will mean that, a change cannot be submitted until 'John Doe' or 'Doug
@@ -279,6 +317,7 @@ your `project.config`(as above) or enable `owners.enableSubmitRequirement = true
 
 If you no longer wish to require a `Code-Review +2` and would rather only use
 the custom submit requirement, you have two options:
+
 - change the definition of the `Code-Review` label in `All-Projects`'s
   `project.config` so that `function = NoOp`.
 - set an `overrideIf` clause in your custom submit requirement definition
@@ -302,13 +341,13 @@ Given an OWNERS configuration of:
 ```yaml
 inherited: true
 matchers:
-- suffix: .sql
-  owners:
-  - Mister Dba
-- regex: .*Test.*
-  owners:
-  - John Bug
-  - Matt Free
+  - suffix: .sql
+    owners:
+      - Mister Dba
+  - regex: .*Test.*
+    owners:
+      - John Bug
+      - Matt Free
 ```
 
 You can then either enable `owners.enableSubmitRequirement = true` in your
