@@ -1079,6 +1079,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0fcee3f_7a81d215",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T15:03:22Z",
+      "side": 1,
+      "message": "See [my comment](https://gerrit-review.googlesource.com/c/plugins/owners/+/561401/comment/aa2f545c_f2f299e1/)",
+      "parentUuid": "74251d58_aba17c78",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 9
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "280a313a_3c75c7a8",
@@ -1110,6 +1134,24 @@
       "side": 1,
       "message": "I am not sure I like this idea. The method is a `filter` and as such it should just `filter` imho.\nAny logic _based_ on that filtering belongs to the caller.\nSee my comment [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/561401/comment/aa2f545c_f2f299e1/)",
       "parentUuid": "280a313a_3c75c7a8",
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a830c44_5489ea3b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T15:03:22Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "b0ef97a8_f59371d6",
       "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -1198,6 +1240,54 @@
       "side": 1,
       "message": "I don\u0027t think this is the right place to short circuit the filtered result into an an `Optional\u003cMap\u003c\u003e\u003e` or a `null`. This is a filter and it should just filter imho.\n\n- empty set \u003d owns nothing\n- non empty set \u003d owns allowed files\n\n`Null` is effectively representing a third state and I find it awkard that `null` means \"the owner owns at least one file that is banned from auto owners approval\".\n\nI think a `Map` is the right data structure here because the auto-owners-approval policy applies per file, so preserving per file information is the cleanest model imho.\n\nThe short-circuit is a nice idea to stop early, but I suggest we optimise this only if needed.\n\nWDYT?",
       "parentUuid": "aa2f545c_f2f299e1",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 40
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f5b729_adc1b9ab",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T15:03:22Z",
+      "side": 1,
+      "message": "Short-circuiting can no longer be used because even if the any of the files is banned, we still want to return the _complete set of owned files_ since we have to fall back to the default logic.\n\nI have updated this method to return a `record` that encapsulate both the list of filtered owned files and a boolean indicating whether the owner owns at least one file that is banned from auto owners approval.",
+      "parentUuid": "75c92a2d_b11c738e",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 40
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a0ca0e7_ddaa45b6",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T15:03:22Z",
+      "side": 1,
+      "message": "It is no longer appliable to short-circuit when a banned auto-owners is found.",
+      "parentUuid": "75c92a2d_b11c738e",
       "range": {
         "startLine": 95,
         "startChar": 9,
