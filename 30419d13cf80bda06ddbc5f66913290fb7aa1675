@@ -1322,6 +1322,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5206fe2_2818e63e",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T16:51:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2f5b729_adc1b9ab",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 40
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16182aaf_361bc2c6",

@@ -22,6 +22,30 @@
       },
       "revId": "48c5335d014aafc10fed7e4004f0ae31683cfb63",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8122516_fcef67dd",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T16:51:10Z",
+      "side": 1,
+      "message": "I exposed this issue with `testExplicitAutoOwnersApprovedInRootOverridesProjectOwners`.\n\nAnd fixed it with the last patchset.",
+      "parentUuid": "88edf2f8_d59a079b",
+      "range": {
+        "startLine": 493,
+        "startChar": 0,
+        "endLine": 493,
+        "endChar": 76
+      },
+      "revId": "48c5335d014aafc10fed7e4004f0ae31683cfb63",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
