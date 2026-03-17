@@ -21,6 +21,7 @@ import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.OPERAND;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Patch;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.exceptions.StorageException;
@@ -91,8 +92,18 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
           project);
 
       Map<String, FileDiffOutput> priorVsCurrent =
-          diffOperations.listModifiedFiles(
-              project, sourcePatchSet.commitId(), targetPatchSet.commitId(), DO_NOT_IGNORE_REBASE);
+          diffOperations
+              .listModifiedFiles(
+                  project,
+                  sourcePatchSet.commitId(),
+                  targetPatchSet.commitId(),
+                  DO_NOT_IGNORE_REBASE)
+              .entrySet()
+              .stream()
+              // COMMIT_MSG has never an owner, we don't ever want to consider it, even if it
+              // was modified as part of this patch-set.
+              .filter(entry -> !Patch.COMMIT_MSG.equals(entry.getKey()))
+              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
       // We can't simply look at keys because it won't contain the old name of renamed-files.
       Set<String> allFilePathsInDiff =
