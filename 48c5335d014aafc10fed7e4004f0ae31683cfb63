@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88edf2f8_d59a079b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T16:21:21Z",
+      "side": 1,
+      "message": "This is wrong. it is blintdy assigning the project-level value here.\n\nThe problem is that the currentEntry no longer knows whether its current autoOwnersApproved value came from:\n\n- an explicit local setting, or\n- an inherited/default one\n\nThis is because we are no longer dealing with an InheritableBoolean here but a concrete boolean value.\n\nI will write a test to expose this isue.",
+      "range": {
+        "startLine": 493,
+        "startChar": 0,
+        "endLine": 493,
+        "endChar": 76
+      },
+      "revId": "48c5335d014aafc10fed7e4004f0ae31683cfb63",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
