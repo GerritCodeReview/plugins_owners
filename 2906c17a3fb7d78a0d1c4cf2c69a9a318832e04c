@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6888d25_1eb9f4e6",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T15:31:00Z",
+      "side": 1,
+      "message": "This is not needed I believe.",
+      "range": {
+        "startLine": 483,
+        "startChar": 0,
+        "endLine": 483,
+        "endChar": 78
+      },
+      "revId": "2906c17a3fb7d78a0d1c4cf2c69a9a318832e04c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89e4a66e_b499822d",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-17T15:31:00Z",
+      "side": 1,
+      "message": "This doesn\u0027t look right @luca.milanesio@gmail.com, does it mean projectEntry.autoOwnersApproved always overwrites the current entry?",
+      "range": {
+        "startLine": 494,
+        "startChar": 1,
+        "endLine": 494,
+        "endChar": 76
+      },
+      "revId": "2906c17a3fb7d78a0d1c4cf2c69a9a318832e04c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
