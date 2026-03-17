@@ -84,11 +84,11 @@ public class PathOwners {
 
   private final GitRepositoryManager repositoryManager;
 
-  private Map<String, Matcher> matchers;
+  private final Map<String, Matcher> matchers;
 
-  private Map<String, Set<Id>> fileOwners;
+  private final Map<String, Set<Id>> fileOwners;
 
-  private Map<String, Set<String>> fileGroupOwners;
+  private final Map<String, Set<String>> fileGroupOwners;
 
   private final Set<String> fileOwnersBannedAutoApproval;
 
