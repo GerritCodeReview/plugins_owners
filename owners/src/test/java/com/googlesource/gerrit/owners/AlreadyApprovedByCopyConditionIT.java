@@ -170,6 +170,32 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
+  public void shouldCopyApprovalWhenOnlyCommitMessageChangesInNextPatchSet() throws Exception {
+    String ownedFile = "file.txt";
+    pushOwnersToMaster(
+        String.format("inherited: true\nowners:\n- %s\n", BACKEND_FILES_OWNER.username()));
+
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(ownedFile)
+            .content("java content")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    ChangeInfo change = detailedChange(changeId.toString());
+    gApi.changes()
+        .id(changeId.toString())
+        .setMessage("Updated commit message\n\nChange-Id: " + change.changeId);
+
+    ChangeInfo c = detailedChange(changeId.toString());
+
+    assertVotes(c, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
   public void shouldNotCopyApprovalWhenOwnedFileIsDeleted() throws Exception {
     Change.Id changeId =
         changeOperations
@@ -495,6 +521,13 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   private void pushOwnersToMaster(String owners) throws Exception {
     pushFactory
         .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
+        .to(RefNames.fullName("master"))
+        .assertOkStatus();
+  }
+
+  private void pushOwnersFileToMaster(String path, String owners) throws Exception {
+    pushFactory
+        .create(admin.newIdent(), testRepo, "Add OWNER file", path, owners)
         .to(RefNames.fullName("master"))
         .assertOkStatus();
   }
