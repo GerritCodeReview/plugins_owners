@@ -402,7 +402,7 @@ public class PathOwners {
       String branch,
       Optional<ReadOnlyPathOwnersEntry> projectEntry,
       List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries,
-      @Nullable PathOwnersEntry rootEntry,
+      PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
       PathOwnersEntriesCache cache)
       throws InvalidOwnersFileException, ExecutionException {
@@ -411,7 +411,7 @@ public class PathOwners {
     StringBuilder builder = new StringBuilder();
 
     // Inherit from Project if OWNER in root enables inheritance
-    if (rootEntry == null || rootEntry.isInherited()) {
+    if (rootEntry.isInherited()) {
       projectEntry.ifPresent(pe -> calculateCurrentEntry(pe, rootEntry));
     }
 
