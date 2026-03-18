@@ -630,6 +630,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd793233_7a58b2e2",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:31:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d54ce926_85e3727e",
+      "range": {
+        "startLine": 536,
+        "startChar": 14,
+        "endLine": 536,
+        "endChar": 87
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5c4a6a9_8d469b4e",
