@@ -254,7 +254,7 @@ public class PathOwners {
                 project,
                 path,
                 branch,
-                projectEntry.orElse(null),
+                projectEntry,
                 parentsPathOwnersEntries,
                 rootEntry,
                 entries,
@@ -400,7 +400,7 @@ public class PathOwners {
       String project,
       String path,
       String branch,
-      @Nullable ReadOnlyPathOwnersEntry projectEntry,
+      Optional<ReadOnlyPathOwnersEntry> projectEntry,
       List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries,
       @Nullable PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
@@ -412,13 +412,13 @@ public class PathOwners {
 
     // Inherit from Project if OWNER in root enables inheritance
     if (rootEntry == null || rootEntry.isInherited()) {
-      calculateCurrentEntry(projectEntry, currentEntry);
+      projectEntry.ifPresent(pe -> calculateCurrentEntry(pe, rootEntry));
     }
 
     // Inherit from Parent Project if OWNER in Project enables inheritance
     for (ReadOnlyPathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {
-      if (projectEntry == null || projectEntry.isInherited()) {
-        calculateCurrentEntry(parentPathOwnersEntry, currentEntry);
+      if (projectEntry.isEmpty() || projectEntry.get().isInherited()) {
+        calculateCurrentEntry(parentPathOwnersEntry, rootEntry);
       }
     }
 
@@ -471,11 +471,7 @@ public class PathOwners {
   }
 
   private void calculateCurrentEntry(
-      @Nullable ReadOnlyPathOwnersEntry projectEntry, PathOwnersEntry currentEntry) {
-    if (projectEntry == null) {
-      return;
-    }
-
+      ReadOnlyPathOwnersEntry projectEntry, PathOwnersEntry currentEntry) {
     for (Matcher matcher : projectEntry.getMatchers().values()) {
       if (!currentEntry.hasMatcher(matcher.getPath())) {
         currentEntry.addMatcher(matcher);
