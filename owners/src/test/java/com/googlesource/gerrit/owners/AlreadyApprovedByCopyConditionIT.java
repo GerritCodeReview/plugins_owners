@@ -64,8 +64,9 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   private TestAccount BACKEND_FILES_OWNER;
   private TestAccount NON_OWNER;
 
+  private static final String BACKEND_OWNED_FILE_PATH = "path/to/";
   private static final String FRONTEND_OWNED_FILE = "foo.js";
-  private static final String BACKEND_OWNED_FILE = "foo.java";
+  private static final String BACKEND_OWNED_FILE = BACKEND_OWNED_FILE_PATH + "foo.java";
   private static final String FILE_WITH_NO_OWNERS = "foo.txt";
 
   private static final String FILE_CONTENT =
@@ -432,6 +433,33 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
+  public void
+      shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDisabledOnRepoAndEnabledOnRoot()
+          throws Exception {
+    pushOwnersToRef(
+        "inherited: true\nauto-owners-approved: false\n", "OWNERS", RefNames.REFS_CONFIG);
+
+    assertOwnedOnlySelfUpdateCopiesApproval(
+        String.format(
+            "inherited: true\nauto-owners-approved: true\nowners:\n- %s\n",
+            BACKEND_FILES_OWNER.username()));
+  }
+
+  @Test
+  public void
+      shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDisabledOnRootAndEnabledOnPath()
+          throws Exception {
+    pushOwnersToRef(
+        "inherited: true\nauto-owners-approved: false\n", "OWNERS", RefNames.fullName("master"));
+
+    assertOwnedOnlySelfUpdateCopiesApproval(
+        String.format(
+            "inherited: true\nauto-owners-approved: true\nowners:\n- %s\n",
+            BACKEND_FILES_OWNER.username()),
+        BACKEND_OWNED_FILE_PATH + "OWNERS");
+  }
+
+  @Test
   public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButApproverIsNotChangeOwner()
       throws Exception {
     Change.Id changeId =
@@ -624,7 +652,12 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   private void assertOwnedOnlySelfUpdateCopiesApproval(String owners) throws Exception {
-    pushOwnersToMaster(owners);
+    assertOwnedOnlySelfUpdateCopiesApproval(owners, "OWNERS");
+  }
+
+  private void assertOwnedOnlySelfUpdateCopiesApproval(String owners, String ownersPath)
+      throws Exception {
+    pushOwnersToRef(owners, ownersPath, RefNames.fullName("master"));
 
     Change.Id changeId =
         changeOperations
@@ -719,9 +752,15 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   private void pushOwnersToMaster(String owners) throws Exception {
+    pushOwnersToRef(owners, "OWNERS", RefNames.fullName("master"));
+  }
+
+  private void pushOwnersToRef(String owners, String ownerPath, String ref) throws Exception {
+    testRepo.git().fetch().setRemote("origin").setRefSpecs(ref + ":" + ref).call();
+    testRepo.reset(ref);
     pushFactory
-        .create(admin.newIdent(), testRepo, "Add OWNER file", "OWNERS", owners)
-        .to(RefNames.fullName("master"))
+        .create(admin.newIdent(), testRepo, "Add OWNER file", ownerPath, owners)
+        .to(ref)
         .assertOkStatus();
   }
 }
