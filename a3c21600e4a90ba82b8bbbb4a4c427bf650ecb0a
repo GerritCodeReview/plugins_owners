@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3108075_589f7484",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:44:33Z",
+      "side": 1,
+      "message": "This is a flag I introduced to fix a bug I found when testing.\nI added `testExplicitAutoOwnersApprovedInRootOverridesProjectOwners` to cover this.",
+      "parentUuid": "32a34084_598a5797",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "75e306f3_c31c38f5",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
         "patchSetId": 10
@@ -119,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22459650_31ab01ac",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:44:33Z",
+      "side": 1,
+      "message": "This is a flag I introduced to fix a bug I found when testing.\nI added `testExplicitAutoOwnersApprovedInRootOverridesProjectOwners` to cover this.",
+      "parentUuid": "e9dc85a2_56d3c746",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "773779c0_4bb24e34",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
         "patchSetId": 10
@@ -142,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41bac930_35c8abea",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:44:33Z",
+      "side": 1,
+      "message": "This is a flag I introduced to fix a bug I found when testing.\nI added `testExplicitAutoOwnersApprovedInRootOverridesProjectOwners` to cover this.",
+      "parentUuid": "773779c0_4bb24e34",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be137bd0_be8e0955",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
         "patchSetId": 10
@@ -153,6 +213,30 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "This can be moved up, because it is not conditioned to the status of `filesOwnedByApprover` at all, and can be short-circuited with the condition `currentApprover \u003d\u003d changeOwners \u003d\u003d uploader, for minimising the processing time.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 9
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d96f0a90_37eeaf38",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:44:33Z",
+      "side": 1,
+      "message": "\u003e  it is not conditioned to the status of filesOwnedByApprover at all\n\nI don\u0027t follow why this might be the case.\nDon\u0027t we need to look `filesOwnedByApprover` to understand if the current patch-set touched files that are not owned?",
+      "parentUuid": "be137bd0_be8e0955",
       "range": {
         "startLine": 124,
         "startChar": 0,
