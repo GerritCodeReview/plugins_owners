@@ -254,7 +254,7 @@ public class PathOwners {
                 project,
                 path,
                 branch,
-                projectEntry.orElse(null),
+                projectEntry,
                 parentsPathOwnersEntries,
                 rootEntry,
                 entries,
@@ -400,30 +400,30 @@ public class PathOwners {
       String project,
       String path,
       String branch,
-      @Nullable ReadOnlyPathOwnersEntry projectEntry,
+      Optional<ReadOnlyPathOwnersEntry> projectEntry,
       List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries,
       @Nullable PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
       PathOwnersEntriesCache cache)
       throws InvalidOwnersFileException, ExecutionException {
     String[] parts = path.split("/");
-    PathOwnersEntry currentEntry = rootEntry;
     StringBuilder builder = new StringBuilder();
 
     // Inherit from Project if OWNER in root enables inheritance
     if (rootEntry == null || rootEntry.isInherited()) {
-      calculateCurrentEntry(projectEntry, currentEntry);
+      projectEntry.ifPresent(pe -> calculateCurrentEntry(pe, rootEntry));
     }
 
     // Inherit from Parent Project if OWNER in Project enables inheritance
     for (ReadOnlyPathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {
-      if (projectEntry == null || projectEntry.isInherited()) {
-        calculateCurrentEntry(parentPathOwnersEntry, currentEntry);
+      if (projectEntry.isEmpty() || projectEntry.get().isInherited()) {
+        calculateCurrentEntry(parentPathOwnersEntry, rootEntry);
       }
     }
 
     // Iterate through the parent paths, not including the file name
     // itself
+    PathOwnersEntry currentEntry = rootEntry;
     for (int i = 0; i < parts.length - 1; i++) {
       String part = parts[i];
       builder.append(part).append("/");
@@ -471,11 +471,7 @@ public class PathOwners {
   }
 
   private void calculateCurrentEntry(
-      @Nullable ReadOnlyPathOwnersEntry projectEntry, PathOwnersEntry currentEntry) {
-    if (projectEntry == null) {
-      return;
-    }
-
+      ReadOnlyPathOwnersEntry projectEntry, PathOwnersEntry currentEntry) {
     for (Matcher matcher : projectEntry.getMatchers().values()) {
       if (!currentEntry.hasMatcher(matcher.getPath())) {
         currentEntry.addMatcher(matcher);
