@@ -1,0 +1,526 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d649eb7_0b51e62f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "```suggestion\nAt the same time, this setting lets repositories turn that shortcut off\n```",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32a34084_598a5797",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "What is this flag used for?\nWe should not care how the auto-owners flag was achieved; we have resolved it as `true` or `false`.",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75e306f3_c31c38f5",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "This is worth a comment IMHO: the meaning of this line of code is:\n- Defaults to `true` if not defined\n- Set to `true` if defined to `true` (really reaffirming the default)\n- Set to `false` only if explicitly set to `false` in the `OWNERS` file.",
+      "range": {
+        "startLine": 82,
+        "startChar": 33,
+        "endLine": 82,
+        "endChar": 91
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9dc85a2_56d3c746",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "773779c0_4bb24e34",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be137bd0_be8e0955",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "This can be moved up, because it is not conditioned to the status of `filesOwnedByApprover` at all, and can be short-circuited with the condition `currentApprover \u003d\u003d changeOwners \u003d\u003d uploader, for minimising the processing time.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 9
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8d6c77_29b8d41a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "This can be the first condition to evaluate, relying on Java\u0027s boolean short-circuit.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 43
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0c8361f_025e5fb4",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "This can be simply calculated now by checking that there is no overlapping between `allFilesPathsInDiff` and `owners.getFileOwnersBannedAutoApproval()`",
+      "range": {
+        "startLine": 237,
+        "startChar": 11,
+        "endLine": 237,
+        "endChar": 56
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91681f0b_e836dfde",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to change after all.\n\n\n\n```suggestion\n  public boolean isAnyFileOwnedBy(\n      Account.Id owner, Set\u003cString\u003e changePaths, Project.NameKey project, String branch)\n      throws IOException, InvalidOwnersFileException {\n    return !filterFilesOwnedBy(owner, changePaths, project, branch).isEmpty();\n  }\n```",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94214585_b1494d39",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Because there isn\u0027t a short-circuit case anymore, is there really a point in changing this method after all?\n\nAlso, we add to `filteredFilesOwned` regardless of the `filePath` banned or not based on the auto-owners condition.\n\n\n\n```suggestion\n  public Set\u003cString\u003e filterFilesOwnedBy(\n      Account.Id owner, Set\u003cString\u003e changePaths, Project.NameKey project, String branch)\n      throws IOException, InvalidOwnersFileException {\n    PathOwners owners \u003d getPathOwners(project, branch, changePaths);\n    Map\u003cString, Set\u003cAccount.Id\u003e\u003e filesWithOwner \u003d owners.getFileOwners();\n\n    return changePaths.stream()\n        .filter(filePath -\u003e filesWithOwner.getOrDefault(filePath, Set.of()).contains(owner))\n        .collect(Collectors.toSet());\n```",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 67
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b04ec89_0405cb06",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "```suggestion\n`approverin:already-approved-by_owners` behavior. It applies when a new patchset updates only files that are owned\n```",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9590ed46_d1d067b8",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "```suggestion\nby the change owner or patchset committer, in a situation where the normal `approverin:already-approved-by_owners`\n```",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "234cc910_fbf962ab",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "As a follow-up, all this boilerplate can be DRY-ed out for making these tests more readable.",
+      "range": {
+        "startLine": 428,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 22
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a872ec9_ee96ba2f",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Can we give a name that is more readable to this constant?\n\n\n\n```suggestion\n            .owner(BACKEND_FILES_NON_OWNER.id())\n```",
+      "range": {
+        "startLine": 458,
+        "startChar": 19,
+        "endLine": 458,
+        "endChar": 29
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bea562f3_9b9b7a3e",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "```suggestion\n  public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButUploaderNotOwner()\n```",
+      "range": {
+        "startLine": 478,
+        "startChar": 63,
+        "endLine": 478,
+        "endChar": 87
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03a20662_3b7f1e22",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "```suggestion\n        .uploader(BACKEND_FILES_NON_OWNER.id())\n```",
+      "range": {
+        "startLine": 494,
+        "startChar": 18,
+        "endLine": 494,
+        "endChar": 28
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf00b550_fa52b9f4",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Do we need these suffix matchers for this test?",
+      "range": {
+        "startLine": 508,
+        "startChar": 0,
+        "endLine": 509,
+        "endChar": 50
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6960fa14_51793225",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Avoid values in tests that aren\u0027t readable.\n\n\n\n```suggestion\n        AUTO_OWNERS_APPROVED_FALSE);\n```",
+      "range": {
+        "startLine": 510,
+        "startChar": 8,
+        "endLine": 510,
+        "endChar": 13
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d54ce926_85e3727e",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "This is almost a duplicate of `shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDefault`: can we just call the method instead of copy \u0026 pasting the body?",
+      "range": {
+        "startLine": 536,
+        "startChar": 14,
+        "endLine": 536,
+        "endChar": 87
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5c4a6a9_8d469b4e",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Do we need these suffix matchers for this test?",
+      "range": {
+        "startLine": 539,
+        "startChar": 8,
+        "endLine": 541,
+        "endChar": 50
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ce2ec0_02d6b2e2",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Avoid values in tests that aren\u0027t readable.\n\n\n\n```suggestion\n        AUTO_OWNERS_APPROVED_TRUE);\n```",
+      "range": {
+        "startLine": 542,
+        "startChar": 8,
+        "endLine": 542,
+        "endChar": 12
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e63ae0_2d7528e6",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Isn\u0027t this an existing test? We are not changing the copy approval logic on rebase.",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 589,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08fc3f38_bd425b6a",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "```suggestion\n  public void shouldNotCopyApprovalWhenChangedFilesAreNotOwnedByUploader() throws Exception {\n```",
+      "range": {
+        "startLine": 592,
+        "startChar": 14,
+        "endLine": 592,
+        "endChar": 65
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36f50e64_49db82c8",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "We don\u0027t need the matchers",
+      "range": {
+        "startLine": 733,
+        "startChar": 53,
+        "endLine": 733,
+        "endChar": 63
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

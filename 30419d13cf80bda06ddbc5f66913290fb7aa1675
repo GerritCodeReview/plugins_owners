@@ -188,6 +188,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b09bc47e_d641d6e3",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/ConfigurationParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "\u003e Yes, in case of a misconfiguration however this will now throw an `IllegalArgumentException`, which in turn will cause the **entire** file to be ignored (and a `WARNING` being emitted). I have added a test to document this behaviour.\n\nYes, in case of misconfiguration of the `OWNERS` we should throw an error, that\u0027s correct.\n\nWe may want to make the error more _explicit_ and _understandable_, but it isn\u0027t right to fail silently and assume a `true` or `false` in case of non-zero IMHO.",
+      "parentUuid": "f4e8199a_ed9391f4",
+      "range": {
+        "startLine": 54,
+        "startChar": 22,
+        "endLine": 54,
+        "endChar": 35
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f70e8be9_8d95d149",
@@ -894,6 +918,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5e89e79_5ce73244",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "Why resolved? I see you just moved the check in a method called `hasExplicitAutoOwnersApproved`, why?\n\nThat would block the overriding during the calculation of inheritance from the top-down.",
+      "parentUuid": "7f9ea1ec_aa276aa6",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 496,
+        "endChar": 7
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0cb0c87d_f92c048a",
         "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
         "patchSetId": 1
@@ -1336,6 +1384,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "f2f5b729_adc1b9ab",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 40
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4628e168_b5ae1b2c",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-18T15:23:26Z",
+      "side": 1,
+      "message": "I respectfully disagree 😊\n\nI don\u0027t believe we need to create a Java record: if `ownsBannedAutoApprovalFile` is false, then we just copy over the label, that\u0027s it. We don\u0027t need to keep on calculating the full set of `ownedFiles`.",
+      "parentUuid": "b5206fe2_2818e63e",
       "range": {
         "startLine": 95,
         "startChar": 9,
