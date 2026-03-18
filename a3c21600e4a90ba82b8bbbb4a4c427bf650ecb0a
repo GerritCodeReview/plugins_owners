@@ -319,6 +319,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc66bead_a8ac28b5",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:48:26Z",
+      "side": 1,
+      "message": "\u003e This can be simply calculated now by checking that there is no overlapping between `allFilesPathsInDiff` and `owners.getFileOwnersBannedAutoApproval()`\n\nWhat is this `owners` variable you are referring to?\nI don\u0027t see any `owners` variable in the file.",
+      "parentUuid": "c0c8361f_025e5fb4",
+      "range": {
+        "startLine": 237,
+        "startChar": 11,
+        "endLine": 237,
+        "endChar": 56
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91681f0b_e836dfde",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
         "patchSetId": 10
