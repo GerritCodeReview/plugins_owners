@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ded46d52_9cb0bc6c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d649eb7_0b51e62f",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32a34084_598a5797",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "This is worth a comment IMHO: the meaning of this line of code is:\n- Defaults to `true` if not defined\n- Set to `true` if defined to `true` (really reaffirming the default)\n- Set to `false` only if explicitly set to `false` in the `OWNERS` file.",
+      "range": {
+        "startLine": 82,
+        "startChar": 33,
+        "endLine": 82,
+        "endChar": 91
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0338d3b7_c47651a3",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "I added a comment:\n\n```\n// Default to true unless the OWNERS file explicitly sets it to false.\n```",
+      "parentUuid": "75e306f3_c31c38f5",
       "range": {
         "startLine": 82,
         "startChar": 33,
@@ -144,6 +186,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cfe0c65_ecd8d53b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Yep good call",
+      "parentUuid": "6b8d6c77_29b8d41a",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 43
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0c8361f_025e5fb4",
@@ -230,6 +296,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94991b84_26777e38",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b04ec89_0405cb06",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9590ed46_d1d067b8",
@@ -243,6 +327,24 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "```suggestion\nby the change owner or patchset committer, in a situation where the normal `approverin:already-approved-by_owners`\n```",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b50178af_b9e3b102",
+        "filename": "owners/src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9590ed46_d1d067b8",
       "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -293,6 +395,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d5918dc_6882046d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a872ec9_ee96ba2f",
+      "range": {
+        "startLine": 458,
+        "startChar": 19,
+        "endLine": 458,
+        "endChar": 29
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bea562f3_9b9b7a3e",
@@ -306,6 +432,30 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "```suggestion\n  public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButUploaderNotOwner()\n```",
+      "range": {
+        "startLine": 478,
+        "startChar": 63,
+        "endLine": 478,
+        "endChar": 87
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e91a9ddd_da692621",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bea562f3_9b9b7a3e",
       "range": {
         "startLine": 478,
         "startChar": 63,
@@ -339,6 +489,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2bf1295_2d67354c",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03a20662_3b7f1e22",
+      "range": {
+        "startLine": 494,
+        "startChar": 18,
+        "endLine": 494,
+        "endChar": 28
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf00b550_fa52b9f4",
@@ -362,6 +536,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "693adeaf_d2c5a371",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf00b550_fa52b9f4",
+      "range": {
+        "startLine": 508,
+        "startChar": 0,
+        "endLine": 509,
+        "endChar": 50
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6960fa14_51793225",
@@ -375,6 +573,30 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "Avoid values in tests that aren\u0027t readable.\n\n\n\n```suggestion\n        AUTO_OWNERS_APPROVED_FALSE);\n```",
+      "range": {
+        "startLine": 510,
+        "startChar": 8,
+        "endLine": 510,
+        "endChar": 13
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07da3241_2590c896",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Removed `matcher` approach, this is no longer needed.",
+      "parentUuid": "6960fa14_51793225",
       "range": {
         "startLine": 510,
         "startChar": 8,
@@ -431,6 +653,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e32c462_faa537f3",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Removed in favour of a directory-level OWNERS.",
+      "parentUuid": "a5c4a6a9_8d469b4e",
+      "range": {
+        "startLine": 539,
+        "startChar": 8,
+        "endLine": 541,
+        "endChar": 50
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8ce2ec0_02d6b2e2",
@@ -444,6 +690,30 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "Avoid values in tests that aren\u0027t readable.\n\n\n\n```suggestion\n        AUTO_OWNERS_APPROVED_TRUE);\n```",
+      "range": {
+        "startLine": 542,
+        "startChar": 8,
+        "endLine": 542,
+        "endChar": 12
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e1c8576_cc6a1ade",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Removed `matcher` approach, this is no longer needed.",
+      "parentUuid": "d8ce2ec0_02d6b2e2",
       "range": {
         "startLine": 542,
         "startChar": 8,
@@ -479,6 +749,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8a6f072_ac305361",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Yes, the intention is to cover exactly this: that the rebase-only logic is unaffected when auto-owners-approved is `false`. as in, \"when the feature is off we just fallback to normal behaviour\".",
+      "parentUuid": "f9e63ae0_2d7528e6",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 589,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "08fc3f38_bd425b6a",
         "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
         "patchSetId": 10
@@ -490,6 +784,30 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "```suggestion\n  public void shouldNotCopyApprovalWhenChangedFilesAreNotOwnedByUploader() throws Exception {\n```",
+      "range": {
+        "startLine": 592,
+        "startChar": 14,
+        "endLine": 592,
+        "endChar": 65
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9049e7a3_d196e539",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08fc3f38_bd425b6a",
       "range": {
         "startLine": 592,
         "startChar": 14,
@@ -513,6 +831,30 @@
       "writtenOn": "2026-03-18T15:23:26Z",
       "side": 1,
       "message": "We don\u0027t need the matchers",
+      "range": {
+        "startLine": 733,
+        "startChar": 53,
+        "endLine": 733,
+        "endChar": 63
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef12dcf_91de3b08",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-18T16:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36f50e64_49db82c8",
       "range": {
         "startLine": 733,
         "startChar": 53,
