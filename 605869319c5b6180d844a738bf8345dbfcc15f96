@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "607e31c6_c65590ac",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-19T10:52:38Z",
+      "side": 1,
+      "message": "Passing an Optional\u003c\u003e as a parameter is an anti-pattern in Java, see \n\nhttps://medium.com/@arun.narayan/java-optional-anti-patterns-avoid-these-traps-for-cleaner-code-37cea5945265.",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 53
+      },
+      "revId": "605869319c5b6180d844a738bf8345dbfcc15f96",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a707ac4e_8b4e392c",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-19T10:52:38Z",
+      "side": 1,
+      "message": "Why are we no longer passing `currentEntry` but `rootEntry` to `calculateCurrentEntry`.\n\nAt this point they are equivalent since `currentEntry` is defined at `L410` as:\n\n```\nPathOwnersEntry currentEntry \u003d rootEntry;\n```\n\nBut this is difficult to follow because later on the code works on `currentEntry`.\nWas this change intentional?\nIf so, do we need `currentEntry` at all?\n\nAlso, `rootEntry` might be `null`, potentially causing `NPE` when accessed by `calculateCurrentEntry`, but I believe this is an existing problem.",
+      "range": {
+        "startLine": 415,
+        "startChar": 61,
+        "endLine": 415,
+        "endChar": 70
+      },
+      "revId": "605869319c5b6180d844a738bf8345dbfcc15f96",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
