@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cebfaf4_f792bfd8",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-19T21:48:24Z",
+      "side": 1,
+      "message": "I am not using in the way is described in the blog post:\n\n```\npublic void process(Optional\u003cString\u003e data) {\n    if (data.isPresent()) {\n        System.out.println(data.get());\n    }\n}\n```\n\nI agree that the above would not make sense, but the way I use it at L415 is a lot cleaner than having to deal with null checks.",
+      "parentUuid": "607e31c6_c65590ac",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 53
+      },
+      "revId": "605869319c5b6180d844a738bf8345dbfcc15f96",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a707ac4e_8b4e392c",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "\u003e Also, rootEntry might be null, potentially causing NPE when accessed by calculateCurrentEntry, but I believe this is an existing problem.\n\nOh I can see this is fixed by the follow up change.",
       "parentUuid": "a707ac4e_8b4e392c",
+      "range": {
+        "startLine": 415,
+        "startChar": 61,
+        "endLine": 415,
+        "endChar": 70
+      },
+      "revId": "605869319c5b6180d844a738bf8345dbfcc15f96",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f13b71c_c2e59b13",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-19T21:48:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ae8358f5_f7ce4abe",
       "range": {
         "startLine": 415,
         "startChar": 61,
