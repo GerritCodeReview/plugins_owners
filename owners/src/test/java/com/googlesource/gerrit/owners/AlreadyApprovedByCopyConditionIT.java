@@ -469,6 +469,279 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
+  public void shouldCopyApprovalWhenJavaMatcherEnablesAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED)));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenJavaMatcherDisablesAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenJavaMatcherOverridesRootFalse()
+      throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            AUTO_OWNERS_APPROVAL_DISABLED,
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED)));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenJavaMatcherOverridesRootTrue()
+      throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            AUTO_OWNERS_APPROVED,
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenUntouchedMatcherDisablesAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED),
+            suffixMatcherConfig(".js", FRONTEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenJavaMatcherEnabledButUploaderDiffers()
+          throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED)));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, NON_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildMatcherInheritsParentTrue()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED));
+    pushOwnersToRef(
+        matcherOwnersConfig(suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherInheritsParentFalse()
+          throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildMatcherOverridesParentFalse()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherOverridesParentTrue()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildMatcherOverridesParentMatcherFalse() throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherOverridesParentMatcherTrue()
+      throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED)));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenPathAndMatcherFilesDoNotAllAllowAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .owner(BACKEND_FILES_OWNER.id())
+            .file("plain.txt")
+            .content("plain content")
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .uploader(BACKEND_FILES_OWNER.id())
+        .file("plain.txt")
+        .content("updated plain content")
+        .file(BACKEND_OWNED_FILE)
+        .content("updated java content")
+        .create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenPathAndMatcherFilesAllAllowAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED));
+    pushOwnersToRef(
+        matcherOwnersConfig(suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .owner(BACKEND_FILES_OWNER.id())
+            .file("plain.txt")
+            .content("plain content")
+            .file(BACKEND_OWNED_FILE)
+            .content("java content")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .uploader(BACKEND_FILES_OWNER.id())
+        .file("plain.txt")
+        .content("updated plain content")
+        .file(BACKEND_OWNED_FILE)
+        .content("updated java content")
+        .create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
   public void shouldNotCopyApprovalWhenChangedFilesAreNotOwnedByUploader() throws Exception {
     Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
 
@@ -586,6 +859,29 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     return String.format(
         "inherited: true\nauto-owners-approved: %s\nowners:\n- %s\n",
         autoOwnersApproved, owner.username());
+  }
+
+  private String matcherOwnersConfig(String... matchers) {
+    return matcherOwnersConfig(null, matchers);
+  }
+
+  private String matcherOwnersConfig(Boolean autoOwnersApproved, String... matchers) {
+    String rootAutoOwnersApproved =
+        autoOwnersApproved == null
+            ? ""
+            : String.format("auto-owners-approved: %s\n", autoOwnersApproved);
+    return String.format(
+        "inherited: true\n%smatchers:\n%s", rootAutoOwnersApproved, String.join("", matchers));
+  }
+
+  private String suffixMatcherConfig(String suffix, TestAccount owner, boolean autoOwnersApproved) {
+    return String.format(
+        "- suffix: %s\n  auto-owners-approved: %s\n  owners:\n   - %s\n",
+        suffix, autoOwnersApproved, owner.username());
+  }
+
+  private String suffixMatcherConfig(String suffix, TestAccount owner) {
+    return String.format("- suffix: %s\n  owners:\n   - %s\n", suffix, owner.username());
   }
 
   private void vote(TestAccount user, String changeId, int vote) throws Exception {
