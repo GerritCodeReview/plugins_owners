@@ -121,8 +121,10 @@ The following is an example of the `approverin:already-approved-by_owners` confi
 
 ## Customizing the copy condition behaviour with the `auto-owners-approved` in `OWNERS`
 
-The `approverin:already-approved-by_owners` can be fine-grained enabled/disabled using the
-`auto-owners-approved` configuration in the `OWNERS` file.
+The `approverin:already-approved-by_owners` can be fine-grained enabled or disabled using
+`auto-owners-approved` in `OWNERS`, and more narrowly on individual matchers.
+When both are present, the matcher value wins for the files that matcher selects.
+See the examples in [config.md](./config.md#auto-owners-approved).
 
 Details on the `auto-owners-approved` behaviour can be
 found [here](./config.md#auto-owners-approved).

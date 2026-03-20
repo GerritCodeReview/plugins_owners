@@ -48,17 +48,20 @@ public class ConfigurationParser {
         Optional.ofNullable(jsonNode.get("label"))
             .map(JsonNode::asText)
             .flatMap(LabelDefinition::parse));
-    Optional<InheritableBoolean> autoOwnersApproved =
-        Optional.ofNullable(jsonNode.get("auto-owners-approved"))
-            .map(JsonNode::asText)
-            .map(String::toUpperCase)
-            .map(InheritableBoolean::valueOf);
+    Optional<InheritableBoolean> autoOwnersApproved = parseAutoOwnersApproved(jsonNode);
 
     autoOwnersApproved.ifPresent(ret::setAutoOwnersApproved);
 
     addClassicMatcher(jsonNode, ret);
     addMatchers(jsonNode, ret);
     return ret;
+  }
+
+  private Optional<InheritableBoolean> parseAutoOwnersApproved(JsonNode jsonNode) {
+    return Optional.ofNullable(jsonNode.get("auto-owners-approved"))
+        .map(JsonNode::asText)
+        .map(String::toUpperCase)
+        .map(InheritableBoolean::valueOf);
   }
 
   private void addClassicMatcher(JsonNode jsonNode, OwnersConfig ret) {
@@ -118,17 +121,27 @@ public class ConfigurationParser {
             .flatMap(o -> accounts.find(o).stream())
             .collect(Collectors.toSet());
 
+    InheritableBoolean autoOwnersApproved =
+        parseAutoOwnersApproved(node).orElse(InheritableBoolean.INHERIT);
+
     Optional<Matcher> suffixMatcher =
-        getText(node, "suffix").map(el -> new SuffixMatcher(el, owners, reviewers, groupOwners));
+        getText(node, "suffix")
+            .map(el -> new SuffixMatcher(el, owners, reviewers, groupOwners, autoOwnersApproved));
     Optional<Matcher> regexMatcher =
-        getText(node, "regex").map(el -> new RegExMatcher(el, owners, reviewers, groupOwners));
+        getText(node, "regex")
+            .map(el -> new RegExMatcher(el, owners, reviewers, groupOwners, autoOwnersApproved));
     Optional<Matcher> partialRegexMatcher =
         getText(node, "partial_regex")
-            .map(el -> new PartialRegExMatcher(el, owners, reviewers, groupOwners));
+            .map(
+                el ->
+                    new PartialRegExMatcher(
+                        el, owners, reviewers, groupOwners, autoOwnersApproved));
     Optional<Matcher> exactMatcher =
-        getText(node, "exact").map(el -> new ExactMatcher(el, owners, reviewers, groupOwners));
+        getText(node, "exact")
+            .map(el -> new ExactMatcher(el, owners, reviewers, groupOwners, autoOwnersApproved));
     Optional<Matcher> genericMatcher =
-        getText(node, "generic").map(el -> new GenericMatcher(el, owners, reviewers, groupOwners));
+        getText(node, "generic")
+            .map(el -> new GenericMatcher(el, owners, reviewers, groupOwners, autoOwnersApproved));
 
     return Optional.ofNullable(
         suffixMatcher.orElseGet(
