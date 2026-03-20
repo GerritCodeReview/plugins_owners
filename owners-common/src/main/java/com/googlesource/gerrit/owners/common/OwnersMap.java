@@ -131,6 +131,10 @@ public class OwnersMap {
     fileOwnersBannedAutoApproval.add(file);
   }
 
+  public void allowFileForAutoApproval(String file) {
+    fileOwnersBannedAutoApproval.remove(file);
+  }
+
   public Optional<LabelDefinition> getLabel() {
     return label;
   }
