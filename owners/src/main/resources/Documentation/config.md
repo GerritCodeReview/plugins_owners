@@ -217,12 +217,15 @@ the same vote adds little review value.
 
 See [copy-conditions.md](copy-conditions.md) for predicate evaluation details.
 
-This field can be configured only at `OWNERS` file level.
-If the field is not set, it defaults to `true`.
+This field can be configured at `OWNERS` file level and on individual matchers.
+If it is not set, it defaults to `true`.
 
 If `auto-owners-approved` is `false` for any touched file, the predicate does not use that
 self-update shortcut for the patch set. The usual `approverin:already-approved-by_owners` logic
 still applies.
+
+When a matcher defines `auto-owners-approved`, that matcher-specific value takes precedence for the
+files it matches over the surrounding `OWNERS` value.
 
 ### Inheritance
 
@@ -240,6 +243,21 @@ Disable at `OWNERS` level:
 With this setting, the predicate will not copy an owner's vote just because the owner is updating
 only files they own on their own change. Paths under that `OWNERS` file still participate in the
 normal copy-condition behavior.
+
+Override that setting for matched files:
+
+```yaml
+inherited: true
+auto-owners-approved: false
+matchers:
+  - suffix: .java
+    auto-owners-approved: true
+    owners:
+      - user-backend
+```
+
+Here, `.java` files matched by that rule use `auto-owners-approved: true` even though the enclosing
+`OWNERS` file sets it to `false`.
 
 ## Example 1 - OWNERS file without matchers
 
