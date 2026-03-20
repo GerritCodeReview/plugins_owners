@@ -32,6 +32,7 @@ import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Patch;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.DiffSummary;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
@@ -390,6 +391,22 @@ public class PathOwners {
         ownersMap.addFileOwners(path, matcher.getOwners());
         ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
+        switch (matcher.getAutoOwnersApproved()) {
+          // We have an explicit allowance for this matcher
+          // Make sure that anything added at OWNERS level is removed
+          case InheritableBoolean.TRUE:
+            ownersMap.allowFileForAutoApproval(path);
+            break;
+          // We have an explicit ban for this matcher
+          case InheritableBoolean.FALSE:
+            ownersMap.banFileFromOwnersAutoApproval(path);
+            break;
+
+          // There is no matcher-level specification of auto-owner-approved
+          // therefore the global OWNER-level still applies
+          default:
+            break;
+        }
         matchingFound = true;
       }
     }
