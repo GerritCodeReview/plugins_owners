@@ -16,12 +16,17 @@
 package com.googlesource.gerrit.owners.common;
 
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.util.Set;
 
 public class GenericMatcher extends RegExMatcher {
 
   public GenericMatcher(
-      String path, Set<Account.Id> owners, Set<Account.Id> reviewers, Set<String> groupOwners) {
-    super(path, owners, reviewers, groupOwners);
+      String path,
+      Set<Account.Id> owners,
+      Set<Account.Id> reviewers,
+      Set<String> groupOwners,
+      InheritableBoolean autoOwnersApproved) {
+    super(path, owners, reviewers, groupOwners, autoOwnersApproved);
   }
 }
