@@ -18,6 +18,8 @@ package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.entities.Patch.COMMIT_MSG;
 import static com.google.gerrit.entities.Patch.MERGE_LIST;
+import static com.google.gerrit.extensions.client.InheritableBoolean.FALSE;
+import static com.google.gerrit.extensions.client.InheritableBoolean.TRUE;
 import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
 import com.google.common.collect.ImmutableList;
@@ -390,6 +392,15 @@ public class PathOwners {
         ownersMap.addFileOwners(path, matcher.getOwners());
         ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
+        // We have an explicit ban for this matcher
+        if (matcher.getAutoOwnersApproved() == FALSE) {
+          ownersMap.banFileFromOwnersAutoApproval(path);
+        }
+        // We have an explicit allowance for this matcher
+        // Make sure that anything added at OWNERS level is removed
+        else if (matcher.getAutoOwnersApproved() == TRUE) {
+          ownersMap.allowFileForAutoApproval(path);
+        }
         matchingFound = true;
       }
     }

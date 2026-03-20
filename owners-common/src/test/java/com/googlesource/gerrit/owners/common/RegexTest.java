@@ -270,4 +270,33 @@ public class RegexTest extends Config {
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");
   }
+
+  @Test
+  public void testParsingAutoOwnersApprovedFlags() throws Exception {
+    replayAll();
+
+    String configString =
+        "inherited: true\n"
+            + "auto-owners-approved: false\n"
+            + "owners:\n"
+            + "- a\n"
+            + "matchers:\n"
+            + "- suffix: .sql\n"
+            + "  auto-owners-approved: true\n"
+            + "  owners:\n"
+            + "  - b\n"
+            + "- exact: project/a.txt\n"
+            + "  auto-owners-approved: false\n"
+            + "  owners:\n"
+            + "  - c\n"
+            + "- regex: .*\\.md\n"
+            + "  owners:\n"
+            + "  - d\n";
+
+    OwnersConfig config = getOwnersConfig(configString);
+
+    assertThat(config.getMatchers().get(".sql").isAutoOwnersApproved()).isTrue();
+    assertThat(config.getMatchers().get("project/a.txt").isAutoOwnersApproved()).isFalse();
+    assertThat(config.getMatchers().get(".*\\.md").isAutoOwnersApproved()).isTrue();
+  }
 }
