@@ -89,6 +89,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b73fd70_b4a43b19",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "275d46b0_a8f5d8ff",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75e306f3_c31c38f5",
@@ -189,6 +207,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "944c3f13_b691c45b",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "d699c2ab_e2fbb62b",
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "773779c0_4bb24e34",
@@ -260,6 +296,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d093e5f_43fbd44e",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "8981487b_5927860d",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be137bd0_be8e0955",
@@ -321,6 +381,30 @@
       "side": 1,
       "message": "The new condition has the correct short-circuit to avoid unnecessary computation; it\u0027s fine in the current form.",
       "parentUuid": "d96f0a90_37eeaf38",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 9
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac72e0da_4729d09d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "ff45007b_5ad8b5e4",
       "range": {
         "startLine": 124,
         "startChar": 0,
@@ -449,6 +533,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cd0e9fa_4b47d233",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "488d92e3_f1d3445f",
+      "range": {
+        "startLine": 237,
+        "startChar": 11,
+        "endLine": 237,
+        "endChar": 56
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91681f0b_e836dfde",
@@ -496,6 +604,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86f54aab_1e9b3f99",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "beb90926_ed42298f",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94214585_b1494d39",
@@ -533,6 +665,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "94214585_b1494d39",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 67
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbefe58e_c70aaa0b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "6adeee8b_7a0fd9cf",
       "range": {
         "startLine": 108,
         "startChar": 0,
@@ -1097,6 +1253,30 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "f8a6f072_ac305361",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 589,
+        "endChar": 3
+      },
+      "revId": "a3c21600e4a90ba82b8bbbb4a4c427bf650ecb0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28ce6bf6_7fec8b35",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "4af76d53_6bcc5279",
       "range": {
         "startLine": 567,
         "startChar": 0,

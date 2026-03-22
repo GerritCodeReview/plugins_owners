@@ -1490,6 +1490,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e76704d_eb7f7295",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 4724669
+      },
+      "writtenOn": "2026-03-22T19:28:30Z",
+      "side": 1,
+      "message": "MOHAMED",
+      "parentUuid": "cc06ec64_609f8435",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 40
+      },
+      "revId": "30419d13cf80bda06ddbc5f66913290fb7aa1675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16182aaf_361bc2c6",
