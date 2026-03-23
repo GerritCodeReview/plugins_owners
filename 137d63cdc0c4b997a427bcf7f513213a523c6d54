@@ -59,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6827855f_2bec232f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-23T08:47:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53673923_40c74e6a",
+      "range": {
+        "startLine": 395,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 9
+      },
+      "revId": "137d63cdc0c4b997a427bcf7f513213a523c6d54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6c0ebae_90a87117",
@@ -72,6 +96,30 @@
       "writtenOn": "2026-03-20T18:24:25Z",
       "side": 1,
       "message": "Not needed as we typically use them explicitly with the enum name in the tests, which is the preferred way in Gerrit.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 74
+      },
+      "revId": "137d63cdc0c4b997a427bcf7f513213a523c6d54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e63cc0d1_2f7a7fda",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/MatcherMergeTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-23T08:47:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6c0ebae_90a87117",
       "range": {
         "startLine": 18,
         "startChar": 0,
@@ -99,6 +147,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed210237_fe8e5307",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/MatcherMergeTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-23T08:47:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "284a6d47_162c9d39",
+      "revId": "137d63cdc0c4b997a427bcf7f513213a523c6d54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbef5a7d_9f1ad669",
@@ -112,6 +178,30 @@
       "writtenOn": "2026-03-20T18:24:25Z",
       "side": 1,
       "message": "This three-way construct can be DRY-ed out.\n\n```suggestion\n    assertThatMatchersMergeAs(TRUE, INHERIT, TRUE);\n  }\n\n  private void assertThatMatchersMergeAs(InheritableBoolean baseMatcherBool, InheritableBoolean otherMatcherBool, InheritableBoolean mergedMatcherBool) {\n    Matcher baseTrue \u003d new TestMatcher(baseMatcherBool);\n    Matcher otherUnset \u003d new TestMatcher(otherMatcherBool);\n    Matcher mergedUnsetOther \u003d baseTrue.merge(otherUnset);\n    assertThat(mergedUnsetOther.getAutoOwnersApproved()).isEqualTo(mergedMatcherBool);\n  }\n```",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 3
+      },
+      "revId": "137d63cdc0c4b997a427bcf7f513213a523c6d54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eeec166_b7cac04e",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/MatcherMergeTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-23T08:47:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbef5a7d_9f1ad669",
       "range": {
         "startLine": 31,
         "startChar": 0,
@@ -145,6 +235,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "251f072f_c27afbdf",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/MatcherMergeTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-23T08:47:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0994d4dc_bad431ba",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 74
+      },
+      "revId": "137d63cdc0c4b997a427bcf7f513213a523c6d54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b00583e0_72ee3e28",
@@ -158,6 +272,30 @@
       "writtenOn": "2026-03-20T18:24:25Z",
       "side": 1,
       "message": "```suggestion\n    assertThatMatchersMergeAs(FALSE, TRUE, TRUE);\n```",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 72
+      },
+      "revId": "137d63cdc0c4b997a427bcf7f513213a523c6d54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc2438c_55d41a7c",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/MatcherMergeTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-03-23T08:47:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b00583e0_72ee3e28",
       "range": {
         "startLine": 47,
         "startChar": 0,
