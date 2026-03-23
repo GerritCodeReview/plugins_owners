@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a51eeff1_22f8663b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-23T10:23:50Z",
+      "side": 1,
+      "message": "LGTM, just one small nit.",
+      "revId": "41144bb768790a61adc5d76ac20a677b0b14b389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adbd093e_f4e748d6",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/Matcher.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-23T10:23:50Z",
+      "side": 1,
+      "message": "nit: conditions are typically more readable when expressed in positive terms.\n\n\n\n```suggestion\n        other.autoOwnersApproved \u003d\u003d InheritableBoolean.INHERIT\n            ? autoOwnersApproved\n            : other.getAutoOwnersApproved());\n```",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 34
+      },
+      "revId": "41144bb768790a61adc5d76ac20a677b0b14b389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
