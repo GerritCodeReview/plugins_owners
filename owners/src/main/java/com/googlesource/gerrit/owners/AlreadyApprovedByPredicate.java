@@ -21,6 +21,7 @@ import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.OPERAND;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.Patch;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.exceptions.StorageException;
@@ -75,6 +76,8 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
       Project.NameKey project = ctx.changeData().project();
       PatchSet targetPatchSet = ctx.targetPatchSet();
       PatchSet sourcePatchSet = ctx.changeNotes().getPatchSets().get(ctx.sourcePatchSetId());
+      Account.Id changeOwner = ctx.changeNotes().getChange().getOwner();
+      Account.Id uploader = targetPatchSet.uploader();
 
       checkState(
           predicateField == UserInPredicate.Field.APPROVER,
@@ -91,8 +94,18 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
           project);
 
       Map<String, FileDiffOutput> priorVsCurrent =
-          diffOperations.listModifiedFiles(
-              project, sourcePatchSet.commitId(), targetPatchSet.commitId(), DO_NOT_IGNORE_REBASE);
+          diffOperations
+              .listModifiedFiles(
+                  project,
+                  sourcePatchSet.commitId(),
+                  targetPatchSet.commitId(),
+                  DO_NOT_IGNORE_REBASE)
+              .entrySet()
+              .stream()
+              // COMMIT_MSG has never an owner, we don't ever want to consider it, even if it
+              // was modified as part of this patch-set.
+              .filter(entry -> !Patch.COMMIT_MSG.equals(entry.getKey()))
+              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
       // We can't simply look at keys because it won't contain the old name of renamed-files.
       Set<String> allFilePathsInDiff =
@@ -102,12 +115,20 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
               .map(Optional::get)
               .collect(Collectors.toSet());
 
+      String branch = ctx.changeData().branchOrThrow().branch();
       Set<String> filesOwnedByApprover =
-          getFilesOwners.filterFilesOwnedBy(
-              currentApprover,
-              allFilePathsInDiff,
-              project,
-              ctx.changeData().branchOrThrow().branch());
+          getFilesOwners.filterFilesOwnedBy(currentApprover, allFilePathsInDiff, project, branch);
+
+      if (isApproverAlsoOwnerAndUploader(currentApprover, changeOwner, uploader)
+          && allTouchedFilesAreOwned(filesOwnedByApprover, allFilePathsInDiff)
+          && getFilesOwners.noOwnedFileIsBannedFromAutoApproval(
+              filesOwnedByApprover, project, branch)) {
+        logger.atFinest().log(
+            "Approver '%s' is change owner and uploader. only owned files have been modified and"
+                + " none of them has auto-owners-approved=false. Label WILL be copied.",
+            currentApprover);
+        return true;
+      }
 
       if (!filesOwnedByApprover.isEmpty()) {
         logger.atFinest().log(
@@ -196,6 +217,17 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
   private static boolean isPathChange(FileDiffOutput d) {
     // A path change means rename/add/delete: oldPath != newPath, including empty vs present.
     return !d.oldPath().equals(d.newPath());
+  }
+
+  private static boolean isApproverAlsoOwnerAndUploader(
+      Account.Id currentApprover, Account.Id changeOwner, Account.Id uploader) {
+    return currentApprover.equals(changeOwner) && currentApprover.equals(uploader);
+  }
+
+  private static boolean allTouchedFilesAreOwned(
+      Set<String> filesOwnedByApprover, Set<String> allFilePathsInDiff) {
+    return !filesOwnedByApprover.isEmpty()
+        && filesOwnedByApprover.size() == allFilePathsInDiff.size();
   }
 
   private int getParentNum(ObjectId objectId, RevWalk revWalk) {

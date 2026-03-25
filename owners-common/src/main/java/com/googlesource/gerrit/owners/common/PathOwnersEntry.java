@@ -20,6 +20,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -32,8 +33,6 @@ import java.util.stream.Collectors;
  * <p>Used internally by PathOwners to represent and compute the owners at a specific path.
  */
 class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
-  static final ReadOnlyPathOwnersEntry EMPTY = new ReadOnlyPathOwnersEntry(true) {};
-
   public PathOwnersEntry() {
     super(true);
   }
@@ -45,9 +44,11 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
       Optional<LabelDefinition> inheritedLabel,
       Set<Account.Id> inheritedOwners,
       Set<Account.Id> inheritedReviewers,
+      Optional<Boolean> autoOwnersApproved,
       Collection<Matcher> inheritedMatchers,
       Set<String> inheritedGroupOwners) {
     super(config.isInherited());
+    this.explicitAutoOwnersApproved = config.getAutoOwnersApproved() != InheritableBoolean.INHERIT;
     this.ownersPath = path;
     this.owners =
         config.getOwners().stream()
@@ -67,12 +68,19 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
       this.owners.addAll(inheritedOwners);
       this.groupOwners.addAll(inheritedGroupOwners);
       this.reviewers.addAll(inheritedReviewers);
+      if (config.getAutoOwnersApproved() == InheritableBoolean.INHERIT) {
+        autoOwnersApproved.ifPresent(this::setAutoOwnersApproved);
+      } else {
+        setAutoOwnersApproved(config.getAutoOwnersApproved() == InheritableBoolean.TRUE);
+      }
       for (Matcher matcher : inheritedMatchers) {
         addMatcher(matcher);
       }
       this.label = config.getLabel().or(() -> inheritedLabel);
     } else {
       this.label = config.getLabel();
+      // Default to true unless the OWNERS file explicitly sets it to false.
+      this.setAutoOwnersApproved(config.getAutoOwnersApproved() != InheritableBoolean.FALSE);
     }
   }
 
@@ -121,6 +129,8 @@ abstract class ReadOnlyPathOwnersEntry {
   protected String ownersPath;
   protected Map<String, Matcher> matchers = Maps.newHashMap();
   protected Set<String> groupOwners = Sets.newHashSet();
+  protected boolean autoOwnersApproved = true;
+  protected boolean explicitAutoOwnersApproved;
 
   protected ReadOnlyPathOwnersEntry(boolean inherited) {
     this.inherited = inherited;
@@ -153,6 +163,18 @@ abstract class ReadOnlyPathOwnersEntry {
 
   public Optional<LabelDefinition> getLabel() {
     return label;
+  }
+
+  public boolean isAutoOwnersApproved() {
+    return autoOwnersApproved;
+  }
+
+  public boolean hasExplicitAutoOwnersApproved() {
+    return explicitAutoOwnersApproved;
+  }
+
+  public void setAutoOwnersApproved(boolean autoOwnersApproved) {
+    this.autoOwnersApproved = autoOwnersApproved;
   }
 
   public boolean hasMatcher(String path) {
