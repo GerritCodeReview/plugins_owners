@@ -251,7 +251,8 @@ public class OwnersSubmitRequirement implements SubmitRule {
         .or(
             () -> {
               logger.atSevere().log(
-                  "OWNERS label '%s' is not configured for '%s' project. Change is not submittable.",
+                  "OWNERS label '%s' is not configured for '%s' project. Change is not"
+                      + " submittable.",
                   label, project);
               return Optional.empty();
             });

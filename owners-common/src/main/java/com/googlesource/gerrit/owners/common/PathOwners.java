@@ -32,6 +32,7 @@ import com.google.gerrit.entities.Account.Id;
 import com.google.gerrit.entities.Patch;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.DiffSummary;
 import com.google.gerrit.server.patch.filediff.FileDiffOutput;
@@ -84,11 +85,13 @@ public class PathOwners {
 
   private final GitRepositoryManager repositoryManager;
 
-  private Map<String, Matcher> matchers;
+  private final Map<String, Matcher> matchers;
 
-  private Map<String, Set<Id>> fileOwners;
+  private final Map<String, Set<Id>> fileOwners;
 
-  private Map<String, Set<String>> fileGroupOwners;
+  private final Map<String, Set<String>> fileGroupOwners;
+
+  private final Set<String> fileOwnersBannedAutoApproval;
 
   private final boolean expandGroups;
 
@@ -175,8 +178,10 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
+    fileOwnersBannedAutoApproval = map.getFileOwnersBannedAutoApproval();
     label = globalLabel.or(map::getLabel);
   }
+
   /**
    * Returns a read only view of the paths to owners mapping.
    *
@@ -207,6 +212,10 @@ public class PathOwners {
     return fileGroupOwners;
   }
 
+  public Set<String> getFileOwnersBannedAutoApproval() {
+    return fileOwnersBannedAutoApproval;
+  }
+
   public boolean expandGroups() {
     return expandGroups;
   }
@@ -234,7 +243,7 @@ public class PathOwners {
       // Using a `map` would have needed a try/catch inside the lamba, resulting in more code
       List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries =
           getPathOwnersEntries(parentProjectsNames, RefNames.REFS_CONFIG, cache);
-      ReadOnlyPathOwnersEntry projectEntry =
+      Optional<ReadOnlyPathOwnersEntry> projectEntry =
           getPathOwnersEntryOrEmpty(project, repository, RefNames.REFS_CONFIG, cache);
       PathOwnersEntry rootEntry = getPathOwnersEntryOrNew(project, repository, branch, cache);
 
@@ -256,6 +265,9 @@ public class PathOwners {
         ownersMap.addFileOwners(path, currentEntry.getOwners());
         ownersMap.addFileReviewers(path, currentEntry.getReviewers());
         ownersMap.addFileGroupOwners(path, currentEntry.getGroupOwners());
+        if (!currentEntry.isAutoOwnersApproved()) {
+          ownersMap.banFileFromOwnersAutoApproval(path);
+        }
 
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
@@ -293,20 +305,20 @@ public class PathOwners {
     ImmutableList.Builder<ReadOnlyPathOwnersEntry> pathOwnersEntries = ImmutableList.builder();
     for (Project.NameKey projectName : projectNames) {
       try (Repository repo = repositoryManager.openRepository(projectName)) {
-        pathOwnersEntries =
-            pathOwnersEntries.add(
-                getPathOwnersEntryOrEmpty(projectName.get(), repo, branch, cache));
+        Optional<ReadOnlyPathOwnersEntry> pathOwnersEntry =
+            getPathOwnersEntryOrEmpty(projectName.get(), repo, branch, cache);
+        if (pathOwnersEntry.isPresent()) {
+          pathOwnersEntries = pathOwnersEntries.add(pathOwnersEntry.get());
+        }
       }
     }
     return pathOwnersEntries.build();
   }
 
-  private ReadOnlyPathOwnersEntry getPathOwnersEntryOrEmpty(
+  private Optional<ReadOnlyPathOwnersEntry> getPathOwnersEntryOrEmpty(
       String project, Repository repo, String branch, PathOwnersEntriesCache cache)
       throws InvalidOwnersFileException, ExecutionException {
-    return getPathOwnersEntry(project, repo, branch, cache)
-        .map(v -> (ReadOnlyPathOwnersEntry) v)
-        .orElse(PathOwnersEntry.EMPTY);
+    return getPathOwnersEntry(project, repo, branch, cache).map(v -> (ReadOnlyPathOwnersEntry) v);
   }
 
   private PathOwnersEntry getPathOwnersEntryOrNew(
@@ -336,6 +348,7 @@ public class PathOwners {
                             Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet(),
+                            Optional.empty(),
                             Collections.emptySet(),
                             Collections.emptySet())));
   }
@@ -378,6 +391,22 @@ public class PathOwners {
         ownersMap.addFileOwners(path, matcher.getOwners());
         ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
+        switch (matcher.getAutoOwnersApproved()) {
+          // We have an explicit allowance for this matcher
+          // Make sure that anything added at OWNERS level is removed
+          case InheritableBoolean.TRUE:
+            ownersMap.allowFileForAutoApproval(path);
+            break;
+          // We have an explicit ban for this matcher
+          case InheritableBoolean.FALSE:
+            ownersMap.banFileFromOwnersAutoApproval(path);
+            break;
+
+          // There is no matcher-level specification of auto-owner-approved
+          // therefore the global OWNER-level still applies
+          default:
+            break;
+        }
         matchingFound = true;
       }
     }
@@ -388,26 +417,30 @@ public class PathOwners {
       String project,
       String path,
       String branch,
-      ReadOnlyPathOwnersEntry projectEntry,
+      Optional<ReadOnlyPathOwnersEntry> projectEntry,
       List<ReadOnlyPathOwnersEntry> parentsPathOwnersEntries,
       PathOwnersEntry rootEntry,
       Map<String, PathOwnersEntry> entries,
       PathOwnersEntriesCache cache)
       throws InvalidOwnersFileException, ExecutionException {
     String[] parts = path.split("/");
-    PathOwnersEntry currentEntry = rootEntry;
     StringBuilder builder = new StringBuilder();
 
     // Inherit from Project if OWNER in root enables inheritance
-    calculateCurrentEntry(rootEntry, projectEntry, currentEntry);
+    if (rootEntry.isInherited()) {
+      projectEntry.ifPresent(pe -> calculateCurrentEntry(pe, rootEntry));
+    }
 
     // Inherit from Parent Project if OWNER in Project enables inheritance
     for (ReadOnlyPathOwnersEntry parentPathOwnersEntry : parentsPathOwnersEntries) {
-      calculateCurrentEntry(projectEntry, parentPathOwnersEntry, currentEntry);
+      if (projectEntry.isEmpty() || projectEntry.get().isInherited()) {
+        calculateCurrentEntry(parentPathOwnersEntry, rootEntry);
+      }
     }
 
     // Iterate through the parent paths, not including the file name
     // itself
+    PathOwnersEntry currentEntry = rootEntry;
     for (int i = 0; i < parts.length - 1; i++) {
       String part = parts[i];
       builder.append(part).append("/");
@@ -443,6 +476,7 @@ public class PathOwners {
                                   label,
                                   owners,
                                   reviewers,
+                                  Optional.of(pathFallbackEntry.isAutoOwnersApproved()),
                                   inheritedMatchers,
                                   groupOwners);
                             })
@@ -454,24 +488,23 @@ public class PathOwners {
   }
 
   private void calculateCurrentEntry(
-      ReadOnlyPathOwnersEntry rootEntry,
-      ReadOnlyPathOwnersEntry projectEntry,
-      PathOwnersEntry currentEntry) {
-    if (rootEntry.isInherited()) {
-      for (Matcher matcher : projectEntry.getMatchers().values()) {
-        if (!currentEntry.hasMatcher(matcher.getPath())) {
-          currentEntry.addMatcher(matcher);
-        }
+      ReadOnlyPathOwnersEntry projectEntry, PathOwnersEntry currentEntry) {
+    for (Matcher matcher : projectEntry.getMatchers().values()) {
+      if (!currentEntry.hasMatcher(matcher.getPath())) {
+        currentEntry.addMatcher(matcher);
       }
-      if (currentEntry.getOwners().isEmpty()) {
-        currentEntry.setOwners(projectEntry.getOwners());
-      }
-      if (currentEntry.getOwnersPath() == null) {
-        currentEntry.setOwnersPath(projectEntry.getOwnersPath());
-      }
-      if (currentEntry.getLabel().isEmpty()) {
-        currentEntry.setLabel(projectEntry.getLabel());
-      }
+    }
+    if (currentEntry.getOwners().isEmpty()) {
+      currentEntry.setOwners(projectEntry.getOwners());
+    }
+    if (currentEntry.getOwnersPath() == null) {
+      currentEntry.setOwnersPath(projectEntry.getOwnersPath());
+    }
+    if (currentEntry.getLabel().isEmpty()) {
+      currentEntry.setLabel(projectEntry.getLabel());
+    }
+    if (!currentEntry.hasExplicitAutoOwnersApproved()) {
+      currentEntry.setAutoOwnersApproved(projectEntry.isAutoOwnersApproved());
     }
   }
 

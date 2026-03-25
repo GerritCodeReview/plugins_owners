@@ -18,6 +18,7 @@ package com.googlesource.gerrit.owners.restapi;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
+import com.google.common.collect.Sets;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit.Result;
@@ -44,7 +45,6 @@ import com.googlesource.gerrit.owners.entities.Owner;
 import com.googlesource.gerrit.owners.restapi.GetFilesOwners.LabelNotFoundException;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.compress.utils.Sets;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.transport.FetchResult;
