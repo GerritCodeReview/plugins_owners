@@ -13,8 +13,14 @@ java_library(
     srcs = PROLOG_PREDICATES,
     deps = [
         "//owners-common",
-        "@prolog-runtime//jar:neverlink",
+        ":prolog-runtime-neverlink",
     ] + PLUGIN_DEPS_NEVERLINK,
+)
+
+java_library(
+    name = "prolog-runtime-neverlink",
+    neverlink = 1,
+    exports = ["@external_deps//:com_googlecode_prolog_cafe_prolog_runtime"],
 )
 
 prolog_cafe_library(
