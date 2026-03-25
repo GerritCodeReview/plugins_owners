@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.suffixMatcher;
 import static java.util.Collections.emptyList;
 import static org.easymock.EasyMock.eq;
