@@ -13,7 +13,7 @@ java_library(
     srcs = PROLOG_PREDICATES,
     deps = [
         "//owners-common",
-        "@prolog-runtime//jar:neverlink",
+        "@external_deps//:com_googlecode_prolog_cafe_prolog_runtime",
     ] + PLUGIN_DEPS_NEVERLINK,
 )
 
