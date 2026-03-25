@@ -87,7 +87,9 @@ public class PluginSettings {
     return expandGroups;
   }
 
-  /** @return <code>true</code> when OWNERS file should be evaluated through the submit rule */
+  /**
+   * @return <code>true</code> when OWNERS file should be evaluated through the submit rule
+   */
   public boolean enableSubmitRequirement() {
     return enableSubmitRequirement;
   }
