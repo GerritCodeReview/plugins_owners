@@ -16,6 +16,24 @@
       "message": "I had fixed this for 3.12, Can we just merge-up those?\n\nhttps://gerrit-review.googlesource.com/c/plugins/owners/+/557883/1\nhttps://gerrit-review.googlesource.com/c/plugins/owners/+/557884/1",
       "revId": "acbc9aebb8a6f415a1c52218bcae2a8462ee67b6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf74c6e_7d5315ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-25T16:38:39Z",
+      "side": 1,
+      "message": "Sure, but the merge isn\u0027t clean, there are conflicts 😞",
+      "parentUuid": "89886e7b_3e9fb7cf",
+      "revId": "acbc9aebb8a6f415a1c52218bcae2a8462ee67b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
