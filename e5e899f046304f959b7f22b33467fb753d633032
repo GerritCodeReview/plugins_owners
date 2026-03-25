@@ -16,6 +16,24 @@
       "message": "I believe we should create a wrapper with `neverlink \u003d 1` and use it:\n\n```\njava_library(\n    name \u003d \"prolog-runtime-neverlink\",\n    neverlink \u003d 1,\n    exports \u003d [\"@external_deps//:com_googlecode_prolog_cafe_prolog_runtime\"],\n)\n\njava_library(\n    name \u003d \"gerrit-owners-predicates\",\n    srcs \u003d PROLOG_PREDICATES,\n    deps \u003d [\n        \"//owners-common\",\n        \":prolog-runtime-neverlink\",\n    ] + PLUGIN_DEPS_NEVERLINK,\n)\n```",
       "revId": "e5e899f046304f959b7f22b33467fb753d633032",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2260b8ff_dc012dea",
+        "filename": "owners/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-25T20:25:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0826d609_c1cb14c7",
+      "revId": "e5e899f046304f959b7f22b33467fb753d633032",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
