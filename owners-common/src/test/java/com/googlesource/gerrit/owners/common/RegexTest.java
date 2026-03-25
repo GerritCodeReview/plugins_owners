@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.owners.common;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.exactMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.genericMatcher;
 import static com.googlesource.gerrit.owners.common.MatcherConfig.partialRegexMatcher;
@@ -28,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.extensions.client.InheritableBoolean;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -270,5 +270,37 @@ public class RegexTest extends Config {
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");
+  }
+
+  @Test
+  public void testParsingAutoOwnersApprovedFlags() throws Exception {
+    replayAll();
+
+    String configString =
+        "inherited: true\n"
+            + "auto-owners-approved: false\n"
+            + "owners:\n"
+            + "- a\n"
+            + "matchers:\n"
+            + "- suffix: .sql\n"
+            + "  auto-owners-approved: true\n"
+            + "  owners:\n"
+            + "  - b\n"
+            + "- exact: project/a.txt\n"
+            + "  auto-owners-approved: false\n"
+            + "  owners:\n"
+            + "  - c\n"
+            + "- regex: .*\\.md\n"
+            + "  owners:\n"
+            + "  - d\n";
+
+    OwnersConfig config = getOwnersConfig(configString);
+
+    assertThat(config.getMatchers().get(".sql").getAutoOwnersApproved())
+        .isEqualTo(InheritableBoolean.TRUE);
+    assertThat(config.getMatchers().get("project/a.txt").getAutoOwnersApproved())
+        .isEqualTo(InheritableBoolean.FALSE);
+    assertThat(config.getMatchers().get(".*\\.md").getAutoOwnersApproved())
+        .isEqualTo(InheritableBoolean.INHERIT);
   }
 }
