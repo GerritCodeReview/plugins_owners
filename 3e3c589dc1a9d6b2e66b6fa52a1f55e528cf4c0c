@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f864b0e_849ef6ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-03-31T23:16:47Z",
+      "side": 1,
+      "message": "I believe it does a lot more than that 😊, can you explain the rationale behind the refactoring included in this change?",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 18,
+        "endChar": 5
+      },
+      "revId": "3e3c589dc1a9d6b2e66b6fa52a1f55e528cf4c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
