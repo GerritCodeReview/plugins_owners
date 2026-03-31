@@ -348,7 +348,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
-  public void shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDefault()
+  public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDefault()
       throws Exception {
     pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
 
@@ -357,16 +357,12 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
     vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
     createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
 
-    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
   }
 
   @Test
-  public void
-      shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDisabledOnRepoAndEnabledOnRoot()
-          throws Exception {
-    pushOwnersToRef(
-        "inherited: true\nauto-owners-approved: false\n", "OWNERS", RefNames.REFS_CONFIG);
-
+  public void shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsEnabledOnRoot()
+      throws Exception {
     pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
 
     Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
@@ -378,12 +374,8 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
-  public void
-      shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDisabledOnRootAndEnabledOnPath()
-          throws Exception {
-    pushOwnersToRef(
-        "inherited: true\nauto-owners-approved: false\n", "OWNERS", RefNames.fullName("master"));
-
+  public void shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsEnabledOnPath()
+      throws Exception {
     pushOwnersToRef(
         ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED),
         BACKEND_OWNED_FILE_PATH + "OWNERS",
@@ -400,7 +392,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   @Test
   public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButApproverIsNotChangeOwner()
       throws Exception {
-    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
 
     Change.Id changeId = createChange(NON_OWNER.id(), BACKEND_OWNED_FILE, "java content");
 
@@ -413,7 +405,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   @Test
   public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButUploaderNotOwner()
       throws Exception {
-    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
 
     Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
 
@@ -450,9 +442,9 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
-  public void shouldCopyApprovalWhenAutoOwnersApprovedIsFalseButOwnedEditsAreRebaseOnly()
+  public void shouldCopyApprovalWhenAutoOwnersApprovedIsDefaultAndOwnedEditsAreRebaseOnly()
       throws Exception {
-    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
 
     ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
     PushOneCommit.Result amendL3 =
@@ -483,20 +475,6 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   }
 
   @Test
-  public void shouldNotCopyApprovalWhenMatcherDisablesAutoOwnersApproved() throws Exception {
-    pushOwnersToMaster(
-        matcherOwnersConfig(
-            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
-
-    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
-    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
-
-    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
-
-    assertVote(changeId, BACKEND_FILES_OWNER, 0);
-  }
-
-  @Test
   public void shouldCopyApprovalWhenMatcherOverridesRootFalse() throws Exception {
     pushOwnersToMaster(
         matcherOwnersConfig(
@@ -517,6 +495,23 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
         matcherOwnersConfig(
             AUTO_OWNERS_APPROVED_ENABLED,
             suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
+
+    Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherUsesDefaultAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+    pushOwnersToRef(
+        matcherOwnersConfig(suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
 
     Change.Id changeId = createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
     vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
@@ -633,7 +628,7 @@ public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTes
   @Test
   public void shouldNotCopyApprovalWhenPathAndMatcherFilesDoNotAllAllowAutoOwnersApproved()
       throws Exception {
-    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
     pushOwnersToRef(
         matcherOwnersConfig(
             suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED)),

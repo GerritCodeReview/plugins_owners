@@ -545,7 +545,7 @@ public class PathOwnersTest extends ClassicConfig {
   public void testAutoOwnersApprovedDefaultsWhenInheritanceStopped() throws Exception {
     expectConfig(
         "OWNERS",
-        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+        "inherited: true\nauto-owners-approved: true\nowners:\n- " + USER_A_EMAIL_COM + "\n");
     expectConfig("dir/OWNERS", "inherited: false\nowners:\n- " + USER_B_EMAIL_COM + "\n");
 
     replayAll();
@@ -563,7 +563,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("dir/file.txt");
   }
 
   @Test
