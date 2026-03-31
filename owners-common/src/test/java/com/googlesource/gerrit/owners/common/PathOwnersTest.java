@@ -563,7 +563,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("dir/file.txt");
   }
 
   @Test

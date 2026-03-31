@@ -79,8 +79,8 @@ class PathOwnersEntry extends ReadOnlyPathOwnersEntry {
       this.label = config.getLabel().or(() -> inheritedLabel);
     } else {
       this.label = config.getLabel();
-      // Default to true unless the OWNERS file explicitly sets it to false.
-      this.setAutoOwnersApproved(config.getAutoOwnersApproved() != InheritableBoolean.FALSE);
+      // Default to false unless the OWNERS file explicitly sets it to true.
+      this.setAutoOwnersApproved(config.getAutoOwnersApproved() == InheritableBoolean.TRUE);
     }
   }
 
@@ -129,7 +129,7 @@ abstract class ReadOnlyPathOwnersEntry {
   protected String ownersPath;
   protected Map<String, Matcher> matchers = Maps.newHashMap();
   protected Set<String> groupOwners = Sets.newHashSet();
-  protected boolean autoOwnersApproved = true;
+  protected boolean autoOwnersApproved = false;
   protected boolean explicitAutoOwnersApproved;
 
   protected ReadOnlyPathOwnersEntry(boolean inherited) {
