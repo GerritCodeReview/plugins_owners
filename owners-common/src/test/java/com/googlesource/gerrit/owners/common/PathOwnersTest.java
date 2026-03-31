@@ -512,7 +512,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
     assertThat(owners.getFileOwners()).isEmpty();
   }
 
@@ -538,14 +538,14 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("dir/file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).doesNotContain("dir/file.txt");
   }
 
   @Test
   public void testAutoOwnersApprovedDefaultsWhenInheritanceStopped() throws Exception {
     expectConfig(
         "OWNERS",
-        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+        "inherited: true\nauto-owners-approved: true\nowners:\n- " + USER_A_EMAIL_COM + "\n");
     expectConfig("dir/OWNERS", "inherited: false\nowners:\n- " + USER_B_EMAIL_COM + "\n");
 
     replayAll();
@@ -563,7 +563,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).doesNotContain("dir/file.txt");
   }
 
   @Test
@@ -592,7 +592,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).doesNotContain("file.txt");
   }
 
   @Test
@@ -622,7 +622,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).doesNotContain("file.txt");
   }
 
   private void mockOwners(String... owners) throws IOException {
