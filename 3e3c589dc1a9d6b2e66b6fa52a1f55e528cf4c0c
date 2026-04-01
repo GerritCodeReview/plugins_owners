@@ -46,6 +46,30 @@
       },
       "revId": "3e3c589dc1a9d6b2e66b6fa52a1f55e528cf4c0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2468eeb_c0c82a58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-01T16:02:06Z",
+      "side": 1,
+      "message": "I have addressed the commit message to explain the above rationale.",
+      "parentUuid": "c3a683f3_6eeb9d16",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 18,
+        "endChar": 5
+      },
+      "revId": "3e3c589dc1a9d6b2e66b6fa52a1f55e528cf4c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
