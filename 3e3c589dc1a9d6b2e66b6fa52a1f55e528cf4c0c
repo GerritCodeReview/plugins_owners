@@ -22,6 +22,30 @@
       },
       "revId": "3e3c589dc1a9d6b2e66b6fa52a1f55e528cf4c0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3a683f3_6eeb9d16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-01T09:06:07Z",
+      "side": 1,
+      "message": "Yes, I think that is a fair call.\n\nUp to [PS2](https://gerrit-review.googlesource.com/c/plugins/owners/+/567601/2), this change included only the flipping (and tests adjustments).\n\nIn [PS3](https://gerrit-review.googlesource.com/c/plugins/owners/+/567601/3), I have switched to an \"allowed files\" model internally.\n\nThe reason is that once the default becomes `false`, the old blacklist model is awkward: the normal case is now _not allowed_, so keeping a set of disallowed files means storing the default case instead of the exception. \n\nI am happy to explain this in the commit message.\n\nAlternatively we can split the internal model change into a follow-up change, WDYT?",
+      "parentUuid": "1f864b0e_849ef6ae",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 18,
+        "endChar": 5
+      },
+      "revId": "3e3c589dc1a9d6b2e66b6fa52a1f55e528cf4c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
