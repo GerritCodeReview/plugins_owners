@@ -16,7 +16,10 @@
 package com.googlesource.gerrit.owners.restapi;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowLabel;
+import static com.google.gerrit.server.group.SystemGroupBackend.REGISTERED_USERS;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
+import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.FULL_OPERAND_WITH_PLUGIN_NAME;
 
 import com.google.common.collect.Sets;
 import com.google.gerrit.acceptance.GitUtil;
@@ -25,11 +28,16 @@ import com.google.gerrit.acceptance.PushOneCommit.Result;
 import com.google.gerrit.acceptance.TestAccount;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.config.GlobalPluginConfig;
+import com.google.gerrit.acceptance.testsuite.change.ChangeOperations;
+import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
+import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
+import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelId;
 import com.google.gerrit.entities.LabelType;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.client.SubmitType;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
@@ -37,6 +45,7 @@ import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.server.project.testing.TestLabels;
+import com.google.inject.Inject;
 import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.common.LabelDefinition;
 import com.googlesource.gerrit.owners.entities.FilesOwnersResponse;
@@ -44,6 +53,7 @@ import com.googlesource.gerrit.owners.entities.GroupOwner;
 import com.googlesource.gerrit.owners.entities.Owner;
 import com.googlesource.gerrit.owners.restapi.GetFilesOwners.LabelNotFoundException;
 import java.util.Map;
+import java.util.function.Consumer;
 import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
@@ -53,6 +63,12 @@ import org.junit.Test;
 public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTest {
 
   private static final String REFS_META_CONFIG = RefNames.REFS_META + "config";
+  private static final String AUTO_APPROVED_FILE = "foo.java";
+
+  @Inject protected ProjectOperations projectOperations;
+  @Inject protected RequestScopeOperations requestScopeOperations;
+  @Inject protected ChangeOperations changeOperations;
+
   protected GetFilesOwners ownersApi;
   private Owner rootOwner;
   private Owner projectOwner;
@@ -139,6 +155,72 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     assertThat(resp.value().files).isEmpty();
     assertThat(resp.value().filesApproved)
         .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+    assertThat(resp.value().filesAutoApproved).isEmpty();
+  }
+
+  @Test
+  public void shouldReturnFilesAutoApprovedWhenOwnerVoteIsCopied() throws Exception {
+    TestAccount autoApprovalOwner = accountCreator.create("user-backend");
+    setupAutoApprovalFor(autoApprovalOwner);
+
+    Change.Id changeId = createChangeWithCopiedOwnerVote(autoApprovalOwner);
+
+    Response<FilesOwnersResponse> response =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId.toString())));
+
+    assertThat(response.value().files).isEmpty();
+    assertThat(response.value().filesApproved)
+        .containsExactly(
+            AUTO_APPROVED_FILE,
+            Sets.newHashSet(new Owner(autoApprovalOwner.fullName(), autoApprovalOwner.id().get())));
+    assertThat(response.value().filesAutoApproved)
+        .containsExactly(
+            AUTO_APPROVED_FILE,
+            Sets.newHashSet(new Owner(autoApprovalOwner.fullName(), autoApprovalOwner.id().get())));
+  }
+
+  @Test
+  public void shouldNotReturnFilesAutoApprovedWhenAnOwnerExplicitlyVotesOnCurrentPatchSet()
+      throws Exception {
+    TestAccount copiedVoteOwner = accountCreator.create("user-backend");
+    TestAccount explicitVoteOwner = accountCreator.create("user-backend-2");
+    setupAutoApprovalFor(copiedVoteOwner, explicitVoteOwner);
+
+    Change.Id changeId = createChangeWithCopiedOwnerVote(copiedVoteOwner);
+
+    vote(explicitVoteOwner, changeId.toString(), 2);
+
+    Response<FilesOwnersResponse> response =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId.toString())));
+
+    assertThat(response.value().files).isEmpty();
+    assertThat(response.value().filesApproved)
+        .containsExactly(
+            AUTO_APPROVED_FILE,
+            Sets.newHashSet(
+                new Owner(copiedVoteOwner.fullName(), copiedVoteOwner.id().get()),
+                new Owner(explicitVoteOwner.fullName(), explicitVoteOwner.id().get())));
+    assertThat(response.value().filesAutoApproved).isEmpty();
+  }
+
+  @Test
+  public void shouldNotReturnFilesAutoApprovedWhenCopiedVoteUsesLegacyOwnersLogic()
+      throws Exception {
+    addOwnerFileWithMatchersToRoot(true);
+    updateLabel(b -> b.setCopyCondition("approverin:" + FULL_OPERAND_WITH_PLUGIN_NAME));
+
+    String changeId = createChange().getChangeId();
+    approve(changeId);
+    Change.Id numericChangeId = parseCurrentRevisionResource(changeId).getChange().getId();
+
+    changeOperations.change(numericChangeId).newPatchset().file("foo.java").content("bar").create();
+
+    Response<FilesOwnersResponse> response =
+        assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
+
+    assertThat(response.value().filesApproved)
+        .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
+    assertThat(response.value().filesAutoApproved).isEmpty();
   }
 
   @Test
@@ -285,6 +367,60 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     return response;
   }
 
+  protected void vote(TestAccount voter, String changeId, int value) throws Exception {
+    requestScopeOperations.setApiUser(voter.id());
+    try {
+      gApi.changes()
+          .id(changeId)
+          .current()
+          .review(new ReviewInput().label(LabelId.CODE_REVIEW, value));
+    } finally {
+      requestScopeOperations.setApiUser(admin.id());
+    }
+  }
+
+  private Change.Id createChangeWithCopiedOwnerVote(TestAccount owner) throws Exception {
+    Change.Id changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .owner(owner.id())
+            .file(AUTO_APPROVED_FILE)
+            .content("first version")
+            .create();
+
+    vote(owner, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .uploader(owner.id())
+        .file(AUTO_APPROVED_FILE)
+        .content("second version")
+        .create();
+    return changeId;
+  }
+
+  private void setupAutoApprovalFor(TestAccount... owners) throws Exception {
+    projectOperations
+        .project(allProjects)
+        .forUpdate()
+        .add(
+            allowLabel(TestLabels.codeReview().getName())
+                .ref(RefNames.REFS_HEADS + "*")
+                .group(REGISTERED_USERS)
+                .range(-2, 2))
+        .update();
+
+    pushOwnersToMaster(
+        String.format(
+            "inherited: true\nauto-owners-approved: true\nowners:\n%s",
+            java.util.Arrays.stream(owners)
+                .map(owner -> String.format("- %s\n", owner.username()))
+                .collect(java.util.stream.Collectors.joining())));
+    updateLabel(b -> b.setCopyCondition("approverin:" + FULL_OPERAND_WITH_PLUGIN_NAME));
+  }
+
   private void assertNotInheritFromProject(Project.NameKey projectNameKey) throws Exception {
     addOwnerFileToRoot(false);
     addOwnerFileToProjectConfig(projectNameKey, true);
@@ -379,6 +515,13 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
         .assertOkStatus();
   }
 
+  protected void updateLabel(Consumer<LabelType.Builder> update) throws Exception {
+    try (ProjectConfigUpdate u = updateProject(allProjects)) {
+      u.getConfig().updateLabelType(LabelId.CODE_REVIEW, update);
+      u.save();
+    }
+  }
+
   private void addOwnerFileWithMatchersToRoot(boolean inherit) throws Exception {
     addOwnerFileWithMatchers(testRepo, "master", inherit);
   }
@@ -404,6 +547,13 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
             "");
     changeCreated.assertOkStatus();
     merge(changeCreated);
+  }
+
+  private void pushOwnersToMaster(String owners) throws Exception {
+    pushFactory
+        .create(admin.newIdent(), testRepo, "Add OWNERS file", "OWNERS", owners)
+        .to(RefNames.fullName("master"))
+        .assertOkStatus();
   }
 
   public TestRepository<InMemoryRepository> cloneProjectWithMetaRefs(Project.NameKey project)

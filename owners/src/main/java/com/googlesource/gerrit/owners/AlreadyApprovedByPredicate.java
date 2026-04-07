@@ -39,10 +39,8 @@ import com.googlesource.gerrit.owners.common.InvalidOwnersFileException;
 import com.googlesource.gerrit.owners.restapi.GetFilesOwners;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -108,20 +106,21 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
               .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
       // We can't simply look at keys because it won't contain the old name of renamed-files.
-      Set<String> allFilePathsInDiff =
-          priorVsCurrent.values().stream()
-              .flatMap(v -> Stream.of(v.newPath(), v.oldPath()))
-              .filter(Optional::isPresent)
-              .map(Optional::get)
-              .collect(Collectors.toSet());
+      Set<String> allFilePathsInDiff = AutoOwnersApproval.touchedPaths(priorVsCurrent);
 
       String branch = ctx.changeData().branchOrThrow().branch();
       Set<String> filesOwnedByApprover =
           getFilesOwners.filterFilesOwnedBy(currentApprover, allFilePathsInDiff, project, branch);
 
-      if (isApproverAlsoOwnerAndUploader(currentApprover, changeOwner, uploader)
-          && allTouchedFilesAreOwned(filesOwnedByApprover, allFilePathsInDiff)
-          && getFilesOwners.allOwnedFilesAllowAutoApproval(filesOwnedByApprover, project, branch)) {
+      if (AutoOwnersApproval.applies(
+          currentApprover,
+          changeOwner,
+          uploader,
+          filesOwnedByApprover,
+          allFilePathsInDiff,
+          getFilesOwners,
+          project,
+          branch)) {
         logger.atFinest().log(
             "Approver '%s' is change owner and uploader. only owned files have been modified and"
                 + " all of them allow auto-owners-approved. Label WILL be copied.",
@@ -216,17 +215,6 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
   private static boolean isPathChange(FileDiffOutput d) {
     // A path change means rename/add/delete: oldPath != newPath, including empty vs present.
     return !d.oldPath().equals(d.newPath());
-  }
-
-  private static boolean isApproverAlsoOwnerAndUploader(
-      Account.Id currentApprover, Account.Id changeOwner, Account.Id uploader) {
-    return currentApprover.equals(changeOwner) && currentApprover.equals(uploader);
-  }
-
-  private static boolean allTouchedFilesAreOwned(
-      Set<String> filesOwnedByApprover, Set<String> allFilePathsInDiff) {
-    return !filesOwnedByApprover.isEmpty()
-        && filesOwnedByApprover.size() == allFilePathsInDiff.size();
   }
 
   private int getParentNum(ObjectId objectId, RevWalk revWalk) {
