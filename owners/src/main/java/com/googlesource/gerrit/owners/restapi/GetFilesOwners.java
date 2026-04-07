@@ -20,6 +20,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelId;
+import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -53,6 +54,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -165,8 +167,20 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                   isApprovedByOwner(
                       fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
 
+      Map<String, Set<GroupOwner>> filesAutoApprovedByOwners =
+          getFilesAutoApproved(
+              changeData,
+              label,
+              fileExpandedOwners,
+              filesApprovedByOwners,
+              owners.getFileOwnersAllowedAutoApproval());
+
       return Response.ok(
-          new FilesOwnersResponse(ownersLabels, filesWithPendingOwners, filesApprovedByOwners));
+          new FilesOwnersResponse(
+              ownersLabels,
+              filesWithPendingOwners,
+              filesApprovedByOwners,
+              filesAutoApprovedByOwners));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
@@ -233,11 +247,69 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       Set<GroupOwner> fileOwners,
       Map<Integer, Map<String, Integer>> ownersLabels,
       LabelAndScore label) {
+    return ownerIds(fileOwners)
+        .map(Account.Id::get)
+        .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelId()))
+        .anyMatch(value -> hasSufficientApproval(value, label.getLabelId(), label));
+  }
+
+  private Map<String, Set<GroupOwner>> getFilesAutoApproved(
+      ChangeData changeData,
+      LabelAndScore label,
+      Map<String, Set<GroupOwner>> fileExpandedOwners,
+      Map<String, Set<GroupOwner>> filesApprovedByOwners,
+      Set<String> filesAllowedForOwnersAutoApproval) {
+    Map<Account.Id, List<PatchSetApproval>> currentApprovalsByAccount =
+        changeData.currentApprovals().stream()
+            .collect(Collectors.groupingBy(PatchSetApproval::accountId));
+
+    return filesApprovedByOwners.entrySet().stream()
+        .filter(
+            fileOwnerEntry -> filesAllowedForOwnersAutoApproval.contains(fileOwnerEntry.getKey()))
+        .filter(
+            fileOwnerEntry ->
+                isApprovedByCopiedOwnersOnly(
+                    fileExpandedOwners.get(fileOwnerEntry.getKey()),
+                    currentApprovalsByAccount,
+                    label))
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+  }
+
+  /**
+   * A file is auto-approved only when its owner approval on the current patch set comes from copied
+   * owner votes and there is no other explicit owner approval on the current patch set.
+   */
+  private boolean isApprovedByCopiedOwnersOnly(
+      Set<GroupOwner> fileOwners,
+      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
+      LabelAndScore label) {
+    return hasSufficientOwnerApproval(fileOwners, approvalsByAccount, label, true)
+        && !hasSufficientOwnerApproval(fileOwners, approvalsByAccount, label, false);
+  }
+
+  private boolean hasSufficientOwnerApproval(
+      Set<GroupOwner> fileOwners,
+      Map<Account.Id, List<PatchSetApproval>> approvalsByAccount,
+      LabelAndScore label,
+      boolean copied) {
+    return ownerIds(fileOwners)
+        .map(approvalsByAccount::get)
+        .filter(Objects::nonNull)
+        .flatMap(List::stream)
+        .anyMatch(
+            approval ->
+                approval.copied() == copied
+                    && hasSufficientApproval(approval.value(), approval.label(), label));
+  }
+
+  private Stream<Account.Id> ownerIds(Set<GroupOwner> fileOwners) {
     return fileOwners.stream()
         .filter(owner -> owner instanceof Owner)
-        .map(owner -> ((Owner) owner).getId())
-        .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelId()))
-        .anyMatch(value -> value >= label.getScore());
+        .map(owner -> Account.id(((Owner) owner).getId()));
+  }
+
+  private boolean hasSufficientApproval(int value, String labelId, LabelAndScore label) {
+    return label.getLabelId().equals(labelId) && value >= label.getScore();
   }
 
   private Stream<Integer> codeReviewLabelValue(

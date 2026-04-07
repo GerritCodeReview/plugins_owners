@@ -2,7 +2,8 @@
 
 The @PLUGIN@ exposes a Rest API endpoint to list the owners associated with each file that
 needs approval (`file` field), is approved (`files_approved`) and, for each owner,
-its current labels and votes (`owners_labels`):
+its current labels and votes (`owners_labels`). Files whose owner approval on the current
+patch set comes from a copied vote are also listed in `files_auto_approved`:
 
 ```bash
 GET /changes/{change-id}/revisions/{revision-id}/owners~files-owners
@@ -20,6 +21,12 @@ GET /changes/{change-id}/revisions/{revision-id}/owners~files-owners
     ]
   },
   "files_approved": {
+    "NewBuild.build":[
+      { "name":"John", "id": 1000004 },
+      { "name":"Release Engineer", "id": 1000001 }
+    ]
+  },
+  "files_auto_approved": {
     "NewBuild.build":[
       { "name":"John", "id": 1000004 },
       { "name":"Release Engineer", "id": 1000001 }
