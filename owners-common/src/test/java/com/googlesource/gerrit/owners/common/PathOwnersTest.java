@@ -512,7 +512,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
     assertThat(owners.getFileOwners()).isEmpty();
   }
 
@@ -538,7 +538,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).contains("dir/file.txt");
   }
 
   @Test
@@ -563,7 +563,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("dir/file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
   }
 
   @Test
@@ -592,7 +592,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).contains("file.txt");
   }
 
   @Test
@@ -622,7 +622,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
   }
 
   private void mockOwners(String... owners) throws IOException {
