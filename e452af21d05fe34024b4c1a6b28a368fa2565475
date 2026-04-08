@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af4e200d_103e9813",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:05:56Z",
+      "side": 1,
+      "message": "`false` is the default value for booleans. This assignment is a noop.\n\n\n\n```suggestion\n  protected boolean autoOwnersApproved;\n```",
+      "range": {
+        "startLine": 132,
+        "startChar": 38,
+        "endLine": 132,
+        "endChar": 46
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9e74fd9_e8bbbb0a",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:05:56Z",
+      "side": 1,
+      "message": "Should we assert that nothing is banned?\n\n```suggestion\n    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();\n```\n\nThere is only one file and that is allowed to have auto-approved, therefore I don\u0027t see anything else banned.",
+      "range": {
+        "startLine": 541,
+        "startChar": 57,
+        "endLine": 541,
+        "endChar": 87
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1482bb04_3fe73b87",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:05:56Z",
+      "side": 1,
+      "message": "This is now a noop, because the `auto-owners-approved: false` is the default.\n\nI believe the purpose of this test was to test inheritance. Should this be set to `true`, and the assertion at L595 reverted?\n\n\n\n```suggestion\n        \"inherited: true\\nauto-owners-approved: true\\nowners:\\n- \" + USER_A_EMAIL_COM + \"\\n\");\n```",
+      "range": {
+        "startLine": 577,
+        "startChar": 26,
+        "endLine": 577,
+        "endChar": 53
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f540caa0_6138675c",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:05:56Z",
+      "side": 1,
+      "message": "```suggestion\n    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();\n```",
+      "range": {
+        "startLine": 595,
+        "startChar": 56,
+        "endLine": 595,
+        "endChar": 77
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0433ac1d_d46cc9ea",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:05:56Z",
+      "side": 1,
+      "message": "Can you move this on the same order as it was before? That would make it easier to understand how the test was amended in this change.",
+      "range": {
+        "startLine": 508,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 3
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
