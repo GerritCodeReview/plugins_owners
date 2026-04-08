@@ -121,11 +121,10 @@ public class AlreadyApprovedByPredicate extends OperatorPredicate<ApprovalContex
 
       if (isApproverAlsoOwnerAndUploader(currentApprover, changeOwner, uploader)
           && allTouchedFilesAreOwned(filesOwnedByApprover, allFilePathsInDiff)
-          && getFilesOwners.noOwnedFileIsBannedFromAutoApproval(
-              filesOwnedByApprover, project, branch)) {
+          && getFilesOwners.allOwnedFilesAllowAutoApproval(filesOwnedByApprover, project, branch)) {
         logger.atFinest().log(
             "Approver '%s' is change owner and uploader. only owned files have been modified and"
-                + " none of them has auto-owners-approved=false. Label WILL be copied.",
+                + " all of them allow auto-owners-approved. Label WILL be copied.",
             currentApprover);
         return true;
       }

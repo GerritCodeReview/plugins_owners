@@ -108,13 +108,13 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
         .collect(Collectors.toSet());
   }
 
-  public boolean noOwnedFileIsBannedFromAutoApproval(
+  public boolean allOwnedFilesAllowAutoApproval(
       Set<String> ownedPaths, Project.NameKey project, String branch)
       throws IOException, InvalidOwnersFileException {
     PathOwners owners = getPathOwners(project, branch, ownedPaths);
-    Set<String> filesBannedFromAutoOwnersApproval = owners.getFileOwnersBannedAutoApproval();
+    Set<String> filesAllowedForOwnersAutoApproval = owners.getFileOwnersAllowedAutoApproval();
 
-    return ownedPaths.stream().noneMatch(filesBannedFromAutoOwnersApproval::contains);
+    return filesAllowedForOwnersAutoApproval.containsAll(ownedPaths);
   }
 
   @Override
