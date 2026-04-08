@@ -48,21 +48,25 @@ import {OwnersMixin} from './owners-mixin';
 const STATUS_CODE = {
   MISSING: 'missing',
   APPROVED: 'approved',
+  AUTO_APPROVED: 'autoApproved',
 };
 
 const STATUS_ICON = {
   [STATUS_CODE.MISSING]: 'schedule',
   [STATUS_CODE.APPROVED]: 'check',
+  [STATUS_CODE.AUTO_APPROVED]: 'published_with_changes',
 };
 
 const FILE_STATUS = {
   [FileStatus.NEEDS_APPROVAL]: STATUS_CODE.MISSING,
   [FileStatus.APPROVED]: STATUS_CODE.APPROVED,
+  [FileStatus.AUTO_APPROVED]: STATUS_CODE.AUTO_APPROVED,
 };
 
 const HOVER_HEADING = {
   [STATUS_CODE.MISSING]: "Needs Owners' Approval",
   [STATUS_CODE.APPROVED]: 'Approved by Owners',
+  [STATUS_CODE.AUTO_APPROVED]: 'Auto-approved by Owners',
 };
 
 const DISPLAY_OWNERS_FOR_FILE_LIMIT = 5;
@@ -249,6 +253,9 @@ export class FilesColumnContent extends FilesCommon {
           margin-left: 9px;
         }
         :host([file-status='approved']) gr-icon.status {
+          color: var(--positive-green-text-color);
+        }
+        :host([file-status='autoApproved']) gr-icon.status {
           color: var(--positive-green-text-color);
         }
         :host([file-status='missing']) gr-icon.status {
@@ -459,7 +466,9 @@ export function shouldHide(
   if (
     hasOwnersSubmitRequirement(change) &&
     filesOwners &&
-    (filesOwners.files || filesOwners.files_approved)
+    (filesOwners.files ||
+      filesOwners.files_approved ||
+      filesOwners.files_auto_approved)
   ) {
     return !userRole || userRole === UserRole.ANONYMOUS;
   }
@@ -476,7 +485,13 @@ export function getFileOwnership(
 
   const fileOwners = (filesOwners.files ?? {})[path];
   const fileApprovers = (filesOwners.files_approved ?? {})[path];
-  if (fileApprovers) {
+  const fileAutoApprovers = (filesOwners.files_auto_approved ?? {})[path];
+  if (fileAutoApprovers) {
+    return {
+      fileStatus: FileStatus.AUTO_APPROVED,
+      owners: fileAutoApprovers,
+    };
+  } else if (fileApprovers) {
     return {
       fileStatus: FileStatus.APPROVED,
       owners: fileApprovers,
