@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5952ac1_5b81f321",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:11:28Z",
+      "side": 1,
+      "message": "Maybe explain why?\n\n```suggestion\nWith this new default, the internal blacklist model is the wrong fit for\nthe feature, because it would end up tracking all files most of the times, using\nmore heap and CPU for adding the file names to the in-memory set.\n```",
+      "range": {
+        "startLine": 10,
+        "startChar": 59,
+        "endLine": 11,
+        "endChar": 12
+      },
+      "revId": "50cd483fbe8630edab36e568794fed53cd121661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6702d5fa_3afc2d90",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:11:28Z",
+      "side": 1,
+      "message": "```suggestion\n  public void addAllowedFileForOwnersAutoApproval(String file) {\n```",
+      "revId": "50cd483fbe8630edab36e568794fed53cd121661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a0eba6_d6cf9d10",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/OwnersMap.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:11:28Z",
+      "side": 1,
+      "message": "```suggestion\n  public void removeAllowedFileForOwnersAutoApproval(String file) {\n```",
+      "revId": "50cd483fbe8630edab36e568794fed53cd121661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6ecde14_b77abbf9",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:11:28Z",
+      "side": 1,
+      "message": "```suggestion\n    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();\n```",
+      "range": {
+        "startLine": 566,
+        "startChar": 58,
+        "endLine": 566,
+        "endChar": 88
+      },
+      "revId": "50cd483fbe8630edab36e568794fed53cd121661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "877a932d_fe9870ac",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:11:28Z",
+      "side": 1,
+      "message": "```suggestion\n    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();\n```",
+      "range": {
+        "startLine": 595,
+        "startChar": 58,
+        "endLine": 595,
+        "endChar": 84
+      },
+      "revId": "50cd483fbe8630edab36e568794fed53cd121661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a87a8a01_864f3940",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T23:11:28Z",
+      "side": 1,
+      "message": "```suggestion\n    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();\n```",
+      "range": {
+        "startLine": 625,
+        "startChar": 58,
+        "endLine": 625,
+        "endChar": 84
+      },
+      "revId": "50cd483fbe8630edab36e568794fed53cd121661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
