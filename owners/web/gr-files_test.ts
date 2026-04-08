@@ -46,9 +46,11 @@ import {getRandom} from './test-utils';
 suite('owners status tests', () => {
   const path = 'readme.md';
   const approvedPath = 'db.sql';
+  const autoApprovedPath = 'foo.java';
   const filesOwners = {
     files: {[path]: [{name: 'John', id: 1}]},
     files_approved: {[approvedPath]: [{name: 'Merry', id: 2}]},
+    files_auto_approved: {[autoApprovedPath]: [{name: 'Merry', id: 2}]},
   } as unknown as FilesOwners;
 
   suite('shouldHide tests', () => {
@@ -257,6 +259,34 @@ suite('owners status tests', () => {
           fileStatus: FileStatus.APPROVED,
           owners: [{name: 'Merry', id: 2}],
         } as FileOwnership),
+        true
+      );
+    });
+
+    test('getFileOwnership - should return owners from `files_auto_approved` when file is auto-approved', () => {
+      const filesOwnersWithExplicitAndAutoApprovers = {
+        files_approved: {
+          [approvedPath]: [
+            {name: 'Merry', id: 2},
+            {name: 'John', id: 1},
+          ],
+        },
+        files_auto_approved: {
+          [autoApprovedPath]: [{name: 'Merry', id: 2}],
+        },
+      } as unknown as FilesOwners;
+
+      assert.equal(
+        deepEqual(
+          getFileOwnership(
+            autoApprovedPath,
+            filesOwnersWithExplicitAndAutoApprovers
+          ),
+          {
+            fileStatus: FileStatus.AUTO_APPROVED,
+            owners: [{name: 'Merry', id: 2}],
+          } as FileOwnership
+        ),
         true
       );
     });
