@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "379643c8_8d765d49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T07:59:17Z",
+      "side": 1,
+      "message": "You\u0027re changing too much in a single change: separate refactoring from features, implementing *first* the refactoring and then the features, or the other way around.",
+      "revId": "2cd22673e763ffa38aaab6e47025839fffdb5a94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70df2d29_738cd032",
         "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
         "patchSetId": 4
