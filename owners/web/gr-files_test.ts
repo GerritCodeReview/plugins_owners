@@ -49,6 +49,7 @@ suite('owners status tests', () => {
   const filesOwners = {
     files: {[path]: [{name: 'John', id: 1}]},
     files_approved: {[approvedPath]: [{name: 'Merry', id: 2}]},
+    files_auto_approved: {[approvedPath]: [{name: 'Merry', id: 2}]},
   } as unknown as FilesOwners;
 
   suite('shouldHide tests', () => {
@@ -255,6 +256,48 @@ suite('owners status tests', () => {
       assert.equal(
         deepEqual(getFileOwnership(approvedPath, filesOwners), {
           fileStatus: FileStatus.APPROVED,
+          autoApproved: true,
+          owners: [{name: 'Merry', id: 2}],
+        } as FileOwnership),
+        true
+      );
+    });
+
+    test('getFileOwnership - should return only auto-approvers when file is auto-approved', () => {
+      const filesOwnersWithExplicitAndAutoApprovers = {
+        files_approved: {
+          [approvedPath]: [
+            {name: 'Merry', id: 2},
+            {name: 'John', id: 1},
+          ],
+        },
+        files_auto_approved: {
+          [approvedPath]: [{name: 'Merry', id: 2}],
+        },
+      } as unknown as FilesOwners;
+
+      assert.equal(
+        deepEqual(
+          getFileOwnership(approvedPath, filesOwnersWithExplicitAndAutoApprovers),
+          {
+            fileStatus: FileStatus.APPROVED,
+            autoApproved: true,
+            owners: [{name: 'Merry', id: 2}],
+          } as FileOwnership
+        ),
+        true
+      );
+    });
+
+    test('getFileOwnership - should return approved file ownership without auto approval when file is explicitly approved', () => {
+      const explicitlyApprovedFilesOwners = {
+        files_approved: {[approvedPath]: [{name: 'Merry', id: 2}]},
+      } as unknown as FilesOwners;
+
+      assert.equal(
+        deepEqual(getFileOwnership(approvedPath, explicitlyApprovedFilesOwners), {
+          fileStatus: FileStatus.APPROVED,
+          autoApproved: false,
           owners: [{name: 'Merry', id: 2}],
         } as FileOwnership),
         true

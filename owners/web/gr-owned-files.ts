@@ -62,6 +62,7 @@ const STATUS_ICON = {
 
 interface OwnedFileInfo {
   status: FileStatus;
+  autoApproved?: boolean;
   file: string;
 }
 
@@ -284,8 +285,23 @@ export class GrOwnedFilesList extends LitElement {
         gr-icon.status.approved {
           color: var(--positive-green-text-color);
         }
+        gr-icon.status.autoApproved {
+          color: var(--positive-green-text-color);
+        }
         gr-icon.status.missing {
           color: #ffa62f;
+        }
+        .statusIcon {
+          position: relative;
+          display: inline-block;
+        }
+        .statusIcon.autoApproved gr-icon.autoApproved {
+          position: absolute;
+          inset: 0;
+        }
+        .statusIcon.autoApproved gr-icon.check {
+          position: relative;
+          z-index: 1;
         }
         .matchingFilePath {
           color: var(--deemphasized-text-color);
@@ -349,21 +365,32 @@ export class GrOwnedFilesList extends LitElement {
         role="row"
         aria-label=${ownedFile.file}
       >
-        ${this.renderFileStatus(ownedFile.status)}
+        ${this.renderFileStatus(ownedFile.status, ownedFile.autoApproved ?? false)}
         ${this.renderFilePath(ownedFile.file, index)}
       </div>
     `;
   }
 
-  private renderFileStatus(status: FileStatus) {
+  private renderFileStatus(status: FileStatus, autoApproved: boolean) {
     const icon = STATUS_ICON[status];
     return html`
       <span class="status" role="gridcell">
+        <span class="statusIcon ${autoApproved ? 'autoApproved' : ''}">
+          ${autoApproved
+            ? html`
+              <gr-icon
+                  class="status approved autoApproved"
+                  icon="autorenew"
+                  aria-hidden="true"
+                ></gr-icon>
+              `
+            : nothing}
         <gr-icon
-          class="status ${status}"
+          class="status ${status} ${autoApproved ? 'check' : ''}"
           icon=${icon}
           aria-hidden="true"
         ></gr-icon>
+        </span>
       </span>
     `;
   }
@@ -468,12 +495,23 @@ function collectOwnedFiles(
   groupPrefix: string,
   files: OwnedFiles,
   fileStatus: FileStatus,
+  filesAutoApproved?: OwnedFiles,
   emailWithoutDomain?: string
 ): OwnedFileInfo[] {
   const ownedFiles = [];
   for (const file of Object.keys(files ?? [])) {
-    if (
-      files[file].find(fileOwner => {
+    const currentOwner = files[file].find(fileOwner => {
+      if (isOwner(fileOwner)) {
+        return fileOwner.id === owner._account_id;
+      }
+
+      return (
+        !fileOwner.name?.startsWith(groupPrefix) &&
+        (fileOwner.name === emailWithoutDomain || fileOwner.name === owner.name)
+      );
+    });
+    if (currentOwner) {
+      const autoApprovedOwner = (filesAutoApproved ?? {})[file]?.find(fileOwner => {
         if (isOwner(fileOwner)) {
           return fileOwner.id === owner._account_id;
         }
@@ -483,9 +521,14 @@ function collectOwnedFiles(
           (fileOwner.name === emailWithoutDomain ||
             fileOwner.name === owner.name)
         );
-      })
-    ) {
-      ownedFiles.push({file, status: fileStatus} as OwnedFileInfo);
+      });
+      ownedFiles.push({
+        file,
+        status: fileStatus,
+        ...(fileStatus === FileStatus.APPROVED && autoApprovedOwner
+          ? {autoApproved: true}
+          : {}),
+      } as OwnedFileInfo);
     }
   }
 
@@ -511,6 +554,7 @@ export function ownedFiles(
     groupPrefix,
     filesOwners.files,
     FileStatus.NEEDS_APPROVAL,
+    undefined,
     emailWithoutDomain
   );
   const approvedFiles = collectOwnedFiles(
@@ -518,6 +562,7 @@ export function ownedFiles(
     groupPrefix,
     filesOwners.files_approved,
     FileStatus.APPROVED,
+    filesOwners.files_auto_approved,
     emailWithoutDomain
   );
   return {
