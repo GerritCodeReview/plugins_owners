@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70df2d29_738cd032",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T07:58:33Z",
+      "side": 1,
+      "message": "I believe you should also flip this setting, as `false` is the default now and we want to check if this setting is going to be used.",
+      "range": {
+        "startLine": 523,
+        "startChar": 48,
+        "endLine": 523,
+        "endChar": 53
+      },
+      "revId": "2cd22673e763ffa38aaab6e47025839fffdb5a94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f524f284_ab855a66",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-08T07:58:33Z",
+      "side": 1,
+      "message": "```suggestion\n    assertThat(owners.getFileOwnersAllowedAutoApproval()).contains(\"dir/file.txt\");\n```",
+      "range": {
+        "startLine": 541,
+        "startChar": 58,
+        "endLine": 541,
+        "endChar": 72
+      },
+      "revId": "2cd22673e763ffa38aaab6e47025839fffdb5a94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
