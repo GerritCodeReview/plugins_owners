@@ -25,14 +25,17 @@ public class FilesOwnersResponse {
   public final Map<String, Set<GroupOwner>> files;
   public final Map<Integer, Map<String, Integer>> ownersLabels;
   public final Map<String, Set<GroupOwner>> filesApproved;
+  public final Map<String, Set<GroupOwner>> filesAutoApproved;
 
   public FilesOwnersResponse(
       Map<Integer, Map<String, Integer>> ownersLabels,
       Map<String, Set<GroupOwner>> files,
-      Map<String, Set<GroupOwner>> filesApproved) {
+      Map<String, Set<GroupOwner>> filesApproved,
+      Map<String, Set<GroupOwner>> filesAutoApproved) {
     this.ownersLabels = ownersLabels;
     this.files = files;
     this.filesApproved = filesApproved;
+    this.filesAutoApproved = filesAutoApproved;
   }
 
   @Override
@@ -42,12 +45,13 @@ public class FilesOwnersResponse {
     FilesOwnersResponse that = (FilesOwnersResponse) o;
     return Objects.equal(files, that.files)
         && Objects.equal(ownersLabels, that.ownersLabels)
-        && Objects.equal(filesApproved, that.filesApproved);
+        && Objects.equal(filesApproved, that.filesApproved)
+        && Objects.equal(filesAutoApproved, that.filesAutoApproved);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(files, ownersLabels, filesApproved);
+    return Objects.hashCode(files, ownersLabels, filesApproved, filesAutoApproved);
   }
 
   @Override
@@ -59,6 +63,8 @@ public class FilesOwnersResponse {
         + ownersLabels
         + ", filesApproved="
         + filesApproved
+        + ", filesAutoApproved="
+        + filesAutoApproved
         + '}';
   }
 }
