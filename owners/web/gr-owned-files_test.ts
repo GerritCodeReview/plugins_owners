@@ -51,9 +51,12 @@ suite('owned files tests', () => {
     const files_approved = {
       [ownedApprovedFile]: [fileOwner(1)],
     };
+    const files_auto_approved = {
+      [ownedApprovedFile]: [fileOwner(1)],
+    };
     const filesOwners = {
       files,
-      files_approved,
+      files_auto_approved,
     } as unknown as FilesOwners;
     const emptyOwnerFilesInfo = {
       ownedFiles: [],
@@ -84,10 +87,30 @@ suite('owned files tests', () => {
         deepEqual(ownedFiles(owner, filesOwners), {
           ownedFiles: [
             {file: ownedFile, status: FileStatus.NEEDS_APPROVAL},
-            {file: ownedApprovedFile, status: FileStatus.APPROVED},
+            {
+              file: ownedApprovedFile,
+              status: FileStatus.APPROVED,
+              autoApproved: true,
+            },
           ],
           numberOfApproved: 1,
           numberOfPending: 1,
+        }),
+        true
+      );
+    });
+
+    test('ownedFiles - should return explicitly approved files without auto approval flag', () => {
+      const explicitlyApprovedFilesOwners = {
+        files_approved: {
+          [ownedApprovedFile]: [fileOwner(1)],
+        },
+      } as unknown as FilesOwners;
+      assert.equal(
+        deepEqual(ownedFiles(owner, explicitlyApprovedFilesOwners), {
+          ownedFiles: [{file: ownedApprovedFile, status: FileStatus.APPROVED}],
+          numberOfApproved: 1,
+          numberOfPending: 0,
         }),
         true
       );

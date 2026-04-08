@@ -58,10 +58,12 @@ export enum FileStatus {
 const STATUS_ICON = {
   [FileStatus.NEEDS_APPROVAL]: 'schedule',
   [FileStatus.APPROVED]: 'check',
+  autoApproved: 'published_with_changes',
 };
 
 interface OwnedFileInfo {
   status: FileStatus;
+  autoApproved?: boolean;
   file: string;
 }
 
@@ -284,6 +286,9 @@ export class GrOwnedFilesList extends LitElement {
         gr-icon.status.approved {
           color: var(--positive-green-text-color);
         }
+        gr-icon.status.autoApproved {
+          color: var(--positive-green-text-color);
+        }
         gr-icon.status.missing {
           color: #ffa62f;
         }
@@ -349,18 +354,18 @@ export class GrOwnedFilesList extends LitElement {
         role="row"
         aria-label=${ownedFile.file}
       >
-        ${this.renderFileStatus(ownedFile.status)}
+        ${this.renderFileStatus(ownedFile.status, ownedFile.autoApproved ?? false)}
         ${this.renderFilePath(ownedFile.file, index)}
       </div>
     `;
   }
 
-  private renderFileStatus(status: FileStatus) {
-    const icon = STATUS_ICON[status];
+  private renderFileStatus(status: FileStatus, autoApproved: boolean) {
+    const icon = autoApproved ? STATUS_ICON.autoApproved : STATUS_ICON[status];
     return html`
       <span class="status" role="gridcell">
         <gr-icon
-          class="status ${status}"
+          class="status ${status} ${autoApproved ? 'autoApproved' : ''}"
           icon=${icon}
           aria-hidden="true"
         ></gr-icon>
@@ -468,6 +473,7 @@ function collectOwnedFiles(
   groupPrefix: string,
   files: OwnedFiles,
   fileStatus: FileStatus,
+  autoApproved = false,
   emailWithoutDomain?: string
 ): OwnedFileInfo[] {
   const ownedFiles = [];
@@ -480,12 +486,17 @@ function collectOwnedFiles(
 
         return (
           !fileOwner.name?.startsWith(groupPrefix) &&
-          (fileOwner.name === emailWithoutDomain ||
-            fileOwner.name === owner.name)
+          (fileOwner.name === emailWithoutDomain || fileOwner.name === owner.name)
         );
       })
     ) {
-      ownedFiles.push({file, status: fileStatus} as OwnedFileInfo);
+      ownedFiles.push({
+        file,
+        status: fileStatus,
+        ...(fileStatus === FileStatus.APPROVED && autoApproved
+          ? {autoApproved: true}
+          : {}),
+      } as OwnedFileInfo);
     }
   }
 
@@ -511,19 +522,29 @@ export function ownedFiles(
     groupPrefix,
     filesOwners.files,
     FileStatus.NEEDS_APPROVAL,
+    false,
     emailWithoutDomain
   );
-  const approvedFiles = collectOwnedFiles(
+  const explicitlyApprovedFiles = collectOwnedFiles(
     owner,
     groupPrefix,
     filesOwners.files_approved,
     FileStatus.APPROVED,
+    false,
+    emailWithoutDomain
+  );
+  const autoApprovedFiles = collectOwnedFiles(
+    owner,
+    groupPrefix,
+    filesOwners.files_auto_approved ?? {},
+    FileStatus.APPROVED,
+    true,
     emailWithoutDomain
   );
   return {
-    ownedFiles: [...pendingFiles, ...approvedFiles],
+    ownedFiles: [...pendingFiles, ...explicitlyApprovedFiles, ...autoApprovedFiles],
     numberOfPending: pendingFiles.length,
-    numberOfApproved: approvedFiles.length,
+    numberOfApproved: explicitlyApprovedFiles.length + autoApprovedFiles.length,
   } as OwnedFilesInfo;
 }
 

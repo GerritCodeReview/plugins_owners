@@ -45,10 +45,12 @@ import {getRandom} from './test-utils';
 
 suite('owners status tests', () => {
   const path = 'readme.md';
-  const approvedPath = 'db.sql';
+  const explicitlyApprovedPath = 'db.sql';
+  const autoApprovedPath = 'foo.java';
   const filesOwners = {
     files: {[path]: [{name: 'John', id: 1}]},
-    files_approved: {[approvedPath]: [{name: 'Merry', id: 2}]},
+    files_approved: {[explicitlyApprovedPath]: [{name: 'Merry', id: 2}]},
+    files_auto_approved: {[autoApprovedPath]: [{name: 'Merry', id: 2}]},
   } as unknown as FilesOwners;
 
   suite('shouldHide tests', () => {
@@ -186,7 +188,7 @@ suite('owners status tests', () => {
 
     test('shouldHide - should be `false` when change has all files approved', () => {
       const allFilesApproved = {
-        approved_files: {[approvedPath]: [{name: 'Merry', id: 2}]},
+        files_auto_approved: {[autoApprovedPath]: [{name: 'Merry', id: 2}]},
       } as unknown as FilesOwners;
       assert.equal(
         shouldHide(
@@ -195,7 +197,7 @@ suite('owners status tests', () => {
           allFilesApproved,
           loggedIn
         ),
-        true
+        false
       );
     });
 
@@ -253,10 +255,55 @@ suite('owners status tests', () => {
 
     test('getFileOwnership - should return `FileOwnership` with `APPROVED` fileStatus when file is approved', () => {
       assert.equal(
-        deepEqual(getFileOwnership(approvedPath, filesOwners), {
+        deepEqual(getFileOwnership(autoApprovedPath, filesOwners), {
           fileStatus: FileStatus.APPROVED,
+          autoApproved: true,
           owners: [{name: 'Merry', id: 2}],
         } as FileOwnership),
+        true
+      );
+    });
+
+    test('getFileOwnership - should return only auto-approvers when file is auto-approved', () => {
+      const filesOwnersWithExplicitAndAutoApprovers = {
+        files_approved: {
+          [explicitlyApprovedPath]: [
+            {name: 'Merry', id: 2},
+            {name: 'John', id: 1},
+          ],
+        },
+        files_auto_approved: {
+          [autoApprovedPath]: [{name: 'Merry', id: 2}],
+        },
+      } as unknown as FilesOwners;
+
+      assert.equal(
+        deepEqual(
+          getFileOwnership(autoApprovedPath, filesOwnersWithExplicitAndAutoApprovers),
+          {
+            fileStatus: FileStatus.APPROVED,
+            autoApproved: true,
+            owners: [{name: 'Merry', id: 2}],
+          } as FileOwnership
+        ),
+        true
+      );
+    });
+
+    test('getFileOwnership - should return approved file ownership without auto approval when file is explicitly approved', () => {
+      const explicitlyApprovedFilesOwners = {
+        files_approved: {[explicitlyApprovedPath]: [{name: 'Merry', id: 2}]},
+      } as unknown as FilesOwners;
+
+      assert.equal(
+        deepEqual(
+          getFileOwnership(explicitlyApprovedPath, explicitlyApprovedFilesOwners),
+          {
+            fileStatus: FileStatus.APPROVED,
+            autoApproved: false,
+            owners: [{name: 'Merry', id: 2}],
+          } as FileOwnership
+        ),
         true
       );
     });

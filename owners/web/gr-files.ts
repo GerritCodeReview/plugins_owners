@@ -53,6 +53,7 @@ const STATUS_CODE = {
 const STATUS_ICON = {
   [STATUS_CODE.MISSING]: 'schedule',
   [STATUS_CODE.APPROVED]: 'check',
+  autoApproved: 'published_with_changes',
 };
 
 const FILE_STATUS = {
@@ -63,6 +64,7 @@ const FILE_STATUS = {
 const HOVER_HEADING = {
   [STATUS_CODE.MISSING]: "Needs Owners' Approval",
   [STATUS_CODE.APPROVED]: 'Approved by Owners',
+  autoApproved: 'Auto-approved by Owners',
 };
 
 const DISPLAY_OWNERS_FOR_FILE_LIMIT = 5;
@@ -226,6 +228,9 @@ export class FilesColumnContent extends FilesCommon {
   @property({type: String, reflect: true, attribute: 'file-status'})
   fileStatus?: string;
 
+  @property({type: Boolean, reflect: true, attribute: 'auto-approved'})
+  autoApproved = false;
+
   private owners?: OwnerOrGroupOwner[];
 
   // taken from Gerrit's common-util.ts
@@ -251,6 +256,9 @@ export class FilesColumnContent extends FilesCommon {
         :host([file-status='approved']) gr-icon.status {
           color: var(--positive-green-text-color);
         }
+        :host([file-status='autoApproved']) gr-icon.status {
+          color: var(--positive-green-text-color);
+        }
         :host([file-status='missing']) gr-icon.status {
           color: #ffa62f;
         }
@@ -263,11 +271,13 @@ export class FilesColumnContent extends FilesCommon {
       return nothing;
     }
 
-    const icon = STATUS_ICON[this.fileStatus];
+    const icon = this.autoApproved
+      ? STATUS_ICON.autoApproved
+      : STATUS_ICON[this.fileStatus];
     return html`
       <gr-icon
         id="${this.pathId()}"
-        class="status"
+        class="status ${this.autoApproved ? 'autoApproved' : ''}"
         icon=${icon}
         aria-hidden="true"
       ></gr-icon>
@@ -283,7 +293,9 @@ export class FilesColumnContent extends FilesCommon {
     const owners = this.owners ?? [];
     const splicedOwners = owners.splice(0, DISPLAY_OWNERS_FOR_FILE_LIMIT);
     const showEllipsis = owners.length > DISPLAY_OWNERS_FOR_FILE_LIMIT;
-    const heading = HOVER_HEADING[this.fileStatus ?? STATUS_CODE.MISSING];
+    const heading = this.autoApproved
+      ? HOVER_HEADING.autoApproved
+      : HOVER_HEADING[this.fileStatus ?? STATUS_CODE.MISSING];
     // inlining <style> here is ugly but an alternative would be to copy the `HovercardMixin` from Gerrit and implement hoover from scratch
     return html`<gr-hovercard for="${this.pathId()}">
       <style>
@@ -389,11 +401,13 @@ export class FilesColumnContent extends FilesCommon {
     const fileOwnership = getFileOwnership(this.path, this.filesOwners);
     if (!fileOwnership || fileOwnership.fileStatus === FileStatus.NOT_OWNED) {
       this.fileStatus = undefined;
+      this.autoApproved = false;
       this.owners = undefined;
       return;
     }
 
     this.fileStatus = FILE_STATUS[fileOwnership.fileStatus];
+    this.autoApproved = fileOwnership.autoApproved ?? false;
     const accounts = getChangeAccounts(this.change);
 
     this.owners = (fileOwnership.owners ?? []).map(owner => {
@@ -459,7 +473,9 @@ export function shouldHide(
   if (
     hasOwnersSubmitRequirement(change) &&
     filesOwners &&
-    (filesOwners.files || filesOwners.files_approved)
+    (filesOwners.files ||
+      filesOwners.files_approved ||
+      filesOwners.files_auto_approved)
   ) {
     return !userRole || userRole === UserRole.ANONYMOUS;
   }
@@ -476,9 +492,17 @@ export function getFileOwnership(
 
   const fileOwners = (filesOwners.files ?? {})[path];
   const fileApprovers = (filesOwners.files_approved ?? {})[path];
-  if (fileApprovers) {
+  const fileAutoApprovers = (filesOwners.files_auto_approved ?? {})[path];
+  if (fileAutoApprovers) {
     return {
       fileStatus: FileStatus.APPROVED,
+      autoApproved: true,
+      owners: fileAutoApprovers,
+    };
+  } else if (fileApprovers) {
+    return {
+      fileStatus: FileStatus.APPROVED,
+      autoApproved: false,
       owners: fileApprovers,
     };
   } else if (fileOwners) {
