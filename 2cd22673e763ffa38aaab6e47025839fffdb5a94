@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d25736bd_9f3c271a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-08T09:31:16Z",
+      "side": 1,
+      "message": "Done, I have not split the refactoring as a follow up change.",
+      "parentUuid": "379643c8_8d765d49",
+      "revId": "2cd22673e763ffa38aaab6e47025839fffdb5a94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70df2d29_738cd032",
@@ -41,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3acb1e38_6393080f",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-08T09:31:16Z",
+      "side": 1,
+      "message": "Good point. Done.",
+      "parentUuid": "70df2d29_738cd032",
+      "range": {
+        "startLine": 523,
+        "startChar": 48,
+        "endLine": 523,
+        "endChar": 53
+      },
+      "revId": "2cd22673e763ffa38aaab6e47025839fffdb5a94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f524f284_ab855a66",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-04-08T07:58:33Z",
       "side": 1,
       "message": "```suggestion\n    assertThat(owners.getFileOwnersAllowedAutoApproval()).contains(\"dir/file.txt\");\n```",
+      "range": {
+        "startLine": 541,
+        "startChar": 58,
+        "endLine": 541,
+        "endChar": 72
+      },
+      "revId": "2cd22673e763ffa38aaab6e47025839fffdb5a94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7baa4ebd_e051afbc",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-08T09:31:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f524f284_ab855a66",
       "range": {
         "startLine": 541,
         "startChar": 58,
