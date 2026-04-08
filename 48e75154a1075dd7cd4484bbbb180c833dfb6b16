@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f0753e1_02d7325b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4744950
+      },
+      "writtenOn": "2026-04-08T09:05:50Z",
+      "side": 1,
+      "message": "Global Shortcuts\nAction\tKey\nSearch\t/\nShow this dialog\t?\nGo to User Dashboard\tg i\nGo to Opened Changes\tg o\nGo to Merged Changes\tg m\nGo to Abandoned Changes\tg a\nGo to Watched Changes\tg w\nGo to Repositories\tg r\nGo to Groups\tg g",
+      "revId": "48e75154a1075dd7cd4484bbbb180c833dfb6b16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
