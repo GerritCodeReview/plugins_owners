@@ -55,6 +55,7 @@ export enum FileStatus {
 
 export interface FileOwnership {
   fileStatus: FileStatus;
+  autoApproved?: boolean;
   owners?: FileOwner[];
 }
 
