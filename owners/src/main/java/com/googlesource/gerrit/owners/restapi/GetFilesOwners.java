@@ -15,11 +15,18 @@
 
 package com.googlesource.gerrit.owners.restapi;
 
+import static com.googlesource.gerrit.owners.AutoOwnersApprovalFunctions.allowsAutoApprovalOnPatch;
+import static com.googlesource.gerrit.owners.AutoOwnersApprovalFunctions.modifiedFilesBetweenPatchSets;
+import static com.googlesource.gerrit.owners.AutoOwnersApprovalFunctions.touchedPaths;
+
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.LabelId;
+import com.google.gerrit.entities.PatchSet;
+import com.google.gerrit.entities.PatchSetApproval;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -34,6 +41,8 @@ import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.account.AccountCache;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.patch.DiffNotAvailableException;
+import com.google.gerrit.server.patch.DiffOperations;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.gerrit.server.query.change.ChangeData;
 import com.google.inject.Inject;
@@ -53,8 +62,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.lib.Repository;
@@ -65,6 +76,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
   private final AccountCache accountCache;
   private final ProjectCache projectCache;
   private final GitRepositoryManager repositoryManager;
+  private final DiffOperations diffOperations;
   private final PluginSettings pluginSettings;
   private final GerritApi gerritApi;
   private final PathOwnersEntriesCache cache;
@@ -79,6 +91,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
       AccountCache accountCache,
       ProjectCache projectCache,
       GitRepositoryManager repositoryManager,
+      DiffOperations diffOperations,
       PluginSettings pluginSettings,
       GerritApi gerritApi,
       PathOwnersEntriesCache cache) {
@@ -86,6 +99,7 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
     this.accountCache = accountCache;
     this.projectCache = projectCache;
     this.repositoryManager = repositoryManager;
+    this.diffOperations = diffOperations;
     this.pluginSettings = pluginSettings;
     this.gerritApi = gerritApi;
     this.cache = cache;
@@ -165,8 +179,29 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
                   isApprovedByOwner(
                       fileExpandedOwners.get(fileOwnerEntry.getKey()), ownersLabels, label));
 
+      Map<String, Set<GroupOwner>> filesAutoApprovedByOwners;
+      Map<String, Set<GroupOwner>> filesExplicitlyApprovedByOwners;
+      Set<String> filesAllowedAutoApproval = owners.getFileOwnersAllowedAutoApproval();
+
+      if (Sets.intersection(filesAllowedAutoApproval, filesApprovedByOwners.keySet()).isEmpty()) {
+        filesAutoApprovedByOwners = Map.of();
+        filesExplicitlyApprovedByOwners = filesApprovedByOwners;
+      } else {
+        Set<String> filesAutoApproved =
+            getFilesAutoApproved(revision, changeData, filesApprovedByOwners);
+        filesAutoApprovedByOwners =
+            Maps.filterKeys(filesApprovedByOwners, filesAutoApproved::contains);
+        filesExplicitlyApprovedByOwners =
+            Maps.filterKeys(
+                filesApprovedByOwners, filePath -> !filesAutoApproved.contains(filePath));
+      }
+
       return Response.ok(
-          new FilesOwnersResponse(ownersLabels, filesWithPendingOwners, filesApprovedByOwners));
+          new FilesOwnersResponse(
+              ownersLabels,
+              filesWithPendingOwners,
+              filesExplicitlyApprovedByOwners,
+              filesAutoApprovedByOwners));
     } catch (InvalidOwnersFileException e) {
       logger.atSevere().withCause(e).log("Reading/parsing OWNERS file error.");
       throw new ResourceConflictException(e.getMessage(), e);
@@ -238,6 +273,98 @@ public class GetFilesOwners implements RestReadView<RevisionResource> {
         .map(owner -> ((Owner) owner).getId())
         .flatMap(ownerId -> codeReviewLabelValue(ownersLabels, ownerId, label.getLabelId()))
         .anyMatch(value -> value >= label.getScore());
+  }
+
+  private Set<String> getFilesAutoApproved(
+      RevisionResource revision,
+      ChangeData changeData,
+      Map<String, Set<GroupOwner>> filesApprovedByOwners)
+      throws IOException, InvalidOwnersFileException, DiffNotAvailableException {
+    PatchSet sourcePatchSet = getPreviousPatchSet(revision);
+    if (sourcePatchSet == null) {
+      return Set.of();
+    }
+    Account.Id ownerId = revision.getChange().getOwner();
+    String branch = changeData.change().getDest().branch();
+    Project.NameKey project = changeData.project();
+
+    Set<String> allFilesTouchedInTheLastPatchSet =
+        touchedPaths(
+            modifiedFilesBetweenPatchSets(
+                diffOperations, project, sourcePatchSet, revision.getPatchSet()));
+
+    Map<Account.Id, List<PatchSetApproval>> approvalsByAccount =
+        changeData.currentApprovals().stream()
+            .collect(Collectors.groupingBy(PatchSetApproval::accountId));
+
+    List<PatchSetApproval> changeOwnerApprovals = approvalsByAccount.get(ownerId);
+
+    // If the change owner didn't approve the label or the label was not copied from the previous
+    // patch set then auto-owners-approvals cannot qualify for this patch-set.
+    if (changeOwnerApprovals == null
+        || changeOwnerApprovals.stream().anyMatch(isNotCopiedApproval())) {
+      return Set.of();
+    }
+
+    // Otherwise we check if the change owner was eligible for auto-owners-approved
+    Set<String> filesOwnedByChangeOwnerInTheLastPatchSet =
+        filterFilesOwnedBy(ownerId, allFilesTouchedInTheLastPatchSet, project, branch);
+
+    if (!allowsAutoApprovalOnPatch(
+        ownerId,
+        ownerId,
+        revision.getPatchSet().uploader(),
+        filesOwnedByChangeOwnerInTheLastPatchSet,
+        allFilesTouchedInTheLastPatchSet,
+        this,
+        project,
+        branch)) {
+      return Set.of();
+    }
+
+    return getAutoApprovedFiles(filesApprovedByOwners, approvalsByAccount);
+  }
+
+  private Set<String> getAutoApprovedFiles(
+      Map<String, Set<GroupOwner>> filesApprovedByOwners,
+      Map<Account.Id, List<PatchSetApproval>> currentApprovalsByAccount) {
+    return filesApprovedByOwners.keySet().stream()
+        .filter(notExplicitlyApprovedByAnOwner(filesApprovedByOwners, currentApprovalsByAccount))
+        .collect(Collectors.toSet());
+  }
+
+  private Predicate<String> notExplicitlyApprovedByAnOwner(
+      Map<String, Set<GroupOwner>> fileExpandedOwners,
+      Map<Account.Id, List<PatchSetApproval>> currentApprovalsByAccount) {
+    return filePath ->
+        ownerIds(fileExpandedOwners.get(filePath))
+            .map(currentApprovalsByAccount::get)
+            .filter(Objects::nonNull)
+            .flatMap(List::stream)
+            .noneMatch(isNotCopiedApproval());
+  }
+
+  private PatchSet getPreviousPatchSet(RevisionResource revision) {
+    int sourcePatchSetNumber = revision.getPatchSet().id().get() - 1;
+    if (sourcePatchSetNumber < 1) {
+      return null;
+    }
+
+    return revision
+        .getNotes()
+        .getPatchSets()
+        .get(PatchSet.id(revision.getChange().getId(), sourcePatchSetNumber));
+  }
+
+  private static Predicate<PatchSetApproval> isNotCopiedApproval() {
+    Predicate<PatchSetApproval> func = PatchSetApproval::copied;
+    return func.negate();
+  }
+
+  private Stream<Account.Id> ownerIds(Set<GroupOwner> fileOwners) {
+    return fileOwners.stream()
+        .filter(owner -> owner instanceof Owner)
+        .map(owner -> Account.id(((Owner) owner).getId()));
   }
 
   private Stream<Integer> codeReviewLabelValue(
