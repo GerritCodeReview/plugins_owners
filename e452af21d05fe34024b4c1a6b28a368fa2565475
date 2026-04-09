@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "925119ec_58752f3f",
+        "filename": "owners-common/src/main/java/com/googlesource/gerrit/owners/common/PathOwnersEntry.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-09T07:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af4e200d_103e9813",
+      "range": {
+        "startLine": 132,
+        "startChar": 38,
+        "endLine": 132,
+        "endChar": 46
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9e74fd9_e8bbbb0a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-08T23:05:56Z",
       "side": 1,
       "message": "Should we assert that nothing is banned?\n\n```suggestion\n    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();\n```\n\nThere is only one file and that is allowed to have auto-approved, therefore I don\u0027t see anything else banned.",
+      "range": {
+        "startLine": 541,
+        "startChar": 57,
+        "endLine": 541,
+        "endChar": 87
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4841560a_783c2089",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-09T07:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9e74fd9_e8bbbb0a",
       "range": {
         "startLine": 541,
         "startChar": 57,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a5926e_c1f2721c",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-09T07:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1482bb04_3fe73b87",
+      "range": {
+        "startLine": 577,
+        "startChar": 26,
+        "endLine": 577,
+        "endChar": 53
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f540caa0_6138675c",
@@ -93,6 +165,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02cac931_67871de6",
+        "filename": "owners-common/src/test/java/com/googlesource/gerrit/owners/common/PathOwnersTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-09T07:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f540caa0_6138675c",
+      "range": {
+        "startLine": 595,
+        "startChar": 56,
+        "endLine": 595,
+        "endChar": 77
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0433ac1d_d46cc9ea",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-04-08T23:05:56Z",
       "side": 1,
       "message": "Can you move this on the same order as it was before? That would make it easier to understand how the test was amended in this change.",
+      "range": {
+        "startLine": 508,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 3
+      },
+      "revId": "e452af21d05fe34024b4c1a6b28a368fa2565475",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6ee8fd6_6859cf46",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/AlreadyApprovedByCopyConditionIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-09T07:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0433ac1d_d46cc9ea",
       "range": {
         "startLine": 508,
         "startChar": 0,
