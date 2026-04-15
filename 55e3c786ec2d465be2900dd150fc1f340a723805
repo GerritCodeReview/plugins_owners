@@ -1,0 +1,400 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea137ebb_d1077cdc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "I don\u0027t believe that\u0027s accurate: we want to show if the label by copied even if the files were modified between patchsets by the change owner due to an auto-approval logic.",
+      "range": {
+        "startLine": 10,
+        "startChar": 39,
+        "endLine": 10,
+        "endChar": 68
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b693647b_9b1ff4b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "```suggestion\nfiles_auto_approved and files_approved mutually exclusive: a file\n```",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 63
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e79394c9_003eade8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "```suggestion\nare unchanged and returned as before.\n```",
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb11930_5c5a46d2",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/FilesOwnersResponse.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "Unrelated: we should move to Java `record` type as a follow-up.",
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86c7f401_83687b7d",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "This isn\u0027t useful, because we already have the expanded version at L268 and the auto-owners approval cannot be processed for unexpanded groups.\n\n\n\n```suggestion\n      )\n```",
+      "range": {
+        "startLine": 269,
+        "startChar": 6,
+        "endLine": 269,
+        "endChar": 56
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccc01e0b_7e7c9e97",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "Do we really to fetch again *all* files between patch-sets?\nYou have the `filesApprovedByOwners` and this function should just return the ones that were *automatically* approved.\n\nAlso, we do not need to get *all* files, but only the ones that are approved by an owner who is the \"change owner\".\n\n```suggestion\n    Set\u003cString\u003e filesTouchedByChangeOwner \u003d fileExpandedOwners.entrySet().stream()\n            .filter(entry -\u003e ownerIds(entry.getValue()).anyMatch(id -\u003e id \u003d\u003d ownerId))\n            .map(Map.Entry::getKey)\n            .collect(Collectors.toSet());\n```",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 96
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c82b17fb_060e9648",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "Can we just short-circuit instead of introducing `Optional\u003c\u003e` and `map` later on?\nIt would be clearer for the reader and also will exit immediately without going through any additional code.\n\n\n\n```suggestion\n    Account.Id ownerId \u003d revision.getChange().getOwner();\n    List\u003cPatchSetApproval\u003e changeOwnerApprovals \u003d approvalsByAccount.get(ownerId);\n    if (changeOwnerApprovals \u003d\u003d null\n        || changeOwnerApprovals.stream()\n            .anyMatch(isNotCopiedApproval())) {\n      return Set.of();\n    }\n\n    Optional\u003cAccount.Id\u003e maybeAutoApprover \u003d\n```",
+      "range": {
+        "startLine": 285,
+        "startChar": 25,
+        "endLine": 285,
+        "endChar": 42
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "820ec416_a55c2356",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "There is no point in calling `maybeOwnerWithAutoApprovedVote` as the only useful method is calling, which can be inlined here.\n\n\n\n```suggestion\n    if (!AutoOwnersApproval.applies(\n            ownerId,\n            ownerId,\n            ownerId,\n            filesTouchedByChangeOwner,\n            filesTouchedByChangeOwner,\n            this,\n            changeData.project(),\n            changeData.change().getDest().branch())) {\n      return Set.of();\n    }\n```",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 47
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc013297_263c6fe5",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "This method can be effectively inlined with its caller.",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 310,
+        "endChar": 26
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a79b8956_24d7285f",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "Just short-circuit in the caller and exit immediately without calling this method, rather than having to manage these special cases. This is a private method so we have control over the only caller.\n\nAlso, the caller ensure that the caller has the preconditions, therefore this check is totally redundant can can be removed.",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 318,
+        "endChar": 5
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a61a7a_f6960eae",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "We already receive the set of files touched by the change owner, there is no need to perform any further filtering.\n\n\n\n```suggestion\n\n    // Otherwise we check if the change owner was eligible for auto-owners-approved\n    Set\u003cString\u003e filesOwnedByApprover \u003d filesTouchedByChangeOwner;\n```",
+      "range": {
+        "startLine": 319,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 74
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05961f0a_01314146",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "This is the *ONLY* useful operation performed by this method. Hence this method is simply the delegation of `AutoOwnersApproval.applies` and can be inlined.",
+      "range": {
+        "startLine": 323,
+        "startChar": 8,
+        "endLine": 331,
+        "endChar": 16
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a94214ca_03fc9ce5",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "We already have the full list of files approved by onwers, we can just pass it as a parameter.\n\n\n\n```suggestion\n      Set\u003cString\u003e filesApprovedByChangeOwner,\n```",
+      "range": {
+        "startLine": 339,
+        "startChar": 6,
+        "endLine": 339,
+        "endChar": 56
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "620701f8_8cee82bd",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "This can be massively simplified, avoiding duplicate work, by passing directly the list of files that we know have been already approved by the change owner through a copy label condition and filtering out the ones that have an explicit approval by another owner. \n\n```suggestion\n  private Set\u003cString\u003e getAutoApprovedFiles(\n      Set\u003cString\u003e filesApprovedByChangeOwner,\n      Map\u003cString, Set\u003cGroupOwner\u003e\u003e fileExpandedOwners,\n      Map\u003cAccount.Id, List\u003cPatchSetApproval\u003e\u003e currentApprovalsByAccount) {\n    return filesApprovedByChangeOwner.stream()\n            .filter(notExplicitlyApprovedByAnOwner(fileExpandedOwners, currentApprovalsByAccount))\n            .collect(Collectors.toSet());\n  }\n\n  private Predicate\u003cString\u003e notExplicitlyApprovedByAnOwner(Map\u003cString, Set\u003cGroupOwner\u003e\u003e fileExpandedOwners, Map\u003cAccount.Id, List\u003cPatchSetApproval\u003e\u003e currentApprovalsByAccount) {\n    return filePath -\u003e ownerIds(fileExpandedOwners.get(filePath))\n            .map(currentApprovalsByAccount::get)\n            .filter(Objects::nonNull)\n            .flatMap(List::stream)\n            .noneMatch(isNotCopiedApproval());\n  }\n```",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 3
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df742782_76825ffe",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "The `Sufficient` part of the name is unclear: what does that mean?",
+      "range": {
+        "startLine": 377,
+        "startChar": 21,
+        "endLine": 377,
+        "endChar": 31
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1449cbe5_0dcea780",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "It looks like the purpose of this method is to look for a pattern in a stream of approvals. Why not simply expose a pure function then and have the caller use it on the stream?\n\nProcessing the stream has side effects of advancing it; therefore, it\u0027s dangerous to pass it as a pure parameter.",
+      "range": {
+        "startLine": 378,
+        "startChar": 6,
+        "endLine": 378,
+        "endChar": 40
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4121325a_4501fa99",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "The `label` parameter for a change is computed in a single call with `getLabelDefinition(PathOwners owners, ChangeData changeData)`, and it isn\u0027t really a differentiator here because we already know the file names that have been approved by an owner and there is no need to spend CPU time recomping it.\n\nThe only different parameter is the `copied` parameter that is called with `true` and `false` in two conditions. Just provide a specific predicate for it.\n\nThe caller can directly use them in the input set of `PatchSetApproval` and resolve everything in one go, rather than using two different methods with disconnected meaning.\n\n\n\n```suggestion\n  private static Predicate\u003cPatchSetApproval\u003e isNotCopiedApproval() {\n    Predicate\u003cPatchSetApproval\u003e func \u003d PatchSetApproval::copied;\n    return func.negate();\n  }\n```",
+      "range": {
+        "startLine": 377,
+        "startChar": 0,
+        "endLine": 384,
+        "endChar": 3
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbc4e15_05a03a1d",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:48:06Z",
+      "side": 1,
+      "message": "This is a useful refactoring, however, I\u0027d make a separate change for splitting it from the implementation of this feature.",
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
