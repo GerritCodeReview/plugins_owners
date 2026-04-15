@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df543714_ed9ec13b",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:47:58Z",
+      "side": 1,
+      "message": "```suggestion\nimport static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.OPERAND;\nimport static com.googlesource.gerrit.owners.AutoOwnersApproval.allowsAutoApprovalOnPatch;\n```",
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18a41074_74dc6e88",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:47:58Z",
+      "side": 1,
+      "message": "```suggestion\n      if (allowsAutoApprovalOnPatch(\n```",
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ba8639d_14aae441",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:47:58Z",
+      "side": 1,
+      "message": "```suggestion\npublic final class AutoOwnersApprovalFunctions {\n```",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1affdb59_d35102c3",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:47:58Z",
+      "side": 1,
+      "message": "Is this sentinel really needed?",
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06b64de8_54e56271",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:47:58Z",
+      "side": 1,
+      "message": "These two methods are effectively used *ONLY* in the `AlreadyApprovedByPredicate`. The `GetFilesOwners` doesn\u0027t really need them at all, therefore I would avoid moving them.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 3
+      },
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea13ead4_8f2d0a1a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-15T21:47:58Z",
+      "side": 1,
+      "message": "The name is a bit too cryptic IMHO.\n\n\n\n```suggestion\n  public static boolean allowsAutoApprovalOnPatch(\n```",
+      "range": {
+        "startLine": 65,
+        "startChar": 24,
+        "endLine": 65,
+        "endChar": 31
+      },
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
