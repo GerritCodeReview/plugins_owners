@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b184f843_03c491ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T06:45:33Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "0d968530_cba5b5d3",
+      "range": {
+        "startLine": 7,
+        "startChar": 33,
+        "endLine": 7,
+        "endChar": 42
+      },
+      "revId": "42e0f6da4aa08bf248b0a487a5f16737709746e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e3606e8_6f77ec2c",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "062f9f62_1bb96ae7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T06:45:33Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "4e3606e8_6f77ec2c",
+      "range": {
+        "startLine": 11,
+        "startChar": 36,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "42e0f6da4aa08bf248b0a487a5f16737709746e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f469fd73_40d7dd6a",
@@ -60,6 +108,24 @@
       "writtenOn": "2026-04-15T14:21:35Z",
       "side": 1,
       "message": "```suggestion\nfrom it. This matches the rule more directly, keeps the code easier to\n```",
+      "revId": "42e0f6da4aa08bf248b0a487a5f16737709746e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0b453f0_c4ae4f23",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T06:45:33Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "f469fd73_40d7dd6a",
       "revId": "42e0f6da4aa08bf248b0a487a5f16737709746e2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
