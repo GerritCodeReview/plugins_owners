@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5acd0fc8_90ca95a5",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T07:32:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df543714_ed9ec13b",
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18a41074_74dc6e88",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-15T21:47:58Z",
       "side": 1,
       "message": "```suggestion\n      if (allowsAutoApprovalOnPatch(\n```",
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9737efaa_eb630771",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T07:32:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18a41074_74dc6e88",
       "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81fdb644_74064984",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T07:32:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ba8639d_14aae441",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1affdb59_d35102c3",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-04-15T21:47:58Z",
       "side": 1,
       "message": "Is this sentinel really needed?",
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b53f4cec_af2e0364",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T07:32:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1affdb59_d35102c3",
       "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -100,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cabc6c49_0cf51111",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T07:32:52Z",
+      "side": 1,
+      "message": "`GetFilesOwners` uses them at the moment see [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/7/owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java).\n\nI can see you [commented](https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/comment/ccc01e0b_7e7c9e97/) on that regard. I will go through that comment and see if these can be removed.",
+      "parentUuid": "06b64de8_54e56271",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 3
+      },
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea13ead4_8f2d0a1a",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
         "patchSetId": 2
@@ -111,6 +213,30 @@
       "writtenOn": "2026-04-15T21:47:58Z",
       "side": 1,
       "message": "The name is a bit too cryptic IMHO.\n\n\n\n```suggestion\n  public static boolean allowsAutoApprovalOnPatch(\n```",
+      "range": {
+        "startLine": 65,
+        "startChar": 24,
+        "endLine": 65,
+        "endChar": 31
+      },
+      "revId": "a13c9836733cf7ccb1ba7571a5c530360aadd8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e9cbff8_0e1155f5",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AutoOwnersApproval.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T07:32:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea13ead4_8f2d0a1a",
       "range": {
         "startLine": 65,
         "startChar": 24,
