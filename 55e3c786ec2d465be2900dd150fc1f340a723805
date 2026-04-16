@@ -170,6 +170,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da3b65e6_d77d1e35",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Yes, we need only filesApprovedByOwners, actually, good catch.",
+      "parentUuid": "86c7f401_83687b7d",
+      "range": {
+        "startLine": 269,
+        "startChar": 6,
+        "endLine": 269,
+        "endChar": 56
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccc01e0b_7e7c9e97",
@@ -183,6 +207,30 @@
       "writtenOn": "2026-04-15T21:48:06Z",
       "side": 1,
       "message": "Do we really to fetch again *all* files between patch-sets?\nYou have the `filesApprovedByOwners` and this function should just return the ones that were *automatically* approved.\n\nAlso, we do not need to get *all* files, but only the ones that are approved by an owner who is the \"change owner\".\n\n```suggestion\n    Set\u003cString\u003e filesTouchedByChangeOwner \u003d fileExpandedOwners.entrySet().stream()\n            .filter(entry -\u003e ownerIds(entry.getValue()).anyMatch(id -\u003e id \u003d\u003d ownerId))\n            .map(Map.Entry::getKey)\n            .collect(Collectors.toSet());\n```",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 96
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58cc7810_62c572ca",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "We are only interested in the files changed between patchsets (for example PS2 vs PS3).\n\n`allowsAutoApprovalOnPatch` checks whether, in the last PS, only the change owner-owned files were modified.\n\nIf we were filtering on `fileExpandedOwners`, we would get _all_ files in the _change_ (filtered by the change owner).\n\nI thought I had covered this by tests, but apparently I didn\u0027t (or not properly).\nI will also check if there is way to obtain what we need by filtering what we already computed.",
+      "parentUuid": "ccc01e0b_7e7c9e97",
       "range": {
         "startLine": 276,
         "startChar": 0,
@@ -216,6 +264,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "133d2862_32b246ef",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c82b17fb_060e9648",
+      "range": {
+        "startLine": 285,
+        "startChar": 25,
+        "endLine": 285,
+        "endChar": 42
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "820ec416_a55c2356",
@@ -229,6 +301,30 @@
       "writtenOn": "2026-04-15T21:48:06Z",
       "side": 1,
       "message": "There is no point in calling `maybeOwnerWithAutoApprovedVote` as the only useful method is calling, which can be inlined here.\n\n\n\n```suggestion\n    if (!AutoOwnersApproval.applies(\n            ownerId,\n            ownerId,\n            ownerId,\n            filesTouchedByChangeOwner,\n            filesTouchedByChangeOwner,\n            this,\n            changeData.project(),\n            changeData.change().getDest().branch())) {\n      return Set.of();\n    }\n```",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 47
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddfe9d42_a30e0c58",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "820ec416_a55c2356",
       "range": {
         "startLine": 285,
         "startChar": 0,
@@ -262,6 +358,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f711c70_1d40a894",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc013297_263c6fe5",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 310,
+        "endChar": 26
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a79b8956_24d7285f",
@@ -275,6 +395,30 @@
       "writtenOn": "2026-04-15T21:48:06Z",
       "side": 1,
       "message": "Just short-circuit in the caller and exit immediately without calling this method, rather than having to manage these special cases. This is a private method so we have control over the only caller.\n\nAlso, the caller ensure that the caller has the preconditions, therefore this check is totally redundant can can be removed.",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 318,
+        "endChar": 5
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "429361c7_8040bd7a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a79b8956_24d7285f",
       "range": {
         "startLine": 313,
         "startChar": 0,
@@ -310,6 +454,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "341a0243_71832e13",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "See my [comment](https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/comment/ccc01e0b_7e7c9e97/).",
+      "parentUuid": "08a61a7a_f6960eae",
+      "range": {
+        "startLine": 319,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 74
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a946439e_084a5889",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "I will see if I can write a test documenting the need for this case, perhaps I am thinking about this in the wrong way.",
+      "parentUuid": "08a61a7a_f6960eae",
+      "range": {
+        "startLine": 319,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 74
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05961f0a_01314146",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
         "patchSetId": 6
@@ -321,6 +513,30 @@
       "writtenOn": "2026-04-15T21:48:06Z",
       "side": 1,
       "message": "This is the *ONLY* useful operation performed by this method. Hence this method is simply the delegation of `AutoOwnersApproval.applies` and can be inlined.",
+      "range": {
+        "startLine": 323,
+        "startChar": 8,
+        "endLine": 331,
+        "endChar": 16
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21cf11bb_5fc0d088",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05961f0a_01314146",
       "range": {
         "startLine": 323,
         "startChar": 8,
@@ -354,6 +570,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d7098e1_e9f03fa8",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a94214ca_03fc9ce5",
+      "range": {
+        "startLine": 339,
+        "startChar": 6,
+        "endLine": 339,
+        "endChar": 56
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "620701f8_8cee82bd",
@@ -367,6 +607,30 @@
       "writtenOn": "2026-04-15T21:48:06Z",
       "side": 1,
       "message": "This can be massively simplified, avoiding duplicate work, by passing directly the list of files that we know have been already approved by the change owner through a copy label condition and filtering out the ones that have an explicit approval by another owner. \n\n```suggestion\n  private Set\u003cString\u003e getAutoApprovedFiles(\n      Set\u003cString\u003e filesApprovedByChangeOwner,\n      Map\u003cString, Set\u003cGroupOwner\u003e\u003e fileExpandedOwners,\n      Map\u003cAccount.Id, List\u003cPatchSetApproval\u003e\u003e currentApprovalsByAccount) {\n    return filesApprovedByChangeOwner.stream()\n            .filter(notExplicitlyApprovedByAnOwner(fileExpandedOwners, currentApprovalsByAccount))\n            .collect(Collectors.toSet());\n  }\n\n  private Predicate\u003cString\u003e notExplicitlyApprovedByAnOwner(Map\u003cString, Set\u003cGroupOwner\u003e\u003e fileExpandedOwners, Map\u003cAccount.Id, List\u003cPatchSetApproval\u003e\u003e currentApprovalsByAccount) {\n    return filePath -\u003e ownerIds(fileExpandedOwners.get(filePath))\n            .map(currentApprovalsByAccount::get)\n            .filter(Objects::nonNull)\n            .flatMap(List::stream)\n            .noneMatch(isNotCopiedApproval());\n  }\n```",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 3
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5daa7b5d_0f8d1d77",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "620701f8_8cee82bd",
       "range": {
         "startLine": 338,
         "startChar": 0,
@@ -400,6 +664,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d8ef981_51d6aedc",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Removed and replaced by `isNotCopiedApproval()`",
+      "parentUuid": "df742782_76825ffe",
+      "range": {
+        "startLine": 377,
+        "startChar": 21,
+        "endLine": 377,
+        "endChar": 31
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1449cbe5_0dcea780",
@@ -423,6 +711,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dca4ac19_103e3760",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Removed and replaced by isNotCopiedApproval()",
+      "parentUuid": "1449cbe5_0dcea780",
+      "range": {
+        "startLine": 378,
+        "startChar": 6,
+        "endLine": 378,
+        "endChar": 40
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4121325a_4501fa99",
@@ -436,6 +748,30 @@
       "writtenOn": "2026-04-15T21:48:06Z",
       "side": 1,
       "message": "The `label` parameter for a change is computed in a single call with `getLabelDefinition(PathOwners owners, ChangeData changeData)`, and it isn\u0027t really a differentiator here because we already know the file names that have been approved by an owner and there is no need to spend CPU time recomping it.\n\nThe only different parameter is the `copied` parameter that is called with `true` and `false` in two conditions. Just provide a specific predicate for it.\n\nThe caller can directly use them in the input set of `PatchSetApproval` and resolve everything in one go, rather than using two different methods with disconnected meaning.\n\n\n\n```suggestion\n  private static Predicate\u003cPatchSetApproval\u003e isNotCopiedApproval() {\n    Predicate\u003cPatchSetApproval\u003e func \u003d PatchSetApproval::copied;\n    return func.negate();\n  }\n```",
+      "range": {
+        "startLine": 377,
+        "startChar": 0,
+        "endLine": 384,
+        "endChar": 3
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e47d445a_f5c75feb",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-16T17:09:31Z",
+      "side": 1,
+      "message": "Good catch, we are looping through owner approvals, so we know the score is enough (it was ensured by `isApprovedByOwner`).",
+      "parentUuid": "4121325a_4501fa99",
       "range": {
         "startLine": 377,
         "startChar": 0,
