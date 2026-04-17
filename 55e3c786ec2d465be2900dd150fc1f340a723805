@@ -550,6 +550,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51fd7e98_efc666f0",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-17T13:18:32Z",
+      "side": 1,
+      "message": "I see that you may want to restrict this set to *only* the ones changed in the last patch set, not all the ones owned by the change owner from the base. So my suggested modification is inaccurate, point taken.\n\nYour previous code was filtering files by owners and not by the last patch-set.\nIs there a quick way to perform that filtering without having to recompute the diff?\n\nAlso, bear in mind that auto-owners-approved is disabled by default, so most likely this computation won\u0027t be needed.\n\nIs there a way to avoid calling the `modifiedFilesBetweenPatchSets` for most of the cases?",
+      "parentUuid": "a946439e_084a5889",
+      "range": {
+        "startLine": 319,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 74
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05961f0a_01314146",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
         "patchSetId": 6
