@@ -331,6 +331,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a818bf29_8ae7c13a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-17T16:46:18Z",
+      "side": 1,
+      "message": "As discussed [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/comment/ccc01e0b_7e7c9e97/), we left the calculation of auto-owners-approval only when at least one file that is part of this patch-set is white-listed for auto-owners-approved",
+      "parentUuid": "cff1cfba_c81e11d6",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 96
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c82b17fb_060e9648",
@@ -604,6 +628,30 @@
       "side": 1,
       "message": "I see that you may want to restrict this set to *only* the ones changed in the last patch set, not all the ones owned by the change owner from the base. So my suggested modification is inaccurate, point taken.\n\nYour previous code was filtering files by owners and not by the last patch-set.\nIs there a quick way to perform that filtering without having to recompute the diff?\n\nAlso, bear in mind that auto-owners-approved is disabled by default, so most likely this computation won\u0027t be needed.\n\nIs there a way to avoid calling the `modifiedFilesBetweenPatchSets` for most of the cases?",
       "parentUuid": "a946439e_084a5889",
+      "range": {
+        "startLine": 319,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 74
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d71280ac_92f9dea7",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-17T16:46:18Z",
+      "side": 1,
+      "message": "I have now added a guard whereby if the auto-owners-approved is enabled for any of the files that are part of this patch, we immediately short-circuit without even attempting to calculate it.",
+      "parentUuid": "51fd7e98_efc666f0",
       "range": {
         "startLine": 319,
         "startChar": 0,
