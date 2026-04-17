@@ -893,6 +893,24 @@
       "message": "This is a useful refactoring, however, I\u0027d make a separate change for splitting it from the implementation of this feature.",
       "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0f3fff8_a8be3cb2",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-17T13:43:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bbc4e15_05a03a1d",
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
