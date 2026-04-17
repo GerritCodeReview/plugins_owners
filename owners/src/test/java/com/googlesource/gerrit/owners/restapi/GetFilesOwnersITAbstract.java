@@ -125,10 +125,10 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files)
+    assertThat(resp.value().files())
         .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
 
-    assertThat(resp.value().ownersLabels).isEmpty();
+    assertThat(resp.value().ownersLabels()).isEmpty();
   }
 
   @Test
@@ -140,7 +140,7 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().ownersLabels)
+    assertThat(resp.value().ownersLabels())
         .containsExactly(admin.id().get(), Map.of(LabelId.CODE_REVIEW, 2));
   }
 
@@ -154,8 +154,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files).isEmpty();
-    assertThat(resp.value().filesApproved)
+    assertThat(resp.value().files()).isEmpty();
+    assertThat(resp.value().filesApproved())
         .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
   }
 
@@ -224,9 +224,9 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     Response<FilesOwnersResponse> response =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId.toString())));
-    assertThat(response.value().files).containsExactly(OWNED_JAVA_FILE, owners(admin));
-    assertThat(response.value().filesApproved).isEmpty();
-    assertThat(response.value().filesAutoApproved).isEmpty();
+    assertThat(response.value().files()).containsExactly(OWNED_JAVA_FILE, owners(admin));
+    assertThat(response.value().filesApproved()).isEmpty();
+    assertThat(response.value().filesAutoApproved()).isEmpty();
   }
 
   @Test
@@ -280,9 +280,9 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
 
     Response<FilesOwnersResponse> response =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId.toString())));
-    assertThat(response.value().files).isEmpty();
-    assertThat(response.value().filesApproved).isEmpty();
-    assertThat(response.value().filesAutoApproved)
+    assertThat(response.value().files()).isEmpty();
+    assertThat(response.value().filesApproved()).isEmpty();
+    assertThat(response.value().filesAutoApproved())
         .containsExactly(OWNED_JAVA_FILE, owners(admin), ANOTHER_OWNED_JAVA_FILE, owners(admin));
   }
 
@@ -295,9 +295,9 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files)
+    assertThat(resp.value().files())
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().filesApproved()).isEmpty();
   }
 
   @Test
@@ -312,8 +312,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files).isEmpty();
-    assertThat(resp.value().filesApproved)
+    assertThat(resp.value().files()).isEmpty();
+    assertThat(resp.value().filesApproved())
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
   }
 
@@ -326,9 +326,9 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files)
+    assertThat(resp.value().files())
         .containsExactly("a.txt", Sets.newHashSet(new GroupOwner(admin.username())));
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().filesApproved()).isEmpty();
   }
 
   @Test
@@ -340,9 +340,9 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files)
+    assertThat(resp.value().files())
         .containsExactly("a.txt", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().filesApproved()).isEmpty();
   }
 
   @Test
@@ -365,12 +365,12 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     String changeId = createChange().getChangeId();
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(rootOwner));
+    assertThat(resp.value().files()).containsExactly("a.txt", Sets.newHashSet(rootOwner));
 
     addOwnerFileToProjectConfig(allProjects, true, user);
     resp = assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(projectOwner));
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().files()).containsExactly("a.txt", Sets.newHashSet(projectOwner));
+    assertThat(resp.value().filesApproved()).isEmpty();
   }
 
   @Test
@@ -443,8 +443,8 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files).containsExactly("a.txt", Sets.newHashSet(rootOwner));
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().files()).containsExactly("a.txt", Sets.newHashSet(rootOwner));
+    assertThat(resp.value().filesApproved()).isEmpty();
   }
 
   private void assertInheritFromProject(Project.NameKey projectNameKey) throws Exception {
@@ -455,9 +455,9 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
 
-    assertThat(resp.value().files)
+    assertThat(resp.value().files())
         .containsExactly("a.txt", Sets.newHashSet(rootOwner, projectOwner));
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().filesApproved()).isEmpty();
   }
 
   private void addBrokenOwnersFileToRoot() throws Exception {
@@ -517,17 +517,18 @@ public abstract class GetFilesOwnersITAbstract extends LightweightPluginDaemonTe
       throws Exception {
     Response<FilesOwnersResponse> response =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(response.value().files).isEmpty();
+    assertThat(response.value().files()).isEmpty();
     if (explicitlyApprovedOwners.isEmpty()) {
-      assertThat(response.value().filesApproved).isEmpty();
+      assertThat(response.value().filesApproved()).isEmpty();
     } else {
-      assertThat(response.value().filesApproved)
+      assertThat(response.value().filesApproved())
           .containsExactly(filePath, explicitlyApprovedOwners);
     }
     if (autoApprovedOwners.isEmpty()) {
-      assertThat(response.value().filesAutoApproved).isEmpty();
+      assertThat(response.value().filesAutoApproved()).isEmpty();
     } else {
-      assertThat(response.value().filesAutoApproved).containsExactly(filePath, autoApprovedOwners);
+      assertThat(response.value().filesAutoApproved())
+          .containsExactly(filePath, autoApprovedOwners);
     }
   }
 
