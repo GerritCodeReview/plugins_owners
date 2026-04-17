@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f72e69_bcc94414",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-17T16:48:19Z",
+      "side": 0,
+      "message": "We agreed that this is also needed by GetFileOwners, as shown by some newly added tests, see comment [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/comment/ccc01e0b_7e7c9e97/) and  [here}(https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/comment/ccc01e0b_7e7c9e97/)",
+      "parentUuid": "53aba61d_8884b190",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 0
+      },
+      "revId": "42e0f6da4aa08bf248b0a487a5f16737709746e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c899e771_7fe71793",
@@ -85,6 +109,30 @@
       "side": 0,
       "message": "See my [comment](https://gerrit-review.googlesource.com/c/plugins/owners/+/570841/comment/06b64de8_54e56271/), I will re-evaluated this once I have addressed that.",
       "parentUuid": "c899e771_7fe71793",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 0
+      },
+      "revId": "42e0f6da4aa08bf248b0a487a5f16737709746e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f738f7e6_dfb2042c",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/AlreadyApprovedByPredicate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-17T16:48:19Z",
+      "side": 0,
+      "message": "We agreed that this is also needed by GetFileOwners, as shown by some newly added tests, see comment [here](https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/comment/ccc01e0b_7e7c9e97/) and  [here}(https://gerrit-review.googlesource.com/c/plugins/owners/+/570842/comment/ccc01e0b_7e7c9e97/)",
+      "parentUuid": "a43d9954_61df8e9b",
       "range": {
         "startLine": 221,
         "startChar": 0,
