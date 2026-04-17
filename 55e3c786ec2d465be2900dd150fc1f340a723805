@@ -194,6 +194,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c360b5_ccec2f27",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-17T07:46:43Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "da3b65e6_d77d1e35",
+      "range": {
+        "startLine": 269,
+        "startChar": 6,
+        "endLine": 269,
+        "endChar": 56
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccc01e0b_7e7c9e97",
@@ -231,6 +255,30 @@
       "side": 1,
       "message": "We are only interested in the files changed between patchsets (for example PS2 vs PS3).\n\n`allowsAutoApprovalOnPatch` checks whether, in the last PS, only the change owner-owned files were modified.\n\nIf we were filtering on `fileExpandedOwners`, we would get _all_ files in the _change_ (filtered by the change owner).\n\nI thought I had covered this by tests, but apparently I didn\u0027t (or not properly).\nI will also check if there is way to obtain what we need by filtering what we already computed.",
       "parentUuid": "ccc01e0b_7e7c9e97",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 96
+      },
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ba4400f_6a36c2a8",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-17T07:46:43Z",
+      "side": 1,
+      "message": "I believe the point here is: *IF* we are getting all the files in the change from the base to the latest patch-set, are we actually missing anything?\n\nLet\u0027s imagine that we are at PS2 and the difference between base and PS2 is:\n- file1\n- file2\n\nBut between base and PS1, there was file3 added, and that was removed in PS2.\nThen the list between PS1 and PS2 includes:\n- file3\n\nThat could be the case you\u0027re referring to.\n\n*In that specific case*, we should flag that file3 has been auto-owner-approved, if file3 is fully owned by the change owner. However, this API returns the result of the auto-owner-approved files of the *change* and not between PS2 and PS3, therefore the information that file3 is auto-owner-approved isn\u0027t relevant and cannot be displayed on the UI anyway: where are you going to put the icon next to?\n\nBottom line is: I get your point, and you are right; however, the case you are referring to, even if it is possible, won\u0027t be relevant anyway for this API execution.\n\nDoes the above make sense?",
+      "parentUuid": "58cc7810_62c572ca",
       "range": {
         "startLine": 276,
         "startChar": 0,
