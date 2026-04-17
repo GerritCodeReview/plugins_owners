@@ -147,6 +147,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4cf33ed_94ac9b2a",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/entities/FilesOwnersResponse.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-17T15:33:17Z",
+      "side": 1,
+      "message": "Done as part of Change 574321",
+      "parentUuid": "cdb11930_5c5a46d2",
+      "revId": "55e3c786ec2d465be2900dd150fc1f340a723805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86c7f401_83687b7d",
