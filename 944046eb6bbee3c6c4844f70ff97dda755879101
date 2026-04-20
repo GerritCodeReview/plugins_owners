@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8e17c8d_b758d7af",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-20T13:08:52Z",
+      "side": 1,
+      "message": "What do you mean @luca.milanesio@gmail.com in the `apply()` call stack, we never end up calling `filterFilesOwnedBy` with `changePaths`, AFAICT.",
+      "parentUuid": "fecfd5a9_528bf50c",
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3854e044_6bb0cc8f",
         "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
         "patchSetId": 14
