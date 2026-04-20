@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bd82010_6ddb25b4",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-20T13:56:12Z",
+      "side": 1,
+      "message": "`apply()` and `getFilesAutoApproved()` call it on different sets:\n\n1. `apply()` calls it on `changePaths` (which is all files in the `current`).\n\n2. `getFilesAutoApproved()` calls it on `allFilesTouchedInTheLastPatchSet` (which is all files touched by the last PS).\n\nThey generate two `PathOwners` objects based on two different sets of modified files.\nPerhaps we could do some thinking about one being the _subset_ of the other?\nI am not sure, but for now I\u0027d say we can\u0027t just pass the `pathOwners` down the call stack.\n\nAnyway, let\u0027s leave this discussion to the next change 👍",
+      "parentUuid": "43e62bb9_b2432df2",
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3854e044_6bb0cc8f",
