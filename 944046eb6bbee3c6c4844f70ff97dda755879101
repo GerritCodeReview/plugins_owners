@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a833f5e_62c793da",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-20T12:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3854e044_6bb0cc8f",
+      "range": {
+        "startLine": 334,
+        "startChar": 18,
+        "endLine": 334,
+        "endChar": 54
+      },
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2b39f1a_20ad0fba",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-04-20T10:19:51Z",
       "side": 1,
       "message": "This looks quite complex to read. I believe here you want to ensure that there is no intersection between the set of auto-approved files allowed and the ones approved by the owners of the change.\n\nCan we just express the same in code?\n\n\n\n```suggestion\n        ||             || Sets.intersection(filesAllowedForOwnersAutoApproval, filesApprovedByOwners.keySet()).isEmpty();\n\n```",
+      "range": {
+        "startLine": 338,
+        "startChar": 11,
+        "endLine": 338,
+        "endChar": 99
+      },
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c3d4458_77243878",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-20T12:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2b39f1a_20ad0fba",
       "range": {
         "startLine": 338,
         "startChar": 11,
@@ -87,6 +135,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d73e68e_729a29ef",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-20T12:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73603069_df2931f8",
+      "range": {
+        "startLine": 221,
+        "startChar": 14,
+        "endLine": 221,
+        "endChar": 28
+      },
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52773daf_2b34eb65",
@@ -110,6 +182,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07b0fd1a_d6c78925",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-20T12:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52773daf_2b34eb65",
+      "range": {
+        "startLine": 249,
+        "startChar": 14,
+        "endLine": 249,
+        "endChar": 28
+      },
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d1c5939_f595cd61",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-04-20T10:19:51Z",
       "side": 1,
       "message": "Can we name this similarly to the `OWNED_JAVA_FILE` so that visually is read as \"adding one other owned file\".\n\n\n\n```suggestion\n        .file(\"another-\" + OWNED_JAVA_FILE)\n```",
+      "range": {
+        "startLine": 276,
+        "startChar": 14,
+        "endLine": 276,
+        "endChar": 24
+      },
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d646cfb0_430985a3",
+        "filename": "owners/src/test/java/com/googlesource/gerrit/owners/restapi/GetFilesOwnersITAbstract.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-04-20T12:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d1c5939_f595cd61",
       "range": {
         "startLine": 276,
         "startChar": 14,
