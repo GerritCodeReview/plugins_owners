@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e62bb9_b2432df2",
+        "filename": "owners/src/main/java/com/googlesource/gerrit/owners/restapi/GetFilesOwners.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-04-20T13:39:40Z",
+      "side": 1,
+      "message": "I see his is called by\n\n1. `getFilesAutoApproved()`\n2. `apply()`\n\nThe `apply()` has already the calculation of `PathOwners` at:\n\n```\n      PathOwners owners \u003d getPathOwners(project, branch, changePaths);\n```\n\nAnyway, not for this change, acking for now.",
+      "parentUuid": "e8e17c8d_b758d7af",
+      "revId": "944046eb6bbee3c6c4844f70ff97dda755879101",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3854e044_6bb0cc8f",
