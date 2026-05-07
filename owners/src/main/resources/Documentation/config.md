@@ -206,57 +206,11 @@ in all parent projects up to All-Projects.
 
 ## auto-owners-approved
 
-The `auto-owners-approved` field controls a specific exception to the default
-`approverin:already-approved-by_owners` behavior. It applies when a new patch-set updates only files
-that are owned by the change owner or patch-set committer, in a situation where the normal
-`approverin:already-approved-by_owners` logic would otherwise drop that owner's previous vote.
+The optional `auto-owners-approved` field controls a specific exception to the default
+`approverin:already-approved-by_owners` copy condition behavior.
 
-The rationale is simple: if an owner already approved a change that stays entirely within code they
-own, and the next patch set is uploaded by that same owner, forcing that same person to re-apply
-the same vote adds little review value.
-
-See [copy-conditions.md](copy-conditions.md) for predicate evaluation details.
-
-This field can be configured at `OWNERS` file level and on individual matchers.
-If it is not set, it defaults to `false`.
-
-If `auto-owners-approved` is `true` for every touched file, the predicate can use that self-update
-shortcut for the patch set. Otherwise, the usual `approverin:already-approved-by_owners` logic
-still applies.
-
-When a matcher defines `auto-owners-approved`, that matcher-specific value takes precedence for the
-files it matches over the surrounding `OWNERS` value.
-
-### Inheritance
-
-The usual `OWNERS` [inheritance](#global-project-owners) logic applies to `auto-owners-approved` as
-well. This includes directory `OWNERS` lookup, project `refs/meta/config` `OWNERS`, and
-parent project `OWNERS` when inheritance continues up the project hierarchy.
-
-### auto-owners-approved example
-
-Enable at `OWNERS` level:
-
-    inherited: true
-    auto-owners-approved: true
-
-With this setting, the predicate may copy an owner's vote when the owner is updating only files
-they own on their own change. Without it, that self-update shortcut does not apply.
-
-Disable it for matched files:
-
-```yaml
-inherited: true
-auto-owners-approved: true
-matchers:
-  - suffix: .java
-    auto-owners-approved: false
-    owners:
-      - user-backend
-```
-
-Here, `.java` files matched by that rule use `auto-owners-approved: false` even though the enclosing
-`OWNERS` file sets it to `true`.
+Please refer to the [relevant paragraph](./copy-conditions.md#auto-owners-approved) in
+the [copy-conditions.md](./copy-conditions.md) documentation for details on this.
 
 ## Example 1 - OWNERS file without matchers
 
