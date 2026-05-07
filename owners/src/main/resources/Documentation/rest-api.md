@@ -47,6 +47,7 @@ GET /changes/{change-id}/revisions/{revision-id}/owners~files-owners
 
 `files_auto_approved` contains the files whose approval on the current patch set comes from a vote
 that was copied forward because the `auto-owners-approved` logic applies.
+See [the relevant section](./copy-conditions.md#auto-owners-approved) for more details on this.
 
 `files_auto_approved` and `files_approved` are mutually exclusive. A file that is auto-approved is
 returned only in `files_auto_approved`, and both sections return the full owner set for each file.
