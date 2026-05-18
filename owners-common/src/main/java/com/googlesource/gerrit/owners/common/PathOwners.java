@@ -91,7 +91,7 @@ public class PathOwners {
 
   private final Map<String, Set<String>> fileGroupOwners;
 
-  private final Set<String> fileOwnersBannedAutoApproval;
+  private final Set<String> fileOwnersAllowedAutoApproval;
 
   private final boolean expandGroups;
 
@@ -178,7 +178,7 @@ public class PathOwners {
     matchers = map.getMatchers();
     fileOwners = map.getFileOwners();
     fileGroupOwners = map.getFileGroupOwners();
-    fileOwnersBannedAutoApproval = map.getFileOwnersBannedAutoApproval();
+    fileOwnersAllowedAutoApproval = map.getFileOwnersAllowedAutoApproval();
     label = globalLabel.or(map::getLabel);
   }
 
@@ -212,8 +212,8 @@ public class PathOwners {
     return fileGroupOwners;
   }
 
-  public Set<String> getFileOwnersBannedAutoApproval() {
-    return fileOwnersBannedAutoApproval;
+  public Set<String> getFileOwnersAllowedAutoApproval() {
+    return fileOwnersAllowedAutoApproval;
   }
 
   public boolean expandGroups() {
@@ -265,10 +265,9 @@ public class PathOwners {
         ownersMap.addFileOwners(path, currentEntry.getOwners());
         ownersMap.addFileReviewers(path, currentEntry.getReviewers());
         ownersMap.addFileGroupOwners(path, currentEntry.getGroupOwners());
-        if (!currentEntry.isAutoOwnersApproved()) {
-          ownersMap.banFileFromOwnersAutoApproval(path);
+        if (currentEntry.isAutoOwnersApproved()) {
+          ownersMap.addAllowedFileForOwnersAutoApproval(path);
         }
-
         // Only add the path to the OWNERS file to reduce the number of
         // entries in the result
         if (currentEntry.getOwnersPath() != null) {
@@ -392,18 +391,17 @@ public class PathOwners {
         ownersMap.addFileGroupOwners(path, matcher.getGroupOwners());
         ownersMap.addFileReviewers(path, matcher.getReviewers());
         switch (matcher.getAutoOwnersApproved()) {
-          // We have an explicit allowance for this matcher
-          // Make sure that anything added at OWNERS level is removed
+          // We have an explicit allowance for this matcher.
           case InheritableBoolean.TRUE:
-            ownersMap.allowFileForAutoApproval(path);
+            ownersMap.addAllowedFileForOwnersAutoApproval(path);
             break;
-          // We have an explicit ban for this matcher
+          // We have an explicit disable for this matcher.
           case InheritableBoolean.FALSE:
-            ownersMap.banFileFromOwnersAutoApproval(path);
+            ownersMap.removeAllowedFileForOwnersAutoApproval(path);
             break;
 
-          // There is no matcher-level specification of auto-owner-approved
-          // therefore the global OWNER-level still applies
+          // There is no matcher-level specification of auto-owner-approved,
+          // therefore the OWNERS-level resolution still applies.
           default:
             break;
         }
