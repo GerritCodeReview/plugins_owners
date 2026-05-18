@@ -15,50 +15,12 @@
 
 package com.googlesource.gerrit.owners.entities;
 
-import com.google.common.base.Objects;
 import java.util.Map;
 import java.util.Set;
 
 /* Files to Owners response API representation */
-public class FilesOwnersResponse {
-
-  public final Map<String, Set<GroupOwner>> files;
-  public final Map<Integer, Map<String, Integer>> ownersLabels;
-  public final Map<String, Set<GroupOwner>> filesApproved;
-
-  public FilesOwnersResponse(
-      Map<Integer, Map<String, Integer>> ownersLabels,
-      Map<String, Set<GroupOwner>> files,
-      Map<String, Set<GroupOwner>> filesApproved) {
-    this.ownersLabels = ownersLabels;
-    this.files = files;
-    this.filesApproved = filesApproved;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    FilesOwnersResponse that = (FilesOwnersResponse) o;
-    return Objects.equal(files, that.files)
-        && Objects.equal(ownersLabels, that.ownersLabels)
-        && Objects.equal(filesApproved, that.filesApproved);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(files, ownersLabels, filesApproved);
-  }
-
-  @Override
-  public String toString() {
-    return "FilesOwnersResponse{"
-        + "files="
-        + files
-        + ", ownersLabels="
-        + ownersLabels
-        + ", filesApproved="
-        + filesApproved
-        + '}';
-  }
-}
+public record FilesOwnersResponse(
+    Map<Integer, Map<String, Integer>> ownersLabels,
+    Map<String, Set<GroupOwner>> files,
+    Map<String, Set<GroupOwner>> filesApproved,
+    Map<String, Set<GroupOwner>> filesAutoApproved) {}
