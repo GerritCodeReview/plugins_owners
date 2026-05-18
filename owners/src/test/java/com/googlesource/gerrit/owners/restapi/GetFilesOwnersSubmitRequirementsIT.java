@@ -70,19 +70,19 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
 
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(resp.value().files)
+    assertThat(resp.value().files())
         .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
-    assertThat(resp.value().ownersLabels).isEmpty();
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().ownersLabels()).isEmpty();
+    assertThat(resp.value().filesApproved()).isEmpty();
 
     // give CR+1 as requested
     recommend(changeId);
 
     resp = assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(resp.value().files).isEmpty();
-    assertThat(resp.value().ownersLabels)
+    assertThat(resp.value().files()).isEmpty();
+    assertThat(resp.value().ownersLabels())
         .containsExactly(admin.id().get(), Map.of(LabelId.CODE_REVIEW, 1));
-    assertThat(resp.value().filesApproved)
+    assertThat(resp.value().filesApproved())
         .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
   }
 
@@ -97,18 +97,18 @@ public class GetFilesOwnersSubmitRequirementsIT extends GetFilesOwnersITAbstract
 
     Response<FilesOwnersResponse> resp =
         assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(resp.value().files)
+    assertThat(resp.value().files())
         .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
-    assertThat(resp.value().ownersLabels).isEmpty();
-    assertThat(resp.value().filesApproved).isEmpty();
+    assertThat(resp.value().ownersLabels()).isEmpty();
+    assertThat(resp.value().filesApproved()).isEmpty();
 
     // give LabelFoo+1 as requested
     gApi.changes().id(changeId).current().review(new ReviewInput().label(label, 1));
 
     resp = assertResponseOk(ownersApi.apply(parseCurrentRevisionResource(changeId)));
-    assertThat(resp.value().files).isEmpty();
-    assertThat(resp.value().ownersLabels).containsEntry(admin.id().get(), Map.of(label, 1));
-    assertThat(resp.value().filesApproved)
+    assertThat(resp.value().files()).isEmpty();
+    assertThat(resp.value().ownersLabels()).containsEntry(admin.id().get(), Map.of(label, 1));
+    assertThat(resp.value().filesApproved())
         .containsExactly("foo", Sets.newHashSet(new Owner(admin.fullName(), admin.id().get())));
   }
 

@@ -93,6 +93,40 @@ suite('owned files tests', () => {
       );
     });
 
+    test('ownedFiles - should return auto-approved files', () => {
+      const autoApprovedFilesOwners = {
+        files_auto_approved: {
+          [ownedApprovedFile]: [fileOwner(1)],
+        },
+      } as unknown as FilesOwners;
+      assert.equal(
+        deepEqual(ownedFiles(owner, autoApprovedFilesOwners), {
+          ownedFiles: [
+            {file: ownedApprovedFile, status: FileStatus.AUTO_APPROVED},
+          ],
+          numberOfApproved: 1,
+          numberOfPending: 0,
+        }),
+        true
+      );
+    });
+
+    test('ownedFiles - should return explicitly approved files without auto approval flag', () => {
+      const explicitlyApprovedFilesOwners = {
+        files_approved: {
+          [ownedApprovedFile]: [fileOwner(1)],
+        },
+      } as unknown as FilesOwners;
+      assert.equal(
+        deepEqual(ownedFiles(owner, explicitlyApprovedFilesOwners), {
+          ownedFiles: [{file: ownedApprovedFile, status: FileStatus.APPROVED}],
+          numberOfApproved: 1,
+          numberOfPending: 0,
+        }),
+        true
+      );
+    });
+
     test('ownedFiles - should match file owner through email without domain name', () => {
       const filesOwners = {
         files: {
