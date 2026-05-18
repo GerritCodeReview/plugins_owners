@@ -512,7 +512,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
     assertThat(owners.getFileOwners()).isEmpty();
   }
 
@@ -520,7 +520,7 @@ public class PathOwnersTest extends ClassicConfig {
   public void testAutoOwnersApprovedInheritedFromRoot() throws Exception {
     expectConfig(
         "OWNERS",
-        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+        "inherited: true\nauto-owners-approved: true\nowners:\n- " + USER_A_EMAIL_COM + "\n");
     expectConfig("dir/OWNERS", "inherited: true\nowners:\n- " + USER_B_EMAIL_COM + "\n");
 
     replayAll();
@@ -538,14 +538,14 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("dir/file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).contains("dir/file.txt");
   }
 
   @Test
   public void testAutoOwnersApprovedDefaultsWhenInheritanceStopped() throws Exception {
     expectConfig(
         "OWNERS",
-        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+        "inherited: true\nauto-owners-approved: true\nowners:\n- " + USER_A_EMAIL_COM + "\n");
     expectConfig("dir/OWNERS", "inherited: false\nowners:\n- " + USER_B_EMAIL_COM + "\n");
 
     replayAll();
@@ -563,7 +563,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).isEmpty();
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
   }
 
   @Test
@@ -574,7 +574,7 @@ public class PathOwnersTest extends ClassicConfig {
         "OWNERS",
         RefNames.REFS_CONFIG,
         parentRepository1,
-        "inherited: true\nauto-owners-approved: false\nowners:\n- " + USER_A_EMAIL_COM + "\n");
+        "inherited: true\nauto-owners-approved: true\nowners:\n- " + USER_A_EMAIL_COM + "\n");
 
     mockParentRepository(parentRepository1NameKey, parentRepository1);
     replayAll();
@@ -592,7 +592,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).contains("file.txt");
   }
 
   @Test
@@ -622,7 +622,7 @@ public class PathOwnersTest extends ClassicConfig {
             CACHE_MOCK,
             Optional.empty());
 
-    assertThat(owners.getFileOwnersBannedAutoApproval()).contains("file.txt");
+    assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
   }
 
   private void mockOwners(String... owners) throws IOException {
