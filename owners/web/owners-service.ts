@@ -52,6 +52,7 @@ export interface OwnersLabels {
 export interface FilesOwners {
   files: OwnedFiles;
   files_approved: OwnedFiles;
+  files_auto_approved?: OwnedFiles;
   owners_labels: OwnersLabels;
 }
 

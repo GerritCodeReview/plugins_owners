@@ -50,6 +50,7 @@ export interface OwnersState {
 export enum FileStatus {
   NEEDS_APPROVAL = 'NEEDS_APPROVAL',
   APPROVED = 'APPROVED',
+  AUTO_APPROVED = 'AUTO_APPROVED',
   NOT_OWNED = 'NOT_OWNED',
 }
 
