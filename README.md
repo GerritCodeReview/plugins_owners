@@ -11,6 +11,8 @@ specific plugin's folder.
 
 > **NOTE**: A comprehensive introduction to both `owners` and `owners-autoassign` has been
 > given as part of the [GerritMeets series in Jan 2025](https://www.youtube.com/watch?v=NfIHnJF30Wo).
+> While a further deep dive specifically into newer features of this plugin was
+> give at the [GerritMeets in April 2026](https://www.youtube.com/watch?v=DfKYduVKJEY)
 
 Here's an introduction to both plugins:
 
