@@ -43,41 +43,7 @@ same time, etc...
 
 ## Building the plugins
 
-This plugin is built with Bazel and two build modes are supported:
-
- * Standalone
- * In Gerrit tree
-
-### Build standalone
-
-To build the plugin, issue the following command:
-
-```
-  bazel build :all
-```
-
-The output is created in
-
-```
-  bazel-bin/owners/owners.jar
-  bazel-bin/owners-autoassign/owners-autoassign.jar
-  bazel-bin/owners-api/owners-api.jar
-
-```
-
-To execute the tests run:
-
-```
-  bazel test //...
-```
-
-This project can be imported into the Eclipse IDE:
-
-```
-  ./tools/eclipse/project.sh
-```
-
-## Build in Gerrit tree
+The plugins are built with Bazel as part of the Gerrit source tree.
 
 Create symbolic links of the owners and owners-autoassign folders and of the
 external_plugin_deps.bzl file to the Gerrit source code /plugins directory.
