@@ -97,7 +97,7 @@ Example:
   ln -s ../../owners/owners .
   ln -s ../../owners/owners-autoassign .
   ln -s ../../owners/owners-api .
-  ln -sf ../../owners/external_plugin_deps.bzl .
+  ln -sf ../../owners/external_plugin_deps.MODULE.bazel .
   cd ..
   ln -s ../owners/owners-common .
   bazel build plugins/owners plugins/owners-autoassign

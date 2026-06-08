@@ -1,0 +1,23 @@
+# External Maven dependencies for the owners/owners-common plugin.
+# Contributed to the shared external_deps maven install.
+# After any change here, regenerate the Gerrit lock file:
+#   REPIN=1 bazel run @external_deps//:pin
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+
+# Runtime deps (owners-common)
+maven.artifact(name = "external_deps", group = "com.fasterxml.jackson.core", artifact = "jackson-annotations", version = "2.18.3")
+maven.artifact(name = "external_deps", group = "com.fasterxml.jackson.core", artifact = "jackson-core", version = "2.18.3")
+maven.artifact(name = "external_deps", group = "com.fasterxml.jackson.core", artifact = "jackson-databind", version = "2.18.3")
+maven.artifact(name = "external_deps", group = "com.fasterxml.jackson.dataformat", artifact = "jackson-dataformat-yaml", version = "2.18.3")
+maven.artifact(name = "external_deps", group = "org.yaml", artifact = "snakeyaml", version = "2.3")
+
+# Test deps (owners-common tests)
+maven.artifact(name = "external_deps", group = "org.easymock", artifact = "easymock", version = "5.4.0", testonly = True)
+maven.artifact(name = "external_deps", group = "org.javassist", artifact = "javassist", version = "3.30.2-GA", testonly = True)
+maven.artifact(name = "external_deps", group = "org.powermock", artifact = "powermock-api-easymock", version = "2.0.9", testonly = True)
+maven.artifact(name = "external_deps", group = "org.powermock", artifact = "powermock-api-support", version = "2.0.9", testonly = True)
+maven.artifact(name = "external_deps", group = "org.powermock", artifact = "powermock-core", version = "2.0.9", testonly = True)
+maven.artifact(name = "external_deps", group = "org.powermock", artifact = "powermock-module-junit4", version = "2.0.9", testonly = True)
+maven.artifact(name = "external_deps", group = "org.powermock", artifact = "powermock-module-junit4-common", version = "2.0.9", testonly = True)
+maven.artifact(name = "external_deps", group = "org.powermock", artifact = "powermock-reflect", version = "2.0.9", testonly = True)
