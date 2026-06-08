@@ -154,24 +154,14 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
 
   override render() {
     // even if `nothing` is returned Gerrit still shows the pointer and allows
-    // clicking at it, redirecting to the empty tab when done; traverse through
-    // the shadowRoots down to the tab and disable/enable it when needed
-    const tabParent = document
-      .querySelector('#pg-app')
-      ?.shadowRoot?.querySelector('#app-element')
-      ?.shadowRoot?.querySelector('main > gr-change-view')
-      ?.shadowRoot?.querySelector(
-        '#tabs > paper-tab[data-name="change-view-tab-header-owners"]'
-      );
+    // clicking at it, redirecting to the empty tab when done; hide/show the
+    // wrapping md-secondary-tab to prevent a blank tab from appearing
+    const tabParent = this.closest('md-secondary-tab') as HTMLElement | null;
     if (this.hidden) {
-      if (tabParent && !tabParent.getAttribute('disabled')) {
-        tabParent.setAttribute('disabled', 'disabled');
-      }
+      if (tabParent) tabParent.style.display = 'none';
       return nothing;
     }
-    if (tabParent && tabParent.getAttribute('disabled')) {
-      tabParent.removeAttribute('disabled');
-    }
+    if (tabParent) tabParent.style.display = '';
 
     if (
       this.ownedFilesInfo === undefined ||
