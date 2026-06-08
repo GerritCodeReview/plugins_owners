@@ -1,7 +1,11 @@
-load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS", "PLUGIN_DEPS_NEVERLINK", "PLUGIN_TEST_DEPS", "gerrit_plugin")
+load("@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl", "gerrit_plugin", "gerrit_plugin_tests")
+load("@rules_java//java:defs.bzl", "java_library")
 load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
-load("//owners-common:common.bzl", "EXTERNAL_DEPS", "EXTERNAL_TEST_DEPS")
+load("//owners-common:common.bzl", "EXT_TEST_DEPS")
 load("//tools/bzl:junit.bzl", "junit_tests")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK")
+
+PLUGIN = "owners"
 
 PROLOG_PREDICATES = glob(["src/main/java/gerrit_owners/**/*.java"]) + [
     "src/main/java/com/googlesource/gerrit/owners/OwnersMetrics.java",
@@ -12,8 +16,8 @@ java_library(
     name = "gerrit-owners-predicates",
     srcs = PROLOG_PREDICATES,
     deps = [
-        "//owners-common",
         ":prolog-runtime-neverlink",
+        "//owners-common",
     ] + PLUGIN_DEPS_NEVERLINK,
 )
 
@@ -32,13 +36,12 @@ prolog_cafe_library(
 )
 
 gerrit_plugin(
-    name = "owners",
+    name = PLUGIN,
     srcs = glob(
-        [
-            "src/main/java/**/*.java",
-        ],
+        ["src/main/java/**/*.java"],
         exclude = PROLOG_PREDICATES,
     ),
+    dir_name = "owners",
     manifest_entries = [
         "Implementation-Title: Gerrit OWNERS plugin",
         "Implementation-URL: https://gerrit.googlesource.com/plugins/owners",
@@ -55,32 +58,14 @@ gerrit_plugin(
     ],
 )
 
-java_library(
-    name = "owners__plugin_test_deps",
-    testonly = 1,
-    srcs = glob(
-        ["src/test/java/**/*.java"],
-        exclude = [
-            "src/test/java/**/*Test.java",
-            "src/test/java/**/*IT.java",
-        ],
-    ),
-    visibility = ["//visibility:public"],
-    exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
-        ":owners",
-    ],
-    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
-        ":owners",
-    ],
-)
-
-junit_tests(
-    name = "owners_tests",
+# Creates the :owners__plugin_test_deps library that the per-file IT loop
+# below depends on, plus runs the *Test.java unit tests.
+gerrit_plugin_tests(
     srcs = glob(["src/test/java/**/*Test.java"]),
+    ext_deps = EXT_TEST_DEPS,
+    plugin = PLUGIN,
     tags = ["owners"],
-    deps = [
-        ":owners__plugin_test_deps",
-    ],
+    deps = ["//owners-common"],
 )
 
 [junit_tests(
@@ -88,7 +73,5 @@ junit_tests(
     srcs = [f],
     tags = ["owners"],
     visibility = ["//visibility:public"],
-    deps = [
-        ":owners__plugin_test_deps",
-    ],
+    deps = [":owners__plugin_test_deps"],
 ) for f in glob(["src/test/java/**/*IT.java"])]

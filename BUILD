@@ -1,6 +1,7 @@
+load("@rules_java//java:defs.bzl", "java_library")
+load("//owners-common:common.bzl", "EXTERNAL_DEPS", "EXTERNAL_TEST_DEPS")
 load("//tools:genrule2.bzl", "genrule2")
 load("//tools/bzl:plugin.bzl", "PLUGIN_TEST_DEPS")
-load("//owners-common:common.bzl", "EXTERNAL_DEPS", "EXTERNAL_TEST_DEPS")
 
 genrule2(
     name = "all",

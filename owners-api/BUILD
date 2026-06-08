@@ -1,11 +1,12 @@
-load("//tools/bzl:junit.bzl", "junit_tests")
-load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS", "PLUGIN_DEPS_NEVERLINK", "PLUGIN_TEST_DEPS", "gerrit_plugin")
+load("@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl", "gerrit_plugin", "gerrit_plugin_tests")
+load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK")
+
+PLUGIN = "owners-api"
 
 gerrit_plugin(
-    name = "owners-api",
-    srcs = glob([
-        "src/main/java/**/*.java",
-    ]),
+    name = PLUGIN,
+    srcs = glob(["src/main/java/**/*.java"]),
     dir_name = "owners",
     manifest_entries = [
         "Implementation-Title: Gerrit OWNERS api plugin",
@@ -19,18 +20,13 @@ gerrit_plugin(
 
 java_library(
     name = "owners-api_deps",
-    srcs = glob([
-        "src/main/java/**/*.java",
-    ]),
+    srcs = glob(["src/main/java/**/*.java"]),
     visibility = ["//visibility:public"],
     deps = PLUGIN_DEPS_NEVERLINK,
 )
 
-junit_tests(
-    name = "owners_api_tests",
-    testonly = 1,
+gerrit_plugin_tests(
     srcs = glob(["src/test/java/**/*.java"]),
-    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
-        ":owners-api_deps",
-    ],
+    plugin = PLUGIN,
+    deps = [":owners-api_deps"],
 )
