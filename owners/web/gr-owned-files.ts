@@ -155,10 +155,8 @@ export class OwnedFilesTabHeader extends OwnedFilesCommon {
   override render() {
     // even if `nothing` is returned Gerrit still shows the pointer and allows
     // clicking at it, redirecting to the empty tab when done; hide/show the
-    // wrapping tab element (paper-tab pre-3.13, md-secondary-tab from 3.13+)
-    const tabParent = this.closest(
-      'md-secondary-tab,paper-tab'
-    ) as HTMLElement | null;
+    // wrapping md-secondary-tab to prevent a blank tab from appearing
+    const tabParent = this.closest('md-secondary-tab') as HTMLElement | null;
     if (this.hidden) {
       if (tabParent) tabParent.style.display = 'none';
       return nothing;
