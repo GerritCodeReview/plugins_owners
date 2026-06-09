@@ -1,0 +1,926 @@
+// Copyright (C) 2025 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+// implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.googlesource.gerrit.owners;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allow;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowLabel;
+import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_COMMIT;
+import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_REVISION;
+import static com.google.gerrit.extensions.client.ListChangesOption.DETAILED_LABELS;
+import static com.google.gerrit.server.group.SystemGroupBackend.REGISTERED_USERS;
+import static com.googlesource.gerrit.owners.AlreadyApprovedByOperand.FULL_OPERAND_WITH_PLUGIN_NAME;
+import static java.util.stream.Collectors.joining;
+
+import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.PushOneCommit;
+import com.google.gerrit.acceptance.TestAccount;
+import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.acceptance.UseLocalDisk;
+import com.google.gerrit.acceptance.testsuite.change.ChangeOperations;
+import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
+import com.google.gerrit.acceptance.testsuite.request.RequestScopeOperations;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.LabelId;
+import com.google.gerrit.entities.LabelType;
+import com.google.gerrit.entities.Permission;
+import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.api.changes.ChangeIdentifier;
+import com.google.gerrit.extensions.api.changes.RebaseInput;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.common.ApprovalInfo;
+import com.google.gerrit.extensions.common.ChangeInfo;
+import com.google.gerrit.extensions.common.RevisionInfo;
+import com.google.gerrit.server.project.testing.TestLabels;
+import com.google.inject.Inject;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
+import org.eclipse.jgit.lib.ObjectId;
+import org.junit.Before;
+import org.junit.Test;
+
+@TestPlugin(name = "owners", sysModule = "com.googlesource.gerrit.owners.OwnersModule")
+@UseLocalDisk
+public class AlreadyApprovedByCopyConditionIT extends LightweightPluginDaemonTest {
+  @Inject protected RequestScopeOperations requestScopeOperations;
+  @Inject private ProjectOperations projectOperations;
+  @Inject private ChangeOperations changeOperations;
+
+  private TestAccount FRONTEND_FILES_OWNER;
+  private TestAccount BACKEND_FILES_OWNER;
+  private TestAccount NON_OWNER;
+
+  private static final String BACKEND_OWNED_FILE_PATH = "path/to/";
+  private static final String FRONTEND_OWNED_FILE = "foo.js";
+  private static final String BACKEND_OWNED_FILE = BACKEND_OWNED_FILE_PATH + "foo.java";
+  private static final String FILE_WITH_NO_OWNERS = "foo.txt";
+  private static final boolean AUTO_OWNERS_APPROVED_ENABLED = true;
+  private static final boolean AUTO_OWNERS_APPROVAL_DISABLED = false;
+
+  private static final String FILE_CONTENT =
+      IntStream.rangeClosed(1, 10)
+          .mapToObj(number -> String.format("Line %d\n", number))
+          .collect(joining());
+
+  @Before
+  public void setup() throws Exception {
+    projectOperations
+        .project(allProjects)
+        .forUpdate()
+        .add(
+            allowLabel(TestLabels.codeReview().getName())
+                .ref(RefNames.REFS_HEADS + "*")
+                .group(REGISTERED_USERS)
+                .range(-2, 2))
+        .add(allow(Permission.REBASE).ref("refs/*").group(REGISTERED_USERS))
+        .update();
+
+    FRONTEND_FILES_OWNER = accountCreator.create("user-frontend");
+    BACKEND_FILES_OWNER = accountCreator.create("user-backend");
+    NON_OWNER = accountCreator.create("user-non-owner");
+
+    addOwnerFileWithMatchersToRoot(
+        Map.of(
+            ".js", List.of(FRONTEND_FILES_OWNER),
+            ".java", List.of(BACKEND_FILES_OWNER)));
+
+    updateLabel(b -> b.setCopyCondition("approverin:" + FULL_OPERAND_WITH_PLUGIN_NAME));
+  }
+
+  @Test
+  public void shouldCopyOwnerApprovalOnlyWhenOwnedFilesAreUnchanged() throws Exception {
+    ChangeIdentifier changeId = createChange(FRONTEND_OWNED_FILE, "some frontend change");
+
+    vote(FRONTEND_FILES_OWNER, changeId.toString(), 2);
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_OWNED_FILE, "some java content");
+
+    assertVote(changeId, FRONTEND_FILES_OWNER, 2);
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalForOwnerWhenNoOwnedFileExists() throws Exception {
+    ChangeIdentifier changeId = createChange(FILE_WITH_NO_OWNERS, "file with no owners");
+
+    vote(FRONTEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, FILE_WITH_NO_OWNERS, "updated text");
+
+    assertVote(changeId, FRONTEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenOwnedFilesAreIntroducedInLaterPatchSet() throws Exception {
+    ChangeIdentifier changeId = createChange(FILE_WITH_NO_OWNERS, "file with no owners");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_OWNED_FILE, "some java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenOnlyCommitMessageChangesInNextPatchSet() throws Exception {
+    String ownedFile = "file.txt";
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+
+    ChangeIdentifier changeId = createChange(ownedFile, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .commitMessage("Updated commit message")
+        .create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenOwnedFileIsDeleted() throws Exception {
+    ChangeIdentifier changeId = createChange(BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations.change(changeId).newPatchset().file(BACKEND_OWNED_FILE).delete().create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenOwnedFileIsRenamedToOwnedFile() throws Exception {
+    ChangeIdentifier changeId = createChange(BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(BACKEND_OWNED_FILE)
+        .renameTo("renamed-" + BACKEND_OWNED_FILE)
+        .create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenOwnedFileIsRenamedToNonOwnedFile() throws Exception {
+    ChangeIdentifier changeId = createChange(BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .file(BACKEND_OWNED_FILE)
+        .renameTo(FILE_WITH_NO_OWNERS)
+        .create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebase() throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    rebaseChangeOn(amendL3.getChangeId(), amendL7.getCommit().getId());
+
+    assertVote(amendL3.getChangeId(), BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void
+      shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheNewBase()
+          throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(FRONTEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    ChangeIdentifier baseChangeWithUnrelatedFiles =
+        changeOperations
+            .newChange()
+            .project(project)
+            .file(FRONTEND_OWNED_FILE)
+            .content(FILE_CONTENT.replace("Line 7\n", "Line seven\n"))
+            .file("unrelated.txt")
+            .content("unrelated change")
+            .create();
+
+    rebaseChangeOn(amendL3.getChangeId(), commitOf(baseChangeWithUnrelatedFiles));
+
+    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+  }
+
+  @Test
+  public void
+      shouldCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseEvenIfAnUnrelatedFileWasAddedByTheRebasedChange()
+          throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    // Rebase and include an unrelated file
+    testRepo.reset(amendL7.getCommit().getId());
+    testRepo.cherryPick(amendL3.getCommit());
+    PushOneCommit.Result rebasedL30WithUnrelatedChanges =
+        amendChange(
+            amendL3.getChangeId(), "Rebased with changes", "unrelated.txt", "Unrelated change");
+    rebasedL30WithUnrelatedChanges.assertOkStatus();
+
+    assertVote(amendL3.getChangeId(), BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void
+      shouldNotCopyApprovalWhenAllEditsToOwnedFileAreDueToRebaseButAnotherOwnedFileWasAdded()
+          throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(FRONTEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(FRONTEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(FRONTEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    testRepo.reset(amendL7.getCommit().getId());
+    testRepo.cherryPick(amendL3.getCommit());
+    PushOneCommit.Result rebasedL30PlusOtherChangesToOwnedFile =
+        amendChange(
+            amendL3.getChangeId(),
+            "Rebased + Add another owned file",
+            "another-owned.js",
+            "Line 1\n");
+    rebasedL30PlusOtherChangesToOwnedFile.assertOkStatus();
+
+    assertVote(amendL3.getChangeId(), FRONTEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenRebasingButFurtherAmending() throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    // Rebase and include an unrelated file
+    testRepo.reset(amendL7.getCommit().getId());
+    testRepo.cherryPick(amendL3.getCommit());
+    PushOneCommit.Result rebasedL3WithUnrelatedChanges =
+        amendChange(
+            amendL3.getChangeId(),
+            "Rebased with additional change to Line 5",
+            BACKEND_OWNED_FILE,
+            FILE_CONTENT.replace("Line 5\n", "Line five\n"));
+    rebasedL3WithUnrelatedChanges.assertOkStatus();
+
+    assertVote(amendL3.getChangeId(), BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenInheritingARemovalOfAnOwnedFileFromRebase() throws Exception {
+    createInitialContentFor(BACKEND_OWNED_FILE);
+    ObjectId latestMasterCommitId = createInitialContentFor("another-owned.java");
+
+    ChangeIdentifier removedFileChangeId = newChangeDeletingFile("another-owned.java");
+
+    vote(BACKEND_FILES_OWNER, removedFileChangeId.toString(), 2);
+
+    testRepo.reset(latestMasterCommitId);
+    ChangeIdentifier baseRemovedFileChangeId = newChangeDeletingFile(BACKEND_OWNED_FILE);
+
+    rebaseChangeOn(removedFileChangeId.toString(), commitOf(baseRemovedFileChangeId));
+
+    assertVote(removedFileChangeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenRemovingOwnedFileAndRebaseOnChangeThatRemovesTheSameFile()
+      throws Exception {
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    ChangeIdentifier removedFileChangeId = newChangeDeletingFile(BACKEND_OWNED_FILE);
+
+    vote(BACKEND_FILES_OWNER, removedFileChangeId.toString(), 2);
+
+    testRepo.reset(initialCommitId);
+    ChangeIdentifier baseRemovedFileChangeId = newChangeDeletingFile(BACKEND_OWNED_FILE);
+
+    rebaseChangeOn(removedFileChangeId.toString(), commitOf(baseRemovedFileChangeId));
+
+    assertVote(removedFileChangeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsDefault()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsEnabledOnRoot()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsEnabledOnPath()
+      throws Exception {
+    pushOwnersToRef(
+        ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButApproverIsNotChangeOwner()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
+
+    ChangeIdentifier changeId = createChange(NON_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButUploaderNotOwner()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, NON_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenAllModifiedFilesAreOwnedButAutoOwnersApprovedIsFalse()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenAllModifiedFilesAreOwnedAndAutoOwnersApprovedIsTrue()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenAutoOwnersApprovedIsDefaultAndOwnedEditsAreRebaseOnly()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+
+    ObjectId initialCommitId = createInitialContentFor(BACKEND_OWNED_FILE);
+    PushOneCommit.Result amendL3 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 3\n", "Line three\n");
+    vote(BACKEND_FILES_OWNER, amendL3.getChangeId(), 2);
+
+    testRepo.reset(initialCommitId);
+    PushOneCommit.Result amendL7 =
+        createChangeWithReplacedContent(BACKEND_OWNED_FILE, "Line 7\n", "Line seven\n");
+
+    rebaseChangeOn(amendL3.getChangeId(), amendL7.getCommit().getId());
+
+    assertVote(amendL3.getChangeId(), BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenMatcherEnablesAutoOwnersApproved() throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED)));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherUsesDefaultAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+    pushOwnersToRef(
+        matcherOwnersConfig(suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenMatcherOverridesRootFalse() throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            AUTO_OWNERS_APPROVAL_DISABLED,
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED)));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenMatcherOverridesRootTrue() throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            AUTO_OWNERS_APPROVED_ENABLED,
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildMatcherInheritsParentTrue() throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherInheritsParentFalse() throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildMatcherOverridesParentFalse() throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherOverridesParentTrue() throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenChildMatcherOverridesParentMatcherFalse() throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenChildMatcherOverridesParentMatcherTrue() throws Exception {
+    pushOwnersToMaster(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED)));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVAL_DISABLED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    ChangeIdentifier changeId =
+        createChange(BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "java content");
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    createPatchSet(changeId, BACKEND_FILES_OWNER.id(), BACKEND_OWNED_FILE, "updated java content");
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldNotCopyApprovalWhenPathAndMatcherFilesDoNotAllAllowAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            suffixMatcherConfig(".java", BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    String directoryOwnedFile = "directory-owned.txt";
+    ChangeIdentifier changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .owner(BACKEND_FILES_OWNER.id())
+            .file(directoryOwnedFile)
+            .content("foo")
+            .file(BACKEND_OWNED_FILE)
+            .content("bar")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .uploader(BACKEND_FILES_OWNER.id())
+        .file(directoryOwnedFile)
+        .content("updated foo")
+        .file(BACKEND_OWNED_FILE)
+        .content("updated bar")
+        .create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 0);
+  }
+
+  @Test
+  public void shouldCopyApprovalWhenPathAndMatcherFilesAllAllowAutoOwnersApproved()
+      throws Exception {
+    pushOwnersToMaster(ownersConfigFor(BACKEND_FILES_OWNER, AUTO_OWNERS_APPROVED_ENABLED));
+    pushOwnersToRef(
+        matcherOwnersConfig(
+            AUTO_OWNERS_APPROVED_ENABLED, suffixMatcherConfig(".java", BACKEND_FILES_OWNER)),
+        BACKEND_OWNED_FILE_PATH + "OWNERS",
+        RefNames.fullName("master"));
+
+    String directoryOwnedFile = "directory-owned.txt";
+    ChangeIdentifier changeId =
+        changeOperations
+            .newChange()
+            .project(project)
+            .owner(BACKEND_FILES_OWNER.id())
+            .file(directoryOwnedFile)
+            .content("foo")
+            .file(BACKEND_OWNED_FILE)
+            .content("bar")
+            .create();
+
+    vote(BACKEND_FILES_OWNER, changeId.toString(), 2);
+
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .uploader(BACKEND_FILES_OWNER.id())
+        .file(directoryOwnedFile)
+        .content("updated foo")
+        .file(BACKEND_OWNED_FILE)
+        .content("updated bar")
+        .create();
+
+    assertVote(changeId, BACKEND_FILES_OWNER, 2);
+  }
+
+  private PushOneCommit.Result createChangeWithReplacedContent(
+      String file, String oldLine, String replacement) throws Exception {
+    PushOneCommit.Result r =
+        createChange(
+            String.format("Replaced '%s' with '%s'", oldLine, replacement),
+            file,
+            FILE_CONTENT.replace(oldLine, replacement));
+    r.assertOkStatus();
+    return r;
+  }
+
+  private ObjectId createInitialContentFor(String fileName) throws Exception {
+    PushOneCommit.Result initial =
+        createCommitAndPush(
+            testRepo, "refs/heads/master", "Create base file", fileName, FILE_CONTENT);
+    initial.assertOkStatus();
+    return initial.getCommit().getId();
+  }
+
+  private ObjectId commitOf(ChangeIdentifier changeId) throws Exception {
+    RevisionInfo currentRevision = gApi.changes().id(changeId).get().getCurrentRevision();
+    return ObjectId.fromString(currentRevision.commit.commit);
+  }
+
+  private void rebaseChangeOn(String changeId, ObjectId newParent) throws Exception {
+    RebaseInput rebaseInput = new RebaseInput();
+    rebaseInput.base = newParent.getName();
+    gApi.changes().id(changeId).current().rebase(rebaseInput);
+  }
+
+  private ChangeInfo detailedChange(String changeId) throws Exception {
+    return gApi.changes().id(changeId).get(DETAILED_LABELS, CURRENT_REVISION, CURRENT_COMMIT);
+  }
+
+  private void assertVotes(ChangeInfo c, TestAccount user, int expectedVote) {
+    Integer vote = 0;
+    if (c.labels.get(LabelId.CODE_REVIEW) != null
+        && c.labels.get(LabelId.CODE_REVIEW).all != null) {
+      for (ApprovalInfo approval : c.labels.get(LabelId.CODE_REVIEW).all) {
+        if (approval._accountId == user.id().get()) {
+          vote = approval.value;
+          break;
+        }
+      }
+    }
+
+    assertThat(vote).isEqualTo(expectedVote);
+  }
+
+  private void assertVote(ChangeIdentifier changeId, TestAccount user, int expectedVote)
+      throws Exception {
+    assertVotes(detailedChange(changeId.toString()), user, expectedVote);
+  }
+
+  private void assertVote(String changeId, TestAccount user, int expectedVote) throws Exception {
+    assertVotes(detailedChange(changeId), user, expectedVote);
+  }
+
+  private ChangeIdentifier createChange(String file, String content) throws Exception {
+    return changeOperations.newChange().project(project).file(file).content(content).create();
+  }
+
+  private ChangeIdentifier createChange(Account.Id owner, String file, String content)
+      throws Exception {
+    return changeOperations
+        .newChange()
+        .project(project)
+        .owner(owner)
+        .file(file)
+        .content(content)
+        .create();
+  }
+
+  private ChangeIdentifier newChangeDeletingFile(String file) throws Exception {
+    return changeOperations.newChange().project(project).file(file).delete().create();
+  }
+
+  private void createPatchSet(ChangeIdentifier changeId, String file, String content)
+      throws Exception {
+    changeOperations.change(changeId).newPatchset().file(file).content(content).create();
+  }
+
+  private void createPatchSet(
+      ChangeIdentifier changeId, Account.Id uploader, String file, String content)
+      throws Exception {
+    changeOperations
+        .change(changeId)
+        .newPatchset()
+        .uploader(uploader)
+        .file(file)
+        .content(content)
+        .create();
+  }
+
+  private String ownersConfigFor(TestAccount owner) {
+    return String.format("inherited: true\nowners:\n- %s\n", owner.username());
+  }
+
+  private String ownersConfigFor(TestAccount owner, boolean autoOwnersApproved) {
+    return String.format(
+        "inherited: true\nauto-owners-approved: %s\nowners:\n- %s\n",
+        autoOwnersApproved, owner.username());
+  }
+
+  private String matcherOwnersConfig(String... matchers) {
+    return matcherOwnersConfig(null, matchers);
+  }
+
+  private String matcherOwnersConfig(Boolean autoOwnersApproved, String... matchers) {
+    String rootAutoOwnersApproved =
+        autoOwnersApproved == null
+            ? ""
+            : String.format("auto-owners-approved: %s\n", autoOwnersApproved);
+    return String.format(
+        "inherited: true\n%smatchers:\n%s", rootAutoOwnersApproved, String.join("", matchers));
+  }
+
+  private String suffixMatcherConfig(String suffix, TestAccount owner, boolean autoOwnersApproved) {
+    return String.format(
+        "- suffix: %s\n  auto-owners-approved: %s\n  owners:\n   - %s\n",
+        suffix, autoOwnersApproved, owner.username());
+  }
+
+  private String suffixMatcherConfig(String suffix, TestAccount owner) {
+    return String.format("- suffix: %s\n  owners:\n   - %s\n", suffix, owner.username());
+  }
+
+  private void vote(TestAccount user, String changeId, int vote) throws Exception {
+    requestScopeOperations.setApiUser(user.id());
+    gApi.changes()
+        .id(changeId)
+        .current()
+        .review(new ReviewInput().label(LabelId.CODE_REVIEW, vote));
+  }
+
+  private void updateLabel(Consumer<LabelType.Builder> update) throws Exception {
+    try (ProjectConfigUpdate u = updateProject(allProjects)) {
+      u.getConfig().updateLabelType(LabelId.CODE_REVIEW, update);
+      u.save();
+    }
+  }
+
+  private void addOwnerFileWithMatchersToRoot(Map<String, List<TestAccount>> ownersBySuffix)
+      throws Exception {
+    // Example generated OWNERS:
+    //
+    // inherited: true
+    // matchers:
+    // - suffix: .js
+    //   owners:
+    //   - fe1@example.com
+    //   - fe2@example.com
+    // - suffix: .java
+    //   owners:
+    //   - be1@example.com
+    //   - be2@example.com
+    //
+    String matchersYaml =
+        ownersBySuffix.entrySet().stream()
+            .map(
+                entry -> {
+                  String suffix = entry.getKey();
+                  List<TestAccount> users = entry.getValue();
+                  String ownersYaml =
+                      users.stream()
+                          .map(user -> String.format("   - %s\n", user.username()))
+                          .collect(joining());
+                  return String.format("- suffix: %s\n  owners:\n%s", suffix, ownersYaml);
+                })
+            .collect(joining());
+
+    pushOwnersToMaster(String.format("inherited: %s\nmatchers:\n%s", true, matchersYaml));
+  }
+
+  private void addOwnerFileWithMatchersToRoot(
+      Map<String, List<TestAccount>> ownersBySuffix, boolean autoOwnersApproved) throws Exception {
+    String matchersYaml =
+        ownersBySuffix.entrySet().stream()
+            .map(
+                entry -> {
+                  String suffix = entry.getKey();
+                  List<TestAccount> users = entry.getValue();
+                  String ownersYaml =
+                      users.stream()
+                          .map(user -> String.format("   - %s\n", user.username()))
+                          .collect(joining());
+                  return String.format("- suffix: %s\n  owners:\n%s", suffix, ownersYaml);
+                })
+            .collect(joining());
+
+    pushOwnersToMaster(
+        String.format(
+            "inherited: %s\nauto-owners-approved: %s\nmatchers:\n%s",
+            true, autoOwnersApproved, matchersYaml));
+  }
+
+  private void pushOwnersToMaster(String owners) throws Exception {
+    pushOwnersToRef(owners, "OWNERS", RefNames.fullName("master"));
+  }
+
+  private void pushOwnersToRef(String owners, String ownerPath, String ref) throws Exception {
+    testRepo.git().fetch().setRemote("origin").setRefSpecs(ref + ":" + ref).call();
+    testRepo.reset(ref);
+    pushFactory
+        .create(admin.newIdent(), testRepo, "Add OWNER file", ownerPath, owners)
+        .to(ref)
+        .assertOkStatus();
+  }
+}
