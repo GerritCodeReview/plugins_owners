@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc0648b1_322e4958",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-06-09T07:03:12Z",
+      "side": 1,
+      "message": "This depends on change 590822 in bazlets, that is still pending.",
+      "revId": "2312ddb43ac0967a7a530002b38dd299f1f7d469",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
