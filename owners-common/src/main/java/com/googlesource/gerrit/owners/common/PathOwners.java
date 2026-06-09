@@ -18,7 +18,6 @@ package com.googlesource.gerrit.owners.common;
 
 import static com.google.gerrit.entities.Patch.COMMIT_MSG;
 import static com.google.gerrit.entities.Patch.MERGE_LIST;
-import static com.googlesource.gerrit.owners.common.JgitWrapper.getBlobAsBytes;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -97,6 +96,8 @@ public class PathOwners {
 
   private final Optional<LabelDefinition> label;
 
+  private final JgitWrapper jgitWrapper;
+
   public PathOwners(
       Accounts accounts,
       GitRepositoryManager repositoryManager,
@@ -159,6 +160,36 @@ public class PathOwners {
       PathOwnersEntriesCache cache,
       Optional<LabelDefinition> globalLabel)
       throws InvalidOwnersFileException {
+    this(
+        accounts,
+        repositoryManager,
+        repository,
+        parentProjectsNames,
+        branchWhenEnabled,
+        modifiedPaths,
+        expandGroups,
+        project,
+        cache,
+        globalLabel,
+        new JgitWrapper());
+  }
+
+  // Package-private constructor used by tests to inject a mocked JgitWrapper.
+  // Production callers go through the 10-arg overloads above, which default to
+  // a real `new JgitWrapper()`.
+  PathOwners(
+      Accounts accounts,
+      GitRepositoryManager repositoryManager,
+      Repository repository,
+      List<Project.NameKey> parentProjectsNames,
+      Optional<String> branchWhenEnabled,
+      Set<String> modifiedPaths,
+      boolean expandGroups,
+      String project,
+      PathOwnersEntriesCache cache,
+      Optional<LabelDefinition> globalLabel,
+      JgitWrapper jgitWrapper)
+      throws InvalidOwnersFileException {
     this.repositoryManager = repositoryManager;
     this.repository = repository;
     this.parentProjectsNames = parentProjectsNames;
@@ -166,6 +197,7 @@ public class PathOwners {
     this.parser = new ConfigurationParser(accounts);
     this.accounts = accounts;
     this.expandGroups = expandGroups;
+    this.jgitWrapper = jgitWrapper;
 
     OwnersMap map;
     if (branchWhenEnabled.isPresent()) {
@@ -539,7 +571,7 @@ public class PathOwners {
       String project, Repository repo, String ownersPath, String branch)
       throws InvalidOwnersFileException {
     try {
-      Optional<byte[]> configBytes = getBlobAsBytes(repo, branch, ownersPath);
+      Optional<byte[]> configBytes = jgitWrapper.getBlobAsBytes(repo, branch, ownersPath);
       if (configBytes.isEmpty()) {
         return Optional.empty();
       }

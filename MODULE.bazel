@@ -1,0 +1,43 @@
+module(name = "gerrit-owners")
+
+bazel_dep(name = "rules_java", version = "9.3.0")
+bazel_dep(name = "rules_jvm_external", version = "7.0")
+
+# Only top-level artifacts are declared. Transitive deps resolve through
+# rules_jvm_external: jackson-dataformat-yaml pulls jackson-databind ->
+# jackson-core + jackson-annotations, and snakeyaml; easymock pulls
+# byte-buddy and objenesis.
+#
+# After any artifact change here, re-pin from the owners checkout:
+#   REPIN=1 bazelisk run @owners_plugin_deps//:pin
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "owners_plugin_deps",
+    artifacts = [
+        # Runtime
+        "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.3",
+        # Test
+        "org.easymock:easymock:5.6.0",
+    ],
+    excluded_artifacts = [
+        # Provided by Gerrit's plugin-lib / runtime — exclude to keep the
+        # plugin jar lean and avoid classpath duplication.
+        "com.google.code.findbugs:jsr305",
+        "com.google.errorprone:error_prone_annotations",
+        "com.google.guava:failureaccess",
+        "com.google.guava:guava",
+        "com.google.j2objc:j2objc-annotations",
+        "junit:junit",
+        "org.checkerframework:checker-qual",
+        "org.hamcrest:hamcrest-core",
+        "org.ow2.asm:asm",
+        "org.slf4j:slf4j-api",
+    ],
+    fail_if_repin_required = True,
+    fail_on_missing_checksum = True,
+    fetch_sources = True,
+    lock_file = "//:owners_plugin_deps.lock.json",
+    repositories = ["https://repo1.maven.org/maven2"],
+    version_conflict_policy = "pinned",
+)
+use_repo(maven, "owners_plugin_deps")
