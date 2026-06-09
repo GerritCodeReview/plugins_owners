@@ -1,10 +1,9 @@
 load(
     "@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl",
-    "gerrit_acceptance_framework",
-    "gerrit_api",
     "gerrit_api_neverlink",
     "gerrit_plugin",
     "gerrit_plugin_dependency_tests",
+    "gerrit_plugin_test_util",
     "gerrit_plugin_tests",
 )
 load("@rules_java//java:defs.bzl", "java_library")
@@ -64,9 +63,8 @@ gerrit_plugin(
 
 gerrit_plugin_dependency_tests(plugin = "owners")
 
-java_library(
+gerrit_plugin_test_util(
     name = "owners__plugin_test_deps",
-    testonly = 1,
     srcs = glob(
         ["src/test/java/**/*.java"],
         exclude = [
@@ -74,13 +72,10 @@ java_library(
             "src/test/java/**/*IT.java",
         ],
     ),
+    plugin = "owners",
     visibility = ["//visibility:public"],
-    exports = gerrit_api() + gerrit_acceptance_framework() + [
-        ":owners",
-    ],
-    deps = gerrit_api() + gerrit_acceptance_framework() + [
-        ":owners",
-    ],
+    exports = ["//owners-common"],
+    deps = ["//owners-common"],
 )
 
 gerrit_plugin_tests(
