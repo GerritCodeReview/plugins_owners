@@ -24,60 +24,60 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.patch.PatchListEntry;
 import java.io.IOException;
 import java.util.Optional;
+import org.easymock.EasyMockSupport;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Ignore;
-import org.powermock.api.easymock.PowerMock;
 
 @Ignore
-public abstract class Config {
+public abstract class Config extends EasyMockSupport {
   protected GitRepositoryManager repositoryManager;
   protected Repository repository;
   protected Repository parentRepository1;
   protected Repository parentRepository2;
   protected ConfigurationParser parser;
+  protected JgitWrapper jgitWrapper;
   protected TestAccounts accounts = new TestAccounts();
   protected Optional<String> branch = Optional.of("master");
 
   public void setup() throws Exception {
-    PowerMock.mockStatic(JgitWrapper.class);
-
-    repositoryManager = PowerMock.createMock(GitRepositoryManager.class);
-    repository = PowerMock.createMock(Repository.class);
-    parentRepository1 = PowerMock.createMock(Repository.class);
-    parentRepository2 = PowerMock.createMock(Repository.class);
+    jgitWrapper = createMock(JgitWrapper.class);
+    repositoryManager = createMock(GitRepositoryManager.class);
+    repository = createMock(Repository.class);
+    parentRepository1 = createMock(Repository.class);
+    parentRepository2 = createMock(Repository.class);
     parser = new ConfigurationParser(accounts);
   }
 
   void expectConfig(String path, String config) throws IOException {
     expect(
-            JgitWrapper.getBlobAsBytes(
+            jgitWrapper.getBlobAsBytes(
                 anyObject(Repository.class), anyObject(String.class), eq(path)))
         .andReturn(Optional.of(config.getBytes()))
         .anyTimes();
   }
 
   void expectConfig(String path, String branch, String config) throws IOException {
-    expect(JgitWrapper.getBlobAsBytes(anyObject(Repository.class), eq(branch), eq(path)))
+    expect(jgitWrapper.getBlobAsBytes(anyObject(Repository.class), eq(branch), eq(path)))
         .andReturn(Optional.of(config.getBytes()))
         .anyTimes();
   }
 
   void expectConfig(String path, String branch, Repository repo, String config) throws IOException {
-    expect(JgitWrapper.getBlobAsBytes(eq(repo), eq(branch), eq(path)))
+    expect(jgitWrapper.getBlobAsBytes(eq(repo), eq(branch), eq(path)))
         .andReturn(Optional.of(config.getBytes()))
         .anyTimes();
   }
 
   void expectNoConfig(String path) throws IOException {
     expect(
-            JgitWrapper.getBlobAsBytes(
+            jgitWrapper.getBlobAsBytes(
                 anyObject(Repository.class), anyObject(String.class), eq(path)))
         .andReturn(Optional.empty())
         .anyTimes();
   }
 
   PatchListEntry expectEntry(String name) {
-    PatchListEntry entry = PowerMock.createMock(PatchListEntry.class);
+    PatchListEntry entry = createMock(PatchListEntry.class);
     expect(entry.getNewName()).andReturn(name).anyTimes();
     expect(entry.getChangeType()).andReturn(Patch.ChangeType.MODIFIED).anyTimes();
     expect(entry.getDeletions()).andReturn(1);

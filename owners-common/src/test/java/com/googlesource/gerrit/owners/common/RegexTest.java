@@ -24,7 +24,6 @@ import static com.googlesource.gerrit.owners.common.StreamUtils.iteratorStream;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.powermock.api.easymock.PowerMock.replayAll;
 
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.client.InheritableBoolean;
@@ -36,14 +35,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("jdk.internal.reflect.*")
-@PrepareForTest(JgitWrapper.class)
 public class RegexTest extends Config {
 
   private static final String ACCOUNT_A = "a";
@@ -158,7 +150,8 @@ public class RegexTest extends Config {
             EXPAND_GROUPS,
             "foo",
             new PathOwnersEntriesCacheMock(),
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     // assertions on classic owners
     Set<Account.Id> ownersSet = owners.get().get("project/OWNERS");
@@ -266,7 +259,8 @@ public class RegexTest extends Config {
             EXPAND_GROUPS,
             "foo",
             new PathOwnersEntriesCacheMock(),
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     Set<String> ownedFiles = owners.getFileOwners().keySet();
     assertThat(ownedFiles).containsExactly("project/file.sql");

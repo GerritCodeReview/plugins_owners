@@ -1,0 +1,48 @@
+# External Maven dependencies for the owners/owners-common plugins.
+#
+# Declares the plugin-scoped @owners_plugin_deps Maven repository and
+# tracks its lock file inside the owners git repo. The lock file lives
+# at owners/owners_plugin_deps.lock.json and is reachable from gerrit
+# via the existing plugins/owners symlink (no extra symlink needed).
+#
+# After any artifact change here, re-pin from gerrit:
+#   REPIN=1 bazel run @owners_plugin_deps//:pin
+#
+# Only top-level artifacts are declared. Transitive deps resolve through
+# rules_jvm_external: jackson-dataformat-yaml pulls jackson-databind ->
+# jackson-core + jackson-annotations, and snakeyaml; easymock pulls
+# byte-buddy and objenesis.
+#
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "owners_plugin_deps",
+    artifacts = [
+        # Runtime
+        "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.3",
+        # Test
+        "org.easymock:easymock:5.6.0",
+    ],
+    excluded_artifacts = [
+        # Provided by Gerrit's PLUGIN_DEPS / runtime — exclude to keep the
+        # plugin jar lean and avoid classpath duplication.
+        "com.google.code.findbugs:jsr305",
+        "com.google.errorprone:error_prone_annotations",
+        "com.google.guava:failureaccess",
+        "com.google.guava:guava",
+        "com.google.j2objc:j2objc-annotations",
+        "junit:junit",
+        "org.checkerframework:checker-qual",
+        "org.hamcrest:hamcrest-core",
+        "org.ow2.asm:asm",
+        "org.slf4j:slf4j-api",
+    ],
+    fail_if_repin_required = True,
+    fail_on_missing_checksum = True,
+    fetch_sources = True,
+    # Reached via the existing plugins/owners symlink — resolves to
+    # owners/owners/owners_plugin_deps.lock.json in the owners git repo.
+    lock_file = "//plugins/owners:owners_plugin_deps.lock.json",
+    repositories = ["https://repo1.maven.org/maven2"],
+    version_conflict_policy = "pinned",
+)
+use_repo(maven, "owners_plugin_deps")
