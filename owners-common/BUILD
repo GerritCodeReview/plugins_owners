@@ -1,26 +1,39 @@
-load("//tools/bzl:junit.bzl", "junit_tests")
-load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS", "PLUGIN_DEPS_NEVERLINK", "PLUGIN_TEST_DEPS", "gerrit_plugin")
-load("//owners-common:common.bzl", "EXTERNAL_DEPS", "EXTERNAL_TEST_DEPS")
+load(
+    "@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl",
+    "gerrit_api_neverlink",
+    "gerrit_plugin_tests",
+)
+load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_jvm_external//:defs.bzl", "artifact")
+
+EXT_REPO = "owners_plugin_deps"
+
+EXT_DEPS = [
+    "com.fasterxml.jackson.core:jackson-databind",
+    "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml",
+]
 
 java_library(
     name = "owners-common",
-    srcs = glob([
-        "src/main/java/**/*.java",
-    ]),
+    srcs = glob(["src/main/java/**/*.java"]),
     visibility = ["//visibility:public"],
-    deps = PLUGIN_DEPS_NEVERLINK + EXTERNAL_DEPS,
+    deps = gerrit_api_neverlink("owners-common") + [
+        artifact(
+            c,
+            repository_name = EXT_REPO,
+        )
+        for c in EXT_DEPS
+    ],
 )
 
-junit_tests(
+gerrit_plugin_tests(
     name = "test",
-    testonly = 1,
     srcs = glob(["src/test/java/**/*.java"]),
-    jvm_flags = [
-        "--add-opens=java.base/java.lang=ALL-UNNAMED",
-        "--add-opens=java.base/java.util=ALL-UNNAMED",
-        "--add-opens=java.base/java.util.stream=ALL-UNNAMED",
-    ],
-    deps = EXTERNAL_TEST_DEPS + PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+    deps = [
+        artifact(
+            "org.easymock:easymock",
+            repository_name = EXT_REPO,
+        ),
         ":owners-common",
     ],
 )

@@ -63,11 +63,25 @@ Example:
   ln -s ../../owners/owners .
   ln -s ../../owners/owners-autoassign .
   ln -s ../../owners/owners-api .
-  ln -sf ../../owners/external_plugin_deps.bzl .
+  ln -sf ../../owners/external_plugin_deps.MODULE.bazel .
   cd ..
   ln -s ../owners/owners-common .
   bazel build plugins/owners plugins/owners-autoassign
 ```
+
+To re-pin Maven dependencies after editing
+`external_plugin_deps.MODULE.bazel`, run REPIN from the gerrit checkout
+(the `@owners_plugin_deps` repository is only declared in the file
+included by gerrit's bzlmod resolution):
+
+```
+  cd gerrit
+  REPIN=1 bazel run @owners_plugin_deps//:pin
+```
+
+This writes back to `owners/owners_plugin_deps.lock.json` (in the
+owners git repo) via the `plugins/owners` symlink. Commit the updated
+lock file alongside the `external_plugin_deps.MODULE.bazel` change.
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
 and does not need to be built separately being a direct dependency of the build
