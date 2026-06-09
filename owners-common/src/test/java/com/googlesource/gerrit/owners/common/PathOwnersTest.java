@@ -23,7 +23,6 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.powermock.api.easymock.PowerMock.replayAll;
 
 import com.google.common.truth.Truth8;
 import com.google.gerrit.entities.Account;
@@ -37,14 +36,7 @@ import java.util.Set;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("jdk.internal.reflect.*")
-@PrepareForTest(JgitWrapper.class)
 public class PathOwnersTest extends ClassicConfig {
 
   private static final String CLASSIC_OWNERS = "classic/OWNERS";
@@ -85,7 +77,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A_ID));
@@ -109,7 +102,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.of(EXPECTED_LABEL_DEFINITION));
+            Optional.of(EXPECTED_LABEL_DEFINITION),
+            jgitWrapper);
     Truth8.assertThat(owners.getLabel()).hasValue(EXPECTED_LABEL_DEFINITION);
   }
 
@@ -128,7 +122,8 @@ public class PathOwnersTest extends ClassicConfig {
             DO_NOT_EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
     Set<String> ownersSet = owners.getFileGroupOwners().get(CLASSIC_FILE_TXT);
     assertEquals(2, ownersSet.size());
     assertTrue(ownersSet.contains(USER_A));
@@ -151,7 +146,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
     Set<Account.Id> ownersSet = owners.get().get(CLASSIC_OWNERS);
     assertEquals(0, ownersSet.size());
   }
@@ -177,7 +173,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
     Set<Account.Id> ownersSet2 = owners2.get().get(CLASSIC_OWNERS);
 
     // in this case we are inheriting the acct3 from /OWNERS
@@ -209,7 +206,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.of(EXPECTED_LABEL_DEFINITION));
+            Optional.of(EXPECTED_LABEL_DEFINITION),
+            jgitWrapper);
     Truth8.assertThat(owners2.getLabel()).hasValue(EXPECTED_LABEL_DEFINITION);
   }
 
@@ -231,7 +229,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.of(EXPECTED_LABEL_DEFINITION));
+            Optional.of(EXPECTED_LABEL_DEFINITION),
+            jgitWrapper);
     Truth8.assertThat(owners2.getLabel()).hasValue(EXPECTED_LABEL_DEFINITION);
   }
 
@@ -261,7 +260,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(1, fileOwners.size());
@@ -307,7 +307,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(fileOwners.size(), 1);
@@ -357,7 +358,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     Map<String, Set<Account.Id>> fileOwners = owners.getFileOwners();
     assertEquals(fileOwners.size(), 2);
@@ -402,7 +404,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
     Set<Account.Id> ownersSet = owners.get().get("dir/subdir/OWNERS");
 
     assertEquals(3, ownersSet.size());
@@ -483,7 +486,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             cacheMock,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     assertThat(owners.getFileOwners()).isNotEmpty();
     int expectedCacheCalls =
@@ -510,7 +514,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
     assertThat(owners.getFileOwners()).isEmpty();
@@ -536,7 +541,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     assertThat(owners.getFileOwnersAllowedAutoApproval()).contains("dir/file.txt");
   }
@@ -561,7 +567,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
   }
@@ -590,7 +597,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     assertThat(owners.getFileOwnersAllowedAutoApproval()).contains("file.txt");
   }
@@ -620,7 +628,8 @@ public class PathOwnersTest extends ClassicConfig {
             EXPAND_GROUPS,
             "foo",
             CACHE_MOCK,
-            Optional.empty());
+            Optional.empty(),
+            jgitWrapper);
 
     assertThat(owners.getFileOwnersAllowedAutoApproval()).isEmpty();
   }
