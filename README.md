@@ -51,7 +51,7 @@ Example:
   cd gerrit/plugins
   ln -s ../../owners .
   ln -s ../../owners-common-api .
-  ln -sf owners-common-api/external_plugin_deps.bzl .
+  ln -sf owners-common-api/external_plugin_deps.bzl.MODULE.bazel .
   cd ..
   bazel build plugins/owners
 ```

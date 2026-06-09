@@ -1,6 +1,14 @@
-load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS", "PLUGIN_DEPS_NEVERLINK", "PLUGIN_TEST_DEPS", "gerrit_plugin")
+load(
+    "@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl",
+    "gerrit_acceptance_framework",
+    "gerrit_api",
+    "gerrit_api_neverlink",
+    "gerrit_plugin",
+    "gerrit_plugin_dependency_tests",
+    "gerrit_plugin_tests",
+)
+load("@rules_java//java:defs.bzl", "java_library")
 load("//lib/prolog:prolog.bzl", "prolog_cafe_library")
-load("//tools/bzl:junit.bzl", "junit_tests")
 
 PROLOG_PREDICATES = glob(["src/main/java/gerrit_owners/**/*.java"]) + [
     "src/main/java/com/googlesource/gerrit/owners/OwnersMetrics.java",
@@ -11,15 +19,27 @@ java_library(
     name = "gerrit-owners-predicates",
     srcs = PROLOG_PREDICATES,
     deps = [
-        ":owners-common-api-neverlink",
-        "@external_deps//:com_googlecode_prolog_cafe_prolog_runtime",
-    ] + PLUGIN_DEPS_NEVERLINK,
+        ":prolog-runtime-neverlink",
+        "//plugins/owners-common-api",
+    ] + gerrit_api_neverlink("gerrit-owners-predicates"),
+)
+
+java_library(
+    name = "prolog-runtime-neverlink",
+    neverlink = 1,
+    exports = ["@external_deps//:com_googlecode_prolog_cafe_prolog_runtime"],
+)
+
+java_library(
+    name = "owners-common-api-neverlink",
+    neverlink = 1,
+    exports = ["//plugins/owners-common-api"],
 )
 
 prolog_cafe_library(
     name = "gerrit-owners-prolog-rules",
     srcs = glob(["src/main/prolog/*.pl"]),
-    deps = PLUGIN_DEPS_NEVERLINK + [
+    deps = gerrit_api_neverlink("gerrit-owners-prolog-rules") + [
         ":gerrit-owners-predicates",
     ],
 )
@@ -48,13 +68,7 @@ gerrit_plugin(
     ],
 )
 
-java_library(
-    name = "owners-common-api-neverlink",
-    neverlink = 1,
-    exports = [
-        "//plugins/owners-common-api",
-    ],
-)
+gerrit_plugin_dependency_tests(plugin = "owners")
 
 java_library(
     name = "owners__plugin_test_deps",
@@ -67,29 +81,27 @@ java_library(
         ],
     ),
     visibility = ["//visibility:public"],
-    exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+    exports = gerrit_api() + gerrit_acceptance_framework() + [
         ":owners",
-        "//plugins/owners-common-api",
     ],
-    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+    deps = gerrit_api() + gerrit_acceptance_framework() + [
         ":owners",
-        "//plugins/owners-common-api",
     ],
 )
 
-junit_tests(
+gerrit_plugin_tests(
     name = "owners_tests",
     srcs = glob(["src/test/java/**/*Test.java"]),
-    tags = ["owners"],
+    plugin = "owners",
     deps = [
         ":owners__plugin_test_deps",
     ],
 )
 
-[junit_tests(
+[gerrit_plugin_tests(
     name = f[:f.index(".")].replace("/", "_"),
     srcs = [f],
-    tags = ["owners"],
+    plugin = "owners",
     visibility = ["//visibility:public"],
     deps = [
         ":owners__plugin_test_deps",
