@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class JgitWrapper {
   private static final Logger log = LoggerFactory.getLogger(JgitWrapper.class);
 
-  public static Optional<byte[]> getBlobAsBytes(Repository repository, String revision, String path)
+  public Optional<byte[]> getBlobAsBytes(Repository repository, String revision, String path)
       throws IOException {
     Ref ref = repository.getRefDatabase().exactRef(RefNames.fullName(revision));
     if (ref == null) {
@@ -52,14 +52,14 @@ public class JgitWrapper {
     }
   }
 
-  private static RevCommit parseCommit(Repository repository, ObjectId commit) throws IOException {
+  private RevCommit parseCommit(Repository repository, ObjectId commit) throws IOException {
     try (final RevWalk walk = new RevWalk(repository)) {
       walk.setRetainBody(true);
       return walk.parseCommit(commit);
     }
   }
 
-  private static Optional<byte[]> readBlob(Repository repository, ObjectId id) {
+  private Optional<byte[]> readBlob(Repository repository, ObjectId id) {
     try {
       return Optional.of(repository.open(id, OBJ_BLOB).getCachedBytes(Integer.MAX_VALUE));
     } catch (Exception e) {

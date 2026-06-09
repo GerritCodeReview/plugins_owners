@@ -1,0 +1,6 @@
+jackson-annotations
+jackson-core
+jackson-databind
+jackson-dataformat-yaml
+libowners-common
+snakeyaml

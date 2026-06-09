@@ -45,14 +45,10 @@ same time, etc...
 
 The plugins are built with Bazel as part of the Gerrit source tree.
 
-Create symbolic links of the owners and owners-autoassign folders and of the
-external_plugin_deps.bzl file to the Gerrit source code /plugins directory.
-
-Create a symbolic link of the owners-common plugin to the Gerrit source code
-directory.
-
-Then build the owners and owners-autoassign plugins with the usual Gerrit
-plugin compile command.
+The owners repo is its own Bazel module (`gerrit-owners`). It is wired
+into Gerrit's bzlmod graph by a single symlink to the owners repo root
+under `gerrit/plugins/`, plus the `external_plugin_deps.MODULE.bazel`
+fragment that includes it.
 
 Example:
 
@@ -60,14 +56,29 @@ Example:
   git clone https://gerrit.googlesource.com/plugins/owners
   git clone --recurse-submodules https://gerrit.googlesource.com/gerrit
   cd gerrit/plugins
-  ln -s ../../owners/owners .
-  ln -s ../../owners/owners-autoassign .
-  ln -s ../../owners/owners-api .
-  ln -sf ../../owners/external_plugin_deps.bzl .
+  ln -sn ../../owners owners
+  ln -sf ../../owners/external_plugin_deps.MODULE.bazel .
   cd ..
-  ln -s ../owners/owners-common .
-  bazel build plugins/owners plugins/owners-autoassign
+  bazelisk build plugins/owners plugins/owners-api plugins/owners-autoassign
 ```
+
+That single `plugins/owners` symlink also reaches `owners-common`,
+`owners-api`, and `owners-autoassign` (they're sibling subdirectories
+inside the owners repo). No separate symlinks under `gerrit/plugins/`
+for those, and no `gerrit/owners-common` symlink at the gerrit root.
+
+To re-pin Maven dependencies after editing `MODULE.bazel`, run REPIN
+from the owners checkout (the `@owners_plugin_deps` repository is
+declared in `owners/MODULE.bazel`):
+
+```
+  cd owners
+  REPIN=1 bazelisk run @owners_plugin_deps//:pin
+```
+
+This writes back to `owners/owners_plugin_deps.lock.json` (at the
+owners repo root). Commit the updated lock file alongside the
+`MODULE.bazel` change.
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
 and does not need to be built separately being a direct dependency of the build
