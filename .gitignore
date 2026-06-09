@@ -1,4 +1,3 @@
-# IntelliJ
 *.iml
 *.ipr
 .idea
@@ -7,3 +6,4 @@
 /.settings/
 /bazel-*
 /eclipse-out/
+.DS_Store

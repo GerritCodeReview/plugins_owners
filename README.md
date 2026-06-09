@@ -1,22 +1,17 @@
-# Gerrit OWNERS Plugin
+# Gerrit Owners Plugin
 
-This repository comprises of effectively two separate plugins, `owners` and
-`owners-autoassign`.
-
-They share the ability to parse the same OWNERS file format, which facilitates
-the maintenance of ACLs, as there is only one source of truth.
+The `owners` plugin has the ability to parse the OWNERS file in the repository for
+defining who is the owner of the components in a repository and therefore is
+entitled to have the final word for the submission of changes associated with
+the files owned.
 
 For details on how to configure either plugin, please refer to the docs in the
-specific plugin's folder.
+specific plugin's folder.``
 
 > **NOTE**: A comprehensive introduction to both `owners` and `owners-autoassign` has been
 > given as part of the [GerritMeets series in Jan 2025](https://www.youtube.com/watch?v=NfIHnJF30Wo).
 > While a further deep dive specifically into newer features of this plugin was
 > give at the [GerritMeets in April 2026](https://www.youtube.com/watch?v=DfKYduVKJEY)
-
-Here's an introduction to both plugins:
-
-## owners
 
 This plugin exposes the `has:approval_owners` predicate that can be used with
 Gerrit's own
@@ -32,59 +27,18 @@ specific directory, thus influencing the approvals of changes there, but not
 in others, enabling great flexibility when working on repositories shared by
 multiple teams.
 
-## owners-autoassign
+## Building the plugin
 
-This plugin parses the same OWNERS file format as the owners plugin. It will
-automatically assign all of the owners as reviewers to newly created or updated
-changes. It also allows for completely custom management of the attention set,
-i.e. allows, via custom integrations, to not add people on holiday to the
-attention set, or that the same user is not added to too many changes at the
-same time, etc...
+This plugin is built with Bazel using an in Gerrit tree.
 
-## Building the plugins
-
-This plugin is built with Bazel and two build modes are supported:
-
- * Standalone
- * In Gerrit tree
-
-### Build standalone
-
-To build the plugin, issue the following command:
-
-```
-  bazel build :all
-```
-
-The output is created in
-
-```
-  bazel-bin/owners/owners.jar
-  bazel-bin/owners-autoassign/owners-autoassign.jar
-  bazel-bin/owners-api/owners-api.jar
-
-```
-
-To execute the tests run:
-
-```
-  bazel test //...
-```
-
-This project can be imported into the Eclipse IDE:
-
-```
-  ./tools/eclipse/project.sh
-```
-
-## Build in Gerrit tree
-
-Create symbolic links of the owners and owners-autoassign folders and of the
-external_plugin_deps.bzl file to the Gerrit source code /plugins directory.
-
-Create a symbolic link of the owners-common plugin to the Gerrit source code
+Create symbolic links of the owners folders to the Gerrit source code /plugins
 directory.
 
+Create a symbolic link of the owners-common-api plugin to the Gerrit source code
+directory, which is needed as a pre-requisite for parsing the OWNERS file
+and the other utility functions for discovering it inside the repository branches.
+
+>>>>>>> a022e8a (Initial commit)
 Then build the owners and owners-autoassign plugins with the usual Gerrit
 plugin compile command.
 
@@ -92,15 +46,14 @@ Example:
 
 ```
   git clone https://gerrit.googlesource.com/plugins/owners
+  git clone https://gerrit.googlesource.com/plugins/owners-common-api
   git clone --recurse-submodules https://gerrit.googlesource.com/gerrit
   cd gerrit/plugins
-  ln -s ../../owners/owners .
-  ln -s ../../owners/owners-autoassign .
-  ln -s ../../owners/owners-api .
-  ln -sf ../../owners/external_plugin_deps.bzl .
+  ln -s ../../owners .
+  ln -s ../../owners-common-api .
+  ln -sf owners-common-api/external_plugin_deps.bzl .
   cd ..
-  ln -s ../owners/owners-common .
-  bazel build plugins/owners plugins/owners-autoassign
+  bazel build plugins/owners
 ```
 
 NOTE: the owners-common folder is producing shared artifacts for the two plugins
@@ -111,13 +64,12 @@ The output is created in
 
 ```
   bazel-bin/plugins/owners/owners.jar
-  bazel-bin/plugins/owners-autoassign/owners-autoassign.jar
 ```
 
 To execute the tests run:
 
 ```
-  bazel test owners-common:test
+  bazel test plugins/owners/...
 ```
 
 This project can be imported into the Eclipse IDE:
