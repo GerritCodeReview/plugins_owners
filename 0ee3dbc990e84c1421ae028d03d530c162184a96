@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f395121_50ca67ad",
+        "filename": "owners/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-06-10T14:18:20Z",
+      "side": 0,
+      "message": "Change 593281 proposes a simpler fix on the plugin side: replace `@prolog-runtime//jar:neverlink` with the in-tree label `//lib/prolog:runtime-neverlink`.\n\nThat canonical label stays valid regardless of how Gerrit sources the runtime (`maven_jar`, `rules_jvm_external`, `bzlmod`), so the plugin doesn\u0027t need to track changes to the external repository alias.\n\nApplies cleanly on today\u0027s stable-3.12 and survives the `bzlmod` backport unchanged. Happy to handle the merge-up through stable-3.13 / stable-3.14 / master once this lands on stable-3.12.",
+      "revId": "0ee3dbc990e84c1421ae028d03d530c162184a96",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
