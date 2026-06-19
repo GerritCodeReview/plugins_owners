@@ -16,6 +16,24 @@
       "message": "calling `bazel build //plugins/owners/...` fails for me locally:\n```\nINFO: Invocation ID: a4632d2f-f383-409a-b73c-b7c0312487b8\nINFO: Options provided by the client:\n  Inherited \u0027common\u0027 options: --isatty\u003d1 --terminal_columns\u003d290\nINFO: Reading rc options for \u0027build\u0027 from /Users/jcentkowski/workspace/open/experiments/gerrit/.bazelrc:\n  Inherited \u0027common\u0027 options: --lockfile_mode\u003derror --@com_googlesource_gerrit_bazlets//flags:in_gerrit_tree\u003dtrue --incompatible_disallow_struct_provider_syntax\u003dfalse --incompatible_disallow_empty_glob\u003dfalse --@aspect_rules_ts//ts:default_to_tsc_transpiler\nINFO: Reading rc options for \u0027build\u0027 from /Users/jcentkowski/workspace/open/experiments/gerrit/.bazelrc:\n  \u0027build\u0027 options: --workspace_status_command\u003dpython3 ./tools/workspace_status.py --repository_cache\u003d~/.gerritcodereview/bazel-cache/repository --action_env\u003dPATH --disk_cache\u003d~/.gerritcodereview/bazel-cache/cas --java_language_version\u003d25 --java_runtime_version\u003dremotejdk_25 --tool_java_language_version\u003d25 --tool_java_runtime_version\u003dremotejdk_25 --incompatible_strict_action_env --announce_rc\nINFO: Analyzed 45 targets (368 packages loaded, 1572 targets configured).\nERROR: /Users/jcentkowski/workspace/open/experiments/gerrit/plugins/owners/web/BUILD:37:11: Transpiling (js) \u0026 type-checking TypeScript project @@//plugins/owners/web:owners-ts-tests [tsc -p plugins/owners/web/tsconfig.json] failed: (Exit 2): tsc failed: error executing TsProject command (from ts_project rule target //plugins/owners/web:owners-ts-tests) bazel-out/darwin_arm64-opt-exec/bin/external/aspect_rules_ts++ext+npm_typescript/tsc_/tsc --outDir plugins/owners/web/_bazel_ts_out_tests --project plugins/owners/web/tsconfig.json --rootDir ... (remaining 5 arguments skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nplugins/owners/web/owners-service_test.ts(36,19): error TS7016: Could not find a declaration file for module \u0027sinon\u0027. \u0027/Users/jcentkowski/Library/Caches/bazel/_bazel_jcentkowski/b046cc13e8582d010e0e8cdf3d92cfdf/sandbox/darwin-sandbox/1808/execroot/_main/bazel-out/darwin_arm64-fastbuild/bin/plugins/node_modules/.aspect_rules_js/sinon@20.0.0/node_modules/sinon/pkg/sinon-esm.js\u0027 implicitly has an \u0027any\u0027 type.\n  There are types at \u0027/Users/jcentkowski/Library/Caches/bazel/_bazel_jcentkowski/b046cc13e8582d010e0e8cdf3d92cfdf/sandbox/darwin-sandbox/1808/execroot/_main/bazel-out/darwin_arm64-fastbuild/bin/polygerrit-ui/node_modules/@types/sinon/index.d.ts\u0027, but this result could not be resolved when respecting package.json \"exports\". The \u0027@types/sinon\u0027 library may need to update its package.json or typings.\nINFO: Elapsed time: 2.304s, Critical Path: 1.56s\nINFO: 9 processes: 4394 action cache hit, 6 internal, 1 darwin-sandbox, 2 worker.\nERROR: Build did NOT complete successfully```",
       "revId": "a149960fdcfd657bb6625e6769247d81e7ce421b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcabb3b9_045663da",
+        "filename": "web/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-06-19T21:35:52Z",
+      "side": 1,
+      "message": "The issue is the build of the web-frontend tests:\n```\nbazelisk build plugins/owners/web:owners-ts-tests\n```\n\nReturns the error:\n```\nplugins/owners/web/owners-service_test.ts(36,19): error TS7016: Could not find a declaration file for module \u0027sinon\u0027\n```",
+      "parentUuid": "d076176b_af40ddb3",
+      "revId": "a149960fdcfd657bb6625e6769247d81e7ce421b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
