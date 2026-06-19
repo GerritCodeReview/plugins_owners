@@ -34,6 +34,24 @@
       "parentUuid": "d076176b_af40ddb3",
       "revId": "a149960fdcfd657bb6625e6769247d81e7ce421b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eea3aea_260519a7",
+        "filename": "web/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-06-19T22:45:06Z",
+      "side": 1,
+      "message": "The problem was unrelated to the migration to `bzlmod` and is fixed with the follow up change Iba13fa920.",
+      "parentUuid": "dcabb3b9_045663da",
+      "revId": "a149960fdcfd657bb6625e6769247d81e7ce421b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
