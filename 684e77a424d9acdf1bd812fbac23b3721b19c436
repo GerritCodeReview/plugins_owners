@@ -8,12 +8,12 @@
       "updated": "2026-06-20T09:17:13Z"
     },
     "gerritforge:owners-format-8778b6ad7c669c875d7005780ac3ee54f778a2af": {
-      "state": "SUCCESSFUL",
-      "url": "https://gerrit-ci.gerritforge.com/job/plugin-owners-verifier/job/81%252F596981%252F4/3/console",
-      "started": "2026-06-20T09:17:06Z",
+      "state": "RUNNING",
+      "url": "https://gerrit-ci.gerritforge.com/job/plugin-owners-verifier/job/81%252F596981%252F4/4/console",
+      "started": "2026-06-20T09:17:30Z",
       "finished": "2026-06-20T09:17:11Z",
       "created": "2026-06-20T08:42:12Z",
-      "updated": "2026-06-20T09:17:11Z"
+      "updated": "2026-06-20T09:17:31Z"
     }
   }
 }
