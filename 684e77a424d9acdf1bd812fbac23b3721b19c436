@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "gerritforge:owners-format-8778b6ad7c669c875d7005780ac3ee54f778a2af": {
+      "state": "RUNNING",
+      "url": "https://gerrit-ci.gerritforge.com/job/plugin-owners-verifier/job/81%252F596981%252F4/1/console",
+      "started": "2026-06-20T08:42:12Z",
+      "created": "2026-06-20T08:42:12Z",
+      "updated": "2026-06-20T08:42:12Z"
+    }
+  }
+}
