@@ -1,11 +1,12 @@
 {
   "checks": {
     "gerritforge:owners-format-8778b6ad7c669c875d7005780ac3ee54f778a2af": {
-      "state": "RUNNING",
+      "state": "SUCCESSFUL",
       "url": "https://gerrit-ci.gerritforge.com/job/plugin-owners-verifier/job/91%252F639891%252F1/1/console",
       "started": "2026-10-07T13:49:17Z",
+      "finished": "2026-10-07T13:49:21Z",
       "created": "2026-10-07T13:49:17Z",
-      "updated": "2026-10-07T13:49:17Z"
+      "updated": "2026-10-07T13:49:21Z"
     }
   }
 }
